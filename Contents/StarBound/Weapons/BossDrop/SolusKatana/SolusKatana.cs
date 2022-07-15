@@ -383,7 +383,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                                 float theta2 = (1.8375f * f.Lerp(1 - swoosh.timeLeft / swooshTimeLeft, (swoosh.GetHashCode() == CurrentSwoosh.GetHashCode() ? factor : 1)) - 1.125f) * MathHelper.Pi + MathHelper.Pi;
                                 if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
                                 Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * swoosh.Scaler(this) * (1 + (1 - swoosh.timeLeft / swooshTimeLeft) * .25f);
-                                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), swoosh.center, newVec + projCenter, 8, ref _point)) return true;
+                                if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), swoosh.center, newVec + swoosh.center, 8, ref _point)) return true;
                             }
                         }
                     }
@@ -526,6 +526,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     }
                     timeCount++;
                 }
+                Player.immune = true;
+                Player.immuneTime = 2;
+
                 //Player.GetDamage(DamageClass.Generic) += 0.2f;
                 //Main.NewText(timeCount);
                 try
@@ -637,7 +640,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 {
                     float factor = i / (count - 1f);
                     Vector2 finalVec = Vector2.Normalize(Main.MouseWorld - projCenter).RotatedBy(factor.Lerp(-MathHelper.Pi / 6, MathHelper.Pi / 6)) * 72f;
-                    Projectile.NewProjectile(projectile.GetSource_FromThis(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), projectile.damage, projectile.knockBack, projectile.owner);
+                    Projectile.NewProjectile(projectile.GetSource_FromThis(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(Player.HeldItem), projectile.knockBack, projectile.owner);
                 }
                 SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
             }
@@ -695,10 +698,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             base.OnHitNPC(target, damage, knockback, crit);
+            target.AddBuff(BuffID.OnFire, controlState == 2 ? 750 : 450);
+            target.AddBuff(BuffID.Daybreak, controlState == 2 ? 750 : 450);
+            target.immune[projectile.owner] = (controlState == 2 || projectile.ai[1] > 0) ? UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
+            var strength = 0f;
+            if (controlState == 1 && projectile.ai[1] < 1)
+            {
+                strength = (UpgradeValue(16, 13, 10) - MaxTime) / UpgradeValue(6f, 5f, 5f) * 4f;
+
+            }
             if (controlState == 2)
             {
-                //target.AddBuff(UpgradeValue(ModContent.BuffType<ToxicⅠ>(), ModContent.BuffType<ToxicⅡ>(), ModContent.BuffType<ToxicⅢ>()), UpgradeValue(600, 1200, 1800));
+                strength = 8f;
             }
+            VirtualDreamPlayer.screenShakeStrength += strength;
+            //Dust.NewDustPerfect(target.Center, MyDustId.Fire, (Rotation + MathHelper.PiOver2 * (counter % 2 == 0 ? 1 : -1)).ToRotationVector2());
         }
         public override Rectangle? frame => projTex.Frame(3, 1, UpgradeValue(0, 1, 2));
         public T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
@@ -959,7 +973,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     if (projectile.ai[0] == 0)
                     {
                         var p1 = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, projectile.type, projectile.damage, 5f, projectile.owner, 1);
-                        p1.height = p1.width = 80;
+                        p1.height = p1.width = 160;
                         p1.timeLeft = 2;
                         p1.Center = projectile.Center;
                         p1.penetrate = -1;
@@ -984,6 +998,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         var swoosh = swooshes[n];
                         if (swoosh != null && swooshes[n].timeLeft > 0) swoosh.timeLeft--;
                     }
+                    VirtualDreamPlayer.screenShakeStrength += (projectile.timeLeft / 30f).HillFactor(1);
                 }
                 //Main.NewText(projectile.penetrate);
                 //if (projectile.timeLeft < 147)
@@ -1023,8 +1038,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             if (projectile.ai[0] == 0)
             {
                 projectile.timeLeft = 31;
-                projectile.damage = 0;
+                //projectile.damage = 0;
             }
+            //else 
+            //{
+            //    Main.NewText(projectile.penetrate);
+            //}
         }
     }
     public class SolarGlobalProj : GlobalProjectile
@@ -1088,12 +1107,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         triangleList[6 * k + 5] = bars[i + 3];
                     }
                 }
-                GraphicsDevice gd = Main.instance.GraphicsDevice;
-                RenderTarget2D render = IllusionBoundMod.Instance.render;
+                //GraphicsDevice gd = Main.instance.GraphicsDevice;
+                //RenderTarget2D render = IllusionBoundMod.Instance.render;
                 SpriteBatch spriteBatch = Main.spriteBatch;
                 spriteBatch.End();
-                gd.SetRenderTarget(render);
-                gd.Clear(Color.Transparent);
+                //gd.SetRenderTarget(render);
+                //gd.Clear(Color.Transparent);
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
                 IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
@@ -1115,26 +1134,28 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                IllusionBoundMod.Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-                IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
+                //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
 
-                IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
-                IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.05f);
-                for (int n = 0; n < 1; n++)
-                {
-                    gd.SetRenderTarget(Main.screenTargetSwap);
-                    gd.Clear(Color.Transparent);
-                    IllusionBoundMod.Distort.CurrentTechnique.Passes[7].Apply();
-                    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                //IllusionBoundMod.Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+                //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
+
+                //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
+                //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.05f);
+                //for (int n = 0; n < 1; n++)
+                //{
+                //    gd.SetRenderTarget(Main.screenTargetSwap);
+                //    gd.Clear(Color.Transparent);
+                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[7].Apply();
+                //    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
 
 
 
-                    gd.SetRenderTarget(Main.screenTarget);
-                    gd.Clear(Color.Transparent);
-                    IllusionBoundMod.Distort.CurrentTechnique.Passes[6].Apply();
-                    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                }
+                //    gd.SetRenderTarget(Main.screenTarget);
+                //    gd.Clear(Color.Transparent);
+                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[6].Apply();
+                //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                //}
                 //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
                 //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(projectile.rotation.ToRotationVector2() * -0.006f);
                 //for (int n = 0; n < 1; n++)
@@ -1150,8 +1171,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
                 //}
 
-                spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                spriteBatch.Draw(render, Vector2.Zero, Color.White);
+                //spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                //spriteBatch.Draw(render, Vector2.Zero, Color.White);
                 //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);
             }
             return base.PreDraw(projectile, ref lightColor);

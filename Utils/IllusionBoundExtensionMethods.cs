@@ -335,7 +335,7 @@ namespace VirtualDream.Utils
         /// 阿汪超喜欢用的插值函数，获得一个先迅速增加再慢慢变小的插值
         /// </summary>
         /// <param name="value">丢进去的变量，取值范围一般是[0,maxTimeWhen]</param>
-        /// <param name="maxTimeWhen">什么时候取得最大值呢</param>
+        /// <param name="maxTimeWhen">什么时候插值结束呢</param>
         /// <returns>自己画函数图像去，真的像是一个小山丘一样(</returns>
         public static float HillFactor2(this float value, float maxTimeWhen)
         {
@@ -346,9 +346,9 @@ namespace VirtualDream.Utils
         /// 阿汪超喜欢用的插值函数，获得一个先迅速增加再慢慢变小的插值
         /// </summary>
         /// <param name="value">丢进去的变量，取值范围一般是[0,maxTimeWhen]</param>
-        /// <param name="maxTimeWhen">什么时候取得最大值呢</param>
+        /// <param name="maxTimeWhen">什么时候插值结束呢</param>
         /// <returns>自己画函数图像去，真的像是一个小山丘一样(</returns>
-        public static float HillFactor(this float value, float maxTimeWhen)
+        public static float HillFactor(this float value, float maxTimeWhen = 1)
         {
             //return Clamp((center - Math.Abs(center - value)) / center / whenGetMax, 0, 1);
             return (float)Math.Sin(MathHelper.Pi * Math.Sqrt(value / maxTimeWhen));
