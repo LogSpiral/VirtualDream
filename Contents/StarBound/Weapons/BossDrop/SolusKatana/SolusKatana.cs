@@ -462,14 +462,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     if (maxCount != null && (int)projectile.ai[1] == maxCount - 1)
                     {
                         swoosh.rotation = Player.direction == 1 ? 0 : MathHelper.Pi;
+                        swoosh.direction = (byte)(Player.direction == 1 ? 1 : 0);
                     }
                     else
                     {
                         swoosh.rotation = vec.ToRotation() + Main.rand.NextFloat(-1, 1) * MathHelper.Pi / UpgradeValue(6, 4, 3);//+ (Projectile.ai[1] == maxCount ? 0 : Main.rand.NextFloat(-1, 1) * MathHelper.Pi / UpgradeValue(6, 4, 3))
-
+                        swoosh.direction = (byte)(counter % 2);
                     }
                     swoosh.center = projCenter;
-                    swoosh.direction = (byte)(counter % 2);
                     index = n;
                     //leftSwooshes[n] = swoosh;
                     //Main.NewText(n);
@@ -502,7 +502,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             if (Player.velocity.Y == 0) Player.velocity.X *= 0.975f;
             if (left)//|| (!left && charged && projectile.ai[1] > MaxTimeLeft * factor - 1)
             {
-                if (projectile.frame == 0) projectile.frame = (int)MathHelper.Clamp((counter - (int)Projectile.ai[1]) / UpgradeValue(3, 2, 1), UpgradeValue(2, 3, 4), UpgradeValue(5, 7, 9));
+                if (projectile.frame == 0) 
+                {
+                    projectile.frame = (int)MathHelper.Clamp((counter - (int)Projectile.ai[1]) / UpgradeValue(3, 2, 1), UpgradeValue(2, 3, 4), UpgradeValue(5, 7, 9));
+                    //Main.NewText(counter);
+                }
                 //var maxCount = (int)MathHelper.Clamp((counter - (int)Projectile.ai[1]) / UpgradeValue(3, 2, 1), UpgradeValue(2, 3, 4), UpgradeValue(5, 7, 9));
                 //Main.NewText(maxCount);
                 if (Projectile.ai[1] < projectile.frame)
@@ -544,7 +548,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 {
                     Main.NewText(timeCount % MaxTime == 0);
                 }
-                if (!CurrentSwoosh.Active && Projectile.ai[1] >= projectile.frame) projectile.Kill();
+                if (!CurrentSwoosh.Active && Projectile.ai[1] >= projectile.frame) { projectile.Kill();}
                 return;
             }
             //else 
@@ -701,17 +705,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             target.AddBuff(BuffID.OnFire, controlState == 2 ? 750 : 450);
             target.AddBuff(BuffID.Daybreak, controlState == 2 ? 750 : 450);
             target.immune[projectile.owner] = (controlState == 2 || projectile.ai[1] > 0) ? UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
-            var strength = 0f;
-            if (controlState == 1 && projectile.ai[1] < 1)
-            {
-                strength = (UpgradeValue(16, 13, 10) - MaxTime) / UpgradeValue(6f, 5f, 5f) * 4f;
+            //var strength = 0f;
+            //if (controlState == 1 && projectile.ai[1] < 1)
+            //{
+            //    strength = (UpgradeValue(16, 13, 10) - MaxTime) / UpgradeValue(6f, 5f, 5f) * 4f;
 
-            }
-            if (controlState == 2)
-            {
-                strength = 8f;
-            }
-            VirtualDreamPlayer.screenShakeStrength += strength;
+            //}
+            //if (controlState == 2)
+            //{
+            //    strength = 8f;
+            //}
+            //VirtualDreamPlayer.screenShakeStrength += strength;
             //Dust.NewDustPerfect(target.Center, MyDustId.Fire, (Rotation + MathHelper.PiOver2 * (counter % 2 == 0 ? 1 : -1)).ToRotationVector2());
         }
         public override Rectangle? frame => projTex.Frame(3, 1, UpgradeValue(0, 1, 2));
