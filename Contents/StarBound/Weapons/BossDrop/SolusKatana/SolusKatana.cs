@@ -283,7 +283,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
     public class SolusKatanaProj : VertexHammerProj
     {
         public override string HammerName => base.HammerName;
-        public override float MaxTime => Charging && projectile.ai[1] == 0 && controlState == 1 ? (UpgradeValue(MathHelper.Clamp(16 - counter / 5, 10, 16), MathHelper.Clamp(13 - counter / 4, 8, 13), MathHelper.Clamp(10 - counter / 3, 5, 10))) : UpgradeValue(30, 25, 20);
+        public override float MaxTime 
+        {
+            get 
+            {
+                if (controlState == 1 && projectile.ai[1] > 0) return UpgradeValue(6, 5, 4);
+                return Charging && projectile.ai[1] == 0 && controlState == 1 ? (UpgradeValue(MathHelper.Clamp(16 - counter / 5, 10, 16), MathHelper.Clamp(13 - counter / 4, 8, 13), MathHelper.Clamp(10 - counter / 3, 5, 10))) : UpgradeValue(30, 25, 20);
+            }
+        }
         public override float factor => base.factor;
         public override Vector2 CollidingSize => base.CollidingSize * 2;
         //public override Vector2 projCenter => base.projCenter + new Vector2(Player.direction * 16, -16);
