@@ -53,7 +53,7 @@ namespace VirtualDream
     // MOD的主类名字，需要与文件名、MOD名完全一致，并且继承Mod类
     public class IllusionBoundMod : Mod
     {
-        public static float GlowLight => ((float)Math.Sin(IllusionBoundModSystem.ModTime * MathHelper.TwoPi / 120) + 1) / 2;
+        public static float GlowLight => IllusionBoundModSystem.glowLight;
         public static double ModTime => IllusionBoundModSystem.ModTime;
         public static double ModTime2 => IllusionBoundModSystem.ModTime2;
 
@@ -103,7 +103,7 @@ namespace VirtualDream
         public static bool UnderGroundActive;
         //public static StormRain[] rain = new StormRain[750];
         //public static int[] StormNPCType = new int[] { ModContent.NPCType<NegativeElectricalSlime>(), ModContent.NPCType<PositiveElectricalSlime>(), ModContent.NPCType<NeutralSlime>(), ModContent.NPCType<ElectricalHarpy>() };
-
+        public static ElectricTriangle[] electricTriangle = new ElectricTriangle[100];
         private int iconFrame = 0;
         private byte iconFrameCounter = 0;
 
@@ -571,7 +571,7 @@ namespace VirtualDream
         public static double ModTime;
         public static double ModTime2;
         public static int TimeStopCount;
-
+        public static float glowLight;
         public override void UpdateUI(GameTime gameTime)
         {
             Utils.IllusionBoundExtensionMethods.ODEStarTimer += 1 / 120f;
@@ -583,11 +583,19 @@ namespace VirtualDream
             //IllusionBoundWorld.StormGlassColor = (new Vector4(254, 200, 231, 255) * IllusionBoundWorld.StormGlassGrowLightPink + new Vector4(206, 153, 255, 255) * IllusionBoundWorld.StormGlassGrowLightPurple + new Vector4(149, 225, 233, 255) * IllusionBoundWorld.StormGlassGrowLightBlue).ToColor();
             ModTime++;
             ModTime2 += Main.gamePaused ? 0 : 1;
+            if (!Main.gamePaused)
+            {
+                foreach (var item in IllusionBoundMod.electricTriangle)
+                {
+                    item?.Update();
+                }
+            }
             //if (Main.LocalPlayer.GetModPlayer<IllusionBoundPlayer>().ZoneStorm)
             //{
             //    Tiles.StormZone.StormRain.MakeRain();
             //}
             //counter = 0;
+            glowLight = ((float)Math.Sin(ModTime * MathHelper.TwoPi / 120) + 1) / 2;
         }
         public override void PreUpdateEntities()
         {
@@ -689,7 +697,62 @@ namespace VirtualDream
             //spriteBatch.Begin();
         }
     }
-
+    public class ElectricTriangle
+    {
+        public Vector2 position;
+        public Vector2 velocity;
+        //public int timeMax;
+        public int cycle;
+        public int timeLeft = -1;
+        public int dustType;
+        public float rotation;
+        public float size;
+        public bool Active => timeLeft > -1;
+        public static int NewElectricTriangle(Vector2 position, float rotation = 0, float size = 16, Vector2 velocity = default, int cycle = 15, int timeLeft = 15, int? dustType = null)
+        {
+            int index = -1;
+            for (int n = 0; n < IllusionBoundMod.electricTriangle.Length; n++)
+            {
+                var currentTri = IllusionBoundMod.electricTriangle[n];
+                if (currentTri == null)
+                {
+                    IllusionBoundMod.electricTriangle[n] = new ElectricTriangle()
+                    {
+                        position = position,
+                        rotation = rotation,
+                        size = size,
+                        velocity = velocity,
+                        cycle = cycle,
+                        timeLeft = timeLeft,
+                        //timeMax = timm
+                        dustType = dustType ?? MyDustId.CyanBubble
+                    };
+                    index = n;
+                    break;
+                }
+                if (!currentTri.Active)
+                {
+                    currentTri.position = position;
+                    currentTri.rotation = rotation;
+                    currentTri.size = size;
+                    currentTri.velocity = velocity;
+                    currentTri.cycle = cycle;
+                    currentTri.timeLeft = timeLeft;
+                    currentTri.dustType = dustType ?? MyDustId.CyanBubble;
+                    index = n;
+                    break;
+                }
+            }
+            return index;
+        }
+        public void Update()
+        {
+            if (timeLeft < 0) return;
+            Dust.NewDustPerfect(position + (timeLeft / (float)cycle % 1).GetLerpValue_Loop(new Vector2(0.8660254f, -0.5f), new Vector2(0, 1), new Vector2(-0.8660254f, -0.5f)).RotatedBy(rotation) * size, dustType, default, 0, Color.White, .5f).noGravity = true;
+            timeLeft--;
+            position += velocity;
+        }
+    }
     public class IllusionBoundGlobalItem : GlobalItem
     {
         public override void SetDefaults(Item item)
@@ -720,65 +783,65 @@ namespace VirtualDream
     //        Player player = Main.player[Main.myPlayer];
     //        if (npc.type == NPCID.Mothron && Main.rand.NextBool(4))
     //        {
-    //            Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Items.Others.ExtremeBreakTheRuleManaCrystal>());
+    //            Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Materials.ExtremeBreakTheRuleManaCrystal>());
     //        }
     //        if (!npc.friendly && npc.value > 0f && NPC.downedMoonlord)
     //        {
     //            if (npc.lifeMax > 2000)
     //            {
-    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Items.Others.AncientEssence>(), Main.rand.Next(40, 60));
+    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Materials.AncientEssence>(), Main.rand.Next(40, 60));
     //            }
     //            else if (npc.lifeMax > 1000)
     //            {
-    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Items.Others.AncientEssence>(), Main.rand.Next(25, 30));
+    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Materials.AncientEssence>(), Main.rand.Next(25, 30));
     //            }
     //            else if (npc.lifeMax > 500)
     //            {
-    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Items.Others.AncientEssence>(), Main.rand.Next(15, 20));
+    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Materials.AncientEssence>(), Main.rand.Next(15, 20));
     //            }
     //            else if (npc.lifeMax > 100)
     //            {
-    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Items.Others.AncientEssence>(), Main.rand.Next(5, 10));
+    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Materials.AncientEssence>(), Main.rand.Next(5, 10));
     //            }
     //            if (player.ZoneSnow)
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.CryonicExtract>(), npc);
+    //                LowerMaterials(ItemType<Materials.CryonicExtract>(), npc);
     //            }
     //            if (player.ZoneJungle)
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.VenomSample>(), npc);
+    //                LowerMaterials(ItemType<Materials.VenomSample>(), npc);
     //            }
     //            if (player.ZoneUnderworldHeight)
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.ScorchedCore>(), npc);
+    //                LowerMaterials(ItemType<Materials.ScorchedCore>(), npc);
     //            }
     //            if (player.ZoneDesert || player.ZoneUndergroundDesert)
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.SharpenedClaw>(), npc);
+    //                LowerMaterials(ItemType<Materials.SharpenedClaw>(), npc);
     //            }
     //            if (player.ZoneDirtLayerHeight || player.ZoneRockLayerHeight)
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.HardenedCarapace>(), npc);
+    //                LowerMaterials(ItemType<Materials.HardenedCarapace>(), npc);
     //            }
     //            if (player.ZoneCorrupt || player.ZoneCrimson || player.ZoneHallow)
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.Leather>(), npc);
+    //                LowerMaterials(ItemType<Materials.Leather>(), npc);
     //            }
     //            if (player.ZoneSkyHeight)
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.PhaseMatter>(), npc);
+    //                LowerMaterials(ItemType<Materials.PhaseMatter>(), npc);
     //            }
     //            if (player.ZoneMeteor)
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.StickOfRAM>(), npc);
+    //                LowerMaterials(ItemType<Materials.StickOfRAM>(), npc);
     //            }
     //            if (player.ZoneDungeon)
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.StaticCell>(), npc);
+    //                LowerMaterials(ItemType<Materials.StaticCell>(), npc);
     //            }
     //            if (!(player.ZoneSnow || player.ZoneJungle || player.ZoneUnderworldHeight || player.ZoneDesert || player.ZoneUndergroundDesert || player.ZoneDirtLayerHeight || player.ZoneRockLayerHeight || player.ZoneCorrupt || player.ZoneCrimson || player.ZoneHallow || player.ZoneSkyHeight || player.ZoneMeteor || player.ZoneDungeon))
     //            {
-    //                LowerMaterials(ItemType<Items.Others.Materials.LivingRoot>(), npc);
+    //                LowerMaterials(ItemType<Materials.LivingRoot>(), npc);
     //            }
     //        }
     //    }

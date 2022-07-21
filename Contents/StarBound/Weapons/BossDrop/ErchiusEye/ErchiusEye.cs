@@ -9,7 +9,7 @@ using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
 {
-    public class ErchiusEye :GlowItem
+    public class ErchiusEye : GlowItem
     {
         public override void SetStaticDefaults()
         {
@@ -25,7 +25,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override void SetDefaults()
         {
             item.noMelee = true;
-            item.damage = 50;
+            item.damage = 150;
             item.DamageType = DamageClass.Magic;
             item.channel = true; //Channel so that you can held the weapon [Important]
             item.mana = 10;
@@ -92,7 +92,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             recipe.AddIngredient(ItemID.Lens, 50);
             recipe.AddIngredient(ItemID.BlackLens);
             recipe.AddIngredient(ItemID.Amethyst, 15);
-            //recipe.AddIngredient(ModContent.ItemType<Items.Others.Materials.ErchiusCrystal>(), 20);
+            //recipe.AddIngredient<Materials.ErchiusCrystal>(20);
             recipe.AddTile(TileID.MythrilAnvil);
             recipe.SetResult(this);
             recipe.AddRecipe();
@@ -115,7 +115,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override void SetDefaults()
         {
             base.SetDefaults();
-            item.damage = 75;
+            item.damage = 275;
             item.mana = 8;
             item.rare = MyRareID.Tier2;
         }
@@ -153,7 +153,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override void SetDefaults()
         {
             base.SetDefaults();
-            item.damage = 225;
+            item.damage = 400;
             item.mana = 6;
             item.rare = MyRareID.Tier3;
         }
@@ -230,7 +230,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override void OnCharging(bool left, bool right)
         {
             Projectile.friendly = left && Factor > 0.5f;
-            if (left && (int)Projectile.ai[0] % 20 == 0) 
+            if (left && (int)Projectile.ai[0] % 20 == 0)
             {
                 SoundEngine.PlaySound(Terraria.ID.SoundID.Item15);
 
@@ -238,7 +238,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             if (right && (int)Projectile.ai[0] % UpgradeValue(40, 30, 20) == 0)
             {
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter, Projectile.velocity * 32f, ModContent.ProjectileType<ErchiusCrystalProj>(), Player.GetWeaponDamage(Player.HeldItem), Projectile.knockBack, Player.whoAmI, Main.rand.Next(4) + UpgradeValue(3, 6, 11),Main.rand.Next(5));
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter, Projectile.velocity * 32f, ModContent.ProjectileType<ErchiusCrystalProj>(), Player.GetWeaponDamage(Player.HeldItem), Projectile.knockBack, Player.whoAmI, Main.rand.Next(4) + UpgradeValue(3, 6, 11), Main.rand.Next(5));
+                SoundEngine.PlaySound(Terraria.ID.SoundID.Item84);
+
             }
         }
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 19;
@@ -277,6 +279,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             var factor = 2 * (Factor - 0.5f);
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), ShootCenter, ShootCenter + Projectile.velocity * factor * 1024f, 18 * factor, ref point);
         }
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            base.OnHitNPC(target, damage, knockback, crit);
+            target.immune[Projectile.owner] = UpgradeValue(5, 3, 1);
+        }
     }
     public class ErchiusCrystalProj : ErchiusCrystalPiece
     {
@@ -292,6 +299,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override bool PreDraw(ref Color lightColor)
         {
             Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(5, 1, (int)projectile.ai[1] % 5, 0), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(0.25f, 1), 4f, 0, 0);
+            if (!Main.gamePaused)
+            {
+                for (int n = projectile.oldPos.Length - 1; n > 0; n--)
+                {
+                    projectile.oldPos[n] = projectile.oldPos[n - 1];
+                }
+                projectile.oldPos[0] = projectile.Center;
+            }
+            Main.spriteBatch.DrawShaderTail(projectile, IllusionBoundMod.HeatMap[5], IllusionBoundMod.AniTexes[10], IllusionBoundMod.AniTexes[6]);
             return false;
         }
         public override void AI()
@@ -309,6 +325,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             base.PreKill(timeLeft);
             return true;
         }
+
     }
     public class ErchiusCrystalPiece : ModProjectile
     {
@@ -328,6 +345,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override bool PreDraw(ref Color lightColor)
         {
             Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f, 4f, 0, 0);
+            if (!Main.gamePaused)
+            {
+                for (int n = projectile.oldPos.Length - 1; n > 0; n--)
+                {
+                    projectile.oldPos[n] = projectile.oldPos[n - 1];
+                }
+                projectile.oldPos[0] = projectile.Center;
+            }
+            Main.spriteBatch.DrawShaderTail(projectile, IllusionBoundMod.HeatMap[5], IllusionBoundMod.AniTexes[10], IllusionBoundMod.AniTexes[6]);
             return false;
         }
         public override void AI()

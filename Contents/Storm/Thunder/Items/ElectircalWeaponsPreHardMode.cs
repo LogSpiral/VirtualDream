@@ -37,10 +37,10 @@
 //        public override void AddRecipes()
 //        {
 //            Recipe recipe = CreateRecipe();
-//            recipe.AddIngredient(ItemType<StormBrick>(), 30);
-//            recipe.AddIngredient(ItemType<StormSandBrick>(), 10);
-//            recipe.AddIngredient(ItemType<StormGlass>(), 10);
-//            recipe.AddIngredient(ItemType<StormWood>(), 25);
+//            recipe.AddIngredient<StormBrick>(30);
+//            recipe.AddIngredient<StormSandBrick>(10);
+//            recipe.AddIngredient<StormGlass>(10);
+//            recipe.AddIngredient<StormWood>(25);
 //            recipe.AddTile(TileType<Soviet.SovietHammerStatue>());
 //            recipe.SetResult(this);
 //            recipe.AddRecipe();
@@ -76,8 +76,8 @@
 //        public override void AddRecipes()
 //        {
 //            Recipe recipe = CreateRecipe();
-//            recipe.AddIngredient(ItemType<StormBar>(), 25);
-//            recipe.AddIngredient(ItemType<ElectricalSwordUnCharged>());
+//            recipe.AddIngredient<StormBar>(25);
+//            recipe.AddIngredient<ElectricalSwordUnCharged>();
 //            recipe.AddTile(TileType<Soviet.SovietHammerStatue>());
 //            recipe.SetResult(this);
 //            recipe.AddRecipe();
@@ -205,10 +205,10 @@
 //        public override void AddRecipes()
 //        {
 //            Recipe recipe = CreateRecipe();
-//            recipe.AddIngredient(ItemType<StormBrick>(), 30);
-//            recipe.AddIngredient(ItemType<StormSandBrick>(), 10);
-//            recipe.AddIngredient(ItemType<StormGlass>(), 10);
-//            recipe.AddIngredient(ItemType<StormWood>(), 25);
+//            recipe.AddIngredient<StormBrick>(30);
+//            recipe.AddIngredient<StormSandBrick>(10);
+//            recipe.AddIngredient<StormGlass>(10);
+//            recipe.AddIngredient<StormWood>(25);
 //            recipe.AddTile(TileType<Soviet.SovietHammerStatue>());
 //            recipe.SetResult(this);
 //            recipe.AddRecipe();
@@ -249,8 +249,8 @@
 //        public override void AddRecipes()
 //        {
 //            Recipe recipe = CreateRecipe();
-//            recipe.AddIngredient(ItemType<StormBar>(), 25);
-//            recipe.AddIngredient(ItemType<ElectricalStaffUnCharged>());
+//            recipe.AddIngredient<StormBar>(25);
+//            recipe.AddIngredient<ElectricalStaffUnCharged>();
 //            recipe.AddTile(TileType<Soviet.SovietHammerStatue>());
 //            recipe.SetResult(this);
 //            recipe.AddRecipe();
@@ -600,10 +600,10 @@
 //        public override void AddRecipes()
 //        {
 //            Recipe recipe = CreateRecipe();
-//            recipe.AddIngredient(ItemType<StormBrick>(), 30);
-//            recipe.AddIngredient(ItemType<StormSandBrick>(), 10);
-//            recipe.AddIngredient(ItemType<StormGlass>(), 10);
-//            recipe.AddIngredient(ItemType<StormWood>(), 25);
+//            recipe.AddIngredient<StormBrick>(30);
+//            recipe.AddIngredient<StormSandBrick>(10);
+//            recipe.AddIngredient<StormGlass>(10);
+//            recipe.AddIngredient<StormWood>(25);
 //            recipe.AddTile(TileType<Soviet.SovietHammerStatue>());
 //            recipe.SetResult(this);
 //            recipe.AddRecipe();
@@ -618,8 +618,8 @@
 //        public override void AddRecipes()
 //        {
 //            Recipe recipe = CreateRecipe();
-//            recipe.AddIngredient(ItemType<StormBar>(), 25);
-//            recipe.AddIngredient(ItemType<ElectricalBowUnCharged>());
+//            recipe.AddIngredient<StormBar>(25);
+//            recipe.AddIngredient<ElectricalBowUnCharged>();
 //            recipe.AddTile(TileType<Soviet.SovietHammerStatue>());
 //            recipe.SetResult(this);
 //            recipe.AddRecipe();
@@ -809,7 +809,7 @@
 //            Recipe recipe = CreateRecipe();
 //            recipe.AddRecipeGroup("IllusionBoundMod:GoldBar");
 //            recipe.AddIngredient(ItemID.Hellstone, 2);
-//            recipe.AddIngredient(ItemType<StormOre>(), 4);
+//            recipe.AddIngredient<StormOre>(4);
 //            recipe.AddTile(TileType<Soviet.SovietHammerStatue>());
 //            recipe.SetResult(this);
 //            recipe.AddRecipe();

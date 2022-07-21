@@ -31,7 +31,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         public override bool CanUseItem(Player player) => player.ownedProjectileCounts[item.shoot] < 1;
         public override void SetDefaults()
         {
-            item.damage = 100;
+            item.damage = 125;
             item.knockBack = 0.25f;
             item.rare = MyRareID.Tier1;
             item.useStyle = ItemUseStyleID.Shoot;
@@ -148,7 +148,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         public override void SetDefaults()
         {
             base.SetDefaults();
-            item.damage = 150;
+            item.damage = 225;
             item.rare = MyRareID.Tier2;
             item.width = 48;
             item.height = 28;
@@ -246,7 +246,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         public override void SetDefaults()
         {
             base.SetDefaults();
-            item.damage = 300;
+            item.damage = 450;
             item.rare = MyRareID.Tier3;
             item.width = 48;
             item.height = 36;
@@ -524,6 +524,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     break;
 
             }
+            if(tier > 0)
             SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
 
         }

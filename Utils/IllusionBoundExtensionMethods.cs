@@ -4341,7 +4341,13 @@ namespace VirtualDream.Utils
         public static CustomVertexInfo[] TailVertexFromProj(this Projectile projectile, Vector2 Offset = default, float Width = 30, float alpha = 1, bool VeloTri = false)
         {
             List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
-            for (int i = 1; i < projectile.oldPos.Length; ++i)
+            int indexMax = -1;
+            for (int n = 0; n < projectile.oldPos.Length; n++) if (projectile.oldPos[n] == Vector2.Zero) { indexMax = n; break; }
+            //if(!Main.gamePaused)
+            //Main.NewText(projectile.oldPos[0]);
+            if (indexMax == -1) indexMax = 10;
+            Offset += projectile.velocity;
+            for (int i = 1; i < indexMax; ++i)
             {
                 if (projectile.oldPos[i] == Vector2.Zero)
                 {
@@ -4349,19 +4355,23 @@ namespace VirtualDream.Utils
                 }
                 var normalDir = projectile.oldPos[i - 1] - projectile.oldPos[i];
                 normalDir = Vector2.Normalize(new Vector2(-normalDir.Y, normalDir.X));
-                var factor = i / (float)projectile.oldPos.Length;
+                var factor = i / (float)indexMax;
                 var w = 1 - factor;
-                bars.Add(new CustomVertexInfo(projectile.oldPos[i] + Offset + normalDir * Width, new Vector3((float)Math.Sqrt(factor), 1, w * alpha)));
-                bars.Add(new CustomVertexInfo(projectile.oldPos[i] + Offset + normalDir * -Width, new Vector3((float)Math.Sqrt(factor), 0, w * alpha)));
+                bars.Add(new CustomVertexInfo(projectile.oldPos[i] + Offset + normalDir * Width, Color.Purple * w, new Vector3((float)Math.Sqrt(factor), 1, alpha * .6f)));//w * 
+                bars.Add(new CustomVertexInfo(projectile.oldPos[i] + Offset + normalDir * -Width, Color.Purple * w, new Vector3((float)Math.Sqrt(factor), 0, alpha * .6f)));//w * 
             }
             List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
             if (bars.Count > 2)
             {
-                triangleList.Add(bars[0]);
-                var vertex = new CustomVertexInfo((bars[0].Position + bars[1].Position) * 0.5f + Vector2.Normalize(projectile.velocity) * 30, Color.White,
-                    new Vector3(0, 0.5f, alpha));
-                triangleList.Add(bars[1]);
-                triangleList.Add(vertex);
+                if (VeloTri)
+                {
+                    triangleList.Add(bars[0]);
+                    var vertex = new CustomVertexInfo((bars[0].Position + bars[1].Position) * 0.5f + Vector2.Normalize(projectile.velocity) * 30, Color.White,
+                        new Vector3(0, 0.5f, alpha));
+                    triangleList.Add(bars[1]);
+                    triangleList.Add(vertex);
+                }
+
                 for (int i = 0; i < bars.Count - 2; i += 2)
                 {
                     triangleList.Add(bars[i]);
@@ -4381,18 +4391,43 @@ namespace VirtualDream.Utils
             if (triangleList.Length < 3) return;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            //RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+            //var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+            //var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+            //IllusionBoundMod.DefaultEffect.Parameters["uTransform"].SetValue(model * projection);
+            //IllusionBoundMod.DefaultEffect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
+            //Main.graphics.GraphicsDevice.Textures[0] = heatMap;
+            //Main.graphics.GraphicsDevice.Textures[1] = baseTex;
+            //Main.graphics.GraphicsDevice.Textures[2] = aniTex;
+            //Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            //Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+            //Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+            //IllusionBoundMod.DefaultEffect.CurrentTechnique.Passes[0].Apply();
+            //Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, triangleList.Length / 3);
+            //Main.graphics.GraphicsDevice.RasterizerState = originalState;
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.DefaultEffect.Parameters["uTransform"].SetValue(model * projection);
-            IllusionBoundMod.DefaultEffect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
-            Main.graphics.GraphicsDevice.Textures[0] = heatMap;
-            Main.graphics.GraphicsDevice.Textures[1] = baseTex;
-            Main.graphics.GraphicsDevice.Textures[2] = aniTex;
+            IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
+
+            IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
+            IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
+            IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(false);
+            IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
+            IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(false);
+
+            Main.graphics.GraphicsDevice.Textures[0] = baseTex;
+            Main.graphics.GraphicsDevice.Textures[1] = aniTex;
+            Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.AniTexes[6];
+            Main.graphics.GraphicsDevice.Textures[3] = heatMap;
+
             Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
             Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-            IllusionBoundMod.DefaultEffect.CurrentTechnique.Passes[0].Apply();
+            Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.PointWrap;
+
+            IllusionBoundMod.ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, triangleList.Length / 3);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();

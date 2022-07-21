@@ -112,7 +112,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            //recipe1.AddIngredient(ModContent.ItemType<Items.Weapons.OrdinaryAcrossKatana>());
+            //recipe1.AddIngredient<Items.Weapons.OrdinaryAcrossKatana>();
             recipe1.AddIngredient(ItemID.SolarTablet);
             recipe1.AddIngredient(ItemID.LihzahrdBrick, 50);
             recipe1.AddIngredient(ItemID.LunarTabletFragment, 32);
@@ -199,7 +199,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("二次强化的日炎刀，是由阿斯拉诺克斯制造的吗？\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯化日炎刀与绝唱机甲日炎刀交汇的辉光，请确保你能驾驭它的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//二次强化的日炎刀，是由阿斯拉诺克斯制造的吗？\n
             DisplayName.SetDefault("日炎刀NEO");
         }
         public override int CountOfShoot => 7;

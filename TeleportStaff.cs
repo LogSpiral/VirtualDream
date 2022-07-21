@@ -59,6 +59,13 @@ namespace VirtualDream
         //    npcTargetIndex = num.Value;
         //    return true;
         //}
+
+        //public override void UseAnimation(Player player)
+        //{
+        //    player.GetModPlayer<drawFlameModplayer>().创造火焰(player.Center);
+        //    base.UseAnimation(player);
+        //}
+
         //public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         //{
         //    Vector2 vector = player.RotatedRelativePoint(player.MountedCenter, true, true);

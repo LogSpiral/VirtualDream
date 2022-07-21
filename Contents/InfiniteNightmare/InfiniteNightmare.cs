@@ -3100,7 +3100,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         {
             Recipe recipe = CreateRecipe();
             recipe.AddIngredient(ItemID.FisherofSouls);
-            recipe.AddIngredient(ItemType<InfiniteNightmare>());
+            recipe.AddIngredient<InfiniteNightmare>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.SetResult(this);
             recipe.AddRecipe();

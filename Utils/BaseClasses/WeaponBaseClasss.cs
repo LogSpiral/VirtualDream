@@ -51,16 +51,20 @@ namespace VirtualDream.Utils.BaseClasses
         public virtual bool Charged => Factor == 1;
         public virtual Vector2 ShootCenter => HeldCenter;
         public virtual Vector2 HeldCenter => Player.Center;
-        public override void AI()
+        public virtual void UpdatePlayer() 
         {
-            base.AI();
-            #region 更新玩家
             Player.ChangeDir(Projectile.direction);
             Player.heldProj = Projectile.whoAmI;
             Player.itemTime = 2;
             Player.itemAnimation = 2;
             Player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
             Player.SetCompositeArmFront(enabled: true, Player.CompositeArmStretchAmount.Full, Player.itemRotation - MathHelper.PiOver2 - (Player.direction == -1 ? MathHelper.Pi : 0));
+        }
+        public override void AI()
+        {
+            base.AI();
+            #region 更新玩家
+            UpdatePlayer();
             #endregion
             #region 更新弹幕
             if (Charging)
@@ -77,6 +81,7 @@ namespace VirtualDream.Utils.BaseClasses
                 OnRelease(Charged, Projectile.ai[1] == 1);
                 Projectile.frame = 1;
             }
+            //Main.NewText(Charged);
             #endregion
         }
         public virtual void OnCharging(bool left, bool right) { }
@@ -87,7 +92,7 @@ namespace VirtualDream.Utils.BaseClasses
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Vector2 center = HeldCenter - Main.screenPosition;
+            Vector2 center = HeldCenter - Main.screenPosition + new Vector2(0,Player.gfxOffY);
             Rectangle? frame = null;
             float rotation = Projectile.rotation;
             float scale = 1f;

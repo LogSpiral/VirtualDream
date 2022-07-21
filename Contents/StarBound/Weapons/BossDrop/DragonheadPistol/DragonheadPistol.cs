@@ -34,7 +34,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         // 最最最重要的物品基本属性部分
         public override void SetDefaults()
         {
-            item.damage = 50;
+            item.damage = 125;
             item.knockBack = 0.25f;
             item.rare = MyRareID.Tier1;
             item.useStyle = 5;
@@ -169,7 +169,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         public override void SetDefaults()
         {
             base.SetDefaults();
-            item.damage = 100;
+            item.damage = 275;
             item.rare = MyRareID.Tier2;
         }
         //public override void UseStyle(Player player, Rectangle rectangle)
@@ -248,7 +248,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         public override void SetDefaults()
         {
             base.SetDefaults();
-            item.damage = 200;
+            item.damage = 450;
             item.rare = MyRareID.Tier3;
         }
         public override void HoldItem(Player player)
@@ -516,7 +516,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             var rot = Main.rand.NextFloat(0, MathHelper.TwoPi);
             for (int n = 0; n < (int)projectile.ai[0]; n++)
             {
-                Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, (rot + n / projectile.ai[0] * MathHelper.TwoPi).ToRotationVector2() * 4f, ModContent.ProjectileType<DragonFireCloud>(), projectile.damage / 4, projectile.knockBack, projectile.owner, 0.95f);
+                Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, (rot + n / projectile.ai[0] * MathHelper.TwoPi).ToRotationVector2() * 4f, ModContent.ProjectileType<DragonFireCloud>(), projectile.damage, projectile.knockBack, projectile.owner, 0.95f);// / 4
             }
             SoundEngine.PlaySound(Terraria.ID.SoundID.Item74);
 

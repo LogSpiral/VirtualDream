@@ -139,7 +139,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         public override void SetDefaults()
         {
             base.SetDefaults();
-            item.damage = 500;
+            item.damage = 250;
             item.crit = 50;
             item.mana = 30;
             item.rare = MyRareID.Tier2;
@@ -199,7 +199,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n 你知道......什么叫自机狙吗？！(已经被万恶的阿汪削弱(?)了)\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯粹幻象赤色水晶凝聚跃动着的能量，充斥着整根法杖，又聚焦于一点\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//你知道......什么叫自机狙吗？！(已经被万恶的阿汪削弱(?)了)
             DisplayName.SetDefault("克鲁西斯法杖PH");
             //Item.staff[item.type] = true;
         }
@@ -211,7 +211,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         {
 
             base.SetDefaults();
-            item.damage = 800;
+            item.damage = 400;
             item.crit = 50;
             item.rare = MyRareID.Tier3;
             item.mana = 40;
@@ -344,7 +344,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                             if (proj.active && proj.type == ModContent.ProjectileType<KluexPlasmaBall>() && (int)proj.ai[0] == plasmaBallMax - plasmaBallCount)
                             {
                                 proj.ai[1] = 1;
-                                Projectile.NewProjectile(proj.GetSource_FromThis(), proj.Center, Vector2.Normalize(Main.MouseWorld - proj.Center) * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(Player.HeldItem), 6, Player.whoAmI, plasmaBallCount);
+
+                                var vec = (Main.MouseWorld - proj.Center).SafeNormalize(Vector2.UnitX);
+                                Projectile.NewProjectileDirect(proj.GetSource_FromThis(), proj.Center, vec * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(Player.HeldItem), 6, Player.whoAmI, plasmaBallCount).rotation = vec.ToRotation();
 
                                 count++;
                             }
@@ -420,6 +422,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                 return plasmaBallCount < 0 ? Projectile.ai[0] / UpgradeValue(15, 12, 9) : MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(60f, 48f, 36f), 0, 1);
             }
         }
+        public override bool Charged => Projectile.ai[1] == 0 ? plasmaBallCount == 0 && base.Charged : base.Charged;
         public T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
         {
             var type = Player.HeldItem.type;
@@ -498,7 +501,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D projectileTexture = TextureAssets.Projectile[projectile.type].Value;
-            if (projectile.timeLeft == 299) projectile.rotation = projectile.velocity.ToRotation();
+            //if (projectile.timeLeft == 299) projectile.rotation = projectile.velocity.ToRotation();
             for (int k = 1; k < projectile.oldPos.Length; k++)
             {
                 Main.spriteBatch.Draw(projectileTexture, projectile.oldPos[k] - Main.screenPosition + new Vector2(8, 8), projectileTexture.Frame(1, 4, 0, ((int)IllusionBoundMod.ModTime / 2 + k) % 4, 0), new Color(255 - 28 * k, 0, 0, 0), projectile.rotation, new Vector2(14, 8), 2f - 0.2f * k, SpriteEffects.None, 0f);

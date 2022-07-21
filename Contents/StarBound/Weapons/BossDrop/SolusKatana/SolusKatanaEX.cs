@@ -99,8 +99,8 @@
 //        public override void AddRecipes()
 //        {
 //            Recipe recipe1 = CreateRecipe();
-//            recipe1.AddIngredient(ModContent.ItemType<SolusKatana>());
-//            recipe1.AddIngredient(ModContent.ItemType<Others.AncientEssence>(), 3000);
+//            recipe1.AddIngredient<SolusKatana>();
+//            recipe1.AddIngredient<Materials.AncientEssence>(3000);
 //            recipe1.AddTile(TileID.LunarCraftingStation);
 //            recipe1.SetResult(this);
 //            recipe1.AddRecipe();
