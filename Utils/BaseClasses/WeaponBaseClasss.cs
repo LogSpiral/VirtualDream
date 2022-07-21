@@ -59,6 +59,7 @@ namespace VirtualDream.Utils.BaseClasses
             Player.itemAnimation = 2;
             Player.itemRotation = (float)Math.Atan2(Projectile.velocity.Y * Projectile.direction, Projectile.velocity.X * Projectile.direction);
             Player.SetCompositeArmFront(enabled: true, Player.CompositeArmStretchAmount.Full, Player.itemRotation - MathHelper.PiOver2 - (Player.direction == -1 ? MathHelper.Pi : 0));
+            Projectile.Center = Player.Center;
         }
         public override void AI()
         {

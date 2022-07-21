@@ -21,7 +21,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         public Item item => Item;
         public override void SetDefaults()
         {
-            item.damage = 150;
+            item.damage = 250;
             item.DamageType = DamageClass.Ranged;
             item.width = 22;
             item.height = 58;
@@ -192,7 +192,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         public override void SetDefaults()
         {
             base.SetDefaults();
-            item.damage = 350;
+            item.damage = 550;
             item.useTime = 21;
             item.useAnimation = 21;
             item.rare = MyRareID.Tier3;
@@ -221,9 +221,24 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             Projectile.timeLeft = 2;
             Projectile.velocity = Terraria.Utils.SafeNormalize(Main.MouseWorld - HeldCenter, Vector2.One);
             Projectile.rotation = Projectile.velocity.ToRotation();
-            var array = new Vector2[] { new Vector2(1, 2) };
-            array[0].X++;
+            Projectile.Center = Player.Center;
+
+            //代码 这事代码 = new 代码();
+            //这事代码.跑();
+            //new 花花().能跑就行();
         }
+        //public class 代码
+        //{
+        //    public virtual void 跑() { Console.WriteLine("跑不来"); }
+        //}
+        //public class 花花 : 代码 
+        //{
+        //    public void 能跑就行() { 跑(); }
+        //    public override void 跑()
+        //    {
+        //        Console.WriteLine("在跑了在跑了");
+        //    }
+        //}
         public override bool Charging => ((UseLeft && Player.controlUseItem) || (UseRight && Player.controlUseTile));
         public override void OnCharging(bool left, bool right)
         {
@@ -276,6 +291,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         }
         public override void PostDraw(Color lightColor)
         {
+            Main.spriteBatch.DrawLine(Player.Center, Projectile.Center, Color.Red, 4, false, -Main.screenPosition);
+
             //Main.NewText(lightColor);
             //if (Player.name == "Sans" && Factor > 0.5f && Player.controlUseTile)
             //{
@@ -410,12 +427,31 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             switch (type)
             {
                 case 1:
-                    var proj = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, projectile.type, projectile.damage, 8, projectile.owner, 7);
-                    proj.timeLeft = 35;
-                    proj.width = proj.width = 160;
-                    proj.penetrate = -1;
-                    proj.Center = projectile.Center;
-                    proj.rotation = projectile.rotation;
+                    //int rand = Main.rand.Next(6);
+                    for (int n = 0; n < 6; n++)
+                    {
+                        var unit = (MathHelper.TwoPi / 6 * n + projectile.rotation).ToRotationVector2();
+                        var proj = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, unit, projectile.type, projectile.damage, 8, projectile.owner, 7);
+                        proj.timeLeft = 21;
+                        proj.width = proj.width = 160;
+                        proj.penetrate = -1;
+                        proj.Center = projectile.Center + projectile.velocity;
+                        proj.rotation = MathHelper.TwoPi / 6 * n + projectile.rotation;
+                    }
+                    for (int num431 = 4; num431 < 31; num431++)
+                    {
+                        float num432 = projectile.oldVelocity.X * (30f / (float)num431);
+                        float num433 = projectile.oldVelocity.Y * (30f / (float)num431);
+                        for (int n = 0; n < 4; n++)
+                        {
+                            int num434 = Dust.NewDust(new Vector2(projectile.oldPosition.X - num432, projectile.oldPosition.Y - num433) + Main.rand.NextVector2Unit() * Main.rand.NextFloat(4) + projectile.velocity, 8, 8, MyDustId.Fire, projectile.oldVelocity.X, projectile.oldVelocity.Y, 100, Color.Orange, 1.2f);
+                            Main.dust[num434].noGravity = true;
+                            Dust dust = Main.dust[num434];
+                            dust.velocity = projectile.velocity;
+                            dust.velocity *= 0.5f;
+                        }
+
+                    }
                     SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
                     break;
                 case 2:
@@ -473,21 +509,20 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             //Main.EntitySpriteDraw(TextureAssets.Projectile[612].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(26), 1f, 0, 0);
             if ((int)projectile.ai[0] == 7)
             {
-                var fac = 1 - projectile.timeLeft / 35f;
-                fac = fac.HillFactor2(1);
+                var fac = 1 - projectile.timeLeft / 21f;
+                //fac = fac.HillFactor2(1);
                 //Main.EntitySpriteDraw(TextureAssets.Projectile[612].Value, projectile.Center - Main.screenPosition, new Rectangle(0, 208 - projectile.timeLeft / 2 * 52, 52, 52), Color.White * .5f * fac, projectile.rotation, new Vector2(26), new Vector2(1, 2) * 2, 0, 0);//new Rectangle(0, projectile.timeLeft / 2, 52, 52)
                 //if(!TextureAssets.Projectile[687].IsLoaded)
                 //Main.instance.LoadProjectile(687);
-                Main.EntitySpriteDraw(IllusionBoundMod.GetTexture(Texture.Replace("CrossBowArrow", "ExplosionEffect"),false), projectile.Center - Main.screenPosition, new Rectangle(0, 588 - projectile.timeLeft / 5 * 98, 98, 98), Color.White * fac, projectile.rotation, new Vector2(49), 2f, 0, 0);//new Rectangle(0, projectile.timeLeft / 2, 52, 52)
-    
+                Main.EntitySpriteDraw(IllusionBoundMod.GetTexture(Texture.Replace("CrossBowArrow", "ExplosionEffect"), false), projectile.Center - Main.screenPosition, new Rectangle(0, 588 - projectile.timeLeft / 3 * 98, 98, 98), new Color(255, 255, 255, 0) * fac.HillFactor2(1), projectile.rotation, new Vector2(49), 2f * fac, 0, 0);//new Rectangle(0, projectile.timeLeft / 2, 52, 52)
+
                 //Main.NewText("yeeeeee");
-             }
+            }
             else
             {
                 Texture2D texture2D = (int)projectile.ai[1] == 1 ? TextureAssets.Projectile[projectile.type].Value : IllusionBoundMod.GetTexture(Texture + "_Origin", false);
                 Main.EntitySpriteDraw(texture2D, projectile.Center - Main.screenPosition, texture2D.Frame((int)projectile.ai[1] == 1 ? 1 : 2, 7, (int)projectile.ai[1] == 1 ? 0 : ((int)IllusionBoundMod.ModTime / 2 % 2), (int)projectile.ai[0]), (int)projectile.ai[0] == 2 || (int)projectile.ai[0] == 3 ? Color.White : lightColor, projectile.rotation, texture2D.Size() * .5f / new Vector2((int)projectile.ai[1] == 1 ? 1 : 2, 7), 1f, 0, 0);
             }
-
             return false;
         }
 
@@ -502,7 +537,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             }
             if (type == 1) Projectile.Kill();
             else
-                target.immune[projectile.owner] = 5;
+                target.immune[projectile.owner] = 2;
             if (type == 7) projectile.frameCounter++;
 
             switch (type)
