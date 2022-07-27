@@ -275,9 +275,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                 return MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(30f, 24f, 16f), 0, 1);
             }
         }
+        public override void OnSpawn(IEntitySource source)
+        {
+            if (source is EntitySource_ItemUse_WithAmmo itemSource)
+            {
+                sourceItemType = itemSource.Item.type;
+            }
+        }
+        public int sourceItemType;
         public T UpgradeValue<T>(T normal, T extra, T defaultValue = default)
         {
-            var type = Player.HeldItem.type;
+            var type = sourceItemType;//Player.HeldItem.type
             if (type == ModContent.ItemType<AdaptableCrossbow>())
             {
                 return normal;

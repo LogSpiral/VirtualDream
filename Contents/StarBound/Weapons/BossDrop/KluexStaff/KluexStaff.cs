@@ -7,6 +7,7 @@ using VirtualDream.Utils.BaseClasses;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Terraria.DataStructures;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
 {
@@ -346,7 +347,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                                 proj.ai[1] = 1;
 
                                 var vec = (Main.MouseWorld - proj.Center).SafeNormalize(Vector2.UnitX);
-                                Projectile.NewProjectileDirect(proj.GetSource_FromThis(), proj.Center, vec * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(Player.HeldItem), 6, Player.whoAmI, plasmaBallCount).rotation = vec.ToRotation();
+                                Projectile.NewProjectileDirect(proj.GetSource_FromThis(), proj.Center, vec * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(sourceItem), 6, Player.whoAmI, plasmaBallCount).rotation = vec.ToRotation();
 
                                 count++;
                             }
@@ -408,7 +409,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                         if (proj.active && proj.type == ModContent.ProjectileType<KluexPlasmaBall>())
                         {
                             proj.ai[1] = 1;
-                            Projectile.NewProjectile(proj.GetSource_FromThis(), proj.Center, Vector2.Normalize(Main.MouseWorld - proj.Center) * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(Player.HeldItem), 6, Player.whoAmI, plasmaBallCount);
+                            Projectile.NewProjectile(proj.GetSource_FromThis(), proj.Center, Vector2.Normalize(Main.MouseWorld - proj.Center) * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(sourceItem), 6, Player.whoAmI, plasmaBallCount);
 
                         }
                     }
@@ -423,9 +424,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             }
         }
         public override bool Charged => Projectile.ai[1] == 0 ? plasmaBallCount == 0 && base.Charged : base.Charged;
+        public override void OnSpawn(IEntitySource source)
+        {
+            if (source is EntitySource_ItemUse_WithAmmo itemSource)
+            {
+                sourceItem = itemSource.Item;
+            }
+        }
+        public Item sourceItem;
         public T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
         {
-            var type = Player.HeldItem.type;
+            var type = sourceItem.type;//sourceItem.type
             if (type == ModContent.ItemType<KluexStaff>()) return normal;
             if (type == ModContent.ItemType<KluexStaffEX>()) return extra;
             if (type == ModContent.ItemType<KluexStaffPH>()) return ultra;

@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Terraria.DataStructures;
 using Terraria.ID;
 
 using VirtualDream.Utils.BaseClasses;
@@ -185,9 +185,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             }
         }
         public override Rectangle? frame => projTex.Frame(3, 1, UpgradeValue(0, 1, 2));
+        public override void OnSpawn(IEntitySource source)
+        {
+            if (source is EntitySource_ItemUse_WithAmmo itemSource)
+            {
+                sourceItemType = itemSource.Item.type;
+            }
+        }
+        public int sourceItemType;
         public T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
         {
-            var type = Player.HeldItem.type;
+            var type = sourceItemType;//Player.HeldItem.type
             if (type == ModContent.ItemType<IxodoomClaw>())
             {
                 return normal;

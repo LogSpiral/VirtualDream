@@ -283,9 +283,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
     public class SolusKatanaProj : VertexHammerProj
     {
         public override string HammerName => base.HammerName;
-        public override float MaxTime 
+        public override float MaxTime
         {
-            get 
+            get
             {
                 if (controlState == 1 && projectile.ai[1] > 0) return UpgradeValue(6, 5, 4);
                 return Charging && projectile.ai[1] == 0 && controlState == 1 ? (UpgradeValue(MathHelper.Clamp(16 - counter / 5, 10, 16), MathHelper.Clamp(13 - counter / 4, 8, 13), MathHelper.Clamp(10 - counter / 3, 5, 10))) : UpgradeValue(30, 25, 20);
@@ -509,7 +509,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             if (Player.velocity.Y == 0) Player.velocity.X *= 0.975f;
             if (left)//|| (!left && charged && projectile.ai[1] > MaxTimeLeft * factor - 1)
             {
-                if (projectile.frame == 0) 
+                if (projectile.frame == 0)
                 {
                     projectile.frame = (int)MathHelper.Clamp((counter - (int)Projectile.ai[1]) / UpgradeValue(3, 2, 1), UpgradeValue(2, 3, 4), UpgradeValue(5, 7, 9));
                     //Main.NewText(counter);
@@ -555,7 +555,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 {
                     Main.NewText(timeCount % MaxTime == 0);
                 }
-                if (!CurrentSwoosh.Active && Projectile.ai[1] >= projectile.frame) { projectile.Kill();}
+                if (!CurrentSwoosh.Active && Projectile.ai[1] >= projectile.frame) { projectile.Kill(); }
                 return;
             }
             //else 
@@ -651,7 +651,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 {
                     float factor = i / (count - 1f);
                     Vector2 finalVec = Vector2.Normalize(Main.MouseWorld - projCenter).RotatedBy(factor.Lerp(-MathHelper.Pi / 6, MathHelper.Pi / 6)) * 72f;
-                    Projectile.NewProjectile(projectile.GetSource_FromThis(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(Player.HeldItem), projectile.knockBack, projectile.owner);
+                    Projectile.NewProjectile(projectile.GetSource_FromThis(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(sourceItem), projectile.knockBack, projectile.owner);
                 }
                 SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
             }
@@ -726,9 +726,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             //Dust.NewDustPerfect(target.Center, MyDustId.Fire, (Rotation + MathHelper.PiOver2 * (counter % 2 == 0 ? 1 : -1)).ToRotationVector2());
         }
         public override Rectangle? frame => projTex.Frame(3, 1, UpgradeValue(0, 1, 2));
+        public override void OnSpawn(IEntitySource source)
+        {
+            if (source is EntitySource_ItemUse_WithAmmo itemSource)
+            {
+                sourceItem = itemSource.Item;
+            }
+        }
+        public Item sourceItem;
         public T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
         {
-            var type = Player.HeldItem.type;
+            var type = sourceItem.type;//Player.HeldItem.type
             if (type == ModContent.ItemType<SolusKatana>())
             {
                 return normal;

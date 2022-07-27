@@ -371,9 +371,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         //BossDropWeaponProj<ErchiusEye, ErchiusEyeEX, ErchiusEyeDL>
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * 6;//Main.MouseWorld - Player.Center
         public override bool UseRight => true;
+        public override void OnSpawn(IEntitySource source)
+        {
+            if (source is EntitySource_ItemUse_WithAmmo itemSource)
+            {
+                sourceItemType = itemSource.Item.type;
+            }
+        }
+        public int sourceItemType;
         public T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
         {
-            var type = Player.HeldItem.type;
+            var type = sourceItemType;//Player.HeldItem.type
             if (type == ModContent.ItemType<MiniknogLauncher>())
             {
                 return normal;
