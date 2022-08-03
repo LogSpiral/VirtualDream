@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria.DataStructures;
 using Terraria.ID;
 
@@ -69,6 +70,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
     }
     public class OculusReaverProj : VertexHammerProj
     {
+        public static void ShootSharpTears(Vector2 targetPos, Player player, Projectile projectile)
+        {
+            player.LimitPointToPlayerReachableArea(ref targetPos);
+            Vector2 vector22 = targetPos + Main.rand.NextVector2Circular(8f, 8f);
+            Vector2 value7 = player.FindSharpTearsSpot(vector22).ToWorldCoordinates(Main.rand.Next(17), Main.rand.Next(17));
+            if ((player.Center - value7).Length() < 48) value7 = targetPos;
+            Vector2 vector23 = (vector22 - value7).SafeNormalize(-Vector2.UnitY) * 16f;
+            Projectile.NewProjectile(projectile.GetSource_FromThis(), value7.X, value7.Y, vector23.X, vector23.Y, ProjectileID.SharpTears, projectile.damage / 12, projectile.knockBack, player.whoAmI, 0f, Main.rand.NextFloat() * 0.5f + 0.5f);
+        }
         public override string HammerName => base.HammerName;
         public override float MaxTime => (controlState == 2 ? 2f : 1f) * UpgradeValue(12, 9);
         public override float factor => base.factor;
@@ -108,17 +118,25 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
         }
         public override void OnRelease(bool charged, bool left)
         {
-            if (Charged && left)
+            if (Charged)
             {
-                int max = UpgradeValue(2, 5);
-                for (int n = 0; n < max; n++) 
+                if (left)
                 {
-                    Vector2 pointPoisition2 = Player.Center + new Vector2(128 * Player.direction, 0) * ((projectile.ai[1] + (float)n / max) / MaxTimeLeft) * max;
-                    Player.LimitPointToPlayerReachableArea(ref pointPoisition2);
-                    Vector2 vector22 = pointPoisition2 + Main.rand.NextVector2Circular(8f, 8f);
-                    Vector2 value7 = Player.FindSharpTearsSpot(vector22).ToWorldCoordinates(Main.rand.Next(17), Main.rand.Next(17));
-                    Vector2 vector23 = (vector22 - value7).SafeNormalize(-Vector2.UnitY) * 16f;
-                    Projectile.NewProjectile(projectile.GetSource_FromThis(), value7.X, value7.Y, vector23.X, vector23.Y, 756, projectile.damage / 3, projectile.knockBack, Player.whoAmI, 0f, Main.rand.NextFloat() * 0.5f + 0.5f);
+                    int max = UpgradeValue(2, 5);
+                    for (int n = 0; n < max; n++)
+                    {
+                        Vector2 pointPoisition2 = Player.Center + new Vector2(128 * Player.direction, 0) * ((projectile.ai[1] + (float)n / max) / MaxTimeLeft) * max;
+                        ShootSharpTears(pointPoisition2, Player, projectile);
+                    }
+                }
+                else
+                {
+                    if ((int)projectile.ai[1] == 1)
+                    {
+                        Player.Teleport(Main.MouseWorld, 1);
+                        SoundEngine.PlaySound(SoundID.Item60, projectile.position);
+                        Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), Player.Center, default, ModContent.ProjectileType<OculusReaverTear>(), projectile.damage, projectile.knockBack, projectile.owner, 0, UpgradeValue(2, 3)).rotation = projectile.rotation;// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
+                    }
                 }
 
             }
@@ -149,6 +167,116 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             }
 
             return defaultValue;
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            base.PreDraw(ref lightColor);
+            var tex = ModContent.Request<Texture2D>(Texture + "_Lid").Value;
+            var f = (float)Math.Sin(IllusionBoundMod.ModTime / 60f * MathHelper.Pi) * 10 - 6.0001f;
+            var cen = projCenter + new Vector2(26).RotatedBy(Rotation - MathHelper.PiOver2);
+            var vec = Main.MouseWorld - cen;
+            var _s = 1 - 1 / (vec.Length() / 32 + 1);
+            Main.spriteBatch.Draw(ModContent.Request<Texture2D>(Texture.Replace("OculusReaverProj", "pupil")).Value, cen - Main.screenPosition + vec.SafeNormalize(default) * _s * 4, null, Color.White, 0, new Vector2(2), 2f * (1.5f - _s * .5f), 0, 0);
+            //Main.spriteBatch.DrawHammer(this, tex, lightColor, tex.Frame(1, 4, 0, f > 0 ? (int)f : 0));
+            return false;
+        }
+    }
+    public class OculusReaverTear : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("裂空之眼");
+        }
+        Projectile projectile => Projectile;
+        Player Player => Main.player[projectile.owner];
+        public override bool PreDraw(ref Color lightColor)
+        {
+
+            //var fac = projectile.ai[0].SymmetricalFactor(90, 10);
+            //var render = IllusionBoundMod.Instance.render;
+            //var gd = Main.graphics.GraphicsDevice;
+            //var sb = Main.spriteBatch;
+            ////先在自己的render上画这个弹幕
+            //sb.End();
+            //gd.SetRenderTarget(render);
+            //gd.Clear(Color.Transparent);
+            //sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+            //IllusionBoundMod.TransformEffect.Parameters["factor1"].SetValue(fac);
+            //IllusionBoundMod.TransformEffect.CurrentTechnique.Passes[0].Apply();
+            //sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(512), (state == 3 ? 2f : 1.5f) * 46 / 512, 0, 0);//new Rectangle(240,240,92,92)
+            //sb.End();
+            ////然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
+            ////原版自带的screenTargetSwap就是一个可以使用的render，（原版用来连续上滤镜）
+            //gd.SetRenderTarget(Main.screenTargetSwap);
+            //gd.Clear(Color.Transparent);
+            //sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
+            //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3");//StarSky_0
+            //IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
+            //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+            //                                                             //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
+            //IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.1f);
+            //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.15f);
+            //IllusionBoundMod.Distort.Parameters["position"].SetValue(Main.player[projectile.owner].Center + projectile.rotation.ToRotationVector2() * (float)IllusionBoundMod.ModTime * 8);
+            //IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(Color.Cyan.ToVector4());
+            ////IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
+            ////Main.NewText("!!!");
+            //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)
+
+            //sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
+            //sb.End();
+
+            ////最后在screenTarget上把刚刚的结果画上
+            //gd.SetRenderTarget(Main.screenTarget);
+            //gd.Clear(Color.Transparent);
+            //sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            //sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+            return false;
+        }
+        public override void SetDefaults()
+        {
+            projectile.width = 90;
+            projectile.height = 90;
+            projectile.DamageType = DamageClass.Melee;
+            projectile.friendly = true;
+            projectile.timeLeft = 180;
+            projectile.aiStyle = -1;
+            projectile.ignoreWater = true;
+            projectile.penetrate = -1;
+            projectile.tileCollide = false;
+
+        }
+        public override bool ShouldUpdatePosition() => false;
+        int state => (int)projectile.ai[1];
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.immune[projectile.owner] = 10;
+        }
+        public override void AI()
+        {
+            projectile.ai[0]++;
+            if ((int)projectile.ai[0] % (state == 3 ? 10 : 20) == 0)
+            {
+                int n = 0;
+                foreach (var target in Main.npc)
+                {
+                    var length = (target.Center - projectile.Center).Length();
+                    if (target.active && !target.friendly && target.chaseable && !target.dontTakeDamage && length < (state == 2 ? 1024 : 768) && Main.rand.NextFloat(0, length * length / 128) < length)
+                    {
+                        n++;
+                        //var rand = Main.rand.NextFloat(0, MathHelper.TwoPi);
+                        //var p = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), default, default, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, 0, state - 2);
+                        //p.rotation = rand;
+                        //p.frame = target.whoAmI + 1;
+                        //p.height = p.width = 20;
+                        //p.Center = target.Center - rand.ToRotationVector2() * (state == 3 ? 192 : 128);
+                        //p.localAI[0] = Main.rand.NextFloat(0, 1);
+                        OculusReaverProj.ShootSharpTears(target.Center, Player, projectile);
+
+                    }
+                    if (n > (state == 3 ? 8 : 5)) break;
+                }
+            }
+            if (projectile.ai[0] > 300) projectile.Kill();
         }
     }
 }

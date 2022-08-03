@@ -31,7 +31,8 @@ using Terraria.Localization;
 //using VirtualDream.UI.Spectre;
 //using VirtualDream.UI;
 using Terraria.UI;
-
+using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
+using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver;
 using VirtualDream.Effects;
 
 using static Terraria.ModLoader.ModContent;
@@ -260,6 +261,7 @@ namespace VirtualDream
             //On.Terraria.Utilities.UnifiedRandom.Next_int_int += UnifiedRandom_Next_int_int;
             //IL.Terraria.Main.DrawTiles += _DrawTreeHook;
             On.Terraria.Graphics.Effects.FilterManager.EndCapture += FilterManager_EndCapture_IllusionBound;
+            On.Terraria.Main.DrawProjectiles += Main_DrawProjectiles_VirtualDream;
             Main.OnResolutionChanged += Main_OnResolutionChanged;
             Main.RunOnMainThread(CreateRender);
             //originSun = Main.sunTexture;
@@ -276,11 +278,433 @@ namespace VirtualDream
             //On.Terraria.Main.DrawPlayer += WeaponDisplayDrawPlayer;
         }
 
+        private void Main_DrawProjectiles_VirtualDream(On.Terraria.Main.orig_DrawProjectiles orig, Main self)
+        {
+            orig.Invoke(self);
+            if (!(Lighting.Mode == Terraria.Graphics.Light.LightMode.Retro || Lighting.Mode == Terraria.Graphics.Light.LightMode.Trippy)) return;
+            List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+            List<int> indexer = new List<int>();
+            Player player = null;
+            List<Projectile> oculusTears = new List<Projectile>();
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            #region 遍历查找
+            foreach (var proj in Main.projectile)
+            {
+                if (proj.active && proj.ModProjectile != null && proj.ModProjectile is SolusEnergyShard shard)
+                {
+                    foreach (var swoosh in shard.swooshes)
+                    {
+                        if (swoosh != null && swoosh.Active)
+                        {
+                            for (int i = 0; i < 25; i++)
+                            {
+                                var f = i / 24f;
+                                var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
+                                float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
+                                if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
+                                var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f;
+                                Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
+                                var realColor = Color.Lerp(Color.White, Color.Orange, f);
+                                realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
+                                bars.Add(new CustomVertexInfo(swoosh.center + newVec, realColor, new Vector3(1 - f, 1, 0.6f)));
+                                realColor.A = 0;
+                                bars.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
+                            }
+                            indexer.Add(bars.Count - 2);
+                            player = shard.Player;
+                        }
+                    }
+                }
+                if (proj.active && proj.type == ProjectileType<OculusReaverTear>()) oculusTears.Add(proj);
+            }
+            #endregion
+            #region 日炎刀合批
+            if (bars.Count > 2)
+            {
+                var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+                var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+                RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+                var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
+
+                SamplerState sampler = SamplerState.LinearClamp;
+                CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];//
+                for (int i = 0; i < bars.Count - 2; i += 2)
+                {
+                    if (indexer.ToArray().ContainsValue(i)) continue;
+                    var k = i / 2;
+                    if (6 * k < triangleList.Length)
+                    {
+                        triangleList[6 * k] = bars[i];
+                        triangleList[6 * k + 1] = bars[i + 2];
+                        triangleList[6 * k + 2] = bars[i + 1];
+                    }
+                    if (6 * k + 3 < triangleList.Length)
+                    {
+                        triangleList[6 * k + 3] = bars[i + 1];
+                        triangleList[6 * k + 4] = bars[i + 2];
+                        triangleList[6 * k + 5] = bars[i + 3];
+                    }
+                }
+                //GraphicsDevice gd = Main.instance.GraphicsDevice;
+                //RenderTarget2D render = IllusionBoundMod.Instance.render;
+                //SpriteBatch spriteBatch = Main.spriteBatch;
+                //spriteBatch.End();
+                //gd.SetRenderTarget(render);
+                //gd.Clear(Color.Transparent);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection * trans);
+                IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
+                IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
+                IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
+                IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
+                IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(true);
+                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/BaseTex_7");
+                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/AniTex");
+                Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[player.HeldItem.type].Value;
+                Main.graphics.GraphicsDevice.Textures[3] = IllusionBoundMod.HeatMap[24];
+
+                Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
+                Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
+                Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
+                Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
+
+                IllusionBoundMod.ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
+                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
+                Main.graphics.GraphicsDevice.RasterizerState = originalState;
+                spriteBatch.End();
+                //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+
+                //IllusionBoundMod.Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+                //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
+
+                //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
+                //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.05f);
+                //for (int n = 0; n < 1; n++)
+                //{
+                //    gd.SetRenderTarget(Main.screenTargetSwap);
+                //    gd.Clear(Color.Transparent);
+                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[7].Apply();
+                //    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+
+
+
+                //    gd.SetRenderTarget(Main.screenTarget);
+                //    gd.Clear(Color.Transparent);
+                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[6].Apply();
+                //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                //}
+                //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
+                //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(0.707f));//projectile.rotation.ToRotationVector2() * -0.006f
+                //for (int n = 0; n < 1; n++)
+                //{
+                //    gd.SetRenderTarget(Main.screenTargetSwap);
+                //    gd.Clear(Color.Transparent);
+                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[5].Apply();
+                //    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+
+                //    gd.SetRenderTarget(Main.screenTarget);
+                //    gd.Clear(Color.Transparent);
+                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[4].Apply();
+                //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                //}
+
+                //spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                //spriteBatch.Draw(render, Vector2.Zero, Color.White);
+                //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);
+            }
+            #endregion
+
+            if (oculusTears.Count > 0)
+            {
+                var sb = Main.spriteBatch;
+                //先在自己的render上画这个弹幕
+                sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                foreach (var projectile in oculusTears)
+                {
+                    var fac = projectile.ai[0].SymmetricalFactor(90, 10) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f);
+                    //var fac = projectile.ai[0].HillFactor2(180);
+                    IllusionBoundMod.TransformEffect.Parameters["factor1"].SetValue(fac);
+                    IllusionBoundMod.TransformEffect.Parameters["factor2"].SetValue((float)ModTime / 30f);
+                    IllusionBoundMod.TransformEffect.CurrentTechnique.Passes[0].Apply();
+                    sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, new Color(1, 0, 0.25f), projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512, 0, 0);//new Rectangle(240,240,92,92)
+                }
+                sb.End();
+
+            }
+        }
+
         private void FilterManager_EndCapture_IllusionBound(On.Terraria.Graphics.Effects.FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
         {
             GraphicsDevice gd = Main.instance.GraphicsDevice;
-            if (bloomValue > 0)
-                UseBloom(gd);
+            if ((Lighting.Mode == Terraria.Graphics.Light.LightMode.White || Lighting.Mode == Terraria.Graphics.Light.LightMode.Color))
+            {
+                if (!Main.drawToScreen)
+                {
+                    List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+                    List<int> indexer = new List<int>();
+                    Player player = null;
+                    List<Projectile> oculusTears = new List<Projectile>();
+
+                    #region 遍历查找
+                    foreach (var proj in Main.projectile)
+                    {
+                        if (proj.active && proj.ModProjectile != null && proj.ModProjectile is SolusEnergyShard shard)
+                        {
+
+                            foreach (var swoosh in shard.swooshes)
+                            {
+                                if (swoosh != null && swoosh.Active)
+                                {
+                                    for (int i = 0; i < 45; i++)
+                                    {
+                                        var f = i / 44f;
+                                        var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
+                                        float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
+                                        if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
+                                        var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f;
+                                        Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
+                                        var realColor = Color.Lerp(Color.White, Color.Orange, f);
+                                        realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
+                                        bars.Add(new CustomVertexInfo(swoosh.center + newVec, realColor, new Vector3(1 - f, 1, 0.6f)));
+                                        realColor.A = 0;
+                                        bars.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
+                                    }
+                                    indexer.Add(bars.Count - 2);
+                                    player = shard.Player;
+                                }
+                            }
+                        }
+                        if (proj.active && proj.type == ProjectileType<OculusReaverTear>()) oculusTears.Add(proj);
+                    }
+                    #endregion
+                    if (bars.Count > 2 || oculusTears.Count > 0)
+                    {
+                        SpriteBatch spriteBatch = Main.spriteBatch;
+                        var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+                        var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+                        var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
+                        var resultMatrix = model * projection * trans;
+                        #region 日炎刀合批
+                        if (bars.Count > 2)
+                        {
+
+                            RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+
+                            SamplerState sampler = SamplerState.LinearClamp;
+                            CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];//
+                            for (int i = 0; i < bars.Count - 2; i += 2)
+                            {
+                                if (indexer.ToArray().ContainsValue(i)) continue;
+                                var k = i / 2;
+                                if (6 * k < triangleList.Length)
+                                {
+                                    triangleList[6 * k] = bars[i];
+                                    triangleList[6 * k + 1] = bars[i + 2];
+                                    triangleList[6 * k + 2] = bars[i + 1];
+                                }
+                                if (6 * k + 3 < triangleList.Length)
+                                {
+                                    triangleList[6 * k + 3] = bars[i + 1];
+                                    triangleList[6 * k + 4] = bars[i + 2];
+                                    triangleList[6 * k + 5] = bars[i + 3];
+                                }
+                            }
+                            //GraphicsDevice gd = Main.instance.GraphicsDevice;
+                            RenderTarget2D render = IllusionBoundMod.Instance.render;
+                            //SpriteBatch spriteBatch = Main.spriteBatch;
+                            //spriteBatch.End();
+                            gd.SetRenderTarget(render);
+                            gd.Clear(Color.Transparent);
+                            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                            IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(resultMatrix);
+                            IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
+                            IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
+                            IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
+                            IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
+                            IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(true);
+                            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/BaseTex_7");
+                            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/AniTex");
+                            Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[player.HeldItem.type].Value;
+                            Main.graphics.GraphicsDevice.Textures[3] = IllusionBoundMod.HeatMap[24];
+
+                            Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
+                            Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
+                            Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
+                            Main.graphics.GraphicsDevice.SamplerStates[3] = sampler;
+
+                            IllusionBoundMod.ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
+                            Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
+                            Main.graphics.GraphicsDevice.RasterizerState = originalState;
+                            spriteBatch.End();
+                            //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+
+                            IllusionBoundMod.Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+                            IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
+
+                            IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 3f));
+                            IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.2f);
+                            for (int n = 0; n < 3; n++)
+                            {
+                                gd.SetRenderTarget(Main.screenTargetSwap);
+                                gd.Clear(Color.Transparent);
+                                IllusionBoundMod.Distort.CurrentTechnique.Passes[7].Apply();
+                                spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+
+
+
+                                gd.SetRenderTarget(Main.screenTarget);
+                                gd.Clear(Color.Transparent);
+                                IllusionBoundMod.Distort.CurrentTechnique.Passes[6].Apply();
+                                spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                            }
+                            IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 5f));
+                            IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(0.707f) * -0.006f);//projectile.rotation.ToRotationVector2() * -0.006f
+
+
+                            for (int n = 0; n < 2; n++)
+                            {
+                                gd.SetRenderTarget(Main.screenTargetSwap);
+                                gd.Clear(Color.Transparent);
+                                IllusionBoundMod.Distort.CurrentTechnique.Passes[5].Apply();
+                                spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+
+                                gd.SetRenderTarget(Main.screenTarget);
+                                gd.Clear(Color.Transparent);
+                                IllusionBoundMod.Distort.CurrentTechnique.Passes[4].Apply();
+                                spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                            }
+
+                            spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                            spriteBatch.Draw(render, Vector2.Zero, Color.White);
+                            spriteBatch.End();
+                            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);
+                        }
+                        #endregion
+                        if (oculusTears.Count > 0)
+                        {
+
+
+                            var sb = Main.spriteBatch;
+                            #region Render
+                            var render = IllusionBoundMod.Instance.render;
+                            //var gd = Main.graphics.GraphicsDevice;
+                            //先在自己的render上画这个弹幕
+                            //sb.End();
+                            gd.SetRenderTarget(render);
+                            gd.Clear(Color.Transparent);
+                            #endregion
+                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);
+                            /*                    sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);*///Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                            foreach (var projectile in oculusTears)
+                            {
+                                //var fac = projectile.ai[0].SymmetricalFactor(90, 10) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f);
+                                ////var fac = projectile.ai[0].HillFactor2(180);
+                                //IllusionBoundMod.TransformEffect.Parameters["factor1"].SetValue(fac);
+                                var fac = projectile.ai[0];
+                                fac = fac < 30 ? ((fac * fac * 0.02022f - fac * 0.606f + 5) * (1 - 0.03f * fac)) : ((-90 / (fac - 181f) * 1.25f) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f * (fac - 30).SymmetricalFactor(75, 15)));
+                                if(fac < 0)
+                                Main.NewText((fac,projectile.ai[0]));
+                                IllusionBoundMod.TransformEffect.Parameters["factor1"].SetValue(fac);
+                                IllusionBoundMod.TransformEffect.Parameters["factor2"].SetValue((float)ModTime / 30f);
+                                IllusionBoundMod.TransformEffect.CurrentTechnique.Passes[1].Apply();
+
+                                //Main.graphics.GraphicsDevice.Textures[0] = TextureAssets.Projectile[projectile.type].Value;
+                                //Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicWrap;
+                                //IllusionBoundMod.TransformEffect.CurrentTechnique.Passes[0].Apply();
+                                //CustomVertexInfo[] customVertexInfos = new CustomVertexInfo[6];
+                                //var baseVec = new Vector2((int)projectile.ai[0] == 3 ? 92f : 69f).RotatedBy(projectile.rotation);
+                                //var offsetTime = (float)ModTime / 60f;
+                                //customVertexInfos[0] = new CustomVertexInfo(projectile.Center + baseVec - Main.screenPosition, new Vector3(1, 1, 1));
+                                //customVertexInfos[1] = new CustomVertexInfo(projectile.Center + new Vector2(baseVec.Y, -baseVec.X) - Main.screenPosition, new Vector3(0, 1, 1));
+                                //customVertexInfos[2] = new CustomVertexInfo(projectile.Center + new Vector2(-baseVec.Y, baseVec.X) - Main.screenPosition, new Vector3(1, 0, 1));
+                                //customVertexInfos[3] = customVertexInfos[2];
+                                //customVertexInfos[4] = customVertexInfos[1];
+                                //customVertexInfos[5] = new CustomVertexInfo(projectile.Center - baseVec - Main.screenPosition, new Vector3(0, 0, 1));
+                                //Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, customVertexInfos, 0, 2);
+                                sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512 * new Vector2(3, 1), 0, 0);//new Rectangle(240,240,92,92)
+                            }
+
+                            sb.End();
+                            #region render
+                            //然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
+                            //原版自带的screenTargetSwap就是一个可以使用的render，（原版用来连续上滤镜）
+                            gd.SetRenderTarget(Main.screenTargetSwap);
+                            gd.Clear(Color.Transparent);
+                            sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
+                            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
+                            IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
+                            IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+                                                                                         //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
+                            IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.35f);
+                            IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
+                            IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.30f);
+                            IllusionBoundMod.Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8);
+                            IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(new Vector4(1, 0, 0.25f, 1));//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
+                                                                                                                       //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
+                                                                                                                       //Main.NewText("!!!");
+                            IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
+
+                            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
+
+                            sb.End();
+
+                            //最后在screenTarget上把刚刚的结果画上
+                            gd.SetRenderTarget(Main.screenTarget);
+                            gd.Clear(Color.Transparent);
+                            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                            sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                            sb.End();
+                            #endregion
+
+                        }
+                    }
+                }
+
+                if (bloomValue > 0)
+                    UseBloom(gd);
+
+                #region Render
+                //var gd = Main.graphics.GraphicsDevice;
+                //先在自己的render上画这个弹幕
+                //sb.End();
+                //gd.SetRenderTarget(render);
+                //gd.Clear(Color.Transparent);
+                #endregion
+                //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);
+                //Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                //Main.spriteBatch.End();
+                #region render
+                ////然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
+                ////原版自带的screenTargetSwap就是一个可以使用的render，（原版用来连续上滤镜）
+                //gd.SetRenderTarget(Main.screenTargetSwap);
+                //gd.Clear(Color.Transparent);
+                //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
+                //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
+                //IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
+                //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+                //                                                             //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
+                //IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.35f);
+                //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
+                //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.30f);
+                //IllusionBoundMod.Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8);
+                //IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(Color.Cyan.ToVector4());//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
+                //                                                                                      //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
+                //                                                                                      //Main.NewText("!!!");
+                //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(960, 560));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
+
+                //Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
+                //Main.spriteBatch.End();
+
+                ////最后在screenTarget上把刚刚的结果画上
+                //gd.SetRenderTarget(Main.screenTarget);
+                //gd.Clear(Color.Transparent);
+                //Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                //Main.spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                //Main.spriteBatch.End();
+                #endregion
+            }
             orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
         }
         public override void Unload()
@@ -661,7 +1085,12 @@ namespace VirtualDream
             //new AutumnBar();
             //new WinterBar();
             //new SoilBar();
-
+            //for (int n = 0; n < 180; n++)
+            //{
+            //    var fac = (float)n;
+            //    fac = fac < 30 ? ((fac * fac / 45f - fac * 0.666667f + 5) * (1 - 0.03f * fac)) : (0.625f * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f * (fac - 30f).SymmetricalFactor(75, 15)));
+            //    Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Vector2(960, 600) + new Vector2(n - 90, 300 - fac * 128), new Rectangle(0, 0, 1, 1), Color.Cyan, 0, new Vector2(0.5f), 4, 0, 0);
+            //}
             if (Contents.InfiniteNightmare.InfiniteNightmarePlayer.TooDarkBuffActive)
             {
                 Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/InfiniteNightmare/Dark"), new Vector2(0, 0), null, new Color(153, 153, 153, 153), 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
@@ -708,7 +1137,7 @@ namespace VirtualDream
         public float rotation;
         public float size;
         public bool Active => timeLeft > -1;
-        public static int NewElectricTriangle(Vector2 position, float rotation = 0, float size = 16, Vector2 velocity = default, int cycle = 15, int timeLeft = 15, int? dustType = null)
+        public static int NewElectricTriangle(Vector2 position, float rotation = 0, float size = 16, Vector2 velocity = default, int cycle = 15, int timeLeft = 30, int? dustType = null)
         {
             int index = -1;
             for (int n = 0; n < IllusionBoundMod.electricTriangle.Length; n++)

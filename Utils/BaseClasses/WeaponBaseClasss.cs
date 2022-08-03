@@ -51,7 +51,7 @@ namespace VirtualDream.Utils.BaseClasses
         public virtual bool Charged => Factor == 1;
         public virtual Vector2 ShootCenter => HeldCenter;
         public virtual Vector2 HeldCenter => Player.Center;
-        public virtual void UpdatePlayer() 
+        public virtual void UpdatePlayer()
         {
             Player.ChangeDir(Projectile.direction);
             Player.heldProj = Projectile.whoAmI;
@@ -93,7 +93,7 @@ namespace VirtualDream.Utils.BaseClasses
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
-            Vector2 center = HeldCenter - Main.screenPosition + new Vector2(0,Player.gfxOffY);
+            Vector2 center = HeldCenter - Main.screenPosition + new Vector2(0, Player.gfxOffY);
             Rectangle? frame = null;
             float rotation = Projectile.rotation;
             float scale = 1f;
@@ -451,7 +451,7 @@ namespace VirtualDream.Utils.BaseClasses
             //}
             #endregion
             //IllusionBoundMod.bloomValue += useBloom;
-            if (useBloom.Range != 0 || useDistort.director != default)
+            if ((useBloom.Range != 0 || useDistort.director != default) && (Lighting.Mode == Terraria.Graphics.Light.LightMode.White || Lighting.Mode == Terraria.Graphics.Light.LightMode.Color))
             {
                 GraphicsDevice gd = Main.instance.GraphicsDevice;
                 RenderTarget2D render = IllusionBoundMod.Instance.render;

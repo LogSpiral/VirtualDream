@@ -268,6 +268,43 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             if (Factor < 0.5f || !Player.controlUseItem) return;
             var factor = 2 * (Factor - 0.5f);
             Main.spriteBatch.DrawQuadraticLaser_PassNormal(ShootCenter, Vector2.Normalize(Projectile.velocity), Color.Purple, 1024 * factor, 256 * factor, 0.2f * factor, 4, UpgradeValue(1, 1, 10));
+
+            //var sb = Main.spriteBatch;
+            //var render = IllusionBoundMod.Instance.render;
+            //GraphicsDevice gd = Main.instance.GraphicsDevice;
+            //sb.End();
+            //sb.Begin();
+            //gd.SetRenderTarget(render);
+            //gd.Clear(Color.Transparent);
+            //Main.spriteBatch.DrawQuadraticLaser_PassNormal(ShootCenter, Vector2.Normalize(Projectile.velocity), Color.Purple, 4096 * factor, 1024 * factor, 0.2f * factor, 4, UpgradeValue(1, 1, 10));
+            //sb.End();
+            //gd.SetRenderTarget(Main.screenTargetSwap);
+            //gd.Clear(Color.Transparent);
+            //sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
+            //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
+            //IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
+            //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+            //                                                             //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
+            //IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.35f);
+            //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
+            //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.30f);
+            //IllusionBoundMod.Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8);
+            //IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(Main.DiscoColor.ToVector4());//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
+            //                                                                                           //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
+            //                                                                                           //Main.NewText("!!!");
+            //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
+
+            //sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
+            //sb.End();
+
+            ////最后在screenTarget上把刚刚的结果画上
+            //gd.SetRenderTarget(Main.screenTarget);
+            //gd.Clear(Color.Transparent);
+            //sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            //sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+            ////sb.End();
+
+
         }
         public override (int X, int Y) FrameMax => (10, 3);
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria.DataStructures;
 using Terraria.ID;
 
@@ -156,7 +157,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         public override Color VertexColor(float time) => default;
         public override float MaxTimeLeft => (controlState == 2 ? 0.75f : 1f) * UpgradeValue(10, 8, 7);
         public override float Rotation => base.Rotation;
-        
+
         public override bool UseRight => true;
         public override (int X, int Y) FrameMax => (3, 1);
         public override void Kill(int timeLeft)
@@ -303,24 +304,20 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
     }
     public class ToxicColorNPC : GlobalNPC
     {
-        public override Color? GetAlpha(NPC npc, Color drawColor)
+        public override void DrawEffects(NPC npc, ref Color drawColor)
         {
             if (npc.HasBuff(ModContent.BuffType<ToxicⅠ>()))
             {
-                return Color.Green * drawColor.R;
+                drawColor = Color.Green * drawColor.R;
             }
-
             if (npc.HasBuff(ModContent.BuffType<ToxicⅡ>()))
             {
-                return Color.Purple * drawColor.R;
+                drawColor = Color.Purple * drawColor.R;
             }
-
             if (npc.HasBuff(ModContent.BuffType<ToxicⅢ>()))
             {
-                return Color.Lerp(Color.Green, Color.Purple, 0.5f) * drawColor.R;
+                drawColor = Color.Lerp(Color.Green, Color.Purple, 0.5f) * drawColor.R;
             }
-
-            return drawColor;
         }
     }
 }

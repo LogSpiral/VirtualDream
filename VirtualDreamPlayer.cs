@@ -12,9 +12,40 @@ namespace VirtualDream
     public class VirtualDreamPlayer : ModPlayer
     {
         public static float screenShakeStrength;
+
+        public int oldLifeMax;
+
+        public float poisionLifeCostPerSecond;
+        public float lifeCostCount;
+        public override void PostUpdate()
+        {
+            oldLifeMax = Player.statLifeMax2;
+        }
         public override void ResetEffects()
         {
             screenShakeStrength = 0;
+
+            if (poisionLifeCostPerSecond > 0)
+            {
+                if (Player.lifeRegen > 0)
+                {
+                    Player.lifeRegen = 0;
+                }
+                Player.lifeRegenTime = 0;
+                lifeCostCount += oldLifeMax * poisionLifeCostPerSecond / 100f;
+            }
+            int lifeCost = (int)(lifeCostCount / 60);
+            lifeCostCount -= lifeCost * 60;
+            //while (lifeCostCount - 60 > 0)
+            //{
+            //    lifeCostCount -= 60;
+            //    //Player.statLife -= 1;
+            //    lifeCost++;
+            //}
+
+            if (lifeCost > 0) Player.HealEffect(-lifeCost);
+            Player.statLife -= lifeCost;
+            poisionLifeCostPerSecond = 0;
         }
         public override void ModifyScreenPosition()
         {

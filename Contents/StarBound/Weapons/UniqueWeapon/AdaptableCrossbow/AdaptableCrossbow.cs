@@ -266,7 +266,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 46 + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * Player.direction * 12;
         public override void OnRelease(bool charged, bool left)
         {
-            if (UpgradeValue(false, false, true)) { Projectile.Kill(); }
+
+            if (UpgradeValue(false, false, true) || sourceItemIndex != Player.selectedItem) { Projectile.Kill(); }
         }
         public override float Factor
         {
@@ -277,12 +278,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         }
         public override void OnSpawn(IEntitySource source)
         {
-            if (source is EntitySource_ItemUse_WithAmmo itemSource)
+            if (source is EntitySource_ItemUse _itemSource)
             {
-                sourceItemType = itemSource.Item.type;
+                sourceItemType = _itemSource.Item.type;
             }
+            sourceItemIndex = (byte)Player.selectedItem;
         }
         public int sourceItemType;
+        public byte sourceItemIndex;
         public T UpgradeValue<T>(T normal, T extra, T defaultValue = default)
         {
             var type = sourceItemType;//Player.HeldItem.type
@@ -375,9 +378,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                     }
                 case 4:
                     {
-                        if (projectile.frameCounter != 1)
+                        if (projectile.frameCounter != 1 && Main.rand.NextBool(4))
                         {
-                            Dust.NewDustPerfect(projectile.Center, MyDustId.GreenFXPowder, new Vector2(0, 0), 0, Color.White, 1f).noGravity = true;
+                            Dust.NewDustPerfect(projectile.Center, MyDustId.GreenMaterial, new Vector2(projectile.velocity.X * 0.1f, 4), 0, Color.White, 1f);
                         }
                         break;
                     }
@@ -405,7 +408,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                                     v.Normalize();
                                     if ((projectile.Center - npc.Center).Length() != 0 && !(projectile.timeLeft < 5))
                                     {
-                                        npc.velocity += v * 160 / (projectile.Center - npc.Center).Length();
+                                        npc.velocity += v * 160 / (projectile.Center - npc.Center).Length() * ((int)projectile.ai[0] == 5 ? 1 : -1);
                                     }
                                 }
                             }
@@ -482,6 +485,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                         for (int n = -3; n < 4; n++)
                         {
                             ElectricTriangle.NewElectricTriangle(projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32), Main.rand.NextFloat(0, MathHelper.TwoPi), 16, default, 15, 30);
+                            Dust.NewDustPerfect(projectile.Center, MyDustId.BlackFlakes, Main.rand.NextVector2Unit() * 3 + projectile.velocity * .25f);
                         }
                         //for (int num431 = 4; num431 < 31; num431++)
                         //{
@@ -554,6 +558,136 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                 case 7:
                     target.AddBuff(24, 180);
                     break;
+            }
+        }
+    }
+    public class CrossBowFrozen : ModBuff
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("霜冻之矢");
+            Description.SetDefault("刺骨凌冽的寒风");
+        }
+
+        // 注意这里我们选择的是对Player生效的Update，另一个是对NPC生效的Update
+        public override void Update(Player player, ref int buffIndex)
+        {
+            Main.buffNoSave[Type] = true;
+            Main.debuff[Type] = true;
+            Main.buffNoTimeDisplay[Type] = false;
+            Main.pvpBuff[Type] = true;
+            player.velocity *= 0.9f;
+            for (int n = 0; n < 4; n++)
+            {
+                Dust d = Dust.NewDustPerfect(player.Center + new Vector2(Main.rand.NextFloat(-64, 64), 0).RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)), MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White, 1f);
+                d.noGravity = true;
+            }
+        }
+        public override void Update(NPC npc, ref int buffIndex)
+        {
+            npc.velocity *= 0.95f;
+            for (int n = 0; n < 4; n++)
+            {
+                Dust d = Dust.NewDustPerfect(npc.Center + new Vector2(Main.rand.NextFloat(-64, 64), 0).RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)), MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White, 1f);
+                d.noGravity = true;
+            }
+        }
+    }
+    public class CrossBowElectrified : ModBuff
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("青电之矢");
+            Description.SetDefault("这是触电一般的感觉...别和其他人挨得太近了。");
+        }
+
+        // 注意这里我们选择的是对Player生效的Update，另一个是对NPC生效的Update
+        public override void Update(Player player, ref int buffIndex)
+        {
+            Main.buffNoSave[Type] = true;
+            Main.debuff[Type] = true;
+            Main.buffNoTimeDisplay[Type] = false;
+            Main.pvpBuff[Type] = true;
+            player.velocity *= 0.9f;
+            if (Main.rand.NextBool(5))
+            {
+                ElectricTriangle.NewElectricTriangle(player.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(48), Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24));
+            }
+            foreach (Player player1 in Main.player)
+            {
+                if (player1.hostile && player1.active && player1.whoAmI != player.whoAmI && (player.Center - player1.Center).Length() < 160f)
+                {
+                    if ((int)Main.GameUpdateCount % 12 == 0)
+                    {
+                        player1.statLife -= 5;
+                        ElectricTriangle.NewElectricTriangle(player.Center, Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24), (player1.Center - player.Center) / 6f);
+                    }
+                }
+            }
+        }
+        public override void Update(NPC npc, ref int buffIndex)
+        {
+            npc.velocity *= 0.95f;
+            if (Main.rand.NextBool(5))
+            {
+                ElectricTriangle.NewElectricTriangle(npc.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(48), Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24));
+            }
+            foreach (NPC npc1 in Main.npc)
+            {
+                if (npc1.active && !npc1.friendly && npc1.type != NPCID.TargetDummy && npc1.whoAmI != npc.whoAmI && (npc.Center - npc1.Center).Length() < 160f)
+                {
+                    if ((int)Main.GameUpdateCount % 3 == 0)
+                    {
+                        npc1.life -= 5;
+                        ElectricTriangle.NewElectricTriangle(npc.Center, Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24), (npc1.Center - npc.Center) / 6f);
+                        npc1.checkDead();
+                    }
+                }
+            }
+        }
+    }
+    public class CrossBowToxic : ModBuff
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("剧毒之矢");
+            Description.SetDefault("毒素迅速地在你全身扩散，用不了多久这货就会要了你的命。");
+        }
+        public override void Update(Player player, ref int buffIndex)
+        {
+            Main.buffNoSave[Type] = true;
+            Main.debuff[Type] = true;
+            Main.buffNoTimeDisplay[Type] = false;
+            Main.pvpBuff[Type] = true;
+            player.GetModPlayer<VirtualDreamPlayer>().poisionLifeCostPerSecond++;
+        }
+        public override void Update(NPC npc, ref int buffIndex)
+        {
+            if (npc.lifeRegen > 0)
+            {
+                npc.lifeRegen = 0;
+            }
+            npc.velocity *= 0.975f;
+            npc.life -= ((npc.lifeMax / 100) * 2) / 120;
+            npc.checkDead();
+            base.Update(npc, ref buffIndex);
+        }
+    }
+    public class CrossBowColorNPC : GlobalNPC
+    {
+        public override void DrawEffects(NPC npc, ref Color drawColor)
+        {
+            if (npc.HasBuff(ModContent.BuffType<CrossBowFrozen>()))
+            {
+                drawColor = Color.Cyan * drawColor.R;
+            }
+            if (npc.HasBuff(ModContent.BuffType<CrossBowElectrified>()))
+            {
+                drawColor = Color.Lerp(Color.Cyan, Color.Purple, 0.5f) * drawColor.R;
+            }
+            if (npc.HasBuff(ModContent.BuffType<CrossBowToxic>()))
+            {
+                drawColor = Color.Green * drawColor.R;
             }
         }
     }

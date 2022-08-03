@@ -307,8 +307,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             additive = true;
             indexOfGreyTex = UpgradeValue(5, 5, 7);
             useHeatMap = true;
-            useBloom = (0f, 0.2f, 3f);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f
-            useDistort = (0f, 5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.006f);//
+            useBloom = (0f, 0.2f, 3f);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
+            useDistort = (0f, 5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.006f);//  //
         }
         public override Texture2D HeatMap
         {
@@ -1065,136 +1065,136 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             //}
         }
     }
-    public class SolarGlobalProj : GlobalProjectile
-    {
-        public override bool PreDraw(Projectile projectile, ref Color lightColor)
-        {
-            List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
-            List<int> indexer = new List<int>();
-            Player player = null;
-            foreach (var proj in Main.projectile)
-            {
-                if (proj.active && proj.ModProjectile != null && proj.ModProjectile is SolusEnergyShard shard)
-                {
-                    foreach (var swoosh in shard.swooshes)
-                    {
-                        if (swoosh != null && swoosh.Active)
-                        {
-                            for (int i = 0; i < 25; i++)
-                            {
-                                var f = i / 24f;
-                                var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
-                                float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
-                                if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
-                                var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f;
-                                Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
-                                var realColor = Color.Lerp(Color.White, Color.Orange, f);
-                                realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
-                                bars.Add(new CustomVertexInfo(swoosh.center + newVec, realColor, new Vector3(1 - f, 1, 0.6f)));
-                                realColor.A = 0;
-                                bars.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
-                            }
-                            indexer.Add(bars.Count - 2);
-                            player = shard.Player;
-                        }
-                    }
-                }
-            }
-            if (bars.Count > 2)
-            {
-                var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
-                var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-                var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
+    //public class SolarGlobalProj : GlobalProjectile
+    //{
+    //    public override bool PreDraw(Projectile projectile, ref Color lightColor)
+    //    {
+    //        List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+    //        List<int> indexer = new List<int>();
+    //        Player player = null;
+    //        foreach (var proj in Main.projectile)
+    //        {
+    //            if (proj.active && proj.ModProjectile != null && proj.ModProjectile is SolusEnergyShard shard)
+    //            {
+    //                foreach (var swoosh in shard.swooshes)
+    //                {
+    //                    if (swoosh != null && swoosh.Active)
+    //                    {
+    //                        for (int i = 0; i < 25; i++)
+    //                        {
+    //                            var f = i / 24f;
+    //                            var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
+    //                            float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
+    //                            if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
+    //                            var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f;
+    //                            Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
+    //                            var realColor = Color.Lerp(Color.White, Color.Orange, f);
+    //                            realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
+    //                            bars.Add(new CustomVertexInfo(swoosh.center + newVec, realColor, new Vector3(1 - f, 1, 0.6f)));
+    //                            realColor.A = 0;
+    //                            bars.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
+    //                        }
+    //                        indexer.Add(bars.Count - 2);
+    //                        player = shard.Player;
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        if (bars.Count > 2)
+    //        {
+    //            var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+    //            var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+    //            RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+    //            var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
 
-                SamplerState sampler = SamplerState.LinearClamp;
-                CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];//
-                for (int i = 0; i < bars.Count - 2; i += 2)
-                {
-                    if (indexer.ToArray().ContainsValue(i)) continue;
-                    var k = i / 2;
-                    if (6 * k < triangleList.Length)
-                    {
-                        triangleList[6 * k] = bars[i];
-                        triangleList[6 * k + 1] = bars[i + 2];
-                        triangleList[6 * k + 2] = bars[i + 1];
-                    }
-                    if (6 * k + 3 < triangleList.Length)
-                    {
-                        triangleList[6 * k + 3] = bars[i + 1];
-                        triangleList[6 * k + 4] = bars[i + 2];
-                        triangleList[6 * k + 5] = bars[i + 3];
-                    }
-                }
-                //GraphicsDevice gd = Main.instance.GraphicsDevice;
-                //RenderTarget2D render = IllusionBoundMod.Instance.render;
-                SpriteBatch spriteBatch = Main.spriteBatch;
-                spriteBatch.End();
-                //gd.SetRenderTarget(render);
-                //gd.Clear(Color.Transparent);
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection);
-                IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
-                IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
-                IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
-                IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
-                IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(true);
-                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/BaseTex_7");
-                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/AniTex");
-                Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[player.HeldItem.type].Value;
-                Main.graphics.GraphicsDevice.Textures[3] = IllusionBoundMod.HeatMap[24];
+    //            SamplerState sampler = SamplerState.LinearClamp;
+    //            CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];//
+    //            for (int i = 0; i < bars.Count - 2; i += 2)
+    //            {
+    //                if (indexer.ToArray().ContainsValue(i)) continue;
+    //                var k = i / 2;
+    //                if (6 * k < triangleList.Length)
+    //                {
+    //                    triangleList[6 * k] = bars[i];
+    //                    triangleList[6 * k + 1] = bars[i + 2];
+    //                    triangleList[6 * k + 2] = bars[i + 1];
+    //                }
+    //                if (6 * k + 3 < triangleList.Length)
+    //                {
+    //                    triangleList[6 * k + 3] = bars[i + 1];
+    //                    triangleList[6 * k + 4] = bars[i + 2];
+    //                    triangleList[6 * k + 5] = bars[i + 3];
+    //                }
+    //            }
+    //            //GraphicsDevice gd = Main.instance.GraphicsDevice;
+    //            //RenderTarget2D render = IllusionBoundMod.Instance.render;
+    //            SpriteBatch spriteBatch = Main.spriteBatch;
+    //            spriteBatch.End();
+    //            //gd.SetRenderTarget(render);
+    //            //gd.Clear(Color.Transparent);
+    //            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+    //            IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection);
+    //            IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
+    //            IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
+    //            IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
+    //            IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
+    //            IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(true);
+    //            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/BaseTex_7");
+    //            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/AniTex");
+    //            Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[player.HeldItem.type].Value;
+    //            Main.graphics.GraphicsDevice.Textures[3] = IllusionBoundMod.HeatMap[24];
 
-                Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
-                Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
-                Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
-                Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
+    //            Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
+    //            Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
+    //            Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
+    //            Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
 
-                IllusionBoundMod.ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
-                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
-                Main.graphics.GraphicsDevice.RasterizerState = originalState;
-                spriteBatch.End();
-                //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+    //            IllusionBoundMod.ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
+    //            Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
+    //            Main.graphics.GraphicsDevice.RasterizerState = originalState;
+    //            spriteBatch.End();
+    //            //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+    //            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
 
-                //IllusionBoundMod.Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-                //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
+    //            //IllusionBoundMod.Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+    //            //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
 
-                //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
-                //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.05f);
-                //for (int n = 0; n < 1; n++)
-                //{
-                //    gd.SetRenderTarget(Main.screenTargetSwap);
-                //    gd.Clear(Color.Transparent);
-                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[7].Apply();
-                //    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+    //            //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
+    //            //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.05f);
+    //            //for (int n = 0; n < 1; n++)
+    //            //{
+    //            //    gd.SetRenderTarget(Main.screenTargetSwap);
+    //            //    gd.Clear(Color.Transparent);
+    //            //    IllusionBoundMod.Distort.CurrentTechnique.Passes[7].Apply();
+    //            //    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
 
 
 
-                //    gd.SetRenderTarget(Main.screenTarget);
-                //    gd.Clear(Color.Transparent);
-                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[6].Apply();
-                //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                //}
-                //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
-                //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(projectile.rotation.ToRotationVector2() * -0.006f);
-                //for (int n = 0; n < 1; n++)
-                //{
-                //    gd.SetRenderTarget(Main.screenTargetSwap);
-                //    gd.Clear(Color.Transparent);
-                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[5].Apply();
-                //    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+    //            //    gd.SetRenderTarget(Main.screenTarget);
+    //            //    gd.Clear(Color.Transparent);
+    //            //    IllusionBoundMod.Distort.CurrentTechnique.Passes[6].Apply();
+    //            //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+    //            //}
+    //            //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
+    //            //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(projectile.rotation.ToRotationVector2() * -0.006f);
+    //            //for (int n = 0; n < 1; n++)
+    //            //{
+    //            //    gd.SetRenderTarget(Main.screenTargetSwap);
+    //            //    gd.Clear(Color.Transparent);
+    //            //    IllusionBoundMod.Distort.CurrentTechnique.Passes[5].Apply();
+    //            //    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
 
-                //    gd.SetRenderTarget(Main.screenTarget);
-                //    gd.Clear(Color.Transparent);
-                //    IllusionBoundMod.Distort.CurrentTechnique.Passes[4].Apply();
-                //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                //}
+    //            //    gd.SetRenderTarget(Main.screenTarget);
+    //            //    gd.Clear(Color.Transparent);
+    //            //    IllusionBoundMod.Distort.CurrentTechnique.Passes[4].Apply();
+    //            //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+    //            //}
 
-                //spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                //spriteBatch.Draw(render, Vector2.Zero, Color.White);
-                //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);
-            }
-            return base.PreDraw(projectile, ref lightColor);
-        }
-    }
+    //            //spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+    //            //spriteBatch.Draw(render, Vector2.Zero, Color.White);
+    //            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);
+    //        }
+    //        return base.PreDraw(projectile, ref lightColor);
+    //    }
+    //}
 }
