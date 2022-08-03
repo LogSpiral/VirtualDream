@@ -308,15 +308,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         {
             if (npc.HasBuff(ModContent.BuffType<ToxicⅠ>()))
             {
-                drawColor = Color.Green * drawColor.R;
+                drawColor = Color.Lerp(drawColor, Color.Green, 0.5f) * (drawColor.R / 255f);
             }
             if (npc.HasBuff(ModContent.BuffType<ToxicⅡ>()))
             {
-                drawColor = Color.Purple * drawColor.R;
+                drawColor = Color.Lerp(drawColor, Color.Purple, 0.5f) * (drawColor.R / 255f);
             }
             if (npc.HasBuff(ModContent.BuffType<ToxicⅢ>()))
             {
-                drawColor = Color.Lerp(Color.Green, Color.Purple, 0.5f) * drawColor.R;
+                drawColor = Color.Lerp(drawColor, Color.Lerp(Color.Green, Color.Purple, 0.5f), 0.5f) * (drawColor.R / 255f);
             }
         }
     }

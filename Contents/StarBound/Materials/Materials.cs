@@ -23,6 +23,7 @@ namespace VirtualDream.Contents.StarBound.Materials
         {
             string ItemName = "我抄居然被你发现材料的默认名了";
             string Description = "我抄居然被你发现材料的默认描述了";
+            GetName(ref ItemName, ref Description);
             DisplayName.SetDefault(ItemName);
             Tooltip.SetDefault(Description);
         }

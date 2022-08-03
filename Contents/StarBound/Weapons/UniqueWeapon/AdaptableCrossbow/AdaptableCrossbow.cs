@@ -178,6 +178,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             recipe.AddIngredient<VenomSample>(15);
             recipe.AddIngredient<AncientEssence>(2500);
             recipe.AddIngredient(ItemID.LunarBar, 12);
+            recipe.AddTile(TileID.LunarCraftingStation);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }
@@ -188,6 +189,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         {
             Tooltip.SetDefault("右键切换弹药类型。共七种弹药：普通箭、爆炸箭、寒霜箭、带电箭、剧毒箭、引力箭以及斥力箭。\n所有尝试过最后两种特殊箭矢的人都表示那会是他们最喜欢的箭矢......除了有点反胃，以及会影响其他人。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             DisplayName.SetDefault("万用型十字弩EX");
+        }
+        public override void AddRecipes()
+        {
         }
         public override void SetDefaults()
         {
@@ -558,6 +562,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                 case 7:
                     target.AddBuff(24, 180);
                     break;
+                case 2:
+                    target.AddBuff(ModContent.BuffType<CrossBowFrozen>(), 180);
+                    break;
+                case 3:
+                    target.AddBuff(ModContent.BuffType<CrossBowElectrified>(), 180);
+                    break;
+                case 4:
+                    target.AddBuff(ModContent.BuffType<CrossBowToxic>(), 180);
+                    break;
             }
         }
     }
@@ -620,7 +633,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                     if ((int)Main.GameUpdateCount % 12 == 0)
                     {
                         player1.statLife -= 5;
-                        ElectricTriangle.NewElectricTriangle(player.Center, Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24), (player1.Center - player.Center) / 6f);
+                        ElectricTriangle.NewElectricTriangle(player.Center, Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24), (player1.Center - player.Center) / 16f);
                     }
                 }
             }
@@ -639,7 +652,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                     if ((int)Main.GameUpdateCount % 3 == 0)
                     {
                         npc1.life -= 5;
-                        ElectricTriangle.NewElectricTriangle(npc.Center, Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24), (npc1.Center - npc.Center) / 6f);
+                        ElectricTriangle.NewElectricTriangle(npc.Center, Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24), (npc1.Center - npc.Center) / 16f);
                         npc1.checkDead();
                     }
                 }
@@ -679,15 +692,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         {
             if (npc.HasBuff(ModContent.BuffType<CrossBowFrozen>()))
             {
-                drawColor = Color.Cyan * drawColor.R;
+                drawColor = Color.Lerp(drawColor, Color.Cyan, 0.5f) * (drawColor.R / 255f);
             }
             if (npc.HasBuff(ModContent.BuffType<CrossBowElectrified>()))
             {
-                drawColor = Color.Lerp(Color.Cyan, Color.Purple, 0.5f) * drawColor.R;
+                //drawColor = new Color(0.3f,0.6f,0.9f) * drawColor.R;
+                //Main.NewText(Color.Lerp(Color.Cyan, Color.Purple, 0.5f));
+                drawColor = Color.Lerp(drawColor, Color.Lerp(Color.Cyan, Color.Purple, 0.5f), 0.5f) * (drawColor.R / 255f);
             }
             if (npc.HasBuff(ModContent.BuffType<CrossBowToxic>()))
             {
-                drawColor = Color.Green * drawColor.R;
+                drawColor = Color.Lerp(drawColor, Color.Green, 0.5f) * (drawColor.R / 255f);
             }
         }
     }
