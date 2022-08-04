@@ -178,6 +178,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             var _s = 1 - 1 / (vec.Length() / 32 + 1);
             Main.spriteBatch.Draw(ModContent.Request<Texture2D>(Texture.Replace("OculusReaverProj", "pupil")).Value, cen - Main.screenPosition + vec.SafeNormalize(default) * _s * 4, null, Color.White, 0, new Vector2(2), 2f * (1.5f - _s * .5f), 0, 0);
             //Main.spriteBatch.DrawHammer(this, tex, lightColor, tex.Frame(1, 4, 0, f > 0 ? (int)f : 0));
+
+            Vector2 origin = DrawOrigin;
+            float rotation = Rotation;
+            switch (flip)
+            {
+                case SpriteEffects.FlipHorizontally:
+                    origin.X = projTex.Size().X / FrameMax.X - origin.X;
+                    rotation += MathHelper.PiOver2;
+
+                    break;
+                case SpriteEffects.FlipVertically:
+                    origin.Y = projTex.Size().Y / FrameMax.Y - origin.Y;
+                    break;
+            }
+            Main.spriteBatch.Draw(tex, projCenter - Main.screenPosition, tex.Frame(1, 4, 0, f > 0 ? (int)f : 0), lightColor, rotation, origin, scale, flip, 0);
             return false;
         }
     }

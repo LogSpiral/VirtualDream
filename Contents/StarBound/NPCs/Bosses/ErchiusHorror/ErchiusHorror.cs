@@ -727,7 +727,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private const int damageScaler = 1;
-        private float Length => (((ErchiusHorror)ownerNPC.ModNPC).targetPlayer.Center - npc.Center).Length();
+        private float Length => ownerNPC.ModNPC is ErchiusHorror erchius ? (erchius.targetPlayer.Center - npc.Center).Length() : 0;
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

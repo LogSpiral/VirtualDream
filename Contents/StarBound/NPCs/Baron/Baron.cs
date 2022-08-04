@@ -16,6 +16,7 @@ using Terraria.DataStructures;
 using System.Collections.Generic;
 using ReLogic.Content;
 using VirtualDream.Contents.StarBound.Materials;
+using ReLogic.Graphics;
 
 namespace VirtualDream.Contents.StarBound.NPCs.Baron
 {
@@ -47,7 +48,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
             };
 
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-
+            DisplayName.SetDefault("拜隆先生");
             //// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
             //// NOTE: The following code uses chaining - a style that works due to the fact that the SetXAffection methods return the same NPCHappiness instance they're called on.
             //NPC.Happiness
@@ -77,21 +78,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
 
             AnimationType = NPCID.Guide;
         }
-
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				// Sets the preferred biomes of this town NPC listed in the bestiary.
-				// With Town NPCs, you usually set this to what biome it likes the most in regards to NPC happiness.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface,
-
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("YEEEEEEE 这就是npc描述马"),
-
-				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				new FlavorTextBestiaryInfoElement("我抄这事什么好康的")
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
+            {
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
+                new FlavorTextBestiaryInfoElement("")
             });
         }
 
@@ -109,7 +102,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
                 NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
                 NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
             }
-
+            for (int n = 0; n < 4; n++)
+                spriteBatch.DrawString(FontAssets.MouseText.Value, NPC.ai[n].ToString(), NPC.Center + new Vector2(0, -120 + 24 * n) - Main.screenPosition, Color.Red);
             return true;
         }
 
@@ -170,7 +164,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
 
         public override ITownNPCProfile TownNPCProfile()
         {
-            return new ExamplePersonProfile();
+            return new BaronProfile();
         }
 
         public override List<string> SetNPCNameList()
@@ -202,97 +196,119 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
 
         public override string GetChat()
         {
-            WeightedRandom<string> chat = new WeightedRandom<string>();
-            chat.Add("你好！");
-            return chat; // chat is implicitly cast to a string.
+            //WeightedRandom<string> chat = new WeightedRandom<string>();
+            //chat.Add("Yee");//上次咱们见面是什么时候来着...我这铁疙瘩脑袋多少有点生锈了。
+            //return chat; // chat is implicitly cast to a string.
+            if (Main.raining && Main.rand.NextBool(4))
+            {
+                ContentDecider = 1;
+                return Main._shouldUseStormMusic ? "震撼。兴许我该收回我关于你这雨天比较温和的评价\n调侃。让暴风雨来得更猛烈些罢——非比喻的我不要。":"难熬。又是雨天...虽然说这里的雨天可比其他某些星球上的温和太多太多了\n但是这并不妨碍它会威胁我。";
+            }
+            var rand = Main.rand.Next(3);
+            switch (rand)
+            {
+                case 0:
+                    ContentDecider = 0;
+                    return "平静。你不必对我的突然出现感到意外——你又不是第一次见到电子人——尽管和我很不一样，而且是半电子。\n尴尬。等等，我这话是不是说过了?";
+                case 1:
+                    ContentDecider = 3;
+                    return "高兴。这片地方有太多新奇玩意值得探索。\n难过。我已经是一把老骨头了，没你们年轻人有活力了。";
+                case 2:
+                    ContentDecider = 2;
+                    return "思考。你问我为什么要在几乎每句话最开始加上自己的感受？\n我不希望自己是个难被理解的家伙，仅此而已。\n或许我需要考虑一下改变说话风格，毕竟我的这习惯事与愿违了？";
+            }
+            return "";
         }
+        /// <summary>
+        /// 它决定当前讨论的话题，注释部分有话题表。
+        /// </summary>
+        public int ContentDecider
+        {
+            get => contentDecider;
+            set { contentPlayer = 0; contentDecider = value; }
+        }
+        /// <summary>
+        /// 它决定当前讨论的话题，注释部分有话题表。
+        /// </summary>
+        public int contentDecider;
+        //0:基本介绍
+        //1:关于雨天
+        //2:关于用语的习惯
+        //3:故事背景
+        //4:
+        //9:话题太"远"了
+
+
+        /// <summary>
+        /// 它决定当前话题的序数
+        /// </summary>
+        public int contentPlayer;
 
         public override void SetChatButtons(ref string button, ref string button2)
-        { // What the chat buttons are when you open up the chat UI
-            button = Language.GetTextValue("LegacyInterface.28");
-            button2 = "Awesomeify";
+        {
+            switch (contentDecider)
+            {
+                case 0:
+                    switch (contentPlayer)
+                    {
+                        case 0:
+                            button = "我是谁？";
+                            break;
+                        case 1:
+                            button = "\"别讲谜语了，你到底是谁，你叫什么，你来这里出于什么目的？\"";
+                            break;
+                        case 2:
+                            button = "我的过去？";
+                            break;
+                    }
+                    break;
+                case 1:
+                    button = "";
+                    break;
+                case 2:
+                    button = "";
+                    break;
+                case 3:
+                    button = "";
+                    break;
+                case 4:
+                    button = "";
+                    break;
+                case 5:
+                    button = "";
+                    break;
+            }
+            button2 = "你想听点别的东西？";
         }
 
         public override void OnChatButtonClicked(bool firstButton, ref bool shop)
         {
             if (firstButton)
             {
-                // We want 3 different functionalities for chat buttons, so we use HasItem to change button 1 between a shop and upgrade action.
+                var str = "";
+                switch (contentPlayer)
+                {
+                    case 0:
+                        str = "迷惑。我也说不太清楚\n有人说我是英雄，一位踏遍四方饱经沧桑的英雄\n有人说我是盗贼，掠尽了无数资源与财富\n有人说我是隐士，不问世事而自扫门前雪\n有人说我是旅人，在漫天繁星中漂泊。\n我不自我评价，一切好坏善恶由你们评说。";
+                        break;
+                    case 1:
+                        str = "迷惑。我也说不太清楚\n有人说我是英雄，一位踏遍四方饱经沧桑的英雄\n有人说我是盗贼，掠尽了无数资源与财富\n有人说我是隐士，不问世事而自扫门前雪\n有人说我是旅人，在漫天繁星中漂泊。\n我不自我评价，一切好坏善恶由你们评说。";
+                        break;
+                    case 2:
+                        str = "高兴。伙计，你要是愿意听我的故事详细到每一个细节，我乐意在这里讲上";
+                        break;
+                    default:
+                        break;
+                }
+                contentPlayer++;
+                Main.npcChatText = str;
+            }
+            else
+            {
+                contentDecider++;
 
-                //if (Main.LocalPlayer.HasItem(ItemID.HiveBackpack))
-                //{
-                //    SoundEngine.PlaySound(SoundID.Item37); // Reforge/Anvil sound
-
-                //    Main.npcChatText = $"I upgraded your {Lang.GetItemNameValue(ItemID.HiveBackpack)} to a {Lang.GetItemNameValue(ModContent.ItemType<WaspNest>())}";
-
-                //    int hiveBackpackItemIndex = Main.LocalPlayer.FindItem(ItemID.HiveBackpack);
-                //    var entitySource = NPC.GetSource_GiftOrReward();
-
-                //    Main.LocalPlayer.inventory[hiveBackpackItemIndex].TurnToAir();
-                //    Main.LocalPlayer.QuickSpawnItem(entitySource, ModContent.ItemType<WaspNest>());
-
-                //    return;
-                //}
-
-                shop = true;
             }
         }
-
-        // Not completely finished, but below is what the NPC will sell
-
-        // public override void SetupShop(Chest shop, ref int nextSlot) {
-        // 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleItem>());
-        // 	// shop.item[nextSlot].SetDefaults(ItemType<EquipMaterial>());
-        // 	// nextSlot++;
-        // 	// shop.item[nextSlot].SetDefaults(ItemType<BossItem>());
-        // 	// nextSlot++;
-        // 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleWorkbench>());
-        // 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChair>());
-        // 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleDoor>());
-        // 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleBed>());
-        // 	shop.item[nextSlot++].SetDefaults(ItemType<Items.Placeable.Furniture.ExampleChest>());
-        // 	shop.item[nextSlot++].SetDefaults(ItemType<ExamplePickaxe>());
-        // 	shop.item[nextSlot++].SetDefaults(ItemType<ExampleHamaxe>());
-        //
-        // 	if (Main.LocalPlayer.HasBuff(BuffID.Lifeforce)) {
-        // 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleHealingPotion>());
-        // 	}
-        //
-        // 	// if (Main.LocalPlayer.GetModPlayer<ExamplePlayer>().ZoneExample && !GetInstance<ExampleConfigServer>().DisableExampleWings) {
-        // 	// 	shop.item[nextSlot].SetDefaults(ItemType<ExampleWings>());
-        // 	// 	nextSlot++;
-        // 	// }
-        //
-        // 	if (Main.moonPhase < 2) {
-        // 		shop.item[nextSlot++].SetDefaults(ItemType<ExampleSword>());
-        // 	}
-        // 	else if (Main.moonPhase < 4) {
-        // 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleGun>());
-        // 		shop.item[nextSlot].SetDefaults(ItemType<ExampleBullet>());
-        // 	}
-        // 	else if (Main.moonPhase < 6) {
-        // 		// shop.item[nextSlot++].SetDefaults(ItemType<ExampleStaff>());
-        // 	}
-        //
-        // 	// todo: Here is an example of how your npc can sell items from other mods.
-        // 	// var modSummonersAssociation = ModLoader.TryGetMod("SummonersAssociation");
-        // 	// if (ModLoader.TryGetMod("SummonersAssociation", out Mod modSummonersAssociation)) {
-        // 	// 	shop.item[nextSlot].SetDefaults(modSummonersAssociation.ItemType("BloodTalisman"));
-        // 	// 	nextSlot++;
-        // 	// }
-        //
-        // 	// if (!Main.LocalPlayer.GetModPlayer<ExamplePlayer>().examplePersonGiftReceived && GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList != null) {
-        // 	// 	foreach (var item in GetInstance<ExampleConfigServer>().ExamplePersonFreeGiftList) {
-        // 	// 		if (Item.IsUnloaded) continue;
-        // 	// 		shop.item[nextSlot].SetDefaults(Item.Type);
-        // 	// 		shop.item[nextSlot].shopCustomPrice = 0;
-        // 	// 		shop.item[nextSlot].GetGlobalItem<ExampleInstancedGlobalItem>().examplePersonFreeGift = true;
-        // 	// 		nextSlot++;
-        // 	// 		//TODO: Have tModLoader handle index issues.
-        // 	// 	}
-        // 	// }
-        // }
-
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
         }
@@ -325,7 +341,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
         }
     }
 
-    public class ExamplePersonProfile : ITownNPCProfile
+    public class BaronProfile : ITownNPCProfile
     {
         public int RollVariation() => 0;
         public string GetNameForVariant(NPC npc) => npc.getNewNPCName();

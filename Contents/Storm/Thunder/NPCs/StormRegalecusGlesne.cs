@@ -336,12 +336,12 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 vector2, Color drawColor)
         {
             spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.Center - Main.screenPosition, null, drawColor, npc.rotation, new Vector2(47, 78), 1f, npc.spriteDirection != 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow_1"), npc.Center - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(47, 78), 1f, npc.spriteDirection != 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow_2"), npc.Center - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(47, 78), 1f, npc.spriteDirection != 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
-            spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow_1",false), npc.Center - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(47, 78), 1f, npc.spriteDirection != 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
+            //spriteBatch.End();
+            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow_2", false), npc.Center - Main.screenPosition, null, new Color(1, 1, 1f, 0) * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(47, 78), 1f, npc.spriteDirection != 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
+            //spriteBatch.End();
+            //spriteBatch.Begin();
             return false;
         }
     }

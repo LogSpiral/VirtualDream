@@ -698,10 +698,10 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
         {
             for (int k = 0; k < npc.oldPos.Length; k++)
             {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/StormZone/ElectricalCloud"), npc.oldPos[k] - Main.screenPosition + new Vector2(0, 20) + new Vector2(Main.rand.NextFloat(0, 16), 0).RotatedBy(npc.rotation + Main.rand.NextFloat(-MathHelper.Pi / 24, MathHelper.Pi / 24)), new Rectangle(0, (k + startFrame) % 6 * 28, 54, 28), new Color(1, 1, 1, 1) * (102 - 8 * k), 0, new Vector2(27, 14), (npc.scale * 0.8f - 0.05f * k) * Main.rand.NextFloat(0.9f, 1.2f), SpriteEffects.None, 0f);
+                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/ElectricalCloud"), npc.oldPos[k] - Main.screenPosition + new Vector2(0, 20) + new Vector2(Main.rand.NextFloat(0, 16), 0).RotatedBy(npc.rotation + Main.rand.NextFloat(-MathHelper.Pi / 24, MathHelper.Pi / 24)), new Rectangle(0, (k + startFrame) % 6 * 28, 54, 28), new Color(1, 1, 1, 1) * (102 - 8 * k), 0, new Vector2(27, 14), (npc.scale * 0.8f - 0.05f * k) * Main.rand.NextFloat(0.9f, 1.2f), SpriteEffects.None, 0f);
             }
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/StormZone/PositiveElectricalSlime_Glow1"), npc.Center + new Vector2(0, 4) - Main.screenPosition, new Rectangle(0, npc.frame.Y, 36, 26), Color.White * (1 - IllusionBoundMod.GlowLight), npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/StormZone/PositiveElectricalSlime_Glow2"), npc.Center + new Vector2(0, 4) - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/PositiveElectricalSlime_Glow1"), npc.Center + new Vector2(0, 4) - Main.screenPosition, new Rectangle(0, npc.frame.Y, 36, 26), Color.White * (1 - IllusionBoundMod.GlowLight), npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/PositiveElectricalSlime_Glow2"), npc.Center + new Vector2(0, 4) - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
         }
         private int startFrame;
         public override void FindFrame(int frameHeight)
@@ -989,8 +989,8 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             {
                 spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.oldPos[k] + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition + new Vector2(Main.rand.NextFloat(0, 16), 0).RotatedBy(npc.rotation + Main.rand.NextFloat(-MathHelper.Pi / 24, MathHelper.Pi / 24)), new Rectangle(0, oldFrameY[k], 36, 26), new Color((102 - 8 * k), 0, 0, (102 - 8 * k)), npc.rotation, new Vector2(18, 13), (npc.scale * 0.8f - 0.05f * k) * Main.rand.NextFloat(0.9f, 1.2f), SpriteEffects.None, 0f);
             }
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/StormZone/NegativeElectricalSlime_Glow1"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, new Rectangle(0, npc.frame.Y, 36, 26), Color.White * (1 - IllusionBoundMod.GlowLight), npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/StormZone/NegativeElectricalSlime_Glow2"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/NegativeElectricalSlime_Glow1"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, new Rectangle(0, npc.frame.Y, 36, 26), Color.White * (1 - IllusionBoundMod.GlowLight), npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/NegativeElectricalSlime_Glow2"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
             if (matched)
             {
                 return;
@@ -1001,7 +1001,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             for (int n = 0; n < 3; n++)
             {
                 float k = 1 - (float)(Main.time / 60 + 1 / 3f * n) + (int)(Main.time / 60 + 1 / 3f * n);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/StormZone/SlowDownField"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * (1 - k), npc.rotation, new Vector2(32, 32), k * 4, SpriteEffects.None, 0);
+                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/SlowDownField"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * (1 - k), npc.rotation, new Vector2(32, 32), k * 4, SpriteEffects.None, 0);
             }
             Main.spriteBatch.End();
             Main.spriteBatch.Begin();
@@ -1704,8 +1704,8 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
     //		{
     //			spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.oldPos[k] + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition + new Vector2(Main.rand.NextFloat(0, 16), 0).RotatedBy(npc.rotation + Main.rand.NextFloat(-MathHelper.Pi / 24, MathHelper.Pi / 24)), new Rectangle(0, oldFrameY[k], 36, 26), new Color((102 - 8 * k), 0, 0, (102 - 8 * k)), npc.rotation, new Vector2(18, 13), (npc.scale * 0.8f - 0.05f * k) * Main.rand.NextFloat(0.9f, 1.2f), SpriteEffects.None, 0f);
     //		}
-    //		spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/StormZone/NegativeElectricalSlime_Glow1"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, new Rectangle(0, npc.frame.Y, 36, 26), Color.White * (1 - IllusionBoundMod.StormTileGrowLight), npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
-    //		spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/StormZone/NegativeElectricalSlime_Glow2"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * IllusionBoundMod.StormTileGrowLight, npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
+    //		spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/NegativeElectricalSlime_Glow1"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, new Rectangle(0, npc.frame.Y, 36, 26), Color.White * (1 - IllusionBoundMod.StormTileGrowLight), npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
+    //		spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/NegativeElectricalSlime_Glow2"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * IllusionBoundMod.StormTileGrowLight, npc.rotation, new Vector2(18, 13), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
     //		if (matched)
     //			return;
     //		Main.spriteBatch.End();
@@ -1715,7 +1715,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
     //			float k = 1 - (float)(Main.time / 60 + 1 / 3f * n) + (int)(Main.time / 60 + 1 / 3f * n);
     //			//if(n == 0)
     //			//Main.NewText(k);
-    //			spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/StormZone/SlowDownField"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * (1 - k), npc.rotation, new Vector2(32, 32), k * 4, SpriteEffects.None, 0);
+    //			spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/SlowDownField"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * (1 - k), npc.rotation, new Vector2(32, 32), k * 4, SpriteEffects.None, 0);
     //		}
     //		Main.spriteBatch.End();
     //		Main.spriteBatch.Begin();

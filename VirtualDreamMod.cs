@@ -604,8 +604,6 @@ namespace VirtualDream
                                 //IllusionBoundMod.TransformEffect.Parameters["factor1"].SetValue(fac);
                                 var fac = projectile.ai[0];
                                 fac = fac < 30 ? ((fac * fac * 0.02022f - fac * 0.606f + 5) * (1 - 0.03f * fac)) : ((-90 / (fac - 181f) * 1.25f) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f * (fac - 30).SymmetricalFactor(75, 15)));
-                                if(fac < 0)
-                                Main.NewText((fac,projectile.ai[0]));
                                 IllusionBoundMod.TransformEffect.Parameters["factor1"].SetValue(fac);
                                 IllusionBoundMod.TransformEffect.Parameters["factor2"].SetValue((float)ModTime / 30f);
                                 IllusionBoundMod.TransformEffect.CurrentTechnique.Passes[1].Apply();
@@ -623,7 +621,7 @@ namespace VirtualDream
                                 //customVertexInfos[4] = customVertexInfos[1];
                                 //customVertexInfos[5] = new CustomVertexInfo(projectile.Center - baseVec - Main.screenPosition, new Vector3(0, 0, 1));
                                 //Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, customVertexInfos, 0, 2);
-                                sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512 * new Vector2(3, 1), 0, 0);//new Rectangle(240,240,92,92)
+                                sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512* new Vector2(3, 1), 0, 0);//new Rectangle(240,240,92,92)// * new Vector2(3, 1)
                             }
 
                             sb.End();
@@ -665,17 +663,17 @@ namespace VirtualDream
                 if (bloomValue > 0)
                     UseBloom(gd);
 
-                #region Render
-                //var gd = Main.graphics.GraphicsDevice;
-                //先在自己的render上画这个弹幕
-                //sb.End();
+                //#region Render
+                ////var gd = Main.graphics.GraphicsDevice;
+                ////先在自己的render上画这个弹幕
+                ////sb.End();
                 //gd.SetRenderTarget(render);
                 //gd.Clear(Color.Transparent);
-                #endregion
+                //#endregion
                 //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);
                 //Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
                 //Main.spriteBatch.End();
-                #region render
+                //#region render
                 ////然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
                 ////原版自带的screenTargetSwap就是一个可以使用的render，（原版用来连续上滤镜）
                 //gd.SetRenderTarget(Main.screenTargetSwap);
@@ -689,7 +687,7 @@ namespace VirtualDream
                 //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
                 //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.30f);
                 //IllusionBoundMod.Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8);
-                //IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(Color.Cyan.ToVector4());//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
+                //IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(Color.Red.ToVector4());//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
                 //                                                                                      //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
                 //                                                                                      //Main.NewText("!!!");
                 //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(960, 560));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
@@ -703,7 +701,7 @@ namespace VirtualDream
                 //Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                 //Main.spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
                 //Main.spriteBatch.End();
-                #endregion
+                //#endregion
             }
             orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
         }

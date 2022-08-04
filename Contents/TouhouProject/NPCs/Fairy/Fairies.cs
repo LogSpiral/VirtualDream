@@ -48,7 +48,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy //基类
         }
         public virtual bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            return false;
+            return true;
         }
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -368,7 +368,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//妖精类
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
         }
         public override void ShootProjectile()
         {
@@ -408,7 +408,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//妖精类
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
         }
         public override void ShootProjectile()
         {
@@ -448,7 +448,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//妖精类
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
         }
         public override void ShootProjectile()
         {
@@ -499,8 +499,8 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//妖精类
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
-            Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 51, 51, 51), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / -180, new Vector2(32, 32), 2f, SpriteEffects.None, 0);
+            //Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 51, 51, 51), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / -180, new Vector2(32, 32), 2f, SpriteEffects.None, 0);
         }
         public override void ShootProjectile()
         {
@@ -554,11 +554,11 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//妖精类
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            //Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            for (float r = 0; r <= MathHelper.TwoPi; r += MathHelper.Pi / 3)
-            {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + new Vector2(96, 0).RotatedBy(r + ((npc.ai[0] - 240) / 60 * 72) / 180 * MathHelper.Pi) - Main.screenPosition, null, new Color(1, 1, 1, 1) * 102f, r + ((npc.ai[0] - 240) / 60 * 72) / 180 * MathHelper.Pi, new Vector2(32, 32), 1f, SpriteEffects.None, 0f);
-            }
+            ////Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //for (float r = 0; r <= MathHelper.TwoPi; r += MathHelper.Pi / 3)
+            //{
+            //    spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + new Vector2(96, 0).RotatedBy(r + ((npc.ai[0] - 240) / 60 * 72) / 180 * MathHelper.Pi) - Main.screenPosition, null, new Color(1, 1, 1, 1) * 102f, r + ((npc.ai[0] - 240) / 60 * 72) / 180 * MathHelper.Pi, new Vector2(32, 32), 1f, SpriteEffects.None, 0f);
+            //}
         }
 
         public override void ShootProjectile()
@@ -596,11 +596,11 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//妖精类
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            //Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            for (float r = 0; r <= MathHelper.TwoPi; r += MathHelper.Pi / 3)
-            {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + new Vector2(96, 0).RotatedBy(r + ((npc.ai[0] - 240) / 60 * 72) / 180 * MathHelper.Pi) - Main.screenPosition, null, new Color(1, 1, 1, 1) * 153f, r + ((npc.ai[0] - 240) / 60 * 72) / 180 * MathHelper.Pi, new Vector2(32, 32), 1f, SpriteEffects.None, 0f);
-            }
+            ////Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //for (float r = 0; r <= MathHelper.TwoPi; r += MathHelper.Pi / 3)
+            //{
+            //    spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + new Vector2(96, 0).RotatedBy(r + ((npc.ai[0] - 240) / 60 * 72) / 180 * MathHelper.Pi) - Main.screenPosition, null, new Color(1, 1, 1, 1) * 153f, r + ((npc.ai[0] - 240) / 60 * 72) / 180 * MathHelper.Pi, new Vector2(32, 32), 1f, SpriteEffects.None, 0f);
+            //}
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
@@ -648,11 +648,11 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//妖精类
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)IllusionBoundMod.ModTime2 * -MathHelper.TwoPi / 180, new Vector2(32, 32), 3f, SpriteEffects.None, 0);
-            for (int n = 0; n < 4; n++)
-            {
-                Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + new Vector2(64, 0).RotatedBy(IllusionBoundMod.ModTime2 / 60 + MathHelper.TwoPi / 4 * n) - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            }
+            //Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)IllusionBoundMod.ModTime2 * -MathHelper.TwoPi / 180, new Vector2(32, 32), 3f, SpriteEffects.None, 0);
+            //for (int n = 0; n < 4; n++)
+            //{
+            //    //Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + new Vector2(64, 0).RotatedBy(IllusionBoundMod.ModTime2 / 60 + MathHelper.TwoPi / 4 * n) - Main.screenPosition, null, new Color(0, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //}
         }
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
@@ -699,17 +699,17 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//妖精类
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            Vector2[] Vec = new Vector2[] { new Vector2(128, 0).RotatedBy(-MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-2 * MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-3 * MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-4 * MathHelper.TwoPi / 10) };
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[0] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[1] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[2] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[3] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[0] - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[1] - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[2] - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[3] - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/LightArea"), npc.Center - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)(IllusionBoundMod.ModTime2 / 60 * MathHelper.Pi), new Vector2(180, 180), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/LightArea"), npc.Center - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)(-IllusionBoundMod.ModTime2 / 60 * MathHelper.Pi), new Vector2(180, 180), 1f, SpriteEffects.None, 0);
+            //Vector2[] Vec = new Vector2[] { new Vector2(128, 0).RotatedBy(-MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-2 * MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-3 * MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-4 * MathHelper.TwoPi / 10) };
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[0] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[1] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[2] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[3] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[0] - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[1] - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[2] - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa"), npc.Center + Vec[3] - Main.screenPosition, null, new Color(51, 51, 51, 51), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/LightArea"), npc.Center - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)(IllusionBoundMod.ModTime2 / 60 * MathHelper.Pi), new Vector2(180, 180), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/LightArea"), npc.Center - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)(-IllusionBoundMod.ModTime2 / 60 * MathHelper.Pi), new Vector2(180, 180), 1f, SpriteEffects.None, 0);
         }
         private int timer;
         public override void AI()
@@ -800,17 +800,17 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//妖精类
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
-            Vector2[] Vec = new Vector2[] { new Vector2(128, 0).RotatedBy(-MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-2 * MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-3 * MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-4 * MathHelper.TwoPi / 10) };
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[0] - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[1] - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[2] - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[3] - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[0] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[1] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[2] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[3] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/VoidArea"), npc.Center - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)(IllusionBoundMod.ModTime2 / 60 * MathHelper.Pi), new Vector2(180, 180), 1f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/VoidArea"), npc.Center - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)(-IllusionBoundMod.ModTime2 / 60 * MathHelper.Pi), new Vector2(180, 180), 1f, SpriteEffects.None, 0);
+            //Vector2[] Vec = new Vector2[] { new Vector2(128, 0).RotatedBy(-MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-2 * MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-3 * MathHelper.TwoPi / 10), new Vector2(128, 0).RotatedBy(-4 * MathHelper.TwoPi / 10) };
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[0] - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[1] - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[2] - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[3] - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 120, new Vector2(32, 32), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[0] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[1] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[2] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/MagicDa1"), npc.Center + Vec[3] - Main.screenPosition, null, new Color(102, 102, 102, 102), (float)-IllusionBoundMod.ModTime2 * MathHelper.TwoPi / 180, new Vector2(32, 32), 1.5f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/VoidArea"), npc.Center - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)(IllusionBoundMod.ModTime2 / 60 * MathHelper.Pi), new Vector2(180, 180), 1f, SpriteEffects.None, 0);
+            //spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/VoidArea"), npc.Center - Main.screenPosition, null, new Color(153, 153, 153, 153), (float)(-IllusionBoundMod.ModTime2 / 60 * MathHelper.Pi), new Vector2(180, 180), 1f, SpriteEffects.None, 0);
         }
         private int timer;
         public override void AI()
@@ -1819,7 +1819,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
         {
             if ((int)projectile.ai[1] == 1)
             {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("NPCs/Fairy/RingBulletD"), projectile.Center - Main.screenPosition, null, Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
+                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/TouhouProject/NPCs/Fairy/RingBulletD"), projectile.Center - Main.screenPosition, null, Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
                 return false;
             }
             spriteBatch.End();

@@ -24,7 +24,6 @@ namespace VirtualDream
         public override void ResetEffects()
         {
             screenShakeStrength = 0;
-
             if (poisionLifeCostPerSecond > 0)
             {
                 if (Player.lifeRegen > 0)
