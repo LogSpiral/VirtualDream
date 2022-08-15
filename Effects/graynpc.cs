@@ -14,7 +14,7 @@ namespace IllusionBoundMod.Effects
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
         {
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Color drawColor)
         {

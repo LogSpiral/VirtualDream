@@ -302,7 +302,7 @@ namespace VirtualDream
                                 var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
                                 float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
                                 if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
-                                var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f;
+                                var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler)  * .5f;//* (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11
                                 Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
                                 var realColor = Color.Lerp(Color.White, Color.Orange, f);
                                 realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
@@ -351,7 +351,7 @@ namespace VirtualDream
                 //spriteBatch.End();
                 //gd.SetRenderTarget(render);
                 //gd.Clear(Color.Transparent);
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
                 IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection * trans);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
@@ -445,6 +445,7 @@ namespace VirtualDream
                     List<int> indexer = new List<int>();
                     Player player = null;
                     List<Projectile> oculusTears = new List<Projectile>();
+                    List<Projectile> astralTears = new List<Projectile>();
 
                     #region 遍历查找
                     foreach (var proj in Main.projectile)
@@ -462,7 +463,7 @@ namespace VirtualDream
                                         var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
                                         float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
                                         if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
-                                        var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f;
+                                        var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;//* (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f
                                         Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
                                         var realColor = Color.Lerp(Color.White, Color.Orange, f);
                                         realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
@@ -476,15 +477,17 @@ namespace VirtualDream
                             }
                         }
                         if (proj.active && proj.type == ProjectileType<OculusReaverTear>()) oculusTears.Add(proj);
+                        if (proj.active && proj.type == ProjectileType<Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX.AstralTear>() && (int)proj.ai[1] != 0) astralTears.Add(proj);
+
                     }
                     #endregion
-                    if (bars.Count > 2 || oculusTears.Count > 0)
+                    if (bars.Count > 2 || oculusTears.Count > 0 || astralTears.Count > 0)
                     {
                         SpriteBatch spriteBatch = Main.spriteBatch;
                         var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                         var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
                         var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
-                        var resultMatrix = model * projection * trans;
+                        var resultMatrix = model * trans * projection;
                         #region 日炎刀合批
                         if (bars.Count > 2)
                         {
@@ -516,7 +519,7 @@ namespace VirtualDream
                             //spriteBatch.End();
                             gd.SetRenderTarget(render);
                             gd.Clear(Color.Transparent);
-                            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
                             IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(resultMatrix);
                             IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
                             IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
@@ -537,8 +540,8 @@ namespace VirtualDream
                             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
                             Main.graphics.GraphicsDevice.RasterizerState = originalState;
                             spriteBatch.End();
-                            //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
 
                             IllusionBoundMod.Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
                             IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
@@ -595,7 +598,7 @@ namespace VirtualDream
                             gd.SetRenderTarget(render);
                             gd.Clear(Color.Transparent);
                             #endregion
-                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);
+                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
                             /*                    sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);*///Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
                             foreach (var projectile in oculusTears)
                             {
@@ -632,7 +635,6 @@ namespace VirtualDream
                             gd.Clear(Color.Transparent);
                             sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
                             Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
-                            IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
                             IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
                                                                                          //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
                             IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.35f);
@@ -643,12 +645,78 @@ namespace VirtualDream
                                                                                                                        //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
                                                                                                                        //Main.NewText("!!!");
                             IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
+                            IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
 
                             sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
 
                             sb.End();
 
                             //最后在screenTarget上把刚刚的结果画上
+                            gd.SetRenderTarget(Main.screenTarget);
+                            gd.Clear(Color.Transparent);
+                            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                            sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                            sb.End();
+                            #endregion
+
+                        }
+                        if (astralTears.Count > 0)
+                        {
+
+
+                            var sb = Main.spriteBatch;
+                            #region Render
+                            var render = IllusionBoundMod.Instance.render;
+                            //var gd = Main.graphics.GraphicsDevice;
+                            //先在自己的render上画这个弹幕
+                            //sb.End();
+                            gd.SetRenderTarget(render);
+                            gd.Clear(Color.Transparent);
+                            #endregion
+                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
+                            /*                    sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);*///Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                            foreach (var projectile in astralTears)
+                            {
+                                if ((int)projectile.ai[1] == 1)
+                                {
+                                    Vector2 scale = new Vector2(1, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
+                                    var _color = Main.hslToRgb(projectile.localAI[0] % 1, 1, 0.75f);
+                                    //_color.A = 0;
+                                    var tex = IllusionBoundMod.GetTexture(projectile.ModProjectile.Texture.Replace("AstralTear", "CrystalLight"), false);
+                                    spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, _color * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);
+                                    spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, Color.White * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale, 0, 0);
+                                }
+                            }
+                            sb.End();
+                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
+                            /*                    sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);*///Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                            foreach (var projectile in astralTears)
+                            {
+                                if ((int)projectile.ai[1] != 1)
+                                {
+                                    var fac = projectile.ai[0].SymmetricalFactor(90, 10) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f);
+                                    IllusionBoundMod.TransformEffect.Parameters["factor1"].SetValue(fac);
+                                    IllusionBoundMod.TransformEffect.Parameters["factor2"].SetValue((float)ModTime / 30f);
+                                    IllusionBoundMod.TransformEffect.CurrentTechnique.Passes[0].Apply();
+                                    sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512, 0, 0);//new Rectangle(240,240,92,92)// * new Vector2(3, 1)
+                                }
+                            }
+                            sb.End();
+                            #region render
+                            gd.SetRenderTarget(Main.screenTargetSwap);
+                            gd.Clear(Color.Transparent);
+                            sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3");
+                            IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
+                            IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.35f);
+                            IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
+                            IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.30f);
+                            IllusionBoundMod.Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8);
+                            IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(Color.Cyan.ToVector4());
+                            IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));
+                            IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
+                            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                            sb.End();
                             gd.SetRenderTarget(Main.screenTarget);
                             gd.Clear(Color.Transparent);
                             sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
@@ -1109,7 +1177,7 @@ namespace VirtualDream
             //spriteBatch.Begin(SpriteSortMode.Deferred, (Blend.Zero, Blend.SourceColor).GetBlendState(), SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
             //spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(640, 280, 960, 560), ca);
             //         spriteBatch.End();
-            //         spriteBatch.Begin();
+            //         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             //         Main.NewText(cb);
 
             //spriteBatch.End();
@@ -1121,7 +1189,7 @@ namespace VirtualDream
             //effect.CurrentTechnique.Passes[0].Apply();
             //spriteBatch.DrawString(Main.fontMouseText, "这事好的", new Vector2(960, 560), Color.Cyan);
             //spriteBatch.End();
-            //spriteBatch.Begin();
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
     }
     public class ElectricTriangle

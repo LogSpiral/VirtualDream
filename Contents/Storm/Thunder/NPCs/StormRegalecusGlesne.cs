@@ -336,12 +336,12 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 vector2, Color drawColor)
         {
             spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.Center - Main.screenPosition, null, drawColor, npc.rotation, new Vector2(47, 78), 1f, npc.spriteDirection != 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow_1",false), npc.Center - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(47, 78), 1f, npc.spriteDirection != 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow_1", false), npc.Center - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(47, 78), 1f, npc.spriteDirection != 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
             //spriteBatch.End();
             //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
             spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow_2", false), npc.Center - Main.screenPosition, null, new Color(1, 1, 1f, 0) * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(47, 78), 1f, npc.spriteDirection != 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
             //spriteBatch.End();
-            //spriteBatch.Begin();
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
     }
@@ -595,12 +595,8 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
         }
         public void Draw(SpriteBatch sb, Vector2 pos, float r, float Alpha)
         {
-            sb.End();
-            sb.Begin(SpriteSortMode.Deferred, BlendState.Additive);
-            _draw(sb, pos, r, root, Color.Cyan * 0.4f * Alpha, 5f);
-            _draw(sb, pos, r, root, Color.White * 0.6f * Alpha, 3f);
-            sb.End();
-            sb.Begin();
+            _draw(sb, pos, r, root, Color.Cyan with { A = 0 } * 0.4f * Alpha, 5f);
+            _draw(sb, pos, r, root, Color.White with { A = 0 } * 0.6f * Alpha, 3f);
         }
         private void AddKeyPoints(Vector2 pos, float r, Node node)
         {

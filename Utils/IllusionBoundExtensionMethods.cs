@@ -608,7 +608,7 @@ namespace VirtualDream.Utils
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["uTime"].SetValue(0);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Backgrounds/StarSky_0");//IllusionBoundMod.MaskColor[4]
             //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.MaskColor[4];
@@ -619,7 +619,7 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertexInfos.ToArray(), 0, vertexInfos.Count / 3);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             //spriteBatch.End();
-            //spriteBatch.Begin();
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             //binaryWriter.Flush();
             //binaryWriter.Close();
@@ -1387,7 +1387,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             List<CustomVertexInfo> bars1 = new List<CustomVertexInfo>();
             if (shakeRadMax > 0)
@@ -1416,7 +1416,7 @@ namespace VirtualDream.Utils
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                effect.Parameters["uTransform"].SetValue(model * projection);
+                effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 effect.Parameters["maxFactor"].SetValue(maxFactor);
                 effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
@@ -1440,7 +1440,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone,null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
         public static void DrawQuadraticLaser_PassColorBar(this SpriteBatch spriteBatch, (Vector2 start, Vector2 unit)[] startAndUnits, int ColorBarIndex = 15, float length = 3200, float width = 512, float shakeRadMax = 0, float light = 4, int styleIndex = 10, bool timeOffset = false, float maxFactor = 0.5f, bool autoAdditive = true)
@@ -1449,12 +1449,12 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["maxFactor"].SetValue(maxFactor);
             effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
@@ -1505,7 +1505,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
         public static void DrawQuadraticLaser_PassNormal(this SpriteBatch spriteBatch, Vector2 start, Vector2 unit, Color color, float length = 3200, float width = 512, float shakeRadMax = 0, float light = 4, int styleIndex = 10, float maxFactor = 0.5f, bool autoAdditive = true)
@@ -1514,7 +1514,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             List<CustomVertexInfo> bars1 = new List<CustomVertexInfo>();
             if (shakeRadMax > 0)
@@ -1542,7 +1542,7 @@ namespace VirtualDream.Utils
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                effect.Parameters["uTransform"].SetValue(model * projection);
+                effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 effect.Parameters["maxFactor"].SetValue(maxFactor);
                 effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
@@ -1556,7 +1556,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
         public static void DrawQuadraticLaser_PassNormal(this SpriteBatch spriteBatch, (Vector2 start, Vector2 unit)[] startAndUnits, Color color, float length = 3200, float width = 512, float shakeRadMax = 0, float light = 4, int styleIndex = 10, float maxFactor = 0.5f, bool autoAdditive = true)
@@ -1565,12 +1565,12 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["maxFactor"].SetValue(maxFactor);
             effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
@@ -1611,7 +1611,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
         public static void DrawEffectLine(this SpriteBatch spriteBatch, Vector2 start, Vector2 _unit, Color color, float startLight = 1, float endLight = 0, float length = 3200, float width = 512, float shakeRadMax = 0, int styleIndex = 10, float maxFactor = 0.5f, bool autoAdditive = true)
@@ -1627,12 +1627,12 @@ namespace VirtualDream.Utils
                 if (autoAdditive)
                 {
                     spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 }
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                effect.Parameters["uTransform"].SetValue(model * projection);
+                effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 effect.Parameters["maxFactor"].SetValue(maxFactor);
                 effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
@@ -1670,7 +1670,7 @@ namespace VirtualDream.Utils
                 if (autoAdditive)
                 {
                     spriteBatch.End();
-                    spriteBatch.Begin();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 }
             }
             catch (Exception e)
@@ -1684,12 +1684,12 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["maxFactor"].SetValue(maxFactor);
             effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
@@ -1730,7 +1730,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
         public static void DrawEffectLine_StartAndEnd(this SpriteBatch spriteBatch, Vector2 start, Vector2 end, Color color, float startLight = 1, float endLight = 0, float width = 512, int styleIndex = 10, bool autoAdditive = true)
@@ -1739,12 +1739,12 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
             Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[styleIndex];
@@ -1777,7 +1777,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
         public static void DrawEffectLine_StartAndEnd(this SpriteBatch spriteBatch, (Vector2 start, Vector2 end)[] startAndEnds, Color color, float startLight = 1, float endLight = 0, float width = 512, int styleIndex = 10, bool autoAdditive = true)
@@ -1786,12 +1786,12 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
             Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[styleIndex];
@@ -1827,7 +1827,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
         public static int NextPow(this UnifiedRandom rand, int min, int max, int times, bool aMax = false)
@@ -1980,7 +1980,7 @@ namespace VirtualDream.Utils
         //	Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
         //	var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
         //	var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //	effect.Parameters["uTransform"].SetValue(model * projection);
+        //	effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
         //	effect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
         //	Main.graphics.GraphicsDevice.Textures[0] = baseTex;
         //	Main.graphics.GraphicsDevice.Textures[1] = aniTex;
@@ -1990,7 +1990,7 @@ namespace VirtualDream.Utils
         //	Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, loti.ToVertexInfo(), 0, loti.Length);
         //	Main.graphics.GraphicsDevice.RasterizerState = originalState;
         //	spriteBatch.End();
-        //	spriteBatch.Begin();
+        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //}
         public static void Draw3DPlane(this SpriteBatch spriteBatch, Effect effect, Texture2D baseTex, Texture2D aniTex, VertexTriangle3List loti, string pass = default)
         {
@@ -2000,7 +2000,7 @@ namespace VirtualDream.Utils
             }
 
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             RasterizerState rasterizerState = new RasterizerState
             {
@@ -2009,7 +2009,7 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = baseTex;
             Main.graphics.GraphicsDevice.Textures[1] = aniTex;
@@ -2019,12 +2019,12 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, loti.ToVertexInfo(), 0, loti.Length);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         public static void Draw3DPlane(this SpriteBatch spriteBatch, Effect effect, Texture2D baseTex, Texture2D aniTex, string pass = default, params VertexTriangle3[] tris)
         {
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             RasterizerState rasterizerState = new RasterizerState
@@ -2034,7 +2034,7 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = baseTex;
             Main.graphics.GraphicsDevice.Textures[1] = aniTex;
@@ -2044,12 +2044,12 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, VertexTriangle3.ToVertexInfo(tris), 0, tris.Length);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         public static void DrawPlane(this SpriteBatch spriteBatch, Effect effect, Texture2D baseTex, Texture2D aniTex, VertexTriangleList vttl, string pass = default)
         {
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             RasterizerState rasterizerState = new RasterizerState
@@ -2059,7 +2059,7 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = baseTex;
             Main.graphics.GraphicsDevice.Textures[1] = aniTex;
@@ -2069,12 +2069,12 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vttl.ToVertexInfo(), 0, vttl.Length);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         public static void DrawPlane(this SpriteBatch spriteBatch, Effect effect, Texture2D baseTex, Texture2D aniTex, string pass = default, params VertexTriangle[] tris)
         {
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             RasterizerState rasterizerState = new RasterizerState
@@ -2084,7 +2084,7 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = baseTex;
             Main.graphics.GraphicsDevice.Textures[1] = aniTex;
@@ -2094,7 +2094,7 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, VertexTriangle.ToVertexInfo(tris), 0, tris.Length);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         public static void DrawPath(this SpriteBatch spriteBatch, Vector2[] vectorFunc, Func<float, Color> colorFunc, Effect effect, Texture2D baseTex, Texture2D aniTex, Vector2 offest = default, float width = 16, float kOfX = 1, bool looped = false, Func<float, float> factorFunc = null, Func<float, float> widthFunc = null, Func<float, float> lightFunc = null, Func<float> timeFunc = null, string pass = default, Action<Vector2, int> doSth = null, bool alwaysDoSth = false)
         {
@@ -2140,7 +2140,7 @@ namespace VirtualDream.Utils
             if (triangleList.Count > 2)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 //RasterizerState rasterizerState = new RasterizerState();
                 //rasterizerState.CullMode = CullMode.None;
@@ -2153,7 +2153,7 @@ namespace VirtualDream.Utils
                 Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                effect.Parameters["uTransform"].SetValue(model * projection);
+                effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 effect.Parameters["uTime"].SetValue(timeFunc == null ? -(float)Main.time * 0.03f : timeFunc.Invoke());
                 Main.graphics.GraphicsDevice.Textures[0] = baseTex;
                 Main.graphics.GraphicsDevice.Textures[1] = aniTex;
@@ -2163,7 +2163,7 @@ namespace VirtualDream.Utils
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
 
         }
@@ -2176,7 +2176,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             var positions = new Vector2[counts];
             var bars = new CustomVertexInfo[counts * 2];
@@ -2240,7 +2240,7 @@ namespace VirtualDream.Utils
             {
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                effect.Parameters["uTransform"].SetValue(model * projection);
+                effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 effect.Parameters["uTime"].SetValue(timeFunc == null ? -(float)Main.time * 0.03f : timeFunc.Invoke());
                 Main.graphics.GraphicsDevice.Textures[0] = baseTex;
                 Main.graphics.GraphicsDevice.Textures[1] = aniTex;
@@ -2255,7 +2255,7 @@ namespace VirtualDream.Utils
             if (autoAdditive)
             {
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
 
         }
@@ -2794,7 +2794,7 @@ namespace VirtualDream.Utils
         public static void ShaderItemEffectInWorld(this Item item, SpriteBatch spriteBatch, Texture2D effectTex, Color c, float rotation, float light = 2)
         {
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             CustomVertexInfo[] triangleArry = new CustomVertexInfo[6];
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             //Color c = Main.hslToRgb((float)IllusionBoundMod.ModTime / 60 % 1, 1f, 0.75f);
@@ -2815,7 +2815,7 @@ namespace VirtualDream.Utils
             triangleArry[5] = triangleArry[0];
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue((float)IllusionBoundMod.ModTime2 / 60);//(float)IllusionBoundMod.ModTime / 60
             Main.graphics.GraphicsDevice.Textures[0] = TextureAssets.Item[item.type].Value;
             Main.graphics.GraphicsDevice.Textures[1] = effectTex;
@@ -2825,12 +2825,51 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleArry, 0, 2);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         public static void ShaderItemEffectInventory(this Item item, SpriteBatch spriteBatch, Vector2 position, Vector2 origin, Texture2D effectTex, Color c, float Scale, float light = 2)
         {
+            #region MyRegion
+            //spriteBatch.End();
+            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            //CustomVertexInfo[] triangleArry = new CustomVertexInfo[6];
+            //RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+            //Texture2D texture2D = TextureAssets.Item[item.type].Value;
+            //float offsetX = texture2D.Width * Scale;
+            //float offsetY = texture2D.Height * Scale;
+            ////Color c = Main.hslToRgb(0f, 1f, 0.75f);
+            ////triangleArry[0] = new CustomVertexInfo(position + Main.screenPosition - new Vector2(offsetX, offsetY) + origin, c, new Vector3(0, 0, light));
+            ////triangleArry[1] = new CustomVertexInfo(position + Main.screenPosition + new Vector2(offsetX, -offsetY) + origin, c, new Vector3(1, 0, light));
+            ////triangleArry[2] = new CustomVertexInfo(position + Main.screenPosition + new Vector2(offsetX, offsetY) + origin, c, new Vector3(1, 1, light));
+            ////triangleArry[3] = triangleArry[2];
+            ////triangleArry[4] = new CustomVertexInfo(position + Main.screenPosition - new Vector2(offsetX, -offsetY) + origin, c, new Vector3(0, 1, light));
+            ////triangleArry[5] = triangleArry[0];
+            ////Vector2 offset = ItemID.Sets.ItemIconPulse[item.type] ? default : new Vector2(-2, -2);
+            //position -= origin * Scale;
+            //triangleArry[0] = new CustomVertexInfo(position + Main.screenPosition, c, new Vector3(0, 0, light));
+            //triangleArry[1] = new CustomVertexInfo(position + Main.screenPosition + new Vector2(offsetX, 0), c, new Vector3(1, 0, light));
+            //triangleArry[2] = new CustomVertexInfo(position + Main.screenPosition + new Vector2(offsetX, offsetY), c, new Vector3(1, 1, light));
+            //triangleArry[3] = triangleArry[2];
+            //triangleArry[4] = new CustomVertexInfo(position + Main.screenPosition + new Vector2(0, offsetY), c, new Vector3(0, 1, light));
+            //triangleArry[5] = triangleArry[0];
+            //var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+            //var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+            //IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+            //IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue((float)IllusionBoundMod.ModTime / 60 % 1);
+            //Main.graphics.GraphicsDevice.Textures[0] = texture2D;
+            //Main.graphics.GraphicsDevice.Textures[1] = effectTex;
+            //Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            //Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+            //IllusionBoundMod.IMBellEffect.CurrentTechnique.Passes[0].Apply();
+            //Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleArry, 0, 2);
+            //Main.graphics.GraphicsDevice.RasterizerState = originalState;
+            //spriteBatch.End();
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            #endregion
+            
+            if (IllusionBoundMod.IMBellEffect == null) return;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
             CustomVertexInfo[] triangleArry = new CustomVertexInfo[6];
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             Texture2D texture2D = TextureAssets.Item[item.type].Value;
@@ -2854,7 +2893,7 @@ namespace VirtualDream.Utils
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
             IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * projection);
-            IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue((float)IllusionBoundMod.ModTime / 60 % 1);
+            IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue((float)IllusionBoundModSystem.ModTime / 60f % 1);
             Main.graphics.GraphicsDevice.Textures[0] = texture2D;
             Main.graphics.GraphicsDevice.Textures[1] = effectTex;
             Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
@@ -2863,7 +2902,7 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleArry, 0, 2);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
         }
         //public static void SetValue(this Tile tile, byte bh1, byte bh2, byte bh3, short fx, short fy, byte lqu, ushort sh, ushort type, ushort wall)
         //{
@@ -4390,11 +4429,11 @@ namespace VirtualDream.Utils
             var triangleList = projectile.TailVertexFromProj(Offset, Width, alpha, VeloTri);
             if (triangleList.Length < 3) return;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             //RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             //var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             //var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            //IllusionBoundMod.DefaultEffect.Parameters["uTransform"].SetValue(model * projection);
+            //IllusionBoundMod.DefaultEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             //IllusionBoundMod.DefaultEffect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
             //Main.graphics.GraphicsDevice.Textures[0] = heatMap;
             //Main.graphics.GraphicsDevice.Textures[1] = baseTex;
@@ -4408,7 +4447,7 @@ namespace VirtualDream.Utils
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
 
             IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
@@ -4431,7 +4470,7 @@ namespace VirtualDream.Utils
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, triangleList.Length / 3);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, additive ? BlendState.Additive : BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, additive ? BlendState.Additive : BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         //不好用，用新的
         public static void DrawShaderTail(SpriteBatch spriteBatch, Projectile projectile, ShaderTailTexture shaderTail = ShaderTailTexture.Fire, ShaderTailStyle tailStyle = ShaderTailStyle.Dust, float Width = 30, ShaderTailMainStyle shaderTailMainStyle = ShaderTailMainStyle.MiddleLine, Vector2 Offset = default, float alpha = 1, bool additive = false)
@@ -4500,7 +4539,7 @@ namespace VirtualDream.Utils
 
 
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 // 干掉注释掉就可以只显示三角形栅格
                 //RasterizerState rasterizerState = new RasterizerState();
@@ -4512,7 +4551,7 @@ namespace VirtualDream.Utils
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));//这个矩阵没仔细看，应该是负责把图像丢到三角形栅格中
 
                 // 把变换和所需信息丢给shader
-                IllusionBoundMod.DefaultEffect.Parameters["uTransform"].SetValue(model * projection);
+                IllusionBoundMod.DefaultEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 IllusionBoundMod.DefaultEffect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);//会动的那个贴图的横向偏移量(就是这个才能让它动起来Main.time
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.HeatMap[(int)shaderTail];
                 Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.BaseTexes[(int)shaderTailMainStyle];
@@ -4534,7 +4573,7 @@ namespace VirtualDream.Utils
 
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, additive ? BlendState.Additive : BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+                spriteBatch.Begin(SpriteSortMode.Immediate, additive ? BlendState.Additive : BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
         /// <summary>

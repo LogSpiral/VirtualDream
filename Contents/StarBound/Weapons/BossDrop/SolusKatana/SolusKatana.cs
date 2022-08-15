@@ -20,7 +20,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n由阿斯拉诺克斯造的是初版，后来她开源了......我的意思是，她公布了制作方法，方法很简单:搜集好材料然后怼到秘银砧上面(\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
 
         }
-        public virtual int CountOfShoot => 3;
         //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         //{
         //    if (Mod.HasAsset((Texture + "_Glow").Replace("VirtualDream/", "")))
@@ -148,7 +147,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         //        ssep.NewSwoosh(1 / 12f, item, ShaderSwooshEffectPlayer.ShaderSwooshStyle.LightBlade);
         //    }
         //}
-        public override int CountOfShoot => 5;
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -202,8 +200,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯化日炎刀与绝唱机甲日炎刀交汇的辉光，请确保你能驾驭它的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//二次强化的日炎刀，是由阿斯拉诺克斯制造的吗？\n
             DisplayName.SetDefault("日炎刀NEO");
         }
-        public override int CountOfShoot => 7;
-
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -214,7 +210,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             item.useTime = 10;
             item.useAnimation = 10;
         }
-        int time;
         public override void UseStyle(Player player, Rectangle rectangle)
         {
             //if (item.noUseGraphic || !item.melee || item.damage == 0 || item.useStyle != 1)
@@ -302,11 +297,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override Color VertexColor(float time) => Color.Lerp(Color.White, Color.Orange, time);
         public override bool UseRight => true;
         public override (int X, int Y) FrameMax => (3, 1);
-        public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort)
+        public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap)
         {
             additive = true;
             indexOfGreyTex = UpgradeValue(5, 5, 7);
             useHeatMap = true;
+        }
+        public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha) useMask)
+        {
             useBloom = (0f, 0.2f, 3f);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
             useDistort = (0f, 5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.006f);//  //
         }
@@ -586,7 +584,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             public Vector2 center;
             public byte direction;
             public bool Active => timeLeft > 0;
-            public float Scaler(SolusKatanaProj instance) => (instance.CollidingCenter - instance.DrawOrigin).Length() * instance.Player.GetAdjustedItemScale(instance.Player.HeldItem) / (float)Math.Sqrt(xScaler) * (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f;// * 3f
+            public float Scaler(SolusKatanaProj instance) => (instance.CollidingCenter - instance.DrawOrigin).Length() * instance.Player.GetAdjustedItemScale(instance.Player.HeldItem) / (float)Math.Sqrt(xScaler) * .5f;// * 3f//* (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11
             //public int whoAmI;
         }
         int currentSwoosh;
@@ -636,24 +634,29 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             return bars.ToArray();//base.CreateVertexs(drawCen, scaler, startAngle, endAngle, alphaLight).Union(bars)
         }
         public override bool WhenVertexDraw => controlState == 1 || base.WhenVertexDraw;
-        public override void Kill(int timeLeft)
+        public virtual void OnChargedShoot() 
         {
             int max = (int)(30 * factor);
             var vec = (CollidingCenter - DrawOrigin).RotatedBy(Rotation) + projCenter;
+            for (int n = 0; n < max; n++)
+            {
+                Dust.NewDustPerfect(vec, MyDustId.OrangeFx, (MathHelper.TwoPi / max * n).ToRotationVector2() * Main.rand.NextFloat(2, 8)).noGravity = true;
+            }
+            var count = UpgradeValue(3, 5, 7);
+            for (int i = 0; i < count; i++)
+            {
+                float factor = i / (count - 1f);
+                Vector2 finalVec = Vector2.Normalize(Main.MouseWorld - projCenter).RotatedBy(factor.Lerp(-MathHelper.Pi / 6, MathHelper.Pi / 6)) * 72f;
+                Projectile.NewProjectile(projectile.GetSource_FromThis(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(sourceItem), projectile.knockBack, projectile.owner);
+            }
+            SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
+        }
+        public override void Kill(int timeLeft)
+        {
+
             if (Charged && controlState == 2)
             {
-                for (int n = 0; n < max; n++)
-                {
-                    Dust.NewDustPerfect(vec, MyDustId.OrangeFx, (MathHelper.TwoPi / max * n).ToRotationVector2() * Main.rand.NextFloat(2, 8)).noGravity = true;
-                }
-                var count = UpgradeValue(3, 5, 7);
-                for (int i = 0; i < count; i++)
-                {
-                    float factor = i / (count - 1f);
-                    Vector2 finalVec = Vector2.Normalize(Main.MouseWorld - projCenter).RotatedBy(factor.Lerp(-MathHelper.Pi / 6, MathHelper.Pi / 6)) * 72f;
-                    Projectile.NewProjectile(projectile.GetSource_FromThis(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(sourceItem), projectile.knockBack, projectile.owner);
-                }
-                SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
+                OnChargedShoot();
             }
 
 
@@ -696,7 +699,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             {
                 Main.spriteBatch.DrawHammer(this, GlowEffect, Color.White, frame);
             }
-            if (controlState == 2 && UpgradeValue(false, true, true))
+            if (controlState == 2 && DrawLaserFire)
             {
                 Vector2 baseVec = (Rotation - MathHelper.PiOver2).ToRotationVector2();
                 Vector2 start = new Vector2(23 * baseVec.X - 20 * baseVec.Y, 23 * baseVec.Y + 20 * baseVec.X);
@@ -705,6 +708,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             }
             return base.PreDraw(ref lightColor);
         }
+        public virtual bool DrawLaserFire => UpgradeValue(false, true, true);
         public float swooshTimeLeft => 30;
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
@@ -734,7 +738,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             }
         }
         public Item sourceItem;
-        public T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
+        public virtual T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
         {
             var type = sourceItem.type;//Player.HeldItem.type
             if (type == ModContent.ItemType<SolusKatana>())
@@ -900,7 +904,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         //        //gd.SetRenderTarget(render);
         //        //gd.Clear(Color.Transparent);
         //        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-        //        IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection);
+        //        IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
         //        IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
         //        IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
         //        IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
@@ -1133,7 +1137,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
     //            //gd.SetRenderTarget(render);
     //            //gd.Clear(Color.Transparent);
     //            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-    //            IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection);
+    //            IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
     //            IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
     //            IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
     //            IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);

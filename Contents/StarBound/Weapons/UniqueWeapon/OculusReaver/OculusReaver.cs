@@ -140,6 +140,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
                 }
 
             }
+            //Main.NewText(new NPCs.Baron.Baron().CanTownNPCSpawn(10, 10));
             base.OnRelease(charged, left);
         }
         public override Rectangle? frame => projTex.Frame(2, 1, UpgradeValue(0, 1));

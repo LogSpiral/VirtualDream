@@ -158,12 +158,8 @@ namespace VirtualDream.Utils
 
         public void Draw(SpriteBatch sb, Vector2 pos, Vector2 vel)
         {
-            sb.End();
-            sb.Begin(SpriteSortMode.Deferred, BlendState.Additive);
-            _draw(sb, pos, vel, root, Color.Cyan * 0.4f, 5f);
-            _draw(sb, pos, vel, root, Color.White * 0.6f, 3f);
-            sb.End();
-            sb.Begin();
+            _draw(sb, pos, vel, root, Color.Cyan with { A = 0 } * 0.4f, 5f);
+            _draw(sb, pos, vel, root, Color.White with { A = 0 } * 0.6f, 3f);
         }
 
         public void SpawnDust(Vector2 pos, Vector2 vel)
@@ -327,7 +323,7 @@ namespace VirtualDream.Utils
             _draw(sb, pos, vel, root, Color.Cyan * 0.4f, 5f);
             _draw(sb, pos, vel, root, Color.White * 0.6f, 3f);
             sb.End();
-            sb.Begin();
+            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
         public void SpawnDust(Vector2 pos, Vector2 vel)

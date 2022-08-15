@@ -61,7 +61,7 @@ namespace VirtualDream
     //            //triangleArry[5] = triangleArry[0];
     //            //var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
     //            //var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-    //            //IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * projection);
+    //            //IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
     //            //IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue((float)IllusionBoundMod.ModTime / 300);
     //            //Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.MaskColor[6];
     //            //Main.graphics.GraphicsDevice.Textures[1] = GetTexture("IllusionBoundMod/Backgrounds/StormSky");

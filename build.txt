@@ -1,6 +1,6 @@
 ﻿displayName = 幻世边境 ~ The Edge Of Imaginary Stories
 author = 阿汪(向内延伸的对数螺线)
-version = 0.0.1
+version = 0.0.2
 hideResources = false
 hideCode = false
 includeSource = true

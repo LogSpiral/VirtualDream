@@ -331,7 +331,8 @@ namespace VirtualDream.Utils.BaseClasses
             return bars;
         }
         public virtual Color VertexColor(float time) => Color.White;
-        public virtual void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort) { }
+        public virtual void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap) { }
+        public virtual void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha) useMask) { }
         public virtual bool RedrawSelf => false;
         public virtual bool WhenVertexDraw => !Charging && Charged;
         protected Texture2D heatMap;
@@ -366,9 +367,10 @@ namespace VirtualDream.Utils.BaseClasses
             var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
             var _center = projCenter;// - (new Vector2(0, projTex.Size().Y / FrameMax.Y) - DrawOrigin).RotatedBy(Rotation)
 
-            var drawCen = Player.gravDir == -1 ? new Vector2(_center.X, (2 * (Main.screenPosition + new Vector2(960, 560)) - _center - new Vector2(0, 96)).Y) : _center;
+            //var drawCen = Player.gravDir == -1 ? new Vector2(_center.X, (2 * (Main.screenPosition + new Vector2(960, 560)) - _center - new Vector2(0, 96)).Y) : _center;
+            var drawCen = Player.Center;
             float xScaler = 1f;
-            float scaler = (projTex.Size() / new Vector2(FrameMax.X, FrameMax.Y)).Length() * Player.GetAdjustedItemScale(Player.HeldItem) / xScaler * trans.M11 - (new Vector2(0, projTex.Size().Y / FrameMax.Y) - DrawOrigin).Length() * 3;//(CollidingCenter - DrawOrigin).Length() * 1.414f
+            float scaler = (projTex.Size() / new Vector2(FrameMax.X, FrameMax.Y)).Length() * Player.GetAdjustedItemScale(Player.HeldItem) / xScaler - (new Vector2(0, projTex.Size().Y / FrameMax.Y) - DrawOrigin).Length() * 3;//(CollidingCenter - DrawOrigin).Length() * 1.414f// * trans.M11
             //Main.NewText(-(new Vector2(0, projTex.Size().Y / FrameMax.Y) - DrawOrigin).Length());
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
@@ -382,9 +384,11 @@ namespace VirtualDream.Utils.BaseClasses
             int indexOfGreyTex = 7;
             float endAngle = Player.direction == -1 ? MathHelper.Pi / 8 : (-MathHelper.PiOver2 - MathHelper.Pi / 8);
             bool useHeatMap = false;
-            (float M, float Intensity, float Range) useBloom = (0, 0, 0);
-            (float M, float Range, Vector2 director) useDistort = (0, 0, default);
-            VertexInfomation(ref additive, ref indexOfGreyTex, ref endAngle, ref useHeatMap, ref useBloom, ref useDistort);
+            (float M, float Intensity, float Range) useBloom = default;
+            (float M, float Range, Vector2 director) useDistort = default;
+            (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha) useMask = default;
+            VertexInfomation(ref additive, ref indexOfGreyTex, ref endAngle, ref useHeatMap);
+            RenderInfomation(ref useBloom, ref useDistort, ref useMask);
             int[] whenSkip = new int[0];
             CustomVertexInfo[] bars = CreateVertexs(drawCen, scaler, Rotation, endAngle, additive ? 0.6f : Lighting.GetColor((projCenter / 16).ToPoint().X, (projCenter / 16).ToPoint().Y).R / 255f * .6f, ref whenSkip);
             if (bars.Length < 2) goto mylable;
@@ -451,15 +455,15 @@ namespace VirtualDream.Utils.BaseClasses
             //}
             #endregion
             //IllusionBoundMod.bloomValue += useBloom;
-            if ((useBloom.Range != 0 || useDistort.director != default) && (Lighting.Mode == Terraria.Graphics.Light.LightMode.White || Lighting.Mode == Terraria.Graphics.Light.LightMode.Color))
+            if ((useBloom.Range != 0 || useDistort.director != default || useMask.fillTex != null) && (Lighting.Mode == Terraria.Graphics.Light.LightMode.White || Lighting.Mode == Terraria.Graphics.Light.LightMode.Color))
             {
                 GraphicsDevice gd = Main.instance.GraphicsDevice;
                 RenderTarget2D render = IllusionBoundMod.Instance.render;
                 sb.End();
                 gd.SetRenderTarget(render);
                 gd.Clear(Color.Transparent);
-                sb.Begin(SpriteSortMode.Immediate, additive ? BlendState.Additive : BlendState.NonPremultiplied, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection);
+                sb.Begin(SpriteSortMode.Immediate, additive ? BlendState.Additive : BlendState.NonPremultiplied, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
                 IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
@@ -529,7 +533,48 @@ namespace VirtualDream.Utils.BaseClasses
                     }
                     //Main.NewText(IllusionBoundMod.Distort.CurrentTechnique.Passes.Count);
                 }
+                if (useMask.fillTex != null)
+                {
+                    #region MyRegion
+                    //gd.SetRenderTarget(Main.screenTargetSwap);
+                    //gd.Clear(Color.Transparent);
+                    //sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                    //Main.graphics.GraphicsDevice.Textures[1] = useMask.fillTex;
+                    //IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
+                    //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
+                    //IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(useMask.tier1);
+                    //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(useMask.lightAsAlpha);
+                    //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(useMask.tier2);
+                    //IllusionBoundMod.Distort.Parameters["position"].SetValue(useMask.offset);
+                    //IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(useMask.glowColor.ToVector4());
+                    //IllusionBoundMod.Distort.Parameters["maskBoundColor"].SetValue(useMask.boundColor.ToVector4());
+                    //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(useMask.texSize);
+                    //sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                    //sb.End();
+                    //gd.SetRenderTarget(Main.screenTarget);
+                    //gd.Clear(Color.Transparent);
+                    //sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                    //sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                    //sb.End();
+                    #endregion
 
+                    gd.SetRenderTarget(Main.screenTargetSwap);
+                    gd.Clear(Color.Transparent);
+                    Main.graphics.GraphicsDevice.Textures[1] = useMask.fillTex;
+                    IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
+                    IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
+                    IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(useMask.tier1);
+                    IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(useMask.lightAsAlpha);
+                    IllusionBoundMod.Distort.Parameters["tier2"].SetValue(useMask.tier2);
+                    IllusionBoundMod.Distort.Parameters["position"].SetValue(useMask.offset);
+                    IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(useMask.glowColor.ToVector4());
+                    IllusionBoundMod.Distort.Parameters["maskBoundColor"].SetValue(useMask.boundColor.ToVector4());
+                    IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(useMask.texSize);
+                    sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                    gd.SetRenderTarget(Main.screenTarget);
+                    gd.Clear(Color.Transparent);
+                    sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                }
 
 
 
@@ -541,14 +586,14 @@ namespace VirtualDream.Utils.BaseClasses
                 //gd.Clear(Color.Transparent);
                 //sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                sb.Draw(render, Vector2.Zero, Color.White);
+                //sb.Draw(render, Vector2.Zero, Color.White);
 
             }
             else
             {
                 sb.End();
                 sb.Begin(SpriteSortMode.Immediate, additive ? BlendState.Additive : BlendState.NonPremultiplied, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection);
+                IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
                 IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);

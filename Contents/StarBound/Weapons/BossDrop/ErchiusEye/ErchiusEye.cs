@@ -268,12 +268,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             if (Factor < 0.5f || !Player.controlUseItem) return;
             var factor = 2 * (Factor - 0.5f);
             Main.spriteBatch.DrawQuadraticLaser_PassNormal(ShootCenter, Vector2.Normalize(Projectile.velocity), Color.Purple, 1024 * factor, 256 * factor, 0.2f * factor, 4, UpgradeValue(1, 1, 10));
+            //Main.spriteBatch.DrawQuadraticLaser_PassColorBar(ShootCenter, Vector2.Normalize(Projectile.velocity), 10, 4096 * factor, 1024 * factor, 0, 4, UpgradeValue(1, 1, 10), timeOffset: true);//0.2f * factor
 
             //var sb = Main.spriteBatch;
             //var render = IllusionBoundMod.Instance.render;
             //GraphicsDevice gd = Main.instance.GraphicsDevice;
             //sb.End();
-            //sb.Begin();
+            //sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             //gd.SetRenderTarget(render);
             //gd.Clear(Color.Transparent);
             //Main.spriteBatch.DrawQuadraticLaser_PassNormal(ShootCenter, Vector2.Normalize(Projectile.velocity), Color.Purple, 4096 * factor, 1024 * factor, 0.2f * factor, 4, UpgradeValue(1, 1, 10));

@@ -39,11 +39,7 @@ namespace VirtualDream.Contents.StarBound.OtherProjectiles
             //Main.NewText(projectile.timeLeft);
             if (projectile.velocity != default && projectile.timeLeft == 59)// 
                 projectile.rotation = projectile.velocity.ToRotation();
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
-            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 12, 0, projectile.frame), Color.White * (60f - projectile.timeLeft).HillFactor(60), projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f / new Vector2(1f, 12f), 2f, 0, 0);
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
+            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 12, 0, projectile.frame), Color.White with { A = 0 } * (60f - projectile.timeLeft).HillFactor(60), projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f / new Vector2(1f, 12f), 2f, 0, 0);
             return false;
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

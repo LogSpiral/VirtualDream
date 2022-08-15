@@ -980,7 +980,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //		RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
         //		var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
         //		var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
         //		IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
         //		IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
         //		Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -998,10 +998,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList6.ToArray(), 0, triangleList6.Count / 3);
         //		Main.graphics.GraphicsDevice.RasterizerState = originalState;
         //		spriteBatch.End();
-        //		spriteBatch.Begin();
+        //		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	}
         //	spriteBatch.End();
-        //	spriteBatch.Begin();
+        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	return false;
         //}
         public override bool ShouldUpdatePosition()
@@ -1161,7 +1161,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
                 IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -1179,10 +1179,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
         public override bool ShouldUpdatePosition()
@@ -1431,7 +1431,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //		RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
         //		var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
         //		var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
         //		IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
         //		IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
         //		Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -1449,10 +1449,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList6.ToArray(), 0, triangleList6.Count / 3);
         //		Main.graphics.GraphicsDevice.RasterizerState = originalState;
         //		spriteBatch.End();
-        //		spriteBatch.Begin();
+        //		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	}
         //	spriteBatch.End();
-        //	spriteBatch.Begin();
+        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	return false;
         //}
         public override bool ShouldUpdatePosition()
@@ -1599,16 +1599,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         public NPC owner => Main.npc[projectile.frameCounter];
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
             if (projectile.timeLeft > 210)
             {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), baseOfX + projectile.Center - 24 * Vector2.Normalize(baseOfX) - Main.screenPosition, new Rectangle(0, 0, 32, 48), Color.White * MathHelper.Clamp((480 - projectile.timeLeft) / 30f, 0, 1), baseOfX.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), 1f, 0, 0);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), (baseOfX - 48 * Vector2.Normalize(baseOfX)) * 0.5f + projectile.Center - Main.screenPosition, new Rectangle(0, 48, 32, 48), Color.White * MathHelper.Clamp((480 - projectile.timeLeft) / 30f, 0, 1), baseOfX.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), new Vector2(1, (baseOfX.Length() - 48) / 48), 0, 0);
+                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), baseOfX + projectile.Center - 24 * Vector2.Normalize(baseOfX) - Main.screenPosition, new Rectangle(0, 0, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((480 - projectile.timeLeft) / 30f, 0, 1), baseOfX.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), 1f, 0, 0);
+                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), (baseOfX - 48 * Vector2.Normalize(baseOfX)) * 0.5f + projectile.Center - Main.screenPosition, new Rectangle(0, 48, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((480 - projectile.timeLeft) / 30f, 0, 1), baseOfX.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), new Vector2(1, (baseOfX.Length() - 48) / 48), 0, 0);
                 if (projectile.timeLeft < 360)
                 {
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), baseOfY + projectile.Center - 24 * Vector2.Normalize(baseOfY) - Main.screenPosition, new Rectangle(0, 0, 32, 48), Color.White * MathHelper.Clamp((360 - projectile.timeLeft) / 30f, 0, 1), baseOfY.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), 1f, 0, 0);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), (baseOfY - 48 * Vector2.Normalize(baseOfY)) * 0.5f + projectile.Center - Main.screenPosition, new Rectangle(0, 48, 32, 48), Color.White * MathHelper.Clamp((360 - projectile.timeLeft) / 30f, 0, 1), baseOfY.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), new Vector2(1, (baseOfY.Length() - 48) / 48), 0, 0);
+                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), baseOfY + projectile.Center - 24 * Vector2.Normalize(baseOfY) - Main.screenPosition, new Rectangle(0, 0, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((360 - projectile.timeLeft) / 30f, 0, 1), baseOfY.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), 1f, 0, 0);
+                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), (baseOfY - 48 * Vector2.Normalize(baseOfY)) * 0.5f + projectile.Center - Main.screenPosition, new Rectangle(0, 48, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((360 - projectile.timeLeft) / 30f, 0, 1), baseOfY.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), new Vector2(1, (baseOfY.Length() - 48) / 48), 0, 0);
                 }
             }
             else
@@ -1633,14 +1631,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 f = MathHelper.Clamp(f * 7, 0, 1);
                 for (int n = -10; n <= 10; n++)
                 {
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfY - Main.screenPosition, null, Color.Purple * l, baseOfX.ToRotation(), new Vector2(16, 48), new Vector2(baseOfX.Length() * 0.625f * f, 0.5f), 0, 0);// 20 / 32
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfX - Main.screenPosition, null, Color.Purple * l, baseOfY.ToRotation(), new Vector2(16, 48), new Vector2(baseOfY.Length() * 0.625f * f, 0.5f), 0, 0);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfY - Main.screenPosition, null, Color.White * l * (0.75f + projectile.timeLeft % 2 * 0.25f), baseOfX.ToRotation(), new Vector2(16, 48), new Vector2(baseOfX.Length() * 0.625f * f, 0.25f), 0, 0);// 20 / 32
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfX - Main.screenPosition, null, Color.White * l * (0.75f + projectile.timeLeft % 2 * 0.25f), baseOfY.ToRotation(), new Vector2(16, 48), new Vector2(baseOfY.Length() * 0.625f * f, 0.25f), 0, 0);
+                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfY - Main.screenPosition, null, Color.Purple with { A = 0 } * l, baseOfX.ToRotation(), new Vector2(16, 48), new Vector2(baseOfX.Length() * 0.625f * f, 0.5f), 0, 0);// 20 / 32
+                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfX - Main.screenPosition, null, Color.Purple with { A = 0 } * l, baseOfY.ToRotation(), new Vector2(16, 48), new Vector2(baseOfY.Length() * 0.625f * f, 0.5f), 0, 0);
+                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfY - Main.screenPosition, null, Color.White with { A = 0 } * l * (0.75f + projectile.timeLeft % 2 * 0.25f), baseOfX.ToRotation(), new Vector2(16, 48), new Vector2(baseOfX.Length() * 0.625f * f, 0.25f), 0, 0);// 20 / 32
+                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfX - Main.screenPosition, null, Color.White with { A = 0 } * l * (0.75f + projectile.timeLeft % 2 * 0.25f), baseOfY.ToRotation(), new Vector2(16, 48), new Vector2(baseOfY.Length() * 0.625f * f, 0.25f), 0, 0);
                 }
             }
-            spriteBatch.End();
-            spriteBatch.Begin();
             return false;
         }
     }
@@ -1826,7 +1822,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //	//	RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
         //	//	var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
         //	//	var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //	//	IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+        //	//	IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
         //	//	IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
         //	//	IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
         //	//	Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -1844,10 +1840,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //	//	}
         //	//	Main.graphics.GraphicsDevice.RasterizerState = originalState;
         //	//	spriteBatch.End();
-        //	//	spriteBatch.Begin();
+        //	//	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	//}
         //	//spriteBatch.End();
-        //	//spriteBatch.Begin();
+        //	//spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	return false;
         //}
         public override bool ShouldUpdatePosition()
@@ -2016,7 +2012,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //		RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
         //		var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
         //		var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
         //		IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
         //		IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
         //		Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -2029,10 +2025,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList1.ToArray(), 0, triangleList1.Count / 3);
         //		Main.graphics.GraphicsDevice.RasterizerState = originalState;
         //		spriteBatch.End();
-        //		spriteBatch.Begin();
+        //		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	}
         //	spriteBatch.End();
-        //	spriteBatch.Begin();
+        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	return false;
         //}
         public override bool ShouldUpdatePosition()
@@ -2171,13 +2167,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             var factor = projectile.timeLeft <= 60 ? (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 60f)) : 0.5f * (90 - projectile.timeLeft) / 30f;
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + dirVec * 0.5f - Main.screenPosition, null, Color.Purple * factor, projectile.ai[0], new Vector2(16, 48), new Vector2(projectile.ai[1] / 32f, (projectile.timeLeft <= 180 ? 240f * factor : 16f) / 192f), 0, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + dirVec * 0.5f - Main.screenPosition, null, Color.White * factor, projectile.ai[0], new Vector2(16, 48), new Vector2(projectile.ai[1] / 32f, (projectile.timeLeft <= 180 ? 240f * factor : 16f) / 384f), 0, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + dirVec * 0.5f - Main.screenPosition, null, Color.Purple with { A = 0 } * factor, projectile.ai[0], new Vector2(16, 48), new Vector2(projectile.ai[1] / 32f, (projectile.timeLeft <= 180 ? 240f * factor : 16f) / 192f), 0, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + dirVec * 0.5f - Main.screenPosition, null, Color.White with { A = 0 } * factor, projectile.ai[0], new Vector2(16, 48), new Vector2(projectile.ai[1] / 32f, (projectile.timeLeft <= 180 ? 240f * factor : 16f) / 384f), 0, 0);
 
-            spriteBatch.End();
-            spriteBatch.Begin();
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);
             return false;

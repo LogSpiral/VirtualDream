@@ -254,17 +254,12 @@ else
         }
         public virtual bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive
-                , SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value
                 , projectile.Center - Main.screenPosition
                 , new Rectangle(scale * (int)projectile.ai[0]
                 , 0, projectile.width, projectile.height)
-                , Color.White * Alpha, projectile.velocity.ToRotation() + rotation
+                , Color.White with { A = 0 } * Alpha, projectile.velocity.ToRotation() + rotation
                 , new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
-            spriteBatch.End();
-            spriteBatch.Begin();
             return false;
         }
         public virtual void PostDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -1001,9 +996,9 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            //IllusionBoundMod.LaserEffect.Parameters["uTransform"].SetValue(model * projection);
+            //IllusionBoundMod.LaserEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             //IllusionBoundMod.LaserEffect.Parameters["MainColor"].SetValue(new Vector4(1, 0, 0, 1));
-            IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
             IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Color.Red.ToVector4());
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.LaserTex[(projectile.timeLeft / 2) % 4];
@@ -1017,7 +1012,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, Points, 0, 2);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
         public HugeJadeBullet()
@@ -1309,7 +1304,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
         //		DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Nebula, ShaderTailStyle.Dust);
         //	}
         //	spriteBatch.End();
-        //	spriteBatch.Begin();
+        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	return false;
         //}
     }
@@ -1390,18 +1385,14 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
             if ((int)projectile.ai[1] == 1)
             {
-                spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (projectile.frame + 4 * (int)projectile.ai[0]), 0, projectile.width, projectile.height), Color.White * Alpha, projectile.rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
+                spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (projectile.frame + 4 * (int)projectile.ai[0]), 0, projectile.width, projectile.height), Color.White with { A = 0 } * Alpha, projectile.rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
             }
             else
             {
-                spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (projectile.frame + 4 * (int)projectile.ai[0]), 0, projectile.width, projectile.height), Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
+                spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (projectile.frame + 4 * (int)projectile.ai[0]), 0, projectile.width, projectile.height), Color.White with { A = 0 } * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
             }
-            spriteBatch.End();
-            spriteBatch.Begin();
             return false;
         }
         public override void AI()
@@ -1575,7 +1566,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
                 {
                     hue--;
                 }
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
                 IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(hue, 1, 0.5f).ToVector4());
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.LaserTex[projectile.frame];
@@ -1588,10 +1579,10 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
         public override void PostAI()
@@ -1822,11 +1813,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
                 spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/TouhouProject/NPCs/Fairy/RingBulletD"), projectile.Center - Main.screenPosition, null, Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
                 return false;
             }
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, projectile.width, projectile.height), Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
-            spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, projectile.width, projectile.height), Color.White with { A = 0 } * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
             return false;
         }
         protected override void AI_1()
@@ -1954,15 +1941,11 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, projectile.width, projectile.height), Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
+            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, projectile.width, projectile.height), Color.White with { A = 0 } * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
             if ((int)projectile.ai[1] == 2)
             {
                 DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Solar, ShaderTailStyle.Light);
             }
-            spriteBatch.End();
-            spriteBatch.Begin();
             return false;
         }
     }
@@ -1988,7 +1971,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
         //		spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, projectile.width, projectile.height), Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
         //	}
         //	spriteBatch.End();
-        //	spriteBatch.Begin();
+        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //	return false;
         //}
         protected override void AI_1()

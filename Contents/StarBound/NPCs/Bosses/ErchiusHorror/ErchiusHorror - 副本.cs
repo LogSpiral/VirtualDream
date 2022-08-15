@@ -763,7 +763,7 @@
 //                RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 //                var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
 //                var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
 //                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
 //                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
 //                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -781,10 +781,10 @@
 //                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList6.ToArray(), 0, triangleList6.Count / 3);
 //                Main.graphics.GraphicsDevice.RasterizerState = originalState;
 //                spriteBatch.End();
-//                spriteBatch.Begin();
+//                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            }
 //            spriteBatch.End();
-//            spriteBatch.Begin();
+//            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            return false;
 //        }
 //        //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -892,7 +892,7 @@
 //        //		RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 //        //		var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
 //        //		var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-//        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+//        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
 //        //		IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
 //        //		IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
 //        //		Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -910,10 +910,10 @@
 //        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList6.ToArray(), 0, triangleList6.Count / 3);
 //        //		Main.graphics.GraphicsDevice.RasterizerState = originalState;
 //        //		spriteBatch.End();
-//        //		spriteBatch.Begin();
+//        //		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //        //	}
 //        //	spriteBatch.End();
-//        //	spriteBatch.Begin();
+//        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //        //	return false;
 //        //}
 //        public override bool ShouldUpdatePosition()
@@ -1071,7 +1071,7 @@
 //                RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 //                var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
 //                var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
 //                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
 //                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
 //                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -1089,10 +1089,10 @@
 //                }
 //                Main.graphics.GraphicsDevice.RasterizerState = originalState;
 //                spriteBatch.End();
-//                spriteBatch.Begin();
+//                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            }
 //            spriteBatch.End();
-//            spriteBatch.Begin();
+//            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            return false;
 //        }
 //        public override bool ShouldUpdatePosition()
@@ -1254,7 +1254,7 @@
 //                RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 //                var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
 //                var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
 //                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
 //                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
 //                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -1272,10 +1272,10 @@
 //                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList6.ToArray(), 0, triangleList6.Count / 3);
 //                Main.graphics.GraphicsDevice.RasterizerState = originalState;
 //                spriteBatch.End();
-//                spriteBatch.Begin();
+//                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            }
 //            spriteBatch.End();
-//            spriteBatch.Begin();
+//            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            return false;
 //        }
 //        public override bool ShouldUpdatePosition()
@@ -1515,7 +1515,7 @@
 //                RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 //                var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
 //                var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
 //                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
 //                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
 //                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -1533,10 +1533,10 @@
 //                }
 //                Main.graphics.GraphicsDevice.RasterizerState = originalState;
 //                spriteBatch.End();
-//                spriteBatch.Begin();
+//                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            }
 //            spriteBatch.End();
-//            spriteBatch.Begin();
+//            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            return false;
 //        }
 //        public override bool ShouldUpdatePosition()
@@ -1637,7 +1637,7 @@
 //                RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 //                var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
 //                var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+//                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
 //                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
 //                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
 //                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -1650,10 +1650,10 @@
 //                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList1.ToArray(), 0, triangleList1.Count / 3);
 //                Main.graphics.GraphicsDevice.RasterizerState = originalState;
 //                spriteBatch.End();
-//                spriteBatch.Begin();
+//                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            }
 //            spriteBatch.End();
-//            spriteBatch.Begin();
+//            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 //            return false;
 //        }
 //        public override bool ShouldUpdatePosition()

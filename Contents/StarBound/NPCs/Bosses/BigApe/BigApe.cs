@@ -50,7 +50,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             npc.boss = true;
             //Music = MusicID.Boss3;
             //ModLoader.t
-            Music = ModLoader.TryGetMod("VirtualDreamMusic",out Mod music) ? MusicLoader.GetMusicSlot(music, "Assets/Music/StrawberryCrisis") : MusicID.Boss3;
+            Music = ModLoader.TryGetMod("VirtualDreamMusic", out Mod music) ? MusicLoader.GetMusicSlot(music, "Assets/Music/StrawberryCrisis") : MusicID.Boss3;
             //MusicPriority = MusicPriority.BossHigh;
 
         }
@@ -1535,7 +1535,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         //    //spriteBatch.End();
         //    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
         //    //spriteBatch.End();
-        //    //spriteBatch.Begin();
+        //    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //    return false;
         //}
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -1771,7 +1771,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             if (autoAdditive)
             {
                 Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             Vector2[] key = new Vector2[] { new Vector2(0, -16), new Vector2(0, 16), new Vector2(96, -16), new Vector2(96, -24), new Vector2(112, 0), new Vector2(128, 0), new Vector2(96, 16), new Vector2(96, 24) };
             Vector2[] Bkey = key.CloneArray();
@@ -1815,7 +1815,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
             Effect effect = IllusionBoundMod.ShaderSwoosh;
-            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture(ApePath + "Style_10");
             Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture(ApePath + "Style_9");
@@ -1859,7 +1859,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             if (autoAdditive)
             {
                 Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -1872,7 +1872,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     float alpha = MathHelper.Clamp(1 - Math.Abs(60 - projectile.timeLeft) / 45f, 0, 1);
                     RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                     Main.spriteBatch.End();
-                    Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
+                    Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                     List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
                     for (int i = 0; i < 30; i++)
                     {
@@ -1900,7 +1900,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                         var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                         var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                        IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * projection);
+                        IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                         IllusionBoundMod.ShaderSwoosh.Parameters["uTime"].SetValue(-(float)Main.time * 0.06f);
                         //Main.graphics.GraphicsDevice.Textures[0] = ModContent.GetTexture("IllusionBoundMod/Images/BaseTex");
                         //Main.graphics.GraphicsDevice.Textures[1] = ModContent.GetTexture("IllusionBoundMod/Images/AniTex");
@@ -1958,7 +1958,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     //    );
                     //}
                     Main.spriteBatch.End();
-                    Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null);
+                    Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 }
                 else
                 {
@@ -2128,11 +2128,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
             if (projectile.frameCounter > 0)
             {
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-                spriteBatch.Draw(IllusionBoundMod.MagicZone[3], targetPos - Main.screenPosition, null, Color.Cyan, -(float)IllusionBoundMod.ModTime / 60 * MathHelper.Pi, new Vector2(200), MathHelper.Clamp(projectile.frameCounter / 120f, 0, .25f), 0, 0);
-                spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Draw(IllusionBoundMod.MagicZone[3], targetPos - Main.screenPosition, null, Color.Cyan with { A = 0 }, -(float)IllusionBoundMod.ModTime / 60 * MathHelper.Pi, new Vector2(200), MathHelper.Clamp(projectile.frameCounter / 120f, 0, .25f), 0, 0);
             }
             return false;
         }
@@ -2176,13 +2172,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Items.Weapons.UniqueWeapon.ElectronHugeJadeBullet>()].Value, projectile.Center - Main.screenPosition, null, Color.White * Alpha, 0, new Vector2(128, 128), Size * .5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(ApePath + "ElectronHugeJadeBullet"), projectile.Center - Main.screenPosition, null, Color.White * Alpha, 0, new Vector2(128, 128), Size * .5f, SpriteEffects.None, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture(ApePath + "ElectronHugeJadeBullet"), projectile.Center - Main.screenPosition, null, Color.White with { A = 0 } * Alpha, 0, new Vector2(128, 128), Size * .5f, SpriteEffects.None, 0);
 
-            spriteBatch.End();
-            spriteBatch.Begin();
             return false;
         }
     }
@@ -2371,8 +2363,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
             Texture2D hugeTex = IllusionBoundMod.GetTexture(ApePath + "EnergyFistHuge");
             switch ((int)projectile.ai[0])
             {
@@ -2419,10 +2409,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         //IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, alpha: alpha1 * 2, additive: true);
                         for (int n = 0; n < 4; n++)
                         {
-                            spriteBatch.Draw(projTex, projectile.Center + new Vector2(4 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White * alpha1, projectile.rotation, new Vector2(8), 2, 0, 0);
+                            spriteBatch.Draw(projTex, projectile.Center + new Vector2(4 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(8), 2, 0, 0);
                         }
 
-                        spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, null, Color.White * alpha1, projectile.rotation, new Vector2(8), 2, 0, 0);
+                        spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(8), 2, 0, 0);
                         break;
                     }
                 case 1:
@@ -2432,10 +2422,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, alpha: alpha1 * 2, additive: true);
                         for (int n = 0; n < 4; n++)
                         {
-                            spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
+                            spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
                         }
 
-                        spriteBatch.Draw(hugeTex, projectile.Center - Main.screenPosition, null, Color.White * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
+                        spriteBatch.Draw(hugeTex, projectile.Center - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
                         break;
                     }
                 case 3:
@@ -2463,18 +2453,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                         projectile.hostile = !(projectile.timeLeft <= 60 || projectile.timeLeft >= 240);
                         var alpha1 = MathHelper.Clamp(150 - Math.Abs(150 - projectile.timeLeft), 0, 60) / 120f;
-                        IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, ShaderTailMainStyle.MiddleLine2, alpha: alpha1, additive: true);
+                        IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, ShaderTailMainStyle.MiddleLine2, alpha: alpha1);
                         for (int n = 0; n < 4; n++)
                         {
-                            spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
+                            spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
                         }
 
-                        spriteBatch.Draw(hugeTex, projectile.Center - Main.screenPosition, null, Color.White * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
+                        spriteBatch.Draw(hugeTex, projectile.Center - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
                         break;
                     }
             }
-            spriteBatch.End();
-            spriteBatch.Begin();
             return false;
         }
 
@@ -2522,8 +2510,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
             if (projectile.timeLeft <= 60)
             {
                 projectile.hostile = false;
@@ -2535,12 +2521,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 {
                     Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition;
                     Color color = Color.White * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-                    spriteBatch.Draw(projectileTexture, drawPos, new Rectangle(0, frameHeight * projectile.frame, projectileTexture.Width, frameHeight), color * alpha, projectile.rotation, new Vector2(4, 2), projectile.scale - 0.1f * k, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(projectileTexture, drawPos, new Rectangle(0, frameHeight * projectile.frame, projectileTexture.Width, frameHeight), color with { A = 0 } * alpha, projectile.rotation, new Vector2(4, 2), projectile.scale - 0.1f * k, SpriteEffects.None, 0f);
                 }
                 //IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 6, alpha: alpha);
                 for (int n = 0; n < 4; n++)
                 {
-                    spriteBatch.Draw(projTex, projectile.Center + new Vector2(4 - 4 * projectile.timeLeft / 60f, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 30f * MathHelper.Pi) - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2, 0), Color.White * alpha, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
+                    spriteBatch.Draw(projTex, projectile.Center + new Vector2(4 - 4 * projectile.timeLeft / 60f, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 30f * MathHelper.Pi) - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2, 0), Color.White with { A = 0 } * alpha, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
                 }
 
                 //DrawItSelf(spriteBatch, new Vector2(4 - 4 * projectile.timeLeft / 60f, 0).RotatedBy(PiOver2 * n + projectile.timeLeft / 30f * Pi), alpha);
@@ -2553,17 +2539,15 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 {
                     Vector2 drawPos = projectile.oldPos[k] - Main.screenPosition;
                     Color color = Color.White * ((projectile.oldPos.Length - k) / (float)projectile.oldPos.Length);
-                    spriteBatch.Draw(projectileTexture, drawPos, new Rectangle(0, frameHeight * projectile.frame, projectileTexture.Width, frameHeight), color, projectile.rotation, new Vector2(4, 2), projectile.scale - 0.1f * k, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(projectileTexture, drawPos, new Rectangle(0, frameHeight * projectile.frame, projectileTexture.Width, frameHeight), color with { A = 0 }, projectile.rotation, new Vector2(4, 2), projectile.scale - 0.1f * k, SpriteEffects.None, 0f);
                 }
                 for (int n = 0; n < 4; n++)
                 {
-                    spriteBatch.Draw(projTex, projectile.Center + new Vector2(2, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 30f * MathHelper.Pi) - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2, 0), Color.White * .5f, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
+                    spriteBatch.Draw(projTex, projectile.Center + new Vector2(2, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 30f * MathHelper.Pi) - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2, 0), Color.White with { A = 0 } * .5f, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
                 }
                 //IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 6);
-                spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2, 0), Color.White, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
+                spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2, 0), Color.White with { A = 0 }, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
             }
-            spriteBatch.End();
-            spriteBatch.Begin();
             return false;
         }
     }
@@ -2723,15 +2707,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             else
             {
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-                spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(18, 11.5f), 2, 0, 0);
+                spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, projectile.rotation, new Vector2(18, 11.5f), 2, 0, 0);
                 //spriteBatch.Draw(TextureAssets.MagicPixel.Value, projectile.Center + projectile.rotation.ToRotationVector2() * 36 - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(0.5f), 4, 0, 0);
-                spriteBatch.End();
-                spriteBatch.Begin();
             }
             //spriteBatch.End();
-            //spriteBatch.Begin();
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
     }
@@ -2848,11 +2828,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             {
                 for (int i = 1; i < 5; i++)
                 {
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-                    spriteBatch.Draw(projTex, this[n, i] - Main.screenPosition, null, Color.White * (MathHelper.Clamp(300 - Math.Abs(300 - projectile.timeLeft), 0, 120) / 120f), (projectile.timeLeft / 300f * MathHelper.TwoPi * projectile.localAI[0] + MathHelper.Pi / 3 * n + MathHelper.PiOver2 * (attackFac * 3 + (1 - attackFac) * 2)) * (i % 2 * 2 - 1), new Vector2(18, 11.5f), (attackAble ? 2 : 1) * (i == 4 ? 1.5f : 1f), 0, 0);
-                    spriteBatch.End();
-                    spriteBatch.Begin();
+                    spriteBatch.Draw(projTex, this[n, i] - Main.screenPosition, null, Color.White with { A = 0 } * (MathHelper.Clamp(300 - Math.Abs(300 - projectile.timeLeft), 0, 120) / 120f), (projectile.timeLeft / 300f * MathHelper.TwoPi * projectile.localAI[0] + MathHelper.Pi / 3 * n + MathHelper.PiOver2 * (attackFac * 3 + (1 - attackFac) * 2)) * (i % 2 * 2 - 1), new Vector2(18, 11.5f), (attackAble ? 2 : 1) * (i == 4 ? 1.5f : 1f), 0, 0);
                     spriteBatch.DrawPath
                     (
                         t => GetVec(projectile.timeLeft + (int)(t * 5 * projectile.localAI[0]), n, i),
@@ -2995,7 +2971,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         //            spriteBatch.Draw(Main.projectileTexture[ModContent.ProjectileType<Fairy.LightJadeBullet>()], ((n / 128f) % 1).GetLerpValue(projPos) - Main.screenPosition, new Rectangle(128, 0, 32, 32), Color.White * v, (float)Main.time / 60f * MathHelper.TwoPi, new Vector2(16), 1.5f, 0, 0);// + (float)Main.time / 6000f
         //        }
         //        spriteBatch.End();
-        //        spriteBatch.Begin();
+        //        spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //        //spriteBatch.DrawEffectLine_StartAndEnd(new (Vector2, Vector2)[] { (Main.screenPosition, Main.screenPosition + new Vector2(1920, 1120)) }, Color.Cyan, 1, 1, 16, 1);
         //    }
         //    //spriteBatch.DrawLine(projectile.Center, new Vector2(256, 0), Color.White, 4, true, -Main.screenPosition);
@@ -3157,7 +3133,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     //    //RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                     //    //var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                     //    //var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                    //    //effect.Parameters["uTransform"].SetValue(model * projection);
+                    //    //effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                     //    //effect.Parameters["uTime"].SetValue(0);
                     //    //Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.MaskColor[6];
                     //    //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.MaskColor[4];
@@ -3168,7 +3144,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     //    //Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertexInfos.ToArray(), 0, vertexInfos.Count / 3);
                     //    //Main.graphics.GraphicsDevice.RasterizerState = originalState;
                     //    //spriteBatch.End();
-                    //    //spriteBatch.Begin();
+                    //    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                     //    #endregion
                     //}
                     //FileStream fileStream = new FileStream(@"D:\\TestTesseract.txt", FileMode.OpenOrCreate, FileAccess.ReadWrite);
@@ -3212,7 +3188,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     //RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                     //var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                     //var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                    //effect.Parameters["uTransform"].SetValue(model * projection);
+                    //effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                     //effect.Parameters["uTime"].SetValue(0);
                     //Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.MaskColor[6];
                     //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.MaskColor[4];
@@ -3223,7 +3199,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     //Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, vertexInfos, 0, edgePoints.Length - 2);
                     //Main.graphics.GraphicsDevice.RasterizerState = originalState;
                     //spriteBatch.End();
-                    //spriteBatch.Begin();
+                    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
                     //binaryWriter.Write("PostDraw");
                     //binaryWriter.Flush();
@@ -3241,14 +3217,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     lines[n].Item2 = projPos[n + 1];
                 }
                 spriteBatch.DrawEffectLine_StartAndEnd(lines, Color.Cyan * v, 1, 1, 16 * v, 1);
-                spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
                 for (int n = 0; n < 256; n++)
                 {
-                    spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, ((n / 128f) % 1).GetLerpValue_Loop(projPos.array) - Main.screenPosition, new Rectangle(128, 0, 32, 32), Color.White * v, (float)Main.time / 60f * MathHelper.TwoPi, new Vector2(16), 1.5f, 0, 0);// + (float)Main.time / 6000f
+                    spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, ((n / 128f) % 1).GetLerpValue_Loop(projPos.array) - Main.screenPosition, new Rectangle(128, 0, 32, 32), Color.White with { A = 0 } * v, (float)Main.time / 60f * MathHelper.TwoPi, new Vector2(16), 1.5f, 0, 0);// + (float)Main.time / 6000f
                 }
-                spriteBatch.End();
-                spriteBatch.Begin();
             }
             return false;
         }
@@ -3515,7 +3487,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             IllusionBoundMod.ShaderSwoosh.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea");
             Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[6];
@@ -3536,7 +3508,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, cs, 0, 2);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return true;
         }
 
@@ -3822,7 +3794,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             IllusionBoundMod.ShaderSwoosh.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
             Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[10];
@@ -3842,7 +3814,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
         public override void AI()
@@ -4195,7 +4167,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             IllusionBoundMod.ShaderSwoosh.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
             Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[10];
@@ -4215,7 +4187,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
         public override void AI()
@@ -4467,7 +4439,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
 
                     // 把变换和所需信息丢给shader
-                    effect.Parameters["uTransform"].SetValue(model * projection);
+                    effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                     effect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
                     //InfiniteNightmare.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(drawColor, 1f, 0.5f).ToVector4());
                     Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture(ApePath + "Style_15");
@@ -4488,7 +4460,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
                     Main.graphics.GraphicsDevice.RasterizerState = originalState;
                     spriteBatch.End();
-                    spriteBatch.Begin();
+                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 }
             }
             return false;

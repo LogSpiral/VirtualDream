@@ -996,15 +996,11 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
                 return;
             }
 
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             for (int n = 0; n < 3; n++)
             {
                 float k = 1 - (float)(Main.time / 60 + 1 / 3f * n) + (int)(Main.time / 60 + 1 / 3f * n);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/SlowDownField"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * (1 - k), npc.rotation, new Vector2(32, 32), k * 4, SpriteEffects.None, 0);
+                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/SlowDownField"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White with { A = 0 } * (1 - k), npc.rotation, new Vector2(32, 32), k * 4, SpriteEffects.None, 0);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin();
         }
         public override void FindFrame(int frameHeight)
         {
@@ -1718,7 +1714,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
     //			spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/SlowDownField"), npc.Center + new Vector2(0, 4) + new Vector2(6 - (npc.rotation == 0 ? 2 : 0), 0).RotatedBy(npc.rotation + MathHelper.PiOver2) - Main.screenPosition, null, Color.White * (1 - k), npc.rotation, new Vector2(32, 32), k * 4, SpriteEffects.None, 0);
     //		}
     //		Main.spriteBatch.End();
-    //		Main.spriteBatch.Begin();
+    //		Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
     //	}
     //	public override void FindFrame(int frameHeight)
     //	{
@@ -1803,7 +1799,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
             IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Color.Purple.ToVector4());
             Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.LaserTex[(int)IllusionBoundMod.ModTime / 2 % 4];
@@ -1816,7 +1812,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, Points, 0, 2);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         public override void AI()
         {

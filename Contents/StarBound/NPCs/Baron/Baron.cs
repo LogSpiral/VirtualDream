@@ -84,28 +84,28 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[]
             {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky,
-                new FlavorTextBestiaryInfoElement("")
+                new FlavorTextBestiaryInfoElement("也许你应该和他好好聊聊，这个简介里写不下那么多。")
             });
         }
 
         // The PreDraw hook is useful for drawing things before our sprite is drawn or running code before the sprite is drawn
         // Returning false will allow you to manually draw your NPC
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            // This code slowly rotates the NPC in the bestiary
-            // (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
-            if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers))
-            {
-                //drawModifiers.Rotation += (float)IllusionBoundMod.ModTime;
-                //drawModifiers.Rotation = 0;
-                // Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
-                NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
-                NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-            }
-            for (int n = 0; n < 4; n++)
-                spriteBatch.DrawString(FontAssets.MouseText.Value, NPC.ai[n].ToString(), NPC.Center + new Vector2(0, -120 + 24 * n) - Main.screenPosition, Color.Red);
-            return true;
-        }
+        //public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        //{
+        //    // This code slowly rotates the NPC in the bestiary
+        //    // (simply checking NPC.IsABestiaryIconDummy and incrementing NPC.Rotation won't work here as it gets overridden by drawModifiers.Rotation each tick)
+        //    if (NPCID.Sets.NPCBestiaryDrawOffset.TryGetValue(Type, out NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers))
+        //    {
+        //        //drawModifiers.Rotation += (float)IllusionBoundMod.ModTime;
+        //        //drawModifiers.Rotation = 0;
+        //        // Replace the existing NPCBestiaryDrawModifiers with our new one with an adjusted rotation
+        //        NPCID.Sets.NPCBestiaryDrawOffset.Remove(Type);
+        //        NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+        //    }
+        //    for (int n = 0; n < 4; n++)
+        //        spriteBatch.DrawString(FontAssets.MouseText.Value, NPC.ai[n].ToString(), NPC.Center + new Vector2(0, -120 + 24 * n) - Main.screenPosition, Color.Red);
+        //    return true;
+        //}
 
         public override void HitEffect(int hitDirection, double damage)
         {
@@ -170,19 +170,20 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
         public override List<string> SetNPCNameList()
         {
             return new List<string>() {
-                "拜隆先生",
-                "一个古怪的电子人",
-                "时之风吹拂的隐星",
-                "星之河淹没的残风",
-                "不再辉煌的不朽英雄",
-                "遗忘与被遗忘的存在",
-                "漫漫星河下的旅人",
-                "过去与未来的见证者"
+                " 拜隆先生",
+                " 一个古怪的电子人",
+                " 时之风吹拂的隐星",
+                " 星之河淹没的残风",
+                " 不再辉煌的不朽英雄",
+                " 遗忘与被遗忘的存在",
+                " 漫漫星河下的旅人",
+                " 过去与未来的见证者"
             };
         }
 
         public override void FindFrame(int frameHeight)
         {
+            if (NPC.life < NPC.lifeMax && (int)Main.GameUpdateCount % 3 == 0) NPC.life++;
             /*npc.frame.Width = 40;
 			if (((int)Main.time / 10) % 2 == 0)
 			{
@@ -225,7 +226,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
         public int ContentDecider
         {
             get => contentDecider;
-            set { contentPlayer = 1; contentDecider = value; }
+            set { contentPlayer = 0; contentDecider = value; }
         }
         /// <summary>
         /// 它决定当前讨论的话题，注释部分有话题表。
@@ -263,6 +264,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
                         case 3:
                             button = "你还想听更多？";
                             break;
+                        case 4:
+                            button = "你想成为我的朋友？";
+                            break;
+                        case 5:
+                            button = "为什么选择拒绝？";
+                            break;
+                        case 6:
+                        case 7:
+                            button = "继续。";
+                            break;
                     }
                     break;
                 case 1:
@@ -283,80 +294,159 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
                     }
                     break;
                 case 2:
-                    button = "";
+                    switch (contentPlayer)
+                    {
+                        case 0:
+                            button = "只有我会在每句话前面加点东西吗？";
+                            break;
+                        case 1:
+                            button = "我为什么不试试不那样说话？";
+                            break;
+                    }
                     break;
                 case 3:
-                    button = "";
-                    break;
-                case 4:
-                    button = "";
-                    break;
-                case 5:
-                    button = "";
+                    switch (contentPlayer)
+                    {
+                        case 0:
+                            button = "我是因为什么来到这里的？";
+                            break;
+                        case 1:
+                            button = "名为泰拉大陆的这片土地，它特殊在哪里？";
+                            break;
+                        //case 2:
+                        //    button = "为什么刚好是这个时候来呢？";
+                        //    break;
+                        case 2:
+                            button = "有很多人知道这里突然能被观测到了吗？";
+                            break;
+                        case 3:
+                            button = "还有什么特别的地方，只是不满足引力方程吗？";
+                            break;
+                        case 4:
+                            button = "我在这里有什么研究成果？";
+                            break;
+                    }
                     break;
             }
+            //if (contentPlayer == 0) button = "让我们继续这个话题";
             button2 = "你想听点别的东西？";
         }
 
         public override void OnChatButtonClicked(bool firstButton, ref bool shop)
         {
-            var str = "";
+            var str = "yee";
             if (firstButton)
             {
-                switch (ContentDecider)
-                {
-                    case 0:
-                        switch (contentPlayer)
-                        {
-                            case 1:
-                                str = "迷惑。我也说不太清楚\n有人说我是英雄，一位踏遍四方饱经沧桑的英雄\n有人说我是盗贼，掠尽了无数资源与财富\n有人说我是隐士，不问世事而自扫门前雪\n有人说我是旅人，在漫天繁星中漂泊。\n我不自我评价，一切好坏善恶由你们评说。";
-                                break;
-                            case 2:
-                                str = "大笑。你不会把你的鼠标放在我身上吗，看见没。\n毫无疑问。我叫拜隆。\n疑惑。我是一位电子人，也许是个ai，也许有自己的意识？\n大笑。至少，很奇怪的，有让机器有意识的科技水平，却不能让机器防水\n思考。至于我来这的目的？你可以回想一下你自己的目的。毫无疑问，你也是个外来者。";
-                                break;
-                            case 3:
-                                str = "高兴。伙计，你要是愿意听我的故事详细到每一个细节，我乐意在这里讲上个几年\n转折。不过...你肯定很忙对吧，而且有个家伙也让我没办法讲太多。";
-                                break;
-                            case 4:
-                                str = "蜜汁微笑。兴许我们该换个话题了，你会慢慢了解我的，也许？";
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    case 1:
-                        switch (contentPlayer)
-                        {
-                            case 0:
-                                str = "哦我的天哪，你是怎么找到这个对话的，如果你没使用代码或者ce之类的，快告诉阿汪你发现罢格了。";
-                                break;
-                            case 1:
-                                str = "反感。如果我单纯是个铁疙瘩，还 只是 生点锈，但是显然，身为电子人，这雨对我造成的伤害大得多。";
-                                break;
-                            case 2:
-                                str = "大笑。你要知道痛觉是为什么而存在的，伙计。\n痛觉负责告诉我们需要避免会造成危险的东西。\n我当然也有模拟痛觉的模块，甚至比你们的简单得多，传个参数的事情。\n淋雨对我来说兴许是致命的。";
-                                break;
-                            case 3:
-                                str = "高兴。好问题。我已经是一把老骨头了，属于是能跑就行，鬼知道我替换某个零件下来会不会出问题。";
-                                break;
-                            case 4:
-                                str = "坦白。实际上，我的表层有非常耐腐蚀的隔水涂层，里面也有各种防护措施，而且我的意识是在云端的。\n自豪。总之，用任何除了时间与空间以外的方法都不可能将我彻底消灭。\n大笑。其实是有个家伙编不下去了。";
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
                 contentPlayer++;
             }
             else
             {
-                ContentDecider = Main.rand.Next(new int[] { });
+                ContentDecider = Main.rand.Next(new int[] { 0, 2, 3 });
                 contentPlayer = 0;
             }
+            switch (ContentDecider)
+            {
+                case 0:
+                    switch (contentPlayer)
+                    {
+                        case 0:
+                            str = "微笑。你想听点关于我自己的话题吗？";
+                            break;
+                        case 1:
+                            str = "迷惑。我也说不太清楚\n有人说我是英雄，一位踏遍四方饱经沧桑的英雄\n有人说我是盗贼，掠尽了无数资源与财富\n有人说我是隐士，不问世事而自扫门前雪\n有人说我是旅人，在漫天繁星中漂泊。\n我不自我评价，一切好坏善恶由你们评说。";
+                            break;
+                        case 2:
+                            str = "大笑。你不会把你的鼠标放在我身上吗，看见没。\n毫无疑问。我叫拜隆。\n疑惑。我是一位电子人，也许是个ai，也许有自己的意识？\n大笑。至少，很奇怪的，有让机器有意识的科技水平，却不能让机器防水\n思考。至于我来这的目的？你可以回想一下你自己的目的。毫无疑问，你也是个外来者。";
+                            break;
+                        case 3:
+                            str = "高兴。伙计，你要是愿意听我的故事详细到每一个细节，我乐意在这里讲上个几年\n转折。不过...你肯定很忙对吧，而且有个家伙也让我没办法讲太多。";
+                            break;
+                        case 4:
+                            str = "蜜汁微笑。兴许我们该换个话题了，你会慢慢了解我的，也许？";
+                            break;
+                        case 5:
+                            str = "严肃。最好还是不了吧......\n身为一位电子人，我这辈子交过的朋友不会少。\n但是，但是，随着时间的推移，大伙们都生疏了，陌生了，冷漠了，渐行渐远了......";
+                            break;
+                        case 6:
+                            str = "沧桑。还有不少，我看着他们仿佛是从土壤里探出头，\n托起初升的太阳，伸出稚嫩的枝芽，\n一不留神就已是枝繁叶茂了，一不留神就已是落英缤纷了，\n一不留神就已是果实累累，再一不留神，一不留神，就又成了漫天繁星中的一颗。";
+                            break;
+                        case 7:
+                            str = "沉思。害怕的从来不是从来没有，\n而是曾经拥有，而眼睁睁地看着自己一点一点一个一个的失去，却什么也做不了......\n渐渐地，从害怕失去，到害怕拥有——我开始后悔和你说这么多了，\n兴许你又会是一个，一个个我将失去的朋友——伙计。";
+                            break;
+                        case 8:
+                            str = "叹气。别在意我说的，我很荣幸能成为您的一位朋友...一位过客，一抹眼过云烟。";
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (contentPlayer)
+                    {
+                        case 0:
+                            str = "惊讶。哦我的天哪，你是怎么找到这个对话的，如果你没使用代码或者ce之类的，快告诉阿汪你发现罢格了。";
+                            break;
+                        case 1:
+                            str = "反感。如果我单纯是个铁疙瘩，还 只是 生点锈，但是显然，身为电子人，这雨对我造成的伤害大得多。";
+                            break;
+                        case 2:
+                            str = "大笑。你要知道痛觉是为什么而存在的，伙计。\n痛觉负责告诉我们需要避免会造成危险的东西。\n我当然也有模拟痛觉的模块，甚至比你们的简单得多，传个参数的事情。\n淋雨对我来说兴许是致命的。";
+                            break;
+                        case 3:
+                            str = "高兴。好问题。我已经是一把老骨头了，属于是能跑就行，鬼知道我替换某个零件下来会不会出问题。";
+                            break;
+                        case 4:
+                            str = "坦白。实际上，我的表层有非常耐腐蚀的隔水涂层，里面也有各种防护措施，而且我的意识是在云端的。\n自豪。总之，用任何除了时间与空间以外的方法都不可能将我彻底消灭。\n大笑。其实是有个家伙编不下去了。";
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (contentPlayer)
+                    {
+                        case 0:
+                            str = "微笑。你想听点关于我总是在句首表达我感受的话题吗？";
+                            break;
+                        case 1:
+                            str = "否定。不是，所有电子人都是这样的语言风格。";
+                            break;
+                        case 2:
+                            str = "大笑。这么多年都是这样，我习惯了，这也算我们共同的特色吧。\n你应该能从中多少感受到一丝滑稽与幽默？\n从某种角度上来讲，不这么说话都不像是个电子人了(笑\n刚刚我换了种风格，你猜猜我是在哪学的？";
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (contentPlayer)
+                    {
+                        case 0:
+                            str = "微笑。你想听点关于我为何而来到这里的话题吗？";
+                            break;
+                        case 1:
+                            str = "高兴。不要问我为什么我自我介绍的时候不细说。\n你还没走出这颗星球看看对吧？宇宙中到处是这般充满生机的风景\n——让一位电子人说生机也许有点不太应景\n行星我见过太多太多了——比你迫害的史子还多\n——但是我们脚下的这片土地，是这么多年以来我见过的唯一的最特殊的。";
+                            break;
+                        case 2:
+                            str = "认真。早就有人觉察到这附近其他天体的轨迹大不正常了\n——但是我们用各种或完善或假想的模型都对不上，除非那里有颗不存在的行星\n——最奇怪的就在于，就算是在前一两个月，这里都无法检测到，除了引力不存在别的东西，像暗物质一样。\n你肯定会好奇，为什么我刚好是这会过来，而不是早些时候之类。";
+                            break;
+                        case 3:
+                            str = "失望。突然能观测到这不存在的行星，这固然是个不错的新闻\n——但我附近的绝大多数人并不在意这个\n——这东西的出现威胁不到他们的下午茶\n——或是让那下午茶更加香甜。";
+                            break;
+                        case 4:
+                            str = "惊喜。特别的东西多了去了，这里许多现象是违反统一理论模型的\n——比如某面能发出Master Spark的三棱镜。\n这意味着，我们的理论体系依然是不完备的，统一理论并不统一，我们还能向着未知进发！\n我愿称之为 [c/FF6666:非统一魔法世界论] (划掉";
+                            break;
+                        case 5:
+                            str = "思考。你这的科技树很——难以评价。但是只要你出不去，影响不到其他绝大多数地方\n——这就够了。统一理论在绝大多数情况下还是正确的。\n其实你要是好奇，我还是能让你略微看看外面的世界的......不过一个是怕你不能适应\n——另一个原因就是不是我不想而是某人做不到。";
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
             Main.npcChatText = str;
         }
         public override void ModifyNPCLoot(NPCLoot npcLoot)

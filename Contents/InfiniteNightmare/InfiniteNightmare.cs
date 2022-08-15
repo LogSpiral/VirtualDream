@@ -99,7 +99,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         //	Effect effect = mod.GetEffect("Effects/InfiniteNightmareBell");
         //	var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
         //	var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //	effect.Parameters["uTransform"].SetValue(model * projection);
+        //	effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
         //	effect.Parameters["uTime"].SetValue((float)IllusionBoundMod.ModTime / 60 % 1);
         //	Main.graphics.GraphicsDevice.Textures[0] = Main.itemTexture[item.type];
         //	Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/IMBellTex");
@@ -128,7 +128,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         //	Effect effect = mod.GetEffect("Effects/InfiniteNightmareBell");
         //	var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
         //	var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //	effect.Parameters["uTransform"].SetValue(model * projection);
+        //	effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
         //	effect.Parameters["uTime"].SetValue((float)IllusionBoundMod.ModTime / 60);
         //	Main.graphics.GraphicsDevice.Textures[0] = Main.itemTexture[item.type];
         //	Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/IMBellTex");
@@ -202,7 +202,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         //		spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/VoidGas"), realPos - new Vector2(0, (n + (int)Main.time) % 256 - 128), new Rectangle(0, (int)n, 256, 1), new Color(255, 153, 153) * MathHelper.Clamp((float)Math.Sin((n + Main.time) % 256 / 256 * MathHelper.Pi) + 0.3f, 0f, 1f), 0, new Vector2(128, 0), 1.5f, SpriteEffects.None, 0);
         //	}
         //	spriteBatch.End();
-        //	spriteBatch.Begin();
+        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //}
         //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         //{
@@ -214,7 +214,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         //		spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/VoidGas"), position - new Vector2(0, (n + (int)Main.time) % 256 - 128), new Rectangle(0, (int)n, 256, 1), new Color(255, 153, 153) * MathHelper.Clamp((float)Math.Sin((n + Main.time) % 256 / 256 * MathHelper.Pi) + 0.3f, 0f, 1f), 0, new Vector2(128, 0), 1.5f, SpriteEffects.None, 0);
         //	}
         //	spriteBatch.End();
-        //	spriteBatch.Begin();
+        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         //}
         public override bool? UseItem(Player player)
         {
@@ -270,7 +270,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Main.hslToRgb(projectile.ai[1], 1, 0.8f) * Alpha, 0, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
     }
@@ -1210,7 +1210,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White * (MathHelper.Clamp(-2 * Math.Abs(projectile.timeLeft - 300) + 600, 0, 120) / 120f), (float)Main.time / 60 * MathHelper.TwoPi, new Vector2(40, 51), 1, SpriteEffects.None, 0);
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
     }
@@ -1298,7 +1298,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/InfiniteNightmare/SkeletronBulletEXS"), projectile.Center + new Vector2(64, 0).RotatedBy((float)Main.time / 60 * MathHelper.TwoPi + MathHelper.TwoPi / 8 * n) - Main.screenPosition, null, Color.White * (MathHelper.Clamp(-2 * Math.Abs(projectile.timeLeft - 450) + 900, 0, 120) / 120f), (float)Main.time / 60 * MathHelper.TwoPi + MathHelper.TwoPi / 8 * n, new Vector2(14, 8), 1, SpriteEffects.None, 0);
             }
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
     }
@@ -1345,7 +1345,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(TextureAssets.Projectile[ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, (float)Main.time / 4, new Vector2(16, 16), 2f, SpriteEffects.None, 0);
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -1516,7 +1516,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
                 IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(5 / 6f, 1, 0.5f).ToVector4());
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -1532,10 +1532,10 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList4.ToArray(), 0, triangleList4.Count / 3);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
         public override void PostDraw(Color lightColor)
@@ -1572,7 +1572,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
                 IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(5 / 6f, 1, 0.5f).ToVector4());
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");//IllusionBoundMod.LaserTex[(int)(Time / 4) % 4]
@@ -1585,10 +1585,10 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleListh.ToArray(), 0, triangleListh.Count / 3);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
@@ -1867,7 +1867,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             spriteBatch29.Draw(texture29, position34, sourceRectangle2, alpha4 * 0.8f, projectile.rotation * 0.5f, origin8, projectile.scale * 0.9f, spriteEffects, 0f);
             alpha4.A = 0;
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
     }
@@ -1937,7 +1937,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                 IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
                 IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(projectile.ai[1], 1, 0.5f).ToVector4());
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
@@ -1950,10 +1950,10 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
-                spriteBatch.Begin();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             spriteBatch.End();
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
         public override void AI()
@@ -3030,14 +3030,12 @@ namespace VirtualDream.Contents.InfiniteNightmare
 			DrawNoise(spriteBatch, Color.White, x2);
 			DrawNoise(spriteBatch, Color.White, x3);
 			spriteBatch.End();
-			spriteBatch.Begin();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 			return false;
 		}*/
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             float[] x = new float[3];
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
             for (int n = 0; n < 3; n++)
             {
                 x[n] = 0;
@@ -3048,15 +3046,13 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 }
                 if (projectile.ai[0] == 2)
                 {
-                    DrawNoise(spriteBatch, Color.Cyan * (projectile.timeLeft / 60f), x[n] * 2);
+                    DrawNoise(spriteBatch, Color.Cyan with { A = 0 } * (projectile.timeLeft / 60f), x[n] * 2);
                 }
                 else
                 {
-                    DrawNoise(spriteBatch, Color.White * (projectile.timeLeft / 60f), x[n]);
+                    DrawNoise(spriteBatch, Color.White with { A = 0 } * (projectile.timeLeft / 60f), x[n]);
                 }
             }
-            spriteBatch.End();
-            spriteBatch.Begin();
             return false;
         }
         private void DrawNoise(SpriteBatch spriteBatch, Color color, float scale)
