@@ -303,7 +303,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             indexOfGreyTex = UpgradeValue(5, 5, 7);
             useHeatMap = true;
         }
-        public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha) useMask)
+        public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha, bool inverse) useMask)
         {
             useBloom = (0f, 0.2f, 3f);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
             useDistort = (0f, 5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.006f);//  //
@@ -634,7 +634,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             return bars.ToArray();//base.CreateVertexs(drawCen, scaler, startAngle, endAngle, alphaLight).Union(bars)
         }
         public override bool WhenVertexDraw => controlState == 1 || base.WhenVertexDraw;
-        public virtual void OnChargedShoot() 
+        public virtual void OnChargedShoot()
         {
             int max = (int)(30 * factor);
             var vec = (CollidingCenter - DrawOrigin).RotatedBy(Rotation) + projCenter;
@@ -649,7 +649,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 Vector2 finalVec = Vector2.Normalize(Main.MouseWorld - projCenter).RotatedBy(factor.Lerp(-MathHelper.Pi / 6, MathHelper.Pi / 6)) * 72f;
                 Projectile.NewProjectile(projectile.GetSource_FromThis(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(sourceItem), projectile.knockBack, projectile.owner);
             }
-            SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
+            SoundEngine.PlaySound(SoundID.Item62);
         }
         public override void Kill(int timeLeft)
         {
@@ -991,7 +991,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
 
                     }
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74);
 
                     if (projectile.ai[0] == 0)
                     {

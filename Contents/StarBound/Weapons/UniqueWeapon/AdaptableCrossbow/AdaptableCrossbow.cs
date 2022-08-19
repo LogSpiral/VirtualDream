@@ -467,7 +467,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                         }
 
                     }
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
+                    SoundEngine.PlaySound(SoundID.Item62);
                     break;
                 case 2:
                     {

@@ -1343,7 +1343,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         {
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            spriteBatch.Draw(TextureAssets.Projectile[ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, (float)Main.time / 4, new Vector2(16, 16), 2f, SpriteEffects.None, 0);
+            spriteBatch.Draw(TextureAssets.Projectile[ProjectileType<LightJadeBullet>()].Value, projectile.Center - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, (float)Main.time / 4, new Vector2(16, 16), 2f, SpriteEffects.None, 0);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
@@ -1444,8 +1444,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
             List<CustomVertexInfo> bars2 = new List<CustomVertexInfo>();
             List<CustomVertexInfo> bars3 = new List<CustomVertexInfo>();
             List<CustomVertexInfo> bars4 = new List<CustomVertexInfo>();
-            int sint = Utils.IllusionBoundExtensionMethods.ValueRange((int)Time - 180, 1, 120);
-            int eint = Utils.IllusionBoundExtensionMethods.ValueRange((int)Time, 1, 120);
+            int sint = IllusionBoundExtensionMethods.ValueRange((int)Time - 180, 1, 120);
+            int eint = IllusionBoundExtensionMethods.ValueRange((int)Time, 1, 120);
             for (int i = sint; i < eint; ++i)
             {
                 var factor = ((float)i - sint) / ((float)eint - sint);
@@ -1734,7 +1734,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 vector126 *= Main.rand.Next(-80, 81);
                 Vector2 vector127 = vector126 - value50;
                 vector127 /= 10f;
-                int num960 = Terraria.Utils.SelectRandom<int>(Main.rand, new int[]
+                int num960 = Terraria.Utils.SelectRandom(Main.rand, new int[]
                 {
                                                                                                         229,
                                                                                                         229
@@ -1838,9 +1838,9 @@ namespace VirtualDream.Contents.InfiniteNightmare
             Texture2D texture2D31 = TextureAssets.Projectile[projectile.type].Value;
             Color alpha4 = projectile.GetAlpha(color25);
             Vector2 origin8 = new Vector2(texture2D31.Width, texture2D31.Height) / 2f;
-            Microsoft.Xna.Framework.Color color55 = alpha4 * 0.8f;
+            Color color55 = alpha4 * 0.8f;
             color55.A /= 2;
-            Microsoft.Xna.Framework.Color color56 = Microsoft.Xna.Framework.Color.Lerp(alpha4, Microsoft.Xna.Framework.Color.Black, 0.5f);
+            Color color56 = Color.Lerp(alpha4, Color.Black, 0.5f);
             color56.A = alpha4.A;
             float num278 = 0.95f + (projectile.rotation * 0.75f).ToRotationVector2().Y * 0.1f;
             color56 *= num278;
@@ -1848,7 +1848,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             SpriteBatch spriteBatch26 = Main.spriteBatch;
             Texture2D texture26 = TextureAssets.Extra[50].Value;
             Vector2 position31 = vector60;
-            Microsoft.Xna.Framework.Rectangle? sourceRectangle2 = null;
+            Rectangle? sourceRectangle2 = null;
             spriteBatch26.Draw(texture26, position31, sourceRectangle2, color56, -projectile.rotation + 0.35f, origin8, scale12, spriteEffects ^ SpriteEffects.FlipHorizontally, 0f);
             SpriteBatch spriteBatch27 = Main.spriteBatch;
             Texture2D texture27 = TextureAssets.Extra[50].Value;

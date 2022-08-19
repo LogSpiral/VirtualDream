@@ -94,7 +94,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             float W = (3.1415926f / 180) * (float)IllusionBoundModSystem.ModTime2;
             for (int n = 0; n < 8; n++)
             {
-                Dust dust1 = Terraria.Dust.NewDustPerfect(player.Center + (0.5f * 7 * W + MathHelper.TwoPi * n / 8).ToRotationVector2() * (float)(Math.Tan(4 * W) / Math.Sin(4 * W) + 8) * 25, d, new Vector2(0f, 0f), 0, Color.White, 1.5f);
+                Dust dust1 = Dust.NewDustPerfect(player.Center + (0.5f * 7 * W + MathHelper.TwoPi * n / 8).ToRotationVector2() * (float)(Math.Tan(4 * W) / Math.Sin(4 * W) + 8) * 25, d, new Vector2(0f, 0f), 0, Color.White, 1.5f);
                 dust1.noGravity = true;
             }
             //float X1 = (float)Math.Cos(0.5f * 7 * W) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;

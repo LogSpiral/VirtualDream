@@ -1687,7 +1687,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
             if (projectile.timeLeft % 45 == 0)
             {
                 //ProjectileID.VortexVortexLightning
-                Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, default, ProjectileType<Contents.InfiniteNightmare.VortexLightningIN>(), projectile.damage, 1f, Main.myPlayer);
+                Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, default, ProjectileType<InfiniteNightmare.VortexLightningIN>(), projectile.damage, 1f, Main.myPlayer);
                 //Point point = projectile.Center.ToTileCoordinates();
                 //Point point2 = FindTargetPlayer().Center.ToTileCoordinates();
                 //Vector2 vector3 = FindTargetPlayer().Center - projectile.Center;

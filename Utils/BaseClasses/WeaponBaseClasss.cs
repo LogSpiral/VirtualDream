@@ -332,7 +332,7 @@ namespace VirtualDream.Utils.BaseClasses
         }
         public virtual Color VertexColor(float time) => Color.White;
         public virtual void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap) { }
-        public virtual void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha) useMask) { }
+        public virtual void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha,bool inverse) useMask) { }
         public virtual bool RedrawSelf => false;
         public virtual bool WhenVertexDraw => !Charging && Charged;
         protected Texture2D heatMap;
@@ -365,7 +365,7 @@ namespace VirtualDream.Utils.BaseClasses
                 }
             }
             var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
-            var _center = projCenter;// - (new Vector2(0, projTex.Size().Y / FrameMax.Y) - DrawOrigin).RotatedBy(Rotation)
+            //var _center = projCenter;// - (new Vector2(0, projTex.Size().Y / FrameMax.Y) - DrawOrigin).RotatedBy(Rotation)
 
             //var drawCen = Player.gravDir == -1 ? new Vector2(_center.X, (2 * (Main.screenPosition + new Vector2(960, 560)) - _center - new Vector2(0, 96)).Y) : _center;
             var drawCen = Player.Center;
@@ -386,7 +386,7 @@ namespace VirtualDream.Utils.BaseClasses
             bool useHeatMap = false;
             (float M, float Intensity, float Range) useBloom = default;
             (float M, float Range, Vector2 director) useDistort = default;
-            (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha) useMask = default;
+            (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha, bool inverse) useMask = default;
             VertexInfomation(ref additive, ref indexOfGreyTex, ref endAngle, ref useHeatMap);
             RenderInfomation(ref useBloom, ref useDistort, ref useMask);
             int[] whenSkip = new int[0];
@@ -455,7 +455,7 @@ namespace VirtualDream.Utils.BaseClasses
             //}
             #endregion
             //IllusionBoundMod.bloomValue += useBloom;
-            if ((useBloom.Range != 0 || useDistort.director != default || useMask.fillTex != null) && (Lighting.Mode == Terraria.Graphics.Light.LightMode.White || Lighting.Mode == Terraria.Graphics.Light.LightMode.Color))
+            if ((useBloom.Range != 0 || useDistort.director != default || useMask.fillTex != null) && IllusionBoundMod.UseRender)
             {
                 GraphicsDevice gd = Main.instance.GraphicsDevice;
                 RenderTarget2D render = IllusionBoundMod.Instance.render;
@@ -570,6 +570,8 @@ namespace VirtualDream.Utils.BaseClasses
                     IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(useMask.glowColor.ToVector4());
                     IllusionBoundMod.Distort.Parameters["maskBoundColor"].SetValue(useMask.boundColor.ToVector4());
                     IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(useMask.texSize);
+                    IllusionBoundMod.Distort.Parameters["inverse"].SetValue(useMask.inverse);
+
                     sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
                     gd.SetRenderTarget(Main.screenTarget);
                     gd.Clear(Color.Transparent);

@@ -366,7 +366,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         {
         }
     }
-    public class MiniknogLauncherProj : Utils.BaseClasses.RangedHeldProjectile
+    public class MiniknogLauncherProj : RangedHeldProjectile
     {
         //BossDropWeaponProj<ErchiusEye, ErchiusEyeEX, ErchiusEyeDL>
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * 6;//Main.MouseWorld - Player.Center
@@ -406,7 +406,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                 if (right)
                 {
                     ShootRocket(Projectile.velocity * 16, 5);
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
+                    SoundEngine.PlaySound(SoundID.Item62);
                 }
 
                 else if ((int)Projectile.ai[0] <= UpgradeValue(80, 64, 48))
@@ -533,7 +533,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
 
             }
             if(tier > 0)
-            SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
+            SoundEngine.PlaySound(SoundID.Item62);
 
         }
         private void ShootRocket(Vector2 vel, int ai0 = 0)
@@ -615,7 +615,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     p1.timeLeft = 2;
                     p1.penetrate = -1;
                     p1.Center = projectile.Center;
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74);
                     break;
                 case 3:
                     p1 = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, projectile.type, projectile.damage, 5f, projectile.owner, 8);
@@ -623,7 +623,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     p1.timeLeft = 2;
                     p1.penetrate = -1;
                     p1.Center = projectile.Center;
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74);
                     break;
                 case 4:
                     p1 = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, projectile.type, projectile.damage, 5f, projectile.owner, 7);
@@ -631,7 +631,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     p1.timeLeft = 2;
                     p1.Center = projectile.Center;
                     p1.penetrate = -1;
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74);
 
                     break;
                 case 2:
@@ -656,7 +656,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     p1.timeLeft = 2;
                     p1.penetrate = -1;
                     p1.Center = projectile.Center;
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74);
 
                     break;
                 case 6:

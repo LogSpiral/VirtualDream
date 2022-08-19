@@ -937,6 +937,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     }
     public class AsuterosaberuDXProj : BossDrop.SolusKatana.SolusKatanaProj
     {
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.immune[projectile.owner] = (controlState == 2 || projectile.ai[1] > 0) ? UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
+        }
         public override string Texture => base.Texture;//"VirtualDream/Contents/StarBound/Weapons/UniqueWeapon/AsuterosaberuDX/AsuterosaberuDX"
         public override T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
         {
@@ -981,10 +985,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             indexOfGreyTex = UpgradeValue(5, 7, 7);
             useHeatMap = true;
         }
-        public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha) useMask)
+        public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha,bool inverse) useMask)
         {
             //base.RenderInfomation(ref useBloom, ref useDistort, ref useMask);
-            useMask = (IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8, true);
+            useMask = (IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8, true, true);
         }
     }
     public class AstralTear : ModProjectile
@@ -998,7 +1002,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override bool PreDraw(ref Color lightColor)
         {
             var spriteBatch = Main.spriteBatch;
-            if (state == 0)
+            if (state == 0 || (state == 1 && !IllusionBoundMod.UseRender))
             {
                 Vector2 scale = new Vector2(0.5f, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
                 var _color = Main.hslToRgb(projectile.localAI[0] % 1, 1, 0.75f);
@@ -1143,7 +1147,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
                 case 1:
                     {
                         var oldpos = projectile.Center;
-                        projectile.Center = target.Center + projectile.rotation.ToRotationVector2() * (state == 1 ? 384 : 256) * (2 / 15f * projectile.ai[0] - 1);
+                        projectile.Center = target.position + new Vector2(projectile.localAI[0], projectile.localAI[1]) + projectile.rotation.ToRotationVector2() * (state == 1 ? 384 : 256) * (2 / 15f * projectile.ai[0] - 1);
                         projectile.velocity = projectile.Center - oldpos;
                         if (projectile.ai[0] > 15) projectile.Kill();
                         break;
@@ -1165,9 +1169,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
                                     p.rotation = rand;
                                     p.frame = target.whoAmI + 1;
                                     p.height = p.width = 20;
-                                    p.localAI[0] = Main.rand.NextFloat(0, 1);
-
-                                    p.Center = target.Center - rand.ToRotationVector2() * (state == 3 ? 384 : 256);
+                                    p.localAI[0] = Main.rand.NextFloat(0, 1) * target.width;
+                                    p.localAI[1] = Main.rand.NextFloat(0, 1) * target.height;
+                                    p.Center = target.position + new Vector2(p.localAI[0], p.localAI[1]) - rand.ToRotationVector2() * (state == 3 ? 384 : 256);//new Vector2(target.width, target.height) *
                                     break;
                                 }
                                 //if (n > (state == 3 ? 8 : 5)) break;

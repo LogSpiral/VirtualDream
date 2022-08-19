@@ -711,7 +711,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             for (int i = -1; i < 2; i += 2)
                             {
                                 Projectile.NewProjectileDirect(npc.GetSource_FromAI(), cen, i * (n * npc.ai[0] / 240 * MathHelper.TwoPi).ToRotationVector2() * (8 + stage), ModContent.ProjectileType<LightPellet>(), 70, 0, Main.myPlayer).timeLeft = 180;
-                                SoundEngine.PlaySound(Terraria.ID.SoundID.Item68);
+                                SoundEngine.PlaySound(SoundID.Item68);
                             }
                         }
                     }
@@ -732,7 +732,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             for (int i = -1; i < 2; i += 2)
                             {
                                 Projectile.NewProjectileDirect(npc.GetSource_FromAI(), cen, i * (n * npc.ai[0] / 240 * MathHelper.TwoPi).ToRotationVector2() * (8 + stage), ModContent.ProjectileType<LightPellet>(), 70, 0, Main.myPlayer).timeLeft = 180;
-                                SoundEngine.PlaySound(Terraria.ID.SoundID.Item68);
+                                SoundEngine.PlaySound(SoundID.Item68);
                             }
                         }
                     }
@@ -766,7 +766,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             }
 
                             Projectile.NewProjectile(npc.GetSource_FromAI(), cen, rot.ToRotationVector2() * (8 + stage), ModContent.ProjectileType<LightPellet>(), 50, 0, Main.myPlayer);
-                            SoundEngine.PlaySound(Terraria.ID.SoundID.Item68);
+                            SoundEngine.PlaySound(SoundID.Item68);
                         }
                     }
                 }
@@ -2120,7 +2120,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, Width: 20);
+            DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, Width: 20);
             if (projectile.timeLeft > 1)
             {
                 spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, projTex.Frame(2, 1, projectile.frame / 3 % 2, 0), Color.White, projectile.rotation, projTex.Size() / new Vector2(4, 2), 2, 0, 0);
@@ -2419,7 +2419,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     {
                         projectile.hostile = !(projectile.timeLeft <= 60 || projectile.timeLeft >= 900);
                         var alpha1 = MathHelper.Clamp(480 - Math.Abs(480 - projectile.timeLeft), 0, 60) / 120f;
-                        IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, alpha: alpha1 * 2, additive: true);
+                        DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, alpha: alpha1 * 2, additive: true);
                         for (int n = 0; n < 4; n++)
                         {
                             spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
@@ -2453,7 +2453,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                         projectile.hostile = !(projectile.timeLeft <= 60 || projectile.timeLeft >= 240);
                         var alpha1 = MathHelper.Clamp(150 - Math.Abs(150 - projectile.timeLeft), 0, 60) / 120f;
-                        IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, ShaderTailMainStyle.MiddleLine2, alpha: alpha1);
+                        DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, ShaderTailMainStyle.MiddleLine2, alpha: alpha1);
                         for (int n = 0; n < 4; n++)
                         {
                             spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
@@ -2745,7 +2745,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 {
                     for (int i = 1; i < 5; i++)
                     {
-                        if (targetHitbox.Intersects(IllusionBoundExtensionMethods.CenteredRectangle(this[n, i], new Vector2(16, 16))))
+                        if (targetHitbox.Intersects(CenteredRectangle(this[n, i], new Vector2(16, 16))))
                         {
                             return true;
                         }
@@ -3001,7 +3001,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     {
                         for (int n = 0; n < 32; n++)
                         {
-                            IllusionBoundExtensionMethods.LinerDust((pointList[n] + new Vector4(8)) * i, (pointList[n + 1] + new Vector4(8)) * i, hZ, hW,
+                            LinerDust((pointList[n] + new Vector4(8)) * i, (pointList[n + 1] + new Vector4(8)) * i, hZ, hW,
                                 d =>
                                 {
                                     d.noGravity = true;
@@ -3219,7 +3219,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 spriteBatch.DrawEffectLine_StartAndEnd(lines, Color.Cyan * v, 1, 1, 16 * v, 1);
                 for (int n = 0; n < 256; n++)
                 {
-                    spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, ((n / 128f) % 1).GetLerpValue_Loop(projPos.array) - Main.screenPosition, new Rectangle(128, 0, 32, 32), Color.White with { A = 0 } * v, (float)Main.time / 60f * MathHelper.TwoPi, new Vector2(16), 1.5f, 0, 0);// + (float)Main.time / 6000f
+                    spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, ((n / 128f) % 1).GetLerpValue_Loop(projPos.array) - Main.screenPosition, new Rectangle(128, 0, 32, 32), Color.White with { A = 0 } * v, (float)Main.time / 60f * MathHelper.TwoPi, new Vector2(16), 1.5f, 0, 0);// + (float)Main.time / 6000f
                 }
             }
             return false;

@@ -337,7 +337,7 @@ namespace VirtualDream.Utils
         /// <param name="value">丢进去的变量，取值范围一般是[0,maxTimeWhen]</param>
         /// <param name="maxTimeWhen">什么时候插值结束呢</param>
         /// <returns>自己画函数图像去，真的像是一个小山丘一样(</returns>
-        public static float HillFactor2(this float value, float maxTimeWhen)
+        public static float HillFactor2(this float value, float maxTimeWhen = 1)
         {
             //return Clamp((center - Math.Abs(center - value)) / center / whenGetMax, 0, 1);
             return (1 - (float)Math.Cos(MathHelper.TwoPi * Math.Sqrt(value / maxTimeWhen))) * 0.5f;
@@ -518,7 +518,7 @@ namespace VirtualDream.Utils
 
             //binaryWriter.Write("PreVertex");
 
-            Vector2[] targetPoints = IllusionBoundExtensionMethods.GetVertexPoints(ref edgePointsNative);//edgePoints.GetVertexPoints();
+            Vector2[] targetPoints = GetVertexPoints(ref edgePointsNative);//edgePoints.GetVertexPoints();
             //binaryWriter.Write("PostVertex");
 
             if (targetPoints == null)
@@ -4125,8 +4125,8 @@ namespace VirtualDream.Utils
             bool flag = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
             if (flag)
             {
-                Terraria.Utils.Swap<int>(ref x0, ref y0);
-                Terraria.Utils.Swap<int>(ref x1, ref y1);
+                Terraria.Utils.Swap(ref x0, ref y0);
+                Terraria.Utils.Swap(ref x1, ref y1);
             }
             int num = Math.Abs(x1 - x0);
             int num2 = Math.Abs(y1 - y0);
@@ -4632,7 +4632,7 @@ namespace VirtualDream.Utils
             vector52.X = vector52.Y * num257;
             _ = new Vector2(vector50.X - vector52.X / 2f, vector50.Y);
             Texture2D texture2D29 = TextureAssets.Projectile[projectile.type].Value;
-            Microsoft.Xna.Framework.Rectangle rectangle14 = texture2D29.Frame(1, 1, 0, 0);
+            Rectangle rectangle14 = texture2D29.Frame(1, 1, 0, 0);
             Vector2 origin6 = rectangle14.Size() / 2f;
             float num258 = -0.06283186f * num254;
             Vector2 unitY3 = Vector2.UnitY;
@@ -4654,10 +4654,10 @@ namespace VirtualDream.Utils
                 Vector2 vector54 = spinningpoint5.RotatedBy(radians8, center);
                 Vector2 vector55 = new Vector2(0f, num262 + 1f);
                 vector55.X = vector55.Y * num257;
-                Microsoft.Xna.Framework.Color color49 = Microsoft.Xna.Framework.Color.Lerp(Microsoft.Xna.Framework.Color.Transparent, c1, num262 * 2f);
+                Color color49 = Color.Lerp(Color.Transparent, c1, num262 * 2f);
                 if (num262 > 0.5f)
                 {
-                    color49 = Microsoft.Xna.Framework.Color.Lerp(Microsoft.Xna.Framework.Color.Transparent, c1, 2f - num262 * 2f);
+                    color49 = Color.Lerp(Color.Transparent, c1, 2f - num262 * 2f);
                 }
                 color49.A = (byte)(color49.A * 0.5f);
                 color49 *= scale8;
@@ -4726,10 +4726,10 @@ namespace VirtualDream.Utils
                 Vector2 vector58 = spinningpoint6.RotatedBy(radians10, center);
                 Vector2 vector59 = new Vector2(0f, num273 + 1f);
                 vector59.X = vector59.Y * num267;
-                Microsoft.Xna.Framework.Color color51 = Color.Lerp(Microsoft.Xna.Framework.Color.Transparent, c1, num273 * 2f);
+                Color color51 = Color.Lerp(Color.Transparent, c1, num273 * 2f);
                 if (num273 > 0.5f)
                 {
-                    color51 = Microsoft.Xna.Framework.Color.Lerp(Microsoft.Xna.Framework.Color.Transparent, c1, 2f - num273 * 2f);
+                    color51 = Color.Lerp(Color.Transparent, c1, 2f - num273 * 2f);
                 }
                 color51.A = (byte)(color51.A * 0.5f);
                 color51 *= scale9;
@@ -4739,10 +4739,10 @@ namespace VirtualDream.Utils
                 vector58 += new Vector2(bottom.X, num272) - Main.screenPosition;
                 if (flag26)
                 {
-                    Microsoft.Xna.Framework.Color color52 = Microsoft.Xna.Framework.Color.Lerp(Microsoft.Xna.Framework.Color.Transparent, c2, num273 * 2f);
+                    Color color52 = Color.Lerp(Color.Transparent, c2, num273 * 2f);
                     if (num273 > 0.5f)
                     {
-                        color52 = Microsoft.Xna.Framework.Color.Lerp(Microsoft.Xna.Framework.Color.Transparent, c2, 2f - num273 * 2f);
+                        color52 = Color.Lerp(Color.Transparent, c2, 2f - num273 * 2f);
                     }
                     color52.A = (byte)(color52.A * 0.5f);
                     color52 *= scale9;

@@ -341,12 +341,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             if (right && Charged && Player.name != "Sans")
             {
                 if((int)Projectile.ai[0] % 30 == 0)
-                SoundEngine.PlaySound(Terraria.ID.SoundID.Item74);
+                SoundEngine.PlaySound(SoundID.Item74);
                 if((int)Projectile.ai[0] % UpgradeValue(4, 3, 2) == 0)
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter, Projectile.velocity.RotatedBy(Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)) * 32f, ModContent.ProjectileType<DragonFireCloud>(), Player.GetWeaponDamage(sourceItem) / 2, 0.5f, Player.whoAmI, this.UpgradeValue(0.9f, 0.925f, 0.95f));
             }
             if (Projectile.friendly && (int)Projectile.ai[0] % 20 == 0)
-                SoundEngine.PlaySound(Terraria.ID.SoundID.Item15);
+                SoundEngine.PlaySound(SoundID.Item15);
         }
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 42 + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * Player.direction * 7;
         public override void OnRelease(bool charged, bool left)
@@ -356,7 +356,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
                 var m = UpgradeValue(1, 2, 3);
                 if (Charged)
                 {
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item62);
+                    SoundEngine.PlaySound(SoundID.Item62);
                     for (int n = 0; n < m; n++)
                     {
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * 16f * (n - m * 0.5f), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBall>(), Player.GetWeaponDamage(sourceItem), 0.25f, Player.whoAmI, UpgradeValue(6, 8, 10));
@@ -365,7 +365,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
                 }
                 else
                 {
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item36);//36//38
+                    SoundEngine.PlaySound(SoundID.Item36);//36//38
                     for (int n = 0; n < m; n++)
                     {
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter + Projectile.velocity * (n * 8), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBullet>(), (int)(Player.GetWeaponDamage(sourceItem) * Factor), 0.25f, Player.whoAmI);
@@ -527,7 +527,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             {
                 Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, (rot + n / projectile.ai[0] * MathHelper.TwoPi).ToRotationVector2() * 4f, ModContent.ProjectileType<DragonFireCloud>(), projectile.damage, projectile.knockBack, projectile.owner, 0.95f);// / 4
             }
-            SoundEngine.PlaySound(Terraria.ID.SoundID.Item74);
+            SoundEngine.PlaySound(SoundID.Item74);
 
             projectile.hide = true;
             projectile.height = projectile.width = 160;

@@ -122,7 +122,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
 
             if ((npc.Center - targetPlayer.Center).Length() > 1200f && npc.ai[0] == 0)
             {
-                IllusionBoundExtensionMethods.LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 480), MyDustId.PinkBubble);
+                LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 480), MyDustId.PinkBubble);
                 npc.Center = targetPlayer.Center - new Vector2(0, 480);
                 for (int n = 0; n < 72; n++)
                 {
@@ -155,14 +155,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
                 for (int n = 0; n < 18; n++)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (MathHelper.TwoPi / 18 * n).ToRotationVector2() * 8, ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>(), 25 * damageScaler, 0, Main.myPlayer, 2);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (MathHelper.TwoPi / 18 * n).ToRotationVector2() * 8, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>(), 25 * damageScaler, 0, Main.myPlayer, 2);
                 }
             }
             if ((int)npc.ai[0] == 80)
             {
                 for (int n = 0; n < 36; n++)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - (MathHelper.TwoPi / 36 * n).ToRotationVector2() * 64, (MathHelper.TwoPi / 36 * n).ToRotationVector2() * 16, ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>(), 35 * damageScaler, 0, Main.myPlayer, 2);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - (MathHelper.TwoPi / 36 * n).ToRotationVector2() * 64, (MathHelper.TwoPi / 36 * n).ToRotationVector2() * 16, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>(), 35 * damageScaler, 0, Main.myPlayer, 2);
                 }
             }
             if (npc.ai[0] >= 120)
@@ -207,7 +207,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 for (int n = 0; n < 6; n++)
                 {
                     float r = (MathHelper.TwoPi / 150f * npc.ai[0] + MathHelper.Pi / 3 * n);
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + r.ToRotationVector2() * 80f, (r + MathHelper.PiOver2).ToRotationVector2() * 4f, ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.StarBullet>(), 15 * damageScaler, 0, Main.myPlayer, 4, 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + r.ToRotationVector2() * 80f, (r + MathHelper.PiOver2).ToRotationVector2() * 4f, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.StarBullet>(), 15 * damageScaler, 0, Main.myPlayer, 4, 1);
                 }
             }
             npc.ai[0]++;
@@ -316,15 +316,15 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 {
                     float a = -50 + (float)Math.Sqrt(4 * l * l - 30000) / 2;
                     float r = (float)Math.Acos((a * a - l * l - 10000) / (-200 * l)) * (npc.ai[1] % 2 == 1 ? -1f : 1f);
-                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorRotStopLaser>(), 55 * damageScaler, 0, Main.myPlayer, IllusionBoundExtensionMethods.GetRad(targetPlayer.Center - npc.Center) + r + MathHelper.Pi / 6, npc.ai[1] % 2 == 1 ? -1f : 1f).frameCounter = npc.whoAmI;//+ MathHelper.Pi / 12 * (npc.ai[1] % 2 == 1 ? -1f : 1f)
-                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorRotStopLaser>(), 55 * damageScaler, 0, Main.myPlayer, IllusionBoundExtensionMethods.GetRad(targetPlayer.Center - npc.Center) + r, npc.ai[1] % 2 == 1 ? -1f : 1f).frameCounter = npc.whoAmI;//npc.Center - targetPlayer.Center
+                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorRotStopLaser>(), 55 * damageScaler, 0, Main.myPlayer, GetRad(targetPlayer.Center - npc.Center) + r + MathHelper.Pi / 6, npc.ai[1] % 2 == 1 ? -1f : 1f).frameCounter = npc.whoAmI;//+ MathHelper.Pi / 12 * (npc.ai[1] % 2 == 1 ? -1f : 1f)
+                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorRotStopLaser>(), 55 * damageScaler, 0, Main.myPlayer, GetRad(targetPlayer.Center - npc.Center) + r, npc.ai[1] % 2 == 1 ? -1f : 1f).frameCounter = npc.whoAmI;//npc.Center - targetPlayer.Center
                 }
             }
             if ((int)npc.ai[0] % (30 - 5 * Stage) == 0)
             {
                 for (int n = 0; n < 12; n++)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (MathHelper.Pi / 6 * n + MathHelper.Pi / 360 * npc.ai[0]).ToRotationVector2() * 8f, ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.CrystalBullet>(), 15 * damageScaler, 0, Main.myPlayer, 5, 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (MathHelper.Pi / 6 * n + MathHelper.Pi / 360 * npc.ai[0]).ToRotationVector2() * 8f, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.CrystalBullet>(), 15 * damageScaler, 0, Main.myPlayer, 5, 1);
                 }
             }
             //if ((int)npc.ai[0] % 10 == 0)
@@ -348,7 +348,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                     for (int n = 0; n < 6; n++)
                     {
                         Vector2 vec = (r + MathHelper.Pi / 3 * n).ToRotationVector2();
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + vec * 200, new Vector2(vec.Y, -vec.X) * 16, ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.StarBullet>(), 25 * damageScaler, 0, Main.myPlayer, 4, 2);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + vec * 200, new Vector2(vec.Y, -vec.X) * 16, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.StarBullet>(), 25 * damageScaler, 0, Main.myPlayer, 4, 2);
                     }
                 }
             }
@@ -360,7 +360,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                     for (int n = 0; n < 6; n++)
                     {
                         Vector2 vec = (r + MathHelper.Pi / 3 * n).ToRotationVector2();
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + vec * 200, new Vector2(vec.Y, -vec.X) * 16, ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.StarBullet>(), 25 * damageScaler, 0, Main.myPlayer, 4, 2);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + vec * 200, new Vector2(vec.Y, -vec.X) * 16, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.StarBullet>(), 25 * damageScaler, 0, Main.myPlayer, 4, 2);
                     }
                 }
             }
@@ -392,9 +392,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 for (int n = 0; n < 6; n++)
                 {
                     Vector2 vec1 = (MathHelper.Pi / 3 * n * (1 + npc.ai[0] / 150f)).ToRotationVector2();
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - vec1 * 200 * (npc.ai[0] / 150f), vec1 * (npc.ai[0] / 150f + 0.2f) * 16f, ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.HugeStarBullet>(), 45 * damageScaler, 0, Main.myPlayer, 2, 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - vec1 * 200 * (npc.ai[0] / 150f), vec1 * (npc.ai[0] / 150f + 0.2f) * 16f, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.HugeStarBullet>(), 45 * damageScaler, 0, Main.myPlayer, 2, 1);
                     Vector2 vec2 = (-MathHelper.Pi / 3 * n * (1 + npc.ai[0] / 150f)).ToRotationVector2();
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - vec2 * 200 * (npc.ai[0] / 150f), vec2 * (npc.ai[0] / 150f + 0.2f) * 16f, ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.HugeStarBullet>(), 45 * damageScaler, 0, Main.myPlayer, 2, 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - vec2 * 200 * (npc.ai[0] / 150f), vec2 * (npc.ai[0] / 150f + 0.2f) * 16f, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.HugeStarBullet>(), 45 * damageScaler, 0, Main.myPlayer, 2, 1);
                 }
             }
             if ((int)npc.ai[0] % 150 == 0)
@@ -1155,9 +1155,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
                 float width = projectile.ai[0] < 1 ? 1.33f : 2f;
-                spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity.RotatedBy((1 - projectile.ai[0]) * MathHelper.TwoPi / 6) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 2, 0, 0);
-                spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width, 0, 0);
-                spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity.RotatedBy(-(1 - projectile.ai[0]) * MathHelper.TwoPi / 6) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 2, 0, 0);
+                spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity.RotatedBy((1 - projectile.ai[0]) * MathHelper.TwoPi / 6) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 2, 0, 0);
+                spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width, 0, 0);
+                spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity.RotatedBy(-(1 - projectile.ai[0]) * MathHelper.TwoPi / 6) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 2, 0, 0);
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));

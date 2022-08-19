@@ -146,22 +146,22 @@ namespace VirtualDream
         public override void ResetEffects()
         {
             //for (int n = 0; n < 200; n++) if (Main.npc[n].type == Terraria.ID.NPCID.WallofFlesh) Main.npc[n].active = false;
-            if (!ErchiusHorrorSky.SkyActive && NPC.AnyNPCs(ModContent.NPCType<Contents.StarBound.NPCs.Bosses.ErchiusHorror.ErchiusHorror>()))
+            if (!ErchiusHorrorSky.SkyActive && NPC.AnyNPCs(NPCType<Contents.StarBound.NPCs.Bosses.ErchiusHorror.ErchiusHorror>()))
             {
                 SkyManager.Instance.Activate("VirtualDream:ErchiusHorrorSky");
                 ErchiusHorrorSky.SkyActive = true;
             }
-            if (ErchiusHorrorSky.SkyActive && !NPC.AnyNPCs(ModContent.NPCType<Contents.StarBound.NPCs.Bosses.ErchiusHorror.ErchiusHorror>()))
+            if (ErchiusHorrorSky.SkyActive && !NPC.AnyNPCs(NPCType<Contents.StarBound.NPCs.Bosses.ErchiusHorror.ErchiusHorror>()))
             {
                 SkyManager.Instance.Deactivate("VirtualDream:ErchiusHorrorSky");
                 ErchiusHorrorSky.SkyActive = false;
             }
-            if (!BigApeSky.SkyActive && NPC.AnyNPCs(ModContent.NPCType<Contents.StarBound.NPCs.Bosses.BigApe.BigApe>()))
+            if (!BigApeSky.SkyActive && NPC.AnyNPCs(NPCType<Contents.StarBound.NPCs.Bosses.BigApe.BigApe>()))
             {
                 SkyManager.Instance.Activate("VirtualDream:BigApeSky");
                 BigApeSky.SkyActive = true;
             }
-            if (BigApeSky.SkyActive && !NPC.AnyNPCs(ModContent.NPCType<Contents.StarBound.NPCs.Bosses.BigApe.BigApe>()))
+            if (BigApeSky.SkyActive && !NPC.AnyNPCs(NPCType<Contents.StarBound.NPCs.Bosses.BigApe.BigApe>()))
             {
                 SkyManager.Instance.Deactivate("VirtualDream:BigApeSky");
                 BigApeSky.SkyActive = false;
@@ -455,7 +455,7 @@ namespace VirtualDream
                 this._pillars[i].Position.Y = this._random.NextFloat() * 200f - 2000f;
                 this._pillars[i].Depth = this._random.NextFloat() * 8f + 7f;
             }
-            Array.Sort<LightPillar>(this._pillars, new Comparison<LightPillar>(this.SortMethod));
+            Array.Sort(this._pillars, new Comparison<LightPillar>(this.SortMethod));
         }
 
         // Token: 0x0600249C RID: 9372 RVA: 0x00019D55 File Offset: 0x00017F55

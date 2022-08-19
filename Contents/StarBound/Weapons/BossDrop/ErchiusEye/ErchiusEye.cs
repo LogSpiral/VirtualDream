@@ -196,7 +196,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         //    return base.CanUseItem(player);
         //}
     }
-    public class ErchiusLaser : Utils.BaseClasses.RangedHeldProjectile
+    public class ErchiusLaser : RangedHeldProjectile
     {
         //BossDropWeaponProj<ErchiusEye, ErchiusEyeEX, ErchiusEyeDL>
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * 6;//Main.MouseWorld - Player.Center
@@ -240,14 +240,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             Projectile.friendly = left && Factor > 0.5f;
             if (left && (int)Projectile.ai[0] % 20 == 0)
             {
-                SoundEngine.PlaySound(Terraria.ID.SoundID.Item15);
+                SoundEngine.PlaySound(SoundID.Item15);
 
             }
             if (right && (int)Projectile.ai[0] % UpgradeValue(40, 30, 20) == 0)
             {
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter, Projectile.velocity * 32f, ModContent.ProjectileType<ErchiusCrystalProj>(), Player.GetWeaponDamage(Player.HeldItem), Projectile.knockBack, Player.whoAmI, Main.rand.Next(4) + UpgradeValue(3, 6, 11), Main.rand.Next(5));
-                SoundEngine.PlaySound(Terraria.ID.SoundID.Item84);
+                SoundEngine.PlaySound(SoundID.Item84);
 
             }
         }

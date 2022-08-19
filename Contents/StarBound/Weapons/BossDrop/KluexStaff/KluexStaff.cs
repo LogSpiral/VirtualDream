@@ -322,7 +322,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                     }
                     plasmaBallCount++;
                     plasmaBallMax = plasmaBallCount;
-                    SoundEngine.PlaySound(Terraria.ID.SoundID.Item15);
+                    SoundEngine.PlaySound(SoundID.Item15);
 
                 }
 
@@ -352,7 +352,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                                 count++;
                             }
                         }
-                        if (count > 0) SoundEngine.PlaySound(Terraria.ID.SoundID.Item68);
+                        if (count > 0) SoundEngine.PlaySound(SoundID.Item68);
                         plasmaBallCount--;
 
                     }
