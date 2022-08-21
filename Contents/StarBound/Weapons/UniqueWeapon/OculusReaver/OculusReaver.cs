@@ -65,7 +65,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             base.SetDefaults();
             item.damage = 250;
             item.crit = 32;
-            item.rare = MyRareID.Tier2;
+            item.rare = MyRareID.Tier3;
         }
     }
     public class OculusReaverProj : VertexHammerProj
@@ -122,16 +122,19 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             {
                 if (left)
                 {
-                    int max = UpgradeValue(2, 5);
-                    for (int n = 0; n < max; n++)
+                    if (Player.CheckMana(UpgradeValue(5, 7), true)) 
                     {
-                        Vector2 pointPoisition2 = Player.Center + new Vector2(128 * Player.direction, 0) * ((projectile.ai[1] + (float)n / max) / MaxTimeLeft) * max;
-                        ShootSharpTears(pointPoisition2, Player, projectile);
+                        int max = UpgradeValue(2, 5);
+                        for (int n = 0; n < max; n++)
+                        {
+                            Vector2 pointPoisition2 = Player.Center + new Vector2(128 * Player.direction, 0) * ((projectile.ai[1] + (float)n / max) / MaxTimeLeft) * max;
+                            ShootSharpTears(pointPoisition2, Player, projectile);
+                        }
                     }
                 }
                 else
                 {
-                    if ((int)projectile.ai[1] == 1)
+                    if ((int)projectile.ai[1] == 1 && Player.CheckMana(UpgradeValue(50, 70), true))
                     {
                         Player.Teleport(Main.MouseWorld, 1);
                         SoundEngine.PlaySound(SoundID.Item60, projectile.position);

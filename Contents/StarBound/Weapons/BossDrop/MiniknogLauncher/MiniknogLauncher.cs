@@ -22,7 +22,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         //        spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow", false), item.Center - Main.screenPosition, null, Color.White, rotation, IllusionBoundMod.GetTexture(Texture + "_Glow", false).Size() * .5f, scale, 0, 0);
         //}
         public Item item => Item;
-        public override bool CanConsumeAmmo(Item ammo, Player player) => false;
+        public override bool CanConsumeAmmo(Item ammo, Player player) => player.ownedProjectileCounts[item.shoot] > 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             Projectile.NewProjectile(source, player.Center, velocity, item.shoot, damage, knockback, player.whoAmI);
@@ -375,10 +375,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         {
             if (source is EntitySource_ItemUse_WithAmmo itemSource)
             {
-                sourceItemType = itemSource.Item.type;
+                sourceItem = itemSource.Item;
             }
         }
-        public int sourceItemType;
+        public Item sourceItem;
+        public int sourceItemType => sourceItem.type;
         public T UpgradeValue<T>(T normal, T extra, T ultra, T defaultValue = default)
         {
             var type = sourceItemType;//Player.HeldItem.type
@@ -409,7 +410,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     SoundEngine.PlaySound(SoundID.Item62);
                 }
 
-                else if ((int)Projectile.ai[0] <= UpgradeValue(80, 64, 48))
+                else if ((int)Projectile.ai[0] <= UpgradeValue(80, 64, 48) && Player.PickAmmo(sourceItem, out int _, out float _, out int _, out float _, out int _))
                 {
                     var str = "";
                     switch ((int)Projectile.ai[0] / UpgradeValue(20, 16, 12))
@@ -532,8 +533,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     break;
 
             }
-            if(tier > 0)
-            SoundEngine.PlaySound(SoundID.Item62);
+            if (tier > 0)
+                SoundEngine.PlaySound(SoundID.Item62);
 
         }
         private void ShootRocket(Vector2 vel, int ai0 = 0)

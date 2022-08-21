@@ -12,6 +12,11 @@ namespace VirtualDream.Utils.BaseClasses
     }
     public abstract class RangedHeldProjectile : ModProjectile, IChannelProj
     {
+        public byte controlState 
+        {
+            get => (byte)Projectile.ai[1];
+            set => Projectile.ai[1] = value;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 1;
@@ -75,6 +80,14 @@ namespace VirtualDream.Utils.BaseClasses
                 Projectile.velocity = Terraria.Utils.SafeNormalize(Main.MouseWorld - HeldCenter, Vector2.One);
                 Projectile.rotation = Projectile.velocity.ToRotation();
                 Projectile.ai[1] = Player.controlUseItem ? 1 : 0;
+                if (Player.controlUseItem)
+                {
+                    controlState = 1;
+                }
+                if (Player.controlUseTile)
+                {
+                    controlState = 2;
+                }
                 OnCharging(Player.controlUseItem, Player.controlUseTile);
             }
             else

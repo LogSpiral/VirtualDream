@@ -180,7 +180,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             base.OnHitNPC(target, damage, knockback, crit);
-            if (controlState == 2)
+            if (controlState == 2 && Player.CheckMana(UpgradeValue(20, 30, 50), true))
             {
                 target.AddBuff(UpgradeValue(ModContent.BuffType<ToxicⅠ>(), ModContent.BuffType<ToxicⅡ>(), ModContent.BuffType<ToxicⅢ>()), UpgradeValue(600, 1200, 1800));
             }

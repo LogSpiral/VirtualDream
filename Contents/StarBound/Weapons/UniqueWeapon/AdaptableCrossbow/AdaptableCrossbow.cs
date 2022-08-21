@@ -151,7 +151,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         //        item.shoot = ProjectileID.WoodenArrowFriendly;
         //    }
         //}
-        public override bool CanConsumeAmmo(Item ammo, Player player) => false;
+        public override bool CanConsumeAmmo(Item ammo, Player player) => player.ownedProjectileCounts[item.shoot] > 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             Projectile.NewProjectile(source, player.Center, velocity, item.shoot, damage, knockback, player.whoAmI);
@@ -256,7 +256,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                     Projectile.ai[0] = UpgradeValue(15, 10);
                     SoundEngine.PlaySound(new SoundStyle("VirtualDream/Assets/Sound/shotgun_reload_clip3"));
                 }
-                else if (left)
+                else if (left && Player.PickAmmo(sourceItem, out int _, out float _, out int _, out float _, out int _))
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter, Projectile.velocity * 32, ModContent.ProjectileType<CrossBowArrow>(), Projectile.damage, Projectile.knockBack, Projectile.owner, Projectile.frameCounter, UpgradeValue(0, 1));
                     Projectile.ai[0] = UpgradeValue(27, 21);
@@ -270,7 +270,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 46 + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * Player.direction * 12;
         public override void OnRelease(bool charged, bool left)
         {
-
             if (UpgradeValue(false, false, true) || sourceItemIndex != Player.selectedItem) { Projectile.Kill(); }
         }
         public override float Factor
@@ -284,11 +283,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         {
             if (source is EntitySource_ItemUse _itemSource)
             {
-                sourceItemType = _itemSource.Item.type;
+                sourceItem = _itemSource.Item;
             }
             sourceItemIndex = (byte)Player.selectedItem;
         }
-        public int sourceItemType;
+        public int sourceItemType => sourceItem.type;
+        public Item sourceItem;
         public byte sourceItemIndex;
         public T UpgradeValue<T>(T normal, T extra, T defaultValue = default)
         {

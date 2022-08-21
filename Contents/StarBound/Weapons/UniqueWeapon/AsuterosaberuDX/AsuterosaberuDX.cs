@@ -965,6 +965,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override bool DrawLaserFire => false;
         public override void OnChargedShoot()
         {
+            if (!Player.CheckMana(UpgradeValue(75, 90, 80), true)) return;
             SoundEngine.PlaySound(SoundID.Item60, projectile.position);
             Vector2 unit = (Main.MouseWorld - Player.Center).SafeNormalize(default);
             //for (int n = 0; n < 4; n++) 

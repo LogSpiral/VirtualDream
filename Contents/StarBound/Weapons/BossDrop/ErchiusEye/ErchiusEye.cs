@@ -42,6 +42,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             item.shoot = ModContent.ProjectileType<ErchiusLaser>();
 
         }
+        public override void ModifyManaCost(Player player, ref float reduce, ref float mult) => reduce = player.ownedProjectileCounts[item.shoot] > 0 ? reduce : 0;
         public override bool AltFunctionUse(Player player)
         {
             return true;

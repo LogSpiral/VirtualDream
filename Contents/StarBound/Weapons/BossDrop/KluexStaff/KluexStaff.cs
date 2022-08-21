@@ -28,6 +28,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         //        spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow", false), item.Center - Main.screenPosition, null, Color.White, rotation, IllusionBoundMod.GetTexture(Texture + "_Glow", false).Size() * .5f, scale, 0, 0);
         //}
         public Item item => Item;
+        public override void ModifyManaCost(Player player, ref float reduce, ref float mult) => reduce = player.ownedProjectileCounts[item.shoot] > 0 ? reduce : 0;
+
         public override bool CanUseItem(Player player) => player.ownedProjectileCounts[item.shoot] < 1;
         public override void SetDefaults()
         {

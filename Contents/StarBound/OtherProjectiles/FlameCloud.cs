@@ -30,9 +30,15 @@ namespace VirtualDream.Contents.StarBound.OtherProjectiles
             if (projectile.timeLeft % 5 == 4 && projectile.frame < 11)
             {
                 projectile.frame++;
-
             }
 
+        }
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            projectile.timeLeft--;
+            projectile.velocity *= .99f;
+            projectile.friendly = false;
+            return false;
         }
         public override bool PreDraw(ref Color lightColor)
         {

@@ -642,14 +642,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             {
                 Dust.NewDustPerfect(vec, MyDustId.OrangeFx, (MathHelper.TwoPi / max * n).ToRotationVector2() * Main.rand.NextFloat(2, 8)).noGravity = true;
             }
-            var count = UpgradeValue(3, 5, 7);
-            for (int i = 0; i < count; i++)
+            if (Player.CheckMana(UpgradeValue(50, 60, 65), true)) 
             {
-                float factor = i / (count - 1f);
-                Vector2 finalVec = Vector2.Normalize(Main.MouseWorld - projCenter).RotatedBy(factor.Lerp(-MathHelper.Pi / 6, MathHelper.Pi / 6)) * 72f;
-                Projectile.NewProjectile(projectile.GetSource_FromThis(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(sourceItem), projectile.knockBack, projectile.owner);
+                var count = UpgradeValue(3, 5, 7);
+                for (int i = 0; i < count; i++)
+                {
+                    float factor = i / (count - 1f);
+                    Vector2 finalVec = Vector2.Normalize(Main.MouseWorld - projCenter).RotatedBy(factor.Lerp(-MathHelper.Pi / 6, MathHelper.Pi / 6)) * 72f;
+                    Projectile.NewProjectile(projectile.GetSource_FromThis(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(sourceItem), projectile.knockBack, projectile.owner);
+                }
+                SoundEngine.PlaySound(SoundID.Item62);
             }
-            SoundEngine.PlaySound(SoundID.Item62);
         }
         public override void Kill(int timeLeft)
         {

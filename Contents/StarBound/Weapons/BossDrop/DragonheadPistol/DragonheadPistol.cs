@@ -55,7 +55,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             item.useTime = 20;
             item.useAnimation = 20;
         }
-        public override bool CanConsumeAmmo(Item ammo, Player player) => false;
+        public override bool CanConsumeAmmo(Item ammo, Player player) => player.ownedProjectileCounts[item.shoot] > 0;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             Projectile.NewProjectile(source, player.Center, velocity, item.shoot, damage, knockback, player.whoAmI);
@@ -340,10 +340,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             Projectile.friendly = Player.name == "Sans" && right && Factor > 0.5f;
             if (right && Charged && Player.name != "Sans")
             {
-                if((int)Projectile.ai[0] % 30 == 0)
-                SoundEngine.PlaySound(SoundID.Item74);
-                if((int)Projectile.ai[0] % UpgradeValue(4, 3, 2) == 0)
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter, Projectile.velocity.RotatedBy(Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)) * 32f, ModContent.ProjectileType<DragonFireCloud>(), Player.GetWeaponDamage(sourceItem) / 2, 0.5f, Player.whoAmI, this.UpgradeValue(0.9f, 0.925f, 0.95f));
+                if ((int)Projectile.ai[0] % 30 == 0)
+                    SoundEngine.PlaySound(SoundID.Item74);
+                if ((int)Projectile.ai[0] % UpgradeValue(4, 3, 2) == 0)
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter, Projectile.velocity.RotatedBy(Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)) * 32f, ModContent.ProjectileType<DragonFireCloud>(), Player.GetWeaponDamage(sourceItem) / 2, 0.5f, Player.whoAmI, this.UpgradeValue(0.9f, 0.925f, 0.95f));
             }
             if (Projectile.friendly && (int)Projectile.ai[0] % 20 == 0)
                 SoundEngine.PlaySound(SoundID.Item15);
@@ -353,26 +353,29 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         {
             if (left)
             {
-                var m = UpgradeValue(1, 2, 3);
-                if (Charged)
+                if (Player.PickAmmo(sourceItem, out int _, out float _, out int _, out float _, out int _))
                 {
-                    SoundEngine.PlaySound(SoundID.Item62);
-                    for (int n = 0; n < m; n++)
+                    var m = UpgradeValue(1, 2, 3);
+                    if (Charged)
                     {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * 16f * (n - m * 0.5f), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBall>(), Player.GetWeaponDamage(sourceItem), 0.25f, Player.whoAmI, UpgradeValue(6, 8, 10));
-                    }
+                        SoundEngine.PlaySound(SoundID.Item62);
+                        for (int n = 0; n < m; n++)
+                        {
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * 16f * (n - m * 0.5f), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBall>(), Player.GetWeaponDamage(sourceItem), 0.25f, Player.whoAmI, UpgradeValue(6, 8, 10));
+                        }
 
-                }
-                else
-                {
-                    SoundEngine.PlaySound(SoundID.Item36);//36//38
-                    for (int n = 0; n < m; n++)
-                    {
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter + Projectile.velocity * (n * 8), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBullet>(), (int)(Player.GetWeaponDamage(sourceItem) * Factor), 0.25f, Player.whoAmI);
                     }
+                    else
+                    {
+                        SoundEngine.PlaySound(SoundID.Item36);//36//38
+                        for (int n = 0; n < m; n++)
+                        {
+                            Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootCenter + Projectile.velocity * (n * 8), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBullet>(), (int)(Player.GetWeaponDamage(sourceItem) * Factor), 0.25f, Player.whoAmI);
+                        }
+                    }
+                    Projectile.timeLeft = 10;
+                    controlState = 3;
                 }
-                Player.PickAmmo(sourceItem, out int _, out float _, out int _, out float _, out int _);
-                Projectile.Kill();
             }
         }
         public override float Factor
@@ -422,7 +425,16 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         public override (int X, int Y) FrameMax => (3, 6);
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
-            frame = texture.Frame(FrameMax.X, FrameMax.Y, UpgradeValue(0, 1, 2), Factor < 1 ? (int)(Factor * 3) : (int)(IllusionBoundModSystem.ModTime / 4) % 3 + 3);
+            int y;
+            if (!Charging && controlState == 3)
+            {
+                y = Projectile.timeLeft / 2;
+            }
+            else 
+            {
+                y = Factor >= 1 ? ((int)(IllusionBoundModSystem.ModTime / 4) % 3 + 3) : (int)(Factor * 3);
+            }
+            frame = texture.Frame(FrameMax.X, FrameMax.Y, UpgradeValue(0, 1, 2), y);
             origin = new Vector2(5, 24);
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
