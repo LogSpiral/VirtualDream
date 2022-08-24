@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Microsoft.Xna.Framework.Graphics;
-
 using Terraria.Utilities;
 
 namespace VirtualDream.Utils

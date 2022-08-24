@@ -1,7 +1,5 @@
 ﻿using System;
 
-using Microsoft.Xna.Framework.Graphics;
-
 using Terraria.ID;
 
 using static Terraria.ModLoader.ModContent;

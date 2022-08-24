@@ -1,17 +1,5 @@
-﻿using Terraria.ModLoader;
-using Terraria;
-using Microsoft.Xna.Framework;
-using VirtualDream.Utils;
-using static VirtualDream.Utils.IllusionBoundExtensionMethods;
-using System;
+﻿using static VirtualDream.Utils.IllusionBoundExtensionMethods;
 using Terraria.ID;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using Terraria.Graphics.Effects;
-using ReLogic.Graphics;
-using Terraria.DataStructures;
-using System.Linq;
-using Terraria.ModLoader.IO;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
 {

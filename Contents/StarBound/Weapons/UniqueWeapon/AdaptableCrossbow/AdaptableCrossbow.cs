@@ -1,13 +1,8 @@
 ﻿using Terraria.ID;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using VirtualDream.Utils;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using VirtualDream.Contents.StarBound.Materials;
 using System;
-using System.Linq;
+using VirtualDream.Contents.StarBound.Buffs;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
 {
@@ -448,7 +443,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                         var unit = (MathHelper.TwoPi / 6 * n + projectile.rotation).ToRotationVector2();
                         var proj = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, unit, projectile.type, projectile.damage, 8, projectile.owner, 7);
                         proj.timeLeft = 21;
-                        proj.width = proj.width = 160;
+                        proj.width = proj.height = 160;
                         proj.penetrate = -1;
                         proj.Center = projectile.Center + projectile.velocity;
                         proj.rotation = MathHelper.TwoPi / 6 * n + projectile.rotation;
@@ -563,146 +558,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                     target.AddBuff(24, 180);
                     break;
                 case 2:
-                    target.AddBuff(ModContent.BuffType<CrossBowFrozen>(), 180);
+                    target.AddBuff(ModContent.BuffType<Frozen>(), 180);
                     break;
                 case 3:
-                    target.AddBuff(ModContent.BuffType<CrossBowElectrified>(), 180);
+                    target.AddBuff(ModContent.BuffType<Electrified>(), 180);
                     break;
                 case 4:
-                    target.AddBuff(ModContent.BuffType<CrossBowToxic>(), 180);
+                    target.AddBuff(ModContent.BuffType<ToxicⅠ>(), 180);
                     break;
-            }
-        }
-    }
-    public class CrossBowFrozen : ModBuff
-    {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("霜冻之矢");
-            Description.SetDefault("刺骨凌冽的寒风");
-        }
-
-        // 注意这里我们选择的是对Player生效的Update，另一个是对NPC生效的Update
-        public override void Update(Player player, ref int buffIndex)
-        {
-            Main.buffNoSave[Type] = true;
-            Main.debuff[Type] = true;
-            Main.buffNoTimeDisplay[Type] = false;
-            Main.pvpBuff[Type] = true;
-            player.velocity *= 0.9f;
-            for (int n = 0; n < 4; n++)
-            {
-                Dust d = Dust.NewDustPerfect(player.Center + new Vector2(Main.rand.NextFloat(-64, 64), 0).RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)), MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White, 1f);
-                d.noGravity = true;
-            }
-        }
-        public override void Update(NPC npc, ref int buffIndex)
-        {
-            npc.velocity *= 0.95f;
-            for (int n = 0; n < 4; n++)
-            {
-                Dust d = Dust.NewDustPerfect(npc.Center + new Vector2(Main.rand.NextFloat(-64, 64), 0).RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)), MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White, 1f);
-                d.noGravity = true;
-            }
-        }
-    }
-    public class CrossBowElectrified : ModBuff
-    {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("青电之矢");
-            Description.SetDefault("这是触电一般的感觉...别和其他人挨得太近了。");
-        }
-
-        // 注意这里我们选择的是对Player生效的Update，另一个是对NPC生效的Update
-        public override void Update(Player player, ref int buffIndex)
-        {
-            Main.buffNoSave[Type] = true;
-            Main.debuff[Type] = true;
-            Main.buffNoTimeDisplay[Type] = false;
-            Main.pvpBuff[Type] = true;
-            player.velocity *= 0.9f;
-            if (Main.rand.NextBool(5))
-            {
-                ElectricTriangle.NewElectricTriangle(player.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(48), Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24));
-            }
-            foreach (Player player1 in Main.player)
-            {
-                if (player1.hostile && player1.active && player1.whoAmI != player.whoAmI && (player.Center - player1.Center).Length() < 160f)
-                {
-                    if ((int)Main.GameUpdateCount % 12 == 0)
-                    {
-                        player1.statLife -= 5;
-                        ElectricTriangle.NewElectricTriangle(player.Center, Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24), (player1.Center - player.Center) / 16f);
-                    }
-                }
-            }
-        }
-        public override void Update(NPC npc, ref int buffIndex)
-        {
-            npc.velocity *= 0.95f;
-            if (Main.rand.NextBool(5))
-            {
-                ElectricTriangle.NewElectricTriangle(npc.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(48), Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24));
-            }
-            foreach (NPC npc1 in Main.npc)
-            {
-                if (npc1.active && !npc1.friendly && npc1.type != NPCID.TargetDummy && npc1.whoAmI != npc.whoAmI && (npc.Center - npc1.Center).Length() < 160f)
-                {
-                    if ((int)Main.GameUpdateCount % 3 == 0)
-                    {
-                        npc1.life -= 5;
-                        ElectricTriangle.NewElectricTriangle(npc.Center, Main.rand.NextFloat(0, MathHelper.TwoPi), Main.rand.NextFloat(12, 24), (npc1.Center - npc.Center) / 16f);
-                        npc1.checkDead();
-                    }
-                }
-            }
-        }
-    }
-    public class CrossBowToxic : ModBuff
-    {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("剧毒之矢");
-            Description.SetDefault("毒素迅速地在你全身扩散，用不了多久这货就会要了你的命。");
-        }
-        public override void Update(Player player, ref int buffIndex)
-        {
-            Main.buffNoSave[Type] = true;
-            Main.debuff[Type] = true;
-            Main.buffNoTimeDisplay[Type] = false;
-            Main.pvpBuff[Type] = true;
-            player.GetModPlayer<VirtualDreamPlayer>().poisionLifeCostPerSecond++;
-        }
-        public override void Update(NPC npc, ref int buffIndex)
-        {
-            if (npc.lifeRegen > 0)
-            {
-                npc.lifeRegen = 0;
-            }
-            npc.velocity *= 0.975f;
-            npc.life -= ((npc.lifeMax / 100) * 2) / 120;
-            npc.checkDead();
-            base.Update(npc, ref buffIndex);
-        }
-    }
-    public class CrossBowColorNPC : GlobalNPC
-    {
-        public override void DrawEffects(NPC npc, ref Color drawColor)
-        {
-            if (npc.HasBuff(ModContent.BuffType<CrossBowFrozen>()))
-            {
-                drawColor = Color.Lerp(drawColor, Color.Cyan, 0.5f) * (drawColor.R / 255f);
-            }
-            if (npc.HasBuff(ModContent.BuffType<CrossBowElectrified>()))
-            {
-                //drawColor = new Color(0.3f,0.6f,0.9f) * drawColor.R;
-                //Main.NewText(Color.Lerp(Color.Cyan, Color.Purple, 0.5f));
-                drawColor = Color.Lerp(drawColor, Color.Lerp(Color.Cyan, Color.Purple, 0.5f), 0.5f) * (drawColor.R / 255f);
-            }
-            if (npc.HasBuff(ModContent.BuffType<CrossBowToxic>()))
-            {
-                drawColor = Color.Lerp(drawColor, Color.Green, 0.5f) * (drawColor.R / 255f);
             }
         }
     }

@@ -7,12 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using Microsoft.Xna.Framework.Graphics;
-
 using Terraria.UI.Chat;
 using Terraria.Utilities;
-
-using VirtualDream.Utils.BaseClasses;
 
 namespace VirtualDream.Utils
 {
@@ -4455,6 +4451,8 @@ namespace VirtualDream.Utils
             IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(false);
             IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
             IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(false);
+            IllusionBoundMod.ShaderSwooshEX.Parameters["lightShift"].SetValue(0);
+            IllusionBoundMod.ShaderSwooshEX.Parameters["distortScaler"].SetValue(0);
 
             Main.graphics.GraphicsDevice.Textures[0] = baseTex;
             Main.graphics.GraphicsDevice.Textures[1] = aniTex;

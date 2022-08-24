@@ -1,11 +1,4 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using VirtualDream.Utils;
-using VirtualDream.Utils.BaseClasses;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using Terraria.ID;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 

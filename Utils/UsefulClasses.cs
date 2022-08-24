@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-namespace VirtualDream.Utils
+﻿namespace VirtualDream.Utils
 {
     public delegate T FactorFunction<T>(float fac);
     //public struct Quaternion

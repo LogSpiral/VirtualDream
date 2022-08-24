@@ -1,12 +1,17 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.ID;
 
-using VirtualDream.Utils.BaseClasses;
-
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
 {
+    //public class IDToolTip : GlobalItem 
+    //{
+    //    public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+    //    {
+    //        tooltips.Add(new TooltipLine(Mod, "ID", $"物品的id是{item.type}"));
+    //    }
+    //}
     public class OculusReaver : GlowItem
     {
         public override void SetStaticDefaults()

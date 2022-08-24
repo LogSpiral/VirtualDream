@@ -2,8 +2,6 @@
 //using VirtualDream.Items.Weapons.UniqueWeapon;
 using System.Collections.Generic;
 
-using Microsoft.Xna.Framework.Graphics;
-
 using Terraria.ID;
 using Terraria.Utilities;
 

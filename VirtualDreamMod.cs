@@ -16,11 +16,9 @@ global using VirtualDream.Utils;
 global using VirtualDream.Utils.BaseClasses;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 //using VirtualDream.Tiles.StormZone;
 //using VirtualDream.NPCs.StormZone;
 using System.Reflection;
-using System.Threading.Tasks;
 
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Effects;
@@ -366,6 +364,8 @@ namespace VirtualDream
                 ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
                 ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
                 ShaderSwooshEX.Parameters["gather"].SetValue(true);
+                ShaderSwooshEX.Parameters["lightShift"].SetValue(0);
+                ShaderSwooshEX.Parameters["distortScaler"].SetValue(0);
                 Main.graphics.GraphicsDevice.Textures[0] = GetTexture("Images/BaseTex_7");
                 Main.graphics.GraphicsDevice.Textures[1] = GetTexture("Images/AniTex");
                 Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[player.HeldItem.type].Value;
@@ -461,11 +461,13 @@ namespace VirtualDream
                 if (!Main.drawToScreen)
                 {
                     List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+                    List<CustomVertexInfo> bars_2 = new List<CustomVertexInfo>();
+
                     List<int> indexer = new List<int>();
                     Player player = null;
                     List<Projectile> oculusTears = new List<Projectile>();
                     List<Projectile> astralTears = new List<Projectile>();
-
+                    List<Projectile> solusKatanaFractal = new List<Projectile>();
                     #region 遍历查找
                     foreach (var proj in Main.projectile)
                     {
@@ -482,13 +484,17 @@ namespace VirtualDream
                                         var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
                                         float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
                                         if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
-                                        var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;//* (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f
+                                        var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;// (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f
                                         Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
                                         var realColor = Color.Lerp(Color.White, Color.Orange, f);
                                         realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
                                         bars.Add(new CustomVertexInfo(swoosh.center + newVec, realColor, new Vector3(1 - f, 1, 0.6f)));
+                                        bars_2.Add(new CustomVertexInfo(swoosh.center + newVec * 1.5f, realColor, new Vector3(1 - f, 1, 0.6f)));
+
                                         realColor.A = 0;
                                         bars.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
+                                        bars_2.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
+
                                     }
                                     indexer.Add(bars.Count - 2);
                                     player = shard.Player;
@@ -497,10 +503,10 @@ namespace VirtualDream
                         }
                         if (proj.active && proj.type == ProjectileType<OculusReaverTear>()) oculusTears.Add(proj);
                         if (proj.active && proj.type == ProjectileType<Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX.AstralTear>() && (int)proj.ai[1] != 0) astralTears.Add(proj);
-
+                        if (proj.active && proj.type == ProjectileType<Contents.StarBound.NPCs.Bosses.AsraNox.SolusKatanaFractal>()) solusKatanaFractal.Add(proj);
                     }
                     #endregion
-                    if (bars.Count > 2 || oculusTears.Count > 0 || astralTears.Count > 0)
+                    if (bars.Count > 2 || oculusTears.Count > 0 || astralTears.Count > 0 || solusKatanaFractal.Count > 0)
                     {
                         SpriteBatch spriteBatch = Main.spriteBatch;
                         var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
@@ -508,67 +514,107 @@ namespace VirtualDream
                         var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
                         var resultMatrix = model * trans * projection;
                         #region 日炎刀合批
-                        if (bars.Count > 2)
+                        if (bars.Count > 2 || solusKatanaFractal.Count > 0)
                         {
 
                             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 
                             SamplerState sampler = SamplerState.LinearClamp;
-                            CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];//
-                            for (int i = 0; i < bars.Count - 2; i += 2)
+                            //
+                            if (solusKatanaFractal.Count > 0)
                             {
-                                if (indexer.ToArray().ContainsValue(i)) continue;
-                                var k = i / 2;
-                                if (6 * k < triangleList.Length)
+                                foreach (var projectile in solusKatanaFractal)
                                 {
-                                    triangleList[6 * k] = bars[i];
-                                    triangleList[6 * k + 1] = bars[i + 2];
-                                    triangleList[6 * k + 2] = bars[i + 1];
-                                }
-                                if (6 * k + 3 < triangleList.Length)
-                                {
-                                    triangleList[6 * k + 3] = bars[i + 1];
-                                    triangleList[6 * k + 4] = bars[i + 2];
-                                    triangleList[6 * k + 5] = bars[i + 3];
+                                    var solusKatana = projectile.ModProjectile as Contents.StarBound.NPCs.Bosses.AsraNox.SolusKatanaFractal;
+                                    if (solusKatana == null) { Main.NewText("nmdwsm"); continue; }
+                                    solusKatana.DrawOthers();
+                                    var max = projectile.oldPos.Length - 1;
+                                    for (int n = 0; n < projectile.oldPos.Length; n++)
+                                    {
+                                        if (projectile.oldPos[n] == default) { max = n; break; }
+                                    }
+                                    if (max < 2) { /*Main.NewText("太短了太短了！！  " + max + "   " + projectile.localAI[0] + "   " + projectile.oldPos[0]);*/ continue; }
+                                    float _scaler = 98f;
+                                    var multiValue = 1;//1 - (projectile.localAI[0] - 60) / 90f
+                                    bars.Add(new CustomVertexInfo(projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * _scaler, default, new Vector3(1, 1, 0.6f)));
+                                    bars.Add(new CustomVertexInfo(projectile.oldPos[0], default, new Vector3(0, 0, 0.6f)));
+                                    for (int i = 0; i < max; i++)
+                                    {
+                                        var f = i / (max - 1f);
+                                        f = 1 - f;
+                                        var alphaLight = 0.6f;
+                                        var realColor = Color.Lerp(Color.White, Color.Orange, f);
+                                        var _f = 6 * f / (3 * f + 1);//6 * f / (3 * f + 1) /(float)Math.Pow(f,instance.maxCount)
+                                        _f = MathHelper.Clamp(_f, 0, 1);
+                                        realColor.A = (byte)(_f * 255);
+                                        bars.Add(new CustomVertexInfo(projectile.oldPos[i] + projectile.oldRot[i].ToRotationVector2() * _scaler, realColor * multiValue, new Vector3(1 - f, 1, alphaLight)));
+                                        realColor.A = 0;
+                                        bars.Add(new CustomVertexInfo(projectile.oldPos[i], realColor * multiValue, new Vector3(0, 0, alphaLight)));
+                                    }
+                                    indexer.Add(bars.Count - 2);
                                 }
                             }
-                            //GraphicsDevice gd = Main.instance.GraphicsDevice;
-                            RenderTarget2D render = Instance.render;
-                            //SpriteBatch spriteBatch = Main.spriteBatch;
-                            //spriteBatch.End();
-                            gd.SetRenderTarget(render);
-                            gd.Clear(Color.Transparent);
-                            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                            ShaderSwooshEX.Parameters["uTransform"].SetValue(resultMatrix);
-                            ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
-                            ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
-                            ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
-                            ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
-                            ShaderSwooshEX.Parameters["gather"].SetValue(true);
-                            Main.graphics.GraphicsDevice.Textures[0] = GetTexture("Images/BaseTex_7");
-                            Main.graphics.GraphicsDevice.Textures[1] = GetTexture("Images/AniTex");
-                            Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[player.HeldItem.type].Value;
-                            Main.graphics.GraphicsDevice.Textures[3] = HeatMap[24];
-
-                            Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
-                            Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
-                            Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
-                            Main.graphics.GraphicsDevice.SamplerStates[3] = sampler;
-
-                            ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
-                            Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
-                            Main.graphics.GraphicsDevice.RasterizerState = originalState;
-                            spriteBatch.End();
-                            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-
-                            Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-                            Distort.Parameters["tex0"].SetValue(render);
-
-                            Distort.Parameters["position"].SetValue(new Vector2(0, 3f));
-                            Distort.Parameters["tier2"].SetValue(0.2f);
-                            for (int n = 0; n < 3; n++)
+                            if (bars.Count > 2) 
                             {
+
+                                CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];
+                                for (int i = 0; i < bars.Count - 2; i += 2)
+                                {
+                                    if (indexer.ToArray().ContainsValue(i)) continue;
+                                    var k = i / 2;
+                                    if (6 * k < triangleList.Length)
+                                    {
+                                        triangleList[6 * k] = bars[i];
+                                        triangleList[6 * k + 1] = bars[i + 2];
+                                        triangleList[6 * k + 2] = bars[i + 1];
+                                    }
+                                    if (6 * k + 3 < triangleList.Length)
+                                    {
+                                        triangleList[6 * k + 3] = bars[i + 1];
+                                        triangleList[6 * k + 4] = bars[i + 2];
+                                        triangleList[6 * k + 5] = bars[i + 3];
+                                    }
+                                }
+                                //GraphicsDevice gd = Main.instance.GraphicsDevice;
+                                RenderTarget2D render = Instance.render;
+                                //SpriteBatch spriteBatch = Main.spriteBatch;
+                                //spriteBatch.End();
+                                gd.SetRenderTarget(render);
+                                gd.Clear(Color.Transparent);
+                                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                                ShaderSwooshEX.Parameters["uTransform"].SetValue(resultMatrix);
+                                ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
+                                ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
+                                ShaderSwooshEX.Parameters["checkAir"].SetValue(false);
+                                ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
+                                ShaderSwooshEX.Parameters["gather"].SetValue(true);
+                                ShaderSwooshEX.Parameters["distortScaler"].SetValue(0);
+                                ShaderSwooshEX.Parameters["lightShift"].SetValue(0f);
+
+                                Main.graphics.GraphicsDevice.Textures[0] = GetTexture("Images/BaseTex_7");
+                                Main.graphics.GraphicsDevice.Textures[1] = GetTexture("Images/AniTex");
+                                Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[ItemType<SolusKatana>()].Value;
+                                Main.graphics.GraphicsDevice.Textures[3] = HeatMap[24];
+
+                                Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
+                                Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
+                                Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
+                                Main.graphics.GraphicsDevice.SamplerStates[3] = sampler;
+
+                                ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
+                                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
+                                Main.graphics.GraphicsDevice.RasterizerState = originalState;
+                                spriteBatch.End();
+                                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                                //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+
+                                Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+                                Distort.Parameters["tex0"].SetValue(render);
+
+                                Distort.Parameters["position"].SetValue(new Vector2(0, 3f));
+                                Distort.Parameters["tier2"].SetValue(0.2f);
+                                //for (int n = 0; n < 1; n++)
+                                //{
                                 gd.SetRenderTarget(Main.screenTargetSwap);
                                 gd.Clear(Color.Transparent);
                                 Distort.CurrentTechnique.Passes[7].Apply();
@@ -580,13 +626,13 @@ namespace VirtualDream
                                 gd.Clear(Color.Transparent);
                                 Distort.CurrentTechnique.Passes[6].Apply();
                                 spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                            }
-                            Distort.Parameters["position"].SetValue(new Vector2(0, 5f));
-                            Distort.Parameters["ImageSize"].SetValue(new Vector2(0.707f) * -0.006f);//projectile.rotation.ToRotationVector2() * -0.006f
+                                //}
+                                Distort.Parameters["position"].SetValue(new Vector2(0, 5f));
+                                Distort.Parameters["ImageSize"].SetValue(new Vector2(0.707f) * -0.006f);//projectile.rotation.ToRotationVector2() * -0.006f
 
 
-                            for (int n = 0; n < 2; n++)
-                            {
+                                //for (int n = 0; n < 1; n++)
+                                //{
                                 gd.SetRenderTarget(Main.screenTargetSwap);
                                 gd.Clear(Color.Transparent);
                                 Distort.CurrentTechnique.Passes[5].Apply();
@@ -596,12 +642,24 @@ namespace VirtualDream
                                 gd.Clear(Color.Transparent);
                                 Distort.CurrentTechnique.Passes[4].Apply();
                                 spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                                //}
+                                spriteBatch.End();
+                                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+
+                                spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                                spriteBatch.Draw(render, Vector2.Zero, Color.White);
+                                spriteBatch.End();
+                                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
+                                if (solusKatanaFractal.Count > 0)
+                                {
+                                    foreach (var projectile in solusKatanaFractal)
+                                    {
+                                        (projectile.ModProjectile as Contents.StarBound.NPCs.Bosses.AsraNox.SolusKatanaFractal)?.DrawSword();
+                                    }
+                                }
+                                spriteBatch.End();
                             }
 
-                            spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                            spriteBatch.Draw(render, Vector2.Zero, Color.White);
-                            spriteBatch.End();
-                            //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);
                         }
                         #endregion
                         if (oculusTears.Count > 0)
@@ -617,8 +675,8 @@ namespace VirtualDream
                             gd.SetRenderTarget(render);
                             gd.Clear(Color.Transparent);
                             #endregion
-                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
-                            /*                    sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);*///Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                            //sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
+                             sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
                             foreach (var projectile in oculusTears)
                             {
                                 //var fac = projectile.ai[0].SymmetricalFactor(90, 10) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f);
@@ -749,6 +807,7 @@ namespace VirtualDream
                             #endregion
 
                         }
+
                     }
                 }
 
@@ -866,9 +925,14 @@ namespace VirtualDream
         }
         public void CreateRender()
         {
+            if (render != null) render.Dispose();
+            if (render_Distort != null) render_Distort.Dispose();
+
             render = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth == 0 ? 1920 : Main.screenWidth, Main.screenHeight == 0 ? 1120 : Main.screenHeight);
+            render_Distort = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth == 0 ? 1920 : Main.screenWidth, Main.screenHeight == 0 ? 1120 : Main.screenHeight);
         }
         public RenderTarget2D render;
+        public RenderTarget2D render_Distort;
         public static Effect DefaultEffect;
         public static Effect ColorfulEffect;
         public static Effect FinalFractalTailEffect;

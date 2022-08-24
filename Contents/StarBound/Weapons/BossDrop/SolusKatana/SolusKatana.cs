@@ -1,14 +1,7 @@
-﻿using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria;
-using Microsoft.Xna.Framework;
-using VirtualDream.Utils;
+﻿using Terraria.ID;
 using System.Collections.Generic;
 using Terraria.DataStructures;
-using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
 using System;
-using ReLogic.Graphics;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 {
@@ -642,7 +635,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             {
                 Dust.NewDustPerfect(vec, MyDustId.OrangeFx, (MathHelper.TwoPi / max * n).ToRotationVector2() * Main.rand.NextFloat(2, 8)).noGravity = true;
             }
-            if (Player.CheckMana(UpgradeValue(50, 60, 65), true)) 
+            if (Player.CheckMana(UpgradeValue(50, 60, 65), true))
             {
                 var count = UpgradeValue(3, 5, 7);
                 for (int i = 0; i < count; i++)
@@ -786,7 +779,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            if (projectile.ai[0] != 0) return false;
+            if ((int)projectile.ai[0] == 1) return false;
             SpriteBatch spriteBatch = Main.spriteBatch;
             if (projectile.timeLeft > 30)
             {
@@ -800,7 +793,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     var factor = 1 - k / (float)projectile.oldPos.Length;
                     spriteBatch.Draw(projectileTexture, drawPos, null, Color.Orange * factor, projectile.rotation, new Vector2(7.5f, 3.5f), (1 - 0.1f * k) * scaleVec, SpriteEffects.None, 0f);
                 }
-                if (projectile.ai[1] > 0)
+                if (projectile.frameCounter > 0)
                 {
                     var f = (projectile.timeLeft - 30) / 115f;
                     var _f = f.HillFactor2(1);
@@ -809,7 +802,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         spriteBatch.Draw(projectileTexture, projectile.Center - Main.screenPosition + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 16 * _f), null, new Color(1f, 1f, 1f, 0) * f, projectile.rotation, new Vector2(7.5f, 3.5f), scaleVec, 0, 0);
                     }
                 }
-                //Main.NewText((int)projectile.ai[1]);
+                //Main.NewText((int)projectile.frameCount);
 
                 var unit = projectile.rotation.ToRotationVector2();
                 spriteBatch.Draw(projectileTexture, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(7.5f, 3.5f), scaleVec, SpriteEffects.None, 0f);
@@ -971,18 +964,26 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public Player Player => Main.player[projectile.owner];
         public override void AI()
         {
-            if (projectile.ai[0] == 0)
+            switch ((int)projectile.ai[0])
             {
-                projectile.velocity *= 0.9f;
-                //var length = projectile.velocity.Length();
-                if (projectile.velocity != Vector2.Zero)
-                {
-                    projectile.rotation = projectile.velocity.ToRotation();
-                }
-                if (projectile.velocity.Length() < 2f)
-                {
-                    projectile.ai[1]++;
-                }
+                case 0:
+                case 2:
+                    {
+                        projectile.velocity *= projectile.ai[1] == 0 ? 0.9f : projectile.ai[1];
+                        //var length = projectile.velocity.Length();
+                        if (projectile.velocity != Vector2.Zero)
+                        {
+                            projectile.rotation = projectile.velocity.ToRotation();
+                        }
+                        if (projectile.velocity.Length() < 2f)
+                        {
+                            projectile.frameCounter++;
+                        }
+                        break;
+                    }
+            }
+            if ((int)projectile.ai[0] != 1)
+            {
                 if (projectile.timeLeft == 30)
                 {
                     for (int i = 0; i < 30; i++)
@@ -1003,6 +1004,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         p1.timeLeft = 2;
                         p1.Center = projectile.Center;
                         p1.penetrate = -1;
+                        p1.friendly = projectile.friendly;
+                        p1.hostile = projectile.hostile;
                     }
                     //else
                     //    SoundEngine.PlaySound(Terraria.ID.SoundID.Item38);
@@ -1053,6 +1056,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         {
             projectile.Center += projectile.velocity;
             projectile.velocity *= 0f;
+
+            if ((int)projectile.ai[0] == 2)
+            {
+                projectile.timeLeft = 31;
+            }
             return false;
         }
 
@@ -1061,7 +1069,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             target.AddBuff(BuffID.OnFire, 150);
             target.AddBuff(BuffID.Daybreak, 150);
             target.immune[projectile.owner] = 0;
-            if (projectile.ai[0] == 0)
+            if (projectile.ai[0] != 1)
             {
                 projectile.timeLeft = 31;
                 //projectile.damage = 0;

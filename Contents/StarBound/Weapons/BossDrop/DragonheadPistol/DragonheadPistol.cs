@@ -1,10 +1,7 @@
 ﻿using System;
 //using static VirtualDream.Contents.StarBound.Weapons.BossDrop.UpgradeWeaponExtension;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.ID;
-
-using VirtualDream.Utils.BaseClasses;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
 {

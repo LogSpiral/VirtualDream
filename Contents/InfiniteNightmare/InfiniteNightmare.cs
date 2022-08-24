@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Microsoft.Xna.Framework.Graphics;
-
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.GameContent.ItemDropRules;

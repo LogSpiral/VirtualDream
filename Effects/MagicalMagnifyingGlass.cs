@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-
+﻿
 using Terraria.Graphics.Shaders;
 
 namespace VirtualDream.Effects

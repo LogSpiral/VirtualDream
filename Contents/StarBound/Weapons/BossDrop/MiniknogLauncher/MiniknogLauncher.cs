@@ -1,10 +1,5 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using VirtualDream.Utils;
-using Microsoft.Xna.Framework;
+﻿using Terraria.ID;
 using Terraria.DataStructures;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
@@ -431,7 +426,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     //CombatText.NewText(Player.Hitbox.Offset(new Point(0,48)),Color.Cyan,);
                     var rect = Player.Hitbox;
                     rect.Offset(0, -64);
-                    Main.combatText[CombatText.NewText(rect, Color.Cyan, str + "导弹填充完毕", true)].velocity.Y = -1;
+                     Main.combatText[CombatText.NewText(rect, Color.Cyan, str + "导弹填充完毕", true)].velocity.Y = -1;
                     if ((int)Projectile.ai[0] == UpgradeValue(80, 64, 48))
                     {
                         rect.Offset(0, -32);

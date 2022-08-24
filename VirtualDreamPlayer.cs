@@ -1,10 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReLogic.Graphics;
 using Terraria.DataStructures;
 
 namespace VirtualDream
@@ -52,7 +46,7 @@ namespace VirtualDream
         }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
-
+            //Main.spriteBatch.DrawString(FontAssets.MouseText.Value, (Player.skinColor, Player.eyeColor, Player.hairColor, Player.hair).ToString(), Player.Center + new Vector2(-128, -50) - Main.screenPosition, Color.White);
         }
     }
 

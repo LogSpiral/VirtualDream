@@ -1,8 +1,4 @@
-﻿using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria;
-using Microsoft.Xna.Framework;
-using VirtualDream.Utils;
+﻿using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 using Terraria.DataStructures;
 
@@ -13,7 +9,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("斩断那呼啸的时之风。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("刺穿时间");
+            DisplayName.SetDefault("刺穿时间(未完成)");
         }
         public Item item => Item;
         public override void SetDefaults()
@@ -32,12 +28,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
         }
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {
-            target.GetGlobalNPC<TimePierceStopNPC>().stopCount += (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
+            target.GetGlobalNPC<TimePierceStopNPC>().stopCount = (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
             if (player.altFunctionUse == 2)
             {
                 foreach (var npc in Main.npc)
                 {
-                    if (npc.active) npc.GetGlobalNPC<TimePierceStopNPC>().stopCount += (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
+                    if (npc.active) npc.GetGlobalNPC<TimePierceStopNPC>().stopCount = (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
                 }
             }
             //player.GetModPlayer<TimePierceStopPlayer>().stopCount += (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
@@ -86,7 +82,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
     {
         public override bool InstancePerEntity => true;
         public int stopCount;
-        public bool NotStop => stopCount < 0;
+        public bool NotStop => stopCount <= 0;
 
         public override bool PreAI(NPC npc)
         {
@@ -104,13 +100,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
         {
             if (NotStop) return;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (NotStop) return true;
+            if (ColorChange == null) return true;
+
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             Main.instance.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[4];
             ColorChange.Parameters["uTime"].SetValue(-0.03f * (float)IllusionBoundModSystem.ModTime);
             ColorChange.CurrentTechnique.Passes[0].Apply();
@@ -122,7 +120,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
     public class TimePierceStopPlayer : ModPlayer
     {
         public int stopCount;
-        public bool NotStop => stopCount < 0;
+        public bool NotStop => stopCount <= 0;
         public override bool PreItemCheck()
         {
             stopCount--;

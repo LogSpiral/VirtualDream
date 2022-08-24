@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
 
 
 namespace VirtualDream.Utils.BaseClasses
@@ -12,7 +10,7 @@ namespace VirtualDream.Utils.BaseClasses
     }
     public abstract class RangedHeldProjectile : ModProjectile, IChannelProj
     {
-        public byte controlState 
+        public byte controlState
         {
             get => (byte)Projectile.ai[1];
             set => Projectile.ai[1] = value;
@@ -345,7 +343,7 @@ namespace VirtualDream.Utils.BaseClasses
         }
         public virtual Color VertexColor(float time) => Color.White;
         public virtual void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap) { }
-        public virtual void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha,bool inverse) useMask) { }
+        public virtual void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha, bool inverse) useMask) { }
         public virtual bool RedrawSelf => false;
         public virtual bool WhenVertexDraw => !Charging && Charged;
         protected Texture2D heatMap;
@@ -482,6 +480,9 @@ namespace VirtualDream.Utils.BaseClasses
                 IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(airFactor);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(true);
+                IllusionBoundMod.ShaderSwooshEX.Parameters["lightShift"].SetValue(0);
+                IllusionBoundMod.ShaderSwooshEX.Parameters["distortScaler"].SetValue(0);
+
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/BaseTex_" + indexOfGreyTex);
                 Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/AniTex");
                 Main.graphics.GraphicsDevice.Textures[2] = itemTex;
@@ -496,6 +497,40 @@ namespace VirtualDream.Utils.BaseClasses
                 IllusionBoundMod.ShaderSwooshEX.CurrentTechnique.Passes[HeatMap != null && useHeatMap ? 2 : 3].Apply();
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Length - 2);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
+
+                if (useDistort.director != default)
+                {
+                    sb.End();
+                    gd.SetRenderTarget(render);
+                    gd.Clear(Color.Transparent);
+                    sb.Begin(SpriteSortMode.Immediate, additive ? BlendState.Additive : BlendState.NonPremultiplied, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                    IllusionBoundMod.ShaderSwooshEX.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+                    IllusionBoundMod.ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
+                    IllusionBoundMod.ShaderSwooshEX.Parameters["uTime"].SetValue(0);//-(float)Main.time * 0.06f
+                    IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
+                    IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(airFactor);
+                    IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(false);
+                    IllusionBoundMod.ShaderSwooshEX.Parameters["lightShift"].SetValue(0);
+                    IllusionBoundMod.ShaderSwooshEX.Parameters["distortScaler"].SetValue(1.5f);
+                    Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/BaseTex_" + indexOfGreyTex);
+                    Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/AniTex");
+                    Main.graphics.GraphicsDevice.Textures[2] = itemTex;
+                    if (HeatMap != null && useHeatMap)
+                        Main.graphics.GraphicsDevice.Textures[3] = HeatMap;
+
+                    Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
+                    Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
+                    Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
+                    Main.graphics.GraphicsDevice.SamplerStates[3] = sampler;
+                    
+                    IllusionBoundMod.ShaderSwooshEX.CurrentTechnique.Passes[HeatMap != null && useHeatMap ? 2 : 3].Apply();
+                    for (int n = 0; n < triangleList.Length; n++) 
+                    {
+                        triangleList[n].Position = (triangleList[n].Position - Player.Center) * 1.5f + Player.Center;
+                    }
+                    Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Length - 2);
+                    Main.graphics.GraphicsDevice.RasterizerState = originalState;
+                }
                 sb.End();
                 //然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
                 //原版自带的screenTargetSwap就是一个可以使用的render，（原版用来连续上滤镜）
@@ -513,7 +548,7 @@ namespace VirtualDream.Utils.BaseClasses
                 {
                     IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(useBloom.M, useBloom.Range));
                     IllusionBoundMod.Distort.Parameters["tier2"].SetValue(useBloom.Intensity);
-                    for (int n = 0; n < 3; n++)
+                    for (int n = 0; n < 1; n++)
                     {
                         gd.SetRenderTarget(Main.screenTargetSwap);
                         gd.Clear(Color.Transparent);
@@ -530,21 +565,38 @@ namespace VirtualDream.Utils.BaseClasses
                 }
                 if (useDistort.director != default)
                 {
-                    IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(useDistort.M, useDistort.Range));
-                    IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(useDistort.director);
-                    for (int n = 0; n < 2; n++)
-                    {
-                        gd.SetRenderTarget(Main.screenTargetSwap);
-                        gd.Clear(Color.Transparent);
-                        IllusionBoundMod.Distort.CurrentTechnique.Passes[5].Apply();
-                        sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                    //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(useDistort.M, useDistort.Range));
+                    //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(useDistort.director);
+                    //for (int n = 0; n < 1; n++)
+                    //{
+                    //    gd.SetRenderTarget(Main.screenTargetSwap);
+                    //    gd.Clear(Color.Transparent);
+                    //    IllusionBoundMod.Distort.CurrentTechnique.Passes[5].Apply();
+                    //    sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
 
-                        gd.SetRenderTarget(Main.screenTarget);
-                        gd.Clear(Color.Transparent);
-                        IllusionBoundMod.Distort.CurrentTechnique.Passes[4].Apply();
-                        sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                    }
+                    //    gd.SetRenderTarget(Main.screenTarget);
+                    //    gd.Clear(Color.Transparent);
+                    //    IllusionBoundMod.Distort.CurrentTechnique.Passes[4].Apply();
+                    //    sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                    //}
                     //Main.NewText(IllusionBoundMod.Distort.CurrentTechnique.Passes.Count);
+                    gd.SetRenderTarget(Main.screenTargetSwap);//将画布设置为这个
+                    gd.Clear(Color.Transparent);//清空
+                                                //Vector2 direct = (instance.swooshFactorStyle == SwooshFactorStyle.每次开始时决定系数 ? modPlayer.kValue : ((modPlayer.kValue + modPlayer.kValueNext) * .5f)).ToRotationVector2() * -0.1f * fac.SymmetricalFactor2(0.5f, 0.2f) * instance.distortFactor;//(u + v)
+                    IllusionBoundMod.Distort.Parameters["offset"].SetValue(useDistort.director);//设置参数时间
+                    IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0);
+                    IllusionBoundMod.Distort.Parameters["tex0"].SetValue(IllusionBoundMod.Instance.render_Distort);
+                    IllusionBoundMod.Distort.CurrentTechnique.Passes[0].Apply();//ApplyPass
+                    sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);//绘制原先屏幕内容
+                    gd.SetRenderTarget(Main.screenTarget);
+                    gd.Clear(Color.Transparent);
+                    sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                    //sb.End();
+
+                    //Main.spriteBatch.Begin(SpriteSortMode.Immediate, alphaBlend ? BlendState.NonPremultiplied : BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
+                    //Main.instance.GraphicsDevice.BlendState = BlendState.Additive;
+                    sb.End();
+                    Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 }
                 if (useMask.fillTex != null)
                 {
@@ -614,6 +666,8 @@ namespace VirtualDream.Utils.BaseClasses
                 IllusionBoundMod.ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(airFactor);
                 IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(true);
+                IllusionBoundMod.ShaderSwooshEX.Parameters["lightShift"].SetValue(0);
+                IllusionBoundMod.ShaderSwooshEX.Parameters["distortScaler"].SetValue(0);
                 Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/BaseTex_" + indexOfGreyTex);
                 Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/AniTex");
                 Main.graphics.GraphicsDevice.Textures[2] = itemTex;

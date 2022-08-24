@@ -1,9 +1,5 @@
-﻿using VirtualDream.Utils;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
+﻿using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifle
 {
@@ -74,12 +70,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             base.SetDefaults();
             item.damage = 500;
             item.rare = MyRareID.Tier3;
-            item.useAmmo = AmmoID.Bullet;
             item.useTime = 50;
             item.shootSpeed = 32f;
             item.useAnimation = 50;
             item.mana = 80;
-            item.shoot = ProjectileID.Bullet;
             item.knockBack = 9f;
         }
     }

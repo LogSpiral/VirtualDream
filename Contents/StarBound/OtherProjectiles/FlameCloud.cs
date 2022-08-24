@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-
-namespace VirtualDream.Contents.StarBound.OtherProjectiles
+﻿namespace VirtualDream.Contents.StarBound.OtherProjectiles
 {
     public class FlameCloud : ModProjectile
     {
@@ -36,7 +34,7 @@ namespace VirtualDream.Contents.StarBound.OtherProjectiles
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             projectile.timeLeft--;
-            projectile.velocity *= .99f;
+            projectile.velocity = oldVelocity * .975f;
             projectile.friendly = false;
             return false;
         }

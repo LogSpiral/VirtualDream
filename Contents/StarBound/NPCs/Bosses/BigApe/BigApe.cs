@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.Xna.Framework.Graphics;
-
 using Terraria.ID;
 
 using static VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe.BigApeTools;

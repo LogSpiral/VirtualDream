@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using VirtualDream.Utils;
+﻿using Terraria.ID;
 using Terraria.DataStructures;
+using VirtualDream.Contents.StarBound.Buffs;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
 {
@@ -101,6 +96,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
+            target.AddBuff(ModContent.BuffType<Electrified>(), 180);
         }
         public T UpgradeValue<T>(T normal, T extra, T defaultValue = default)
         {

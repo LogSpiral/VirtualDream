@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria.DataStructures;
-using Terraria.Graphics;
-using Terraria.ID;
+﻿using Terraria.ID;
 namespace VirtualDream
 {
     public class TeleportStaff : ModItem
