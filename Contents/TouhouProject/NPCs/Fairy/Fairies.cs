@@ -1942,7 +1942,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
             spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, projectile.width, projectile.height), Color.White with { A = 0 } * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
             if ((int)projectile.ai[1] == 2)
             {
-                DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Solar, ShaderTailStyle.Light);
+                VirtualDreamDrawMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Solar, ShaderTailStyle.Light);
             }
             return false;
         }

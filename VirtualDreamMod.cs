@@ -543,10 +543,11 @@ namespace VirtualDream
                                         var f = i / (max - 1f);
                                         f = 1 - f;
                                         var alphaLight = 0.6f;
-                                        var realColor = Color.Lerp(Color.White, Color.Orange, f);
-                                        var _f = 6 * f / (3 * f + 1);//6 * f / (3 * f + 1) /(float)Math.Pow(f,instance.maxCount)
-                                        _f = MathHelper.Clamp(_f, 0, 1);
-                                        realColor.A = (byte)(_f * 255);
+                                        var realColor = i < 15 ? default : Color.Lerp(Color.White, Color.Orange, f);
+                                        //var _f = 6 * f / (3 * f + 1);//6 * f / (3 * f + 1) /(float)Math.Pow(f,instance.maxCount)
+                                        //_f = MathHelper.Clamp(_f, 0, 1);
+                                        realColor.A = (byte)((1 - f).HillFactor2(1) * 255);
+                                        //realColor.A = 51;
                                         bars.Add(new CustomVertexInfo(projectile.oldPos[i] + projectile.oldRot[i].ToRotationVector2() * _scaler, realColor * multiValue, new Vector3(1 - f, 1, alphaLight)));
                                         realColor.A = 0;
                                         bars.Add(new CustomVertexInfo(projectile.oldPos[i], realColor * multiValue, new Vector3(0, 0, alphaLight)));
@@ -554,7 +555,7 @@ namespace VirtualDream
                                     indexer.Add(bars.Count - 2);
                                 }
                             }
-                            if (bars.Count > 2) 
+                            if (bars.Count > 2)
                             {
 
                                 CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];
@@ -676,7 +677,7 @@ namespace VirtualDream
                             gd.Clear(Color.Transparent);
                             #endregion
                             //sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
-                             sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
+                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
                             foreach (var projectile in oculusTears)
                             {
                                 //var fac = projectile.ai[0].SymmetricalFactor(90, 10) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f);

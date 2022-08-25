@@ -6,6 +6,8 @@ using Terraria.ID;
 
 using static VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe.BigApeTools;
 using static VirtualDream.Utils.IllusionBoundExtensionMethods;
+using static VirtualDream.Utils.VirtualDreamDrawMethods;
+
 
 namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 {

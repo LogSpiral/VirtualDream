@@ -808,7 +808,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 spriteBatch.Draw(projectileTexture, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(7.5f, 3.5f), scaleVec, SpriteEffects.None, 0f);
                 //Main.instance.GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
-                spriteBatch.DrawQuadraticLaser_PassColorBar(unit * 8 + projectile.Center, -unit, 15, length * 2 + 28, 30);
+                spriteBatch.DrawQuadraticLaser_PassColorBar(unit * 8 + projectile.Center, -unit, 15, MathHelper.Clamp(length, 0, 16) * 2 + 28, 30);
 
 
                 //var length = projectile.velocity.Length();
@@ -835,6 +835,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 //    skipPoint: new int[] { 40, 80, 120 },
                 //    kOfX: 4
                 //);
+            }
+            if ((int)projectile.ai[0] >= 4 && (int)projectile.ai[0] <= 6 && projectile.timeLeft >= 150)
+            {
+                spriteBatch.DrawEffectLine(projectile.Center, projectile.velocity.SafeNormalize(default), Color.Orange * (180f - projectile.timeLeft).HillFactor2(30), 1, 0, 240, 30, 1);
             }
             //else 
             //{
@@ -968,6 +972,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             {
                 case 0:
                 case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
                     {
                         projectile.velocity *= projectile.ai[1] == 0 ? 0.9f : projectile.ai[1];
                         //var length = projectile.velocity.Length();
@@ -997,7 +1005,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     }
                     SoundEngine.PlaySound(SoundID.Item74);
 
-                    if (projectile.ai[0] == 0)
+                    if (projectile.ai[0] != 1)
                     {
                         var p1 = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, projectile.type, projectile.damage, 5f, projectile.owner, 1);
                         p1.height = p1.width = 160;
@@ -1020,7 +1028,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         swoosh.direction = (byte)Main.rand.Next(2);
                     }
                 }
-                if (projectile.timeLeft < 31)
+                if (projectile.timeLeft < 31 && (Main.LocalPlayer.Center - projectile.Center).Length() < 1600)
                 {
                     for (int n = 0; n < 5; n++)
                     {
@@ -1054,10 +1062,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public SolusKatanaProj.LeftSwoosh[] swooshes = new SolusKatanaProj.LeftSwoosh[5];
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            projectile.Center += projectile.velocity;
-            projectile.velocity *= 0f;
 
-            if ((int)projectile.ai[0] == 2)
+            if ((int)projectile.ai[0] != 3 && (int)projectile.ai[0] != 6)
+            {
+                projectile.Center += projectile.velocity;
+                projectile.velocity *= 0f;
+            }
+            else
+            {
+                projectile.velocity = oldVelocity;
+            }
+
+            if ((int)projectile.ai[0] == 2 || (int)projectile.ai[0] == 5)
             {
                 projectile.timeLeft = 31;
             }

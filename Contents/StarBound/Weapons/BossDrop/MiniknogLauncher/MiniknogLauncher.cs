@@ -740,7 +740,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         {
             if ((int)projectile.ai[0] > 5) return false;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, Width: (int)projectile.ai[0] == 4 ? 10 : 20);
+            VirtualDreamDrawMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, Width: (int)projectile.ai[0] == 4 ? 10 : 20);
             if (projectile.timeLeft > 1)
             {
                 spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(10, 7), (int)projectile.ai[0] == 4 ? 0.5f : 1, 0, 0);
