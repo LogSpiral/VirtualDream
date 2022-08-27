@@ -104,6 +104,37 @@ namespace VirtualDream.Utils
                 return Vector4.Lerp(values[tier], values[tier + 1], c * factor % 1);
             }
         }
+        public static float GetLerpValue(this float factor, params float[] values)
+        {
+            if (factor <= 0)
+            {
+                return values[0];
+            }
+            else if (factor >= 1)
+            {
+                return values[values.Length - 1];
+            }
+            else
+            {
+                int c = values.Length - 1;
+                int tier = (int)(c * factor);
+                return MathHelper.Lerp(values[tier], values[tier + 1], c * factor % 1);
+            }
+        }
+
+        public static float GetLerpValue_Loop(this float factor, params float[] values)
+        {
+            if (factor <= 0 || factor >= 1)
+            {
+                return values[0];
+            }
+            else
+            {
+                int c = values.Length;
+                int tier = (int)(c * factor);
+                return MathHelper.Lerp(values[tier], values[(tier + 1) == c ? 0 : (tier + 1)], c * factor % 1);
+            }
+        }
         public static Vector2 GetLerpValue_Loop(this float factor, params Vector2[] values)
         {
             if (factor <= 0 || factor >= 1)

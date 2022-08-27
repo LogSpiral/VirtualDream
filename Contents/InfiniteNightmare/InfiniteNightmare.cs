@@ -2181,7 +2181,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override Color? GetAlpha(NPC npc, Color drawColor)
         {
-            if (npc.target == -1)
+            if (npc.target == -1 || Main.gameMenu)
             {
                 return drawColor;
             }

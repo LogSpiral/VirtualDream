@@ -2,6 +2,7 @@
 using System;
 using Terraria.Graphics.Effects;
 using Terraria.Utilities;
+using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
 using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream
@@ -368,6 +369,8 @@ namespace VirtualDream
             _meteorTexture = Main.Assets.Request<Texture2D>("Images/Misc/SolarSky/Meteor");
         }
 
+        public int tier;
+        public float tierFactor;
         public override void Update(GameTime gameTime)
         {
             if (_isActive)
@@ -375,7 +378,14 @@ namespace VirtualDream
             else
                 _fadeOpacity = Math.Max(0f, _fadeOpacity - 0.01f);
 
-            float num = 1200f;
+            //float num = 1200f;
+            //switch (tier) 
+            //{
+            //    case 0: num = 0;break;
+            //    case 1: case 3: num = 1200; break;
+            //    case 2: case 4: num = 2400; break;
+            //}
+            float num = (tierFactor / 5f).GetLerpValue(0f, 1200, 4800, 3600, 2400);
             for (int i = 0; i < _meteors.Length; i++)
             {
                 _meteors[i].Position.X -= num * (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -386,6 +396,18 @@ namespace VirtualDream
                     _meteors[i].Position.Y = -10000f;
                 }
             }
+
+            if (Main.gameMenu) return;
+            foreach (var npc in Main.npc)
+            {
+                if (npc.active && npc.type == NPCType<AsraNox>())
+                {
+                    int state = (int)npc.ai[0];
+                    tier = (state + 5) / 6;
+                    break;
+                }
+            }
+            tierFactor = MathHelper.Lerp(tierFactor, tier, 0.05f);
         }
 
         public override Color OnTileColor(Color inColor) => new Color(Vector4.Lerp(inColor.ToVector4(), Vector4.One, _fadeOpacity * 0.5f));
@@ -399,8 +421,8 @@ namespace VirtualDream
                 //Vector2 value = new Vector2(Main.screenWidth >> 1, Main.screenHeight >> 1);
                 //Vector2 value2 = 0.01f * (new Vector2((float)Main.maxTilesX * 8f, (float)Main.worldSurface / 2f) - Main.screenPosition);
                 //spriteBatch.Draw(_planetTexture.Value, value + new Vector2(-200f, -200f) + value2, null, Color.White * 0.9f * _fadeOpacity, 0f, new Vector2(_planetTexture.Width() >> 1, _planetTexture.Height() >> 1), 1f, SpriteEffects.None, 1f);
-
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Backgrounds/WhiteSky"), new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);//Main.bgColor//Color.White
+                Color color = (tierFactor / 5f).GetLerpValue(default, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);
+                spriteBatch.Draw(IllusionBoundMod.GetTexture("Backgrounds/WhiteSky"), new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), color);//Main.bgColor//Color.White
 
             }
 
