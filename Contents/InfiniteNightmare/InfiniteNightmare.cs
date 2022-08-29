@@ -2481,8 +2481,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundMod.CopperBarRG, 10);
-            recipe1.AddRecipeGroup(IllusionBoundMod.TorchRG, 15);
+            recipe1.AddRecipeGroup(IllusionBoundModSystem.CopperBarRG, 10);
+            recipe1.AddRecipeGroup(IllusionBoundModSystem.TorchRG, 15);
             recipe1.AddRecipeGroup("Wood", 20);
             recipe1.AddIngredient(ItemID.Gel, 30);
             recipe1.AddTile(TileID.WorkBenches);
@@ -2533,7 +2533,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundMod.SilverBarRG, 10);
+            recipe1.AddRecipeGroup(IllusionBoundModSystem.SilverBarRG, 10);
             recipe1.AddIngredient(ItemID.IceBlock, 20);
             recipe1.AddIngredient(ItemID.SnowBlock, 15);
             recipe1.AddIngredient(ItemID.Shiverthorn, 5);
@@ -2559,7 +2559,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundMod.SilverBarRG, 15);
+            recipe1.AddRecipeGroup(IllusionBoundModSystem.SilverBarRG, 15);
             recipe1.AddIngredient(ItemID.Waterleaf, 5);
             recipe1.AddIngredient(ItemID.Blinkroot, 5);
             recipe1.AddTile(TileID.HeavyWorkBench);
@@ -2583,7 +2583,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundMod.GoldBarRG, 5);
+            recipe1.AddRecipeGroup(IllusionBoundModSystem.GoldBarRG, 5);
             recipe1.AddIngredient(ItemID.BottledWater, 15);
             recipe1.AddIngredient(ItemID.WaterBucket, 3);
             recipe1.AddTile(TileID.Anvils);
@@ -2602,7 +2602,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundMod.GoldBarRG, 15);
+            recipe1.AddRecipeGroup(IllusionBoundModSystem.GoldBarRG, 15);
             recipe1.AddIngredient(ItemID.Blinkroot, 10);
             recipe1.AddIngredient(ItemID.Daybloom, 10);
             recipe1.AddIngredient(ItemID.Moonglow, 10);
@@ -2655,7 +2655,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundMod.CopperBarRG, 5);
+            recipe1.AddRecipeGroup(IllusionBoundModSystem.CopperBarRG, 5);
             recipe1.AddIngredient(ItemID.Blinkroot, 5);
             recipe1.AddIngredient(ItemID.BottledWater, 10);
             recipe1.AddIngredient(ItemID.PurificationPowder, 25);
@@ -2684,10 +2684,10 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundMod.CopperBarRG, 10);
+            recipe1.AddRecipeGroup(IllusionBoundModSystem.CopperBarRG, 10);
             recipe1.AddRecipeGroup("IronBar", 5);
             recipe1.AddIngredient(ItemID.EmptyBucket);
-            recipe1.AddRecipeGroup(IllusionBoundMod.PaintRG, 25);
+            recipe1.AddRecipeGroup(IllusionBoundModSystem.PaintRG, 25);
             recipe1.AddTile(TileID.Anvils);
             recipe1.SetResult(this);
             recipe1.AddRecipe();

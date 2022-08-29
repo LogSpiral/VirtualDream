@@ -1,6 +1,7 @@
 ﻿using ReLogic.Content;
 using System;
 using Terraria.Graphics.Effects;
+using Terraria.ID;
 using Terraria.Utilities;
 using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
 using static Terraria.ModLoader.ModContent;
@@ -361,7 +362,7 @@ namespace VirtualDream
 
         private Meteor[] _meteors;
         private float _fadeOpacity;
-
+        public static bool windToLeft;
         public override void OnLoad()
         {
             //_planetTexture = Main.Assets.Request<Texture2D>("Images/Misc/SolarSky/Planet");
@@ -371,6 +372,7 @@ namespace VirtualDream
 
         public int tier;
         public float tierFactor;
+        public float WindSpeedGeter => (tier % 2 != 0 || tier == 0) ? 0 : (windToLeft ? -1 : 1) * (tierFactor - tier + 1).SymmetricalFactor(1, 1);
         public override void Update(GameTime gameTime)
         {
             if (_isActive)
@@ -408,6 +410,14 @@ namespace VirtualDream
                 }
             }
             tierFactor = MathHelper.Lerp(tierFactor, tier, 0.05f);
+            if (Main.gamePaused) return;
+            if (Main.netMode == NetmodeID.SinglePlayer) 
+            {
+                if (Math.Abs(Main.LocalPlayer.velocity.X) < 32 * WindSpeedGeter) 
+                {
+                    Main.LocalPlayer.velocity.X += WindSpeedGeter * (WindSpeedGeter * 32 - Main.LocalPlayer.velocity.X) / 64f;
+                }
+            }
         }
 
         public override Color OnTileColor(Color inColor) => new Color(Vector4.Lerp(inColor.ToVector4(), Vector4.One, _fadeOpacity * 0.5f));
@@ -424,6 +434,29 @@ namespace VirtualDream
                 Color color = (tierFactor / 5f).GetLerpValue(default, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);
                 spriteBatch.Draw(IllusionBoundMod.GetTexture("Backgrounds/WhiteSky"), new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), color);//Main.bgColor//Color.White
 
+                if (tier % 2 == 0 && tier > 0)
+                {
+                    CustomVertexInfo[] triangleArry = new CustomVertexInfo[6];
+                    Color c = new Color(240, 139, 78, 0);
+                    float light = (tierFactor - tier + 1).SymmetricalFactor(1, 1) * .75f;
+                    triangleArry[0] = new CustomVertexInfo(Main.screenPosition, c, new Vector3(0, 0, light));
+                    triangleArry[1] = new CustomVertexInfo(Main.screenPosition + new Vector2(Main.screenWidth, 0), c, new Vector3(0, 0.5f, light));
+                    triangleArry[2] = new CustomVertexInfo(Main.screenPosition + new Vector2(Main.screenWidth, Main.screenHeight), c, new Vector3(1, 0.5f, light));
+                    triangleArry[3] = triangleArry[2];
+                    triangleArry[4] = new CustomVertexInfo(Main.screenPosition + new Vector2(0, Main.screenHeight), c, new Vector3(1, 0, light));
+                    triangleArry[5] = triangleArry[0];
+                    var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+                    var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+                    IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * projection);
+                    IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue((float)IllusionBoundMod.ModTime / 300 * WindSpeedGeter);
+                    //Main.graphics.GraphicsDevice.BlendState = BlendState.Additive;
+                    Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
+                    Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StormSky");
+                    Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+                    Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.AnisotropicWrap;
+                    IllusionBoundMod.IMBellEffect.CurrentTechnique.Passes[0].Apply();
+                    Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleArry, 0, 2);
+                }
             }
 
             int num = -1;

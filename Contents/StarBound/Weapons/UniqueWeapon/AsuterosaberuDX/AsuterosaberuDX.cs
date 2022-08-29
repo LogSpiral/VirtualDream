@@ -338,7 +338,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                        sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
     //                        Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3");//StarSky_0
     //                        IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
-    //                        IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+    //                        IllusionBoundModSystem.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTaRGet的不是这个render，否则会报错）
     //                                                                                     //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
     //                        IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.1f);
     //                        IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.15f);
@@ -682,7 +682,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                        gd.Clear(Color.Transparent);
     //                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
     //                        Vector2 scale = new Vector2(1, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
-    //                        spriteBatch.Draw(IllusionBoundMod.GetTexture("Projectiles/FinalFractal/FinalFractalLight"), projectile.Center - Main.screenPosition, null, Main.hslToRgb(projectile.localAI[0] % 1, 1, 0.75f) * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);
+    //                        spriteBatch.Draw(IllusionBoundModSystem.GetTexture("Projectiles/FinalFractal/FinalFractalLight"), projectile.Center - Main.screenPosition, null, Main.hslToRGb(projectile.localAI[0] % 1, 1, 0.75f) * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);
     //                        spriteBatch.Draw(IllusionBoundMod.GetTexture("Projectiles/FinalFractal/FinalFractalLight"), projectile.Center - Main.screenPosition, null, Color.White * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale, 0, 0);
     //                        spriteBatch.End();
     //                        //然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
@@ -694,7 +694,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                        {
     //                            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3");//StarSky_0
     //                            IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
-    //                            IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+    //                            IllusionBoundModSystem.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTaRGet的不是这个render，否则会报错）
     //                                                                                         //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
     //                            IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.1f);
     //                            IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.15f);
@@ -748,7 +748,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                        sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
     //                        Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3");//StarSky_0
     //                        IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
-    //                        IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+    //                        IllusionBoundModSystem.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTaRGet的不是这个render，否则会报错）
     //                                                                                     //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
     //                        IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.1f);
     //                        IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.15f);
@@ -977,7 +977,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha,bool inverse) useMask)
         {
             //base.RenderInfomation(ref useBloom, ref useDistort, ref useMask);
-            useMask = (IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8, true, true);
+            useMask = (IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8, true, false);
         }
     }
     public class AstralTear : ModProjectile
@@ -1015,7 +1015,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //            gd.Clear(Color.Transparent);
             //            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             //            Vector2 scale = new Vector2(1, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
-            //            spriteBatch.Draw(IllusionBoundMod.GetTexture("Projectiles/FinalFractal/FinalFractalLight"), projectile.Center - Main.screenPosition, null, Main.hslToRgb(projectile.localAI[0] % 1, 1, 0.75f) * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);
+            //            spriteBatch.Draw(IllusionBoundModSystem.GetTexture("Projectiles/FinalFractal/FinalFractalLight"), projectile.Center - Main.screenPosition, null, Main.hslToRGb(projectile.localAI[0] % 1, 1, 0.75f) * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);
             //            spriteBatch.Draw(IllusionBoundMod.GetTexture("Projectiles/FinalFractal/FinalFractalLight"), projectile.Center - Main.screenPosition, null, Color.White * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale, 0, 0);
             //            spriteBatch.End();
             //            //然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
@@ -1027,7 +1027,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //            {
             //                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3");//StarSky_0
             //                IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
-            //                IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+            //                IllusionBoundModSystem.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTaRGet的不是这个render，否则会报错）
             //                                                                             //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
             //                IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.1f);
             //                IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.15f);
@@ -1081,7 +1081,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //            sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
             //            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3");//StarSky_0
             //            IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
-            //            IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+            //            IllusionBoundModSystem.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTaRGet的不是这个render，否则会报错）
             //                                                                         //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
             //            IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.1f);
             //            IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.15f);

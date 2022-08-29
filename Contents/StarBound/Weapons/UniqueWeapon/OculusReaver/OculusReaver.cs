@@ -236,7 +236,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             //sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
             //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3");//StarSky_0
             //IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
-            //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
+            //IllusionBoundModSystem.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTaRGet的不是这个render，否则会报错）
             //                                                             //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
             //IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.1f);
             //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.15f);

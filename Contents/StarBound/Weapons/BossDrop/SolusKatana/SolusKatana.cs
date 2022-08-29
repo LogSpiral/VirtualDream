@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using System;
+using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 {
@@ -299,7 +300,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha, bool inverse) useMask)
         {
             useBloom = (0f, 0.2f, 3f);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
-            useDistort = (0f, 5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.006f);//  //
+            useDistort = (0f, 1.5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.015f);//  //
         }
         public override Texture2D HeatMap
         {
@@ -976,6 +977,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 case 4:
                 case 5:
                 case 6:
+                case 7:
                     {
                         projectile.velocity *= projectile.ai[1] == 0 ? 0.9f : projectile.ai[1];
                         //var length = projectile.velocity.Length();
@@ -1005,19 +1007,22 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     }
                     SoundEngine.PlaySound(SoundID.Item74);
 
-                    if (projectile.ai[0] != 1)
+                    var p1 = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, projectile.type, projectile.damage, 5f, projectile.owner, 1);
+                    p1.height = p1.width = 160;
+                    p1.timeLeft = 2;
+                    p1.Center = projectile.Center;
+                    p1.penetrate = -1;
+                    p1.friendly = projectile.friendly;
+                    p1.hostile = projectile.hostile;
+
+                    if (projectile.ai[0] == 7)
                     {
-                        var p1 = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, projectile.type, projectile.damage, 5f, projectile.owner, 1);
-                        p1.height = p1.width = 160;
-                        p1.timeLeft = 2;
-                        p1.Center = projectile.Center;
-                        p1.penetrate = -1;
-                        p1.friendly = projectile.friendly;
-                        p1.hostile = projectile.hostile;
+                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, default, ModContent.ProjectileType<SolusUltraLaser>(), 80, 8, Main.myPlayer, 0, 0);
                     }
                     //else
                     //    SoundEngine.PlaySound(Terraria.ID.SoundID.Item38);
                     projectile.damage = 0;
+                    if((Main.LocalPlayer.Center - projectile.Center).Length() < 1200)
                     for (int n = 0; n < 3; n++)
                     {
                         var swoosh = swooshes[n] = new();
@@ -1028,7 +1033,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         swoosh.direction = (byte)Main.rand.Next(2);
                     }
                 }
-                if (projectile.timeLeft < 31 && (Main.LocalPlayer.Center - projectile.Center).Length() < 1600)
+                if (projectile.timeLeft < 31)
                 {
                     for (int n = 0; n < 5; n++)
                     {
