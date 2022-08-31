@@ -363,6 +363,7 @@ namespace VirtualDream
         private Meteor[] _meteors;
         private float _fadeOpacity;
         public static bool windToLeft;
+        public static int windDirection => windToLeft ? -1 : 1;
         public override void OnLoad()
         {
             //_planetTexture = Main.Assets.Request<Texture2D>("Images/Misc/SolarSky/Planet");
@@ -373,6 +374,9 @@ namespace VirtualDream
         public int tier;
         public float tierFactor;
         public float WindSpeedGeter => (tier % 2 != 0 || tier == 0) ? 0 : (windToLeft ? -1 : 1) * (tierFactor - tier + 1).SymmetricalFactor(1, 1);
+        public static float currentWindSpeed;
+        public static float timerOfWind;
+        public static int windDirectionCounter;
         public override void Update(GameTime gameTime)
         {
             if (_isActive)
@@ -400,24 +404,61 @@ namespace VirtualDream
             }
 
             if (Main.gameMenu) return;
+            NPC target = null;
             foreach (var npc in Main.npc)
             {
                 if (npc.active && npc.type == NPCType<AsraNox>())
                 {
                     int state = (int)npc.ai[0];
                     tier = (state + 5) / 6;
+                    target = npc;
                     break;
                 }
             }
             tierFactor = MathHelper.Lerp(tierFactor, tier, 0.05f);
+            timerOfWind += currentWindSpeed / -300f;
             if (Main.gamePaused) return;
-            if (Main.netMode == NetmodeID.SinglePlayer) 
+            windDirectionCounter++;
+            bool flag = true;
+            foreach (var proj in Main.projectile)
             {
-                if (Math.Abs(Main.LocalPlayer.velocity.X) < 32 * WindSpeedGeter) 
+                if (proj.active && proj.type == ProjectileType<SolusLevatine>())
                 {
-                    Main.LocalPlayer.velocity.X += WindSpeedGeter * (WindSpeedGeter * 32 - Main.LocalPlayer.velocity.X) / 64f;
+                    flag = false;
+                    break;
                 }
             }
+            if (target != null && flag)
+            {
+                if (target.Center.X < Main.maxTilesX * 4)
+                {
+                    windToLeft = false;
+                    windDirectionCounter = 0;
+                }
+                else if (target.Center.X > Main.maxTilesX * 12)
+                {
+                    windToLeft = true;
+                    windDirectionCounter = 0;
+
+                }
+                else if (tier == 2 && windDirectionCounter >= 1800)
+                {
+                    windDirectionCounter = 0;
+                    if (Main.rand.NextBool(3)) windToLeft = !windToLeft;
+                }
+            }
+            currentWindSpeed = MathHelper.Lerp(currentWindSpeed, WindSpeedGeter, 0.05f);
+
+            if (IllusionBoundModSystem.ModTime2 % 1200 == 0) windToLeft = !windToLeft;
+            if (Main.netMode == NetmodeID.SinglePlayer)
+            {
+                if (Math.Abs(Main.LocalPlayer.velocity.X) < 32 * Math.Abs(currentWindSpeed))
+                {
+                    Main.LocalPlayer.velocity.X += Math.Abs(currentWindSpeed) * (currentWindSpeed * 32 - Main.LocalPlayer.velocity.X) / 32f;
+                    Main.windSpeedCurrent = currentWindSpeed;
+                }
+            }
+
         }
 
         public override Color OnTileColor(Color inColor) => new Color(Vector4.Lerp(inColor.ToVector4(), Vector4.One, _fadeOpacity * 0.5f));
@@ -431,32 +472,59 @@ namespace VirtualDream
                 //Vector2 value = new Vector2(Main.screenWidth >> 1, Main.screenHeight >> 1);
                 //Vector2 value2 = 0.01f * (new Vector2((float)Main.maxTilesX * 8f, (float)Main.worldSurface / 2f) - Main.screenPosition);
                 //spriteBatch.Draw(_planetTexture.Value, value + new Vector2(-200f, -200f) + value2, null, Color.White * 0.9f * _fadeOpacity, 0f, new Vector2(_planetTexture.Width() >> 1, _planetTexture.Height() >> 1), 1f, SpriteEffects.None, 1f);
-                Color color = (tierFactor / 5f).GetLerpValue(default, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Backgrounds/WhiteSky"), new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), color);//Main.bgColor//Color.White
+                //Color color = (tierFactor / 5f).GetLerpValue(default, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);
+                //spriteBatch.Draw(IllusionBoundMod.GetTexture("Backgrounds/WhiteSky"), new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), color);//Main.bgColor//Color.White
 
-                if (tier % 2 == 0 && tier > 0)
-                {
-                    CustomVertexInfo[] triangleArry = new CustomVertexInfo[6];
-                    Color c = new Color(240, 139, 78, 0);
-                    float light = (tierFactor - tier + 1).SymmetricalFactor(1, 1) * .75f;
-                    triangleArry[0] = new CustomVertexInfo(Main.screenPosition, c, new Vector3(0, 0, light));
-                    triangleArry[1] = new CustomVertexInfo(Main.screenPosition + new Vector2(Main.screenWidth, 0), c, new Vector3(0, 0.5f, light));
-                    triangleArry[2] = new CustomVertexInfo(Main.screenPosition + new Vector2(Main.screenWidth, Main.screenHeight), c, new Vector3(1, 0.5f, light));
-                    triangleArry[3] = triangleArry[2];
-                    triangleArry[4] = new CustomVertexInfo(Main.screenPosition + new Vector2(0, Main.screenHeight), c, new Vector3(1, 0, light));
-                    triangleArry[5] = triangleArry[0];
-                    var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
-                    var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                    IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * projection);
-                    IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue((float)IllusionBoundMod.ModTime / 300 * WindSpeedGeter);
-                    //Main.graphics.GraphicsDevice.BlendState = BlendState.Additive;
-                    Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
-                    Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StormSky");
-                    Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
-                    Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.AnisotropicWrap;
-                    IllusionBoundMod.IMBellEffect.CurrentTechnique.Passes[0].Apply();
-                    Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleArry, 0, 2);
-                }
+                //if (tier % 2 == 0 && tier > 0)
+                //{
+                //    spriteBatch.End();
+                //    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                //    CustomVertexInfo[] triangleArry = new CustomVertexInfo[6];
+                //    Color c = new Color(240, 139, 78, 255);
+                //    float light = (tierFactor - tier + 1).SymmetricalFactor(1, 1) * .75f;
+                //    triangleArry[0] = new CustomVertexInfo(Main.screenPosition, c, new Vector3(0, 0, light));
+                //    triangleArry[1] = new CustomVertexInfo(Main.screenPosition + new Vector2(Main.screenWidth, 0), c, new Vector3(0, 0.5f, light));
+                //    triangleArry[2] = new CustomVertexInfo(Main.screenPosition + new Vector2(Main.screenWidth, Main.screenHeight), c, new Vector3(1, 0.5f, light));
+                //    triangleArry[3] = triangleArry[2];
+                //    triangleArry[4] = new CustomVertexInfo(Main.screenPosition + new Vector2(0, Main.screenHeight), c, new Vector3(1, 0, light));
+                //    triangleArry[5] = triangleArry[0];
+                //    var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+                //    var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+                //    IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * projection);
+                //    IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue((float)IllusionBoundMod.ModTime / -300 * WindSpeedGeter);
+                //    //Main.graphics.GraphicsDevice.BlendState = BlendState.Additive;
+                //    Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
+                //    Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StormSky");
+                //    Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+                //    Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.AnisotropicWrap;
+                //    IllusionBoundMod.IMBellEffect.CurrentTechnique.Passes[0].Apply();
+                //    Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleArry, 0, 2);
+                //    //Main.graphics.GraphicsDevice.BlendState = BlendState.NonPremultiplied;
+                //}
+
+                Color color = (tierFactor / 5f).GetLerpValue(default, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                CustomVertexInfo[] triangleArry = new CustomVertexInfo[6];
+                Color c = color;
+                float light = (tierFactor - tier + 1).SymmetricalFactor(1, 1) * .75f;
+                triangleArry[0] = new CustomVertexInfo(Main.screenPosition, c, new Vector3(0, 0, light));
+                triangleArry[1] = new CustomVertexInfo(Main.screenPosition + new Vector2(Main.screenWidth, 0), c, new Vector3(0, 0.5f, light));
+                triangleArry[2] = new CustomVertexInfo(Main.screenPosition + new Vector2(Main.screenWidth, Main.screenHeight), c, new Vector3(1, 0.5f, light));
+                triangleArry[3] = triangleArry[2];
+                triangleArry[4] = new CustomVertexInfo(Main.screenPosition + new Vector2(0, Main.screenHeight), c, new Vector3(1, 0, light));
+                triangleArry[5] = triangleArry[0];
+                var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+                var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+                IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * projection);
+                IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue(timerOfWind);
+                //Main.graphics.GraphicsDevice.BlendState = BlendState.Additive;
+                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
+                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StormSky");
+                Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+                Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.AnisotropicWrap;
+                IllusionBoundMod.IMBellEffect.CurrentTechnique.Passes[0].Apply();
+                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleArry, 0, 2);
             }
 
             int num = -1;

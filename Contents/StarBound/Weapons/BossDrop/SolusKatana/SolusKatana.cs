@@ -299,7 +299,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         }
         public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha, bool inverse) useMask)
         {
-            useBloom = (0f, 0.2f, 3f);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
+            useBloom = (0f, .5f, 6f);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
             useDistort = (0f, 1.5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.015f);//  //
         }
         public override Texture2D HeatMap
@@ -329,7 +329,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 //    );
                 //}
                 //return IllusionBoundMod.HeatMap[19];
-                return IllusionBoundMod.HeatMap[24];
+                return IllusionBoundMod.HeatMap[27];
             }
         }
         public override float Rotation

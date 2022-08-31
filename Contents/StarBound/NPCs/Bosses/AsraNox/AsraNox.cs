@@ -125,6 +125,50 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         public float ai6;
         public float ai7;
         public float ai8;
+        private void SpawnFractal(Vector2 targetPosition, Vector2 offset = default, Vector2? dir = null)
+        {
+            //var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
+            // Vector2 vector32 = value5 - NPC.Center;
+            Vector2 vector33 = dir ?? Main.rand.NextVector2CircularEdge(1f, 1f);
+            float num78 = 1f;
+            int num79 = 1;
+            for (int num80 = 0; num80 < num79; num80++)
+            {
+                targetPosition += Main.rand.NextVector2Circular(24f, 24f);
+                //if (vector32.Length() > 700f)
+                //{
+                //    vector32 *= 700f / vector32.Length();
+                //    value5 = NPC.Center + vector32;
+                //}
+                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
+                vector33 *= 1f - num81;
+                vector33 += offset * num81;//player.velocity * num81
+                vector33 = vector33.SafeNormalize(Vector2.UnitX);
+
+                float num82 = 120f;
+                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
+                float num84 = num82 / 2f;
+                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
+                Vector2 vector34 = vector33 * scaleFactor3;
+                Vector2 vector35 = new Vector2(0f, 0f);
+                Vector2 vector36 = vector34;
+                int num85 = 0;
+                while (num85 < num84)
+                {
+                    vector35 += vector36;
+                    vector36 = vector36.RotatedBy(num83, default);
+                    num85++;
+                }
+                Vector2 value6 = -vector35;
+                Vector2 position1 = targetPosition + value6;
+                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
+                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
+                {
+                    solusKatanaFractal.drawPlayer = new Player();
+                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
+                }
+            }
+        }
 
         //private float ai(int index)
         //{
@@ -143,10 +187,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         {
             if (musics.Item1 != 0)
             {
-                Music = (byte)state < 7 ? musics.Item1 : musics.Item2;
+                Music = (byte)state < 7 || (byte)state > 18 ? musics.Item1 : musics.Item2;
             }
             visualPlayer.velocity = NPC.velocity;
-
+            NPC.dontTakeDamage = state == 0 ||
+    (NPC.life < NPC.lifeMax * 7 / 10 && state < AsraNoxState.陨日残阳_随机) ||
+    (NPC.life < NPC.lifeMax / 4 && state < AsraNoxState.陨日残阳_后撤) ||
+    (NPC.life < NPC.lifeMax / 5 && state < AsraNoxState.初源日炎_后撤) ||
+    (NPC.life < NPC.lifeMax * 3 / 20 && state < AsraNoxState.星恒飞刃_后撤) ||
+    (NPC.life < NPC.lifeMax / 10 && state < AsraNoxState.日曜星流_后撤) ||
+    (NPC.life < NPC.lifeMax / 20 && state < AsraNoxState.太阳风暴_后撤);
             //Music = MusicID.Boss2;
             switch (state)
             {
@@ -298,48 +348,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
                         if ((int)ai1 % 10 == 0)
                         {
-                            var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
-
-                            // Vector2 vector32 = value5 - NPC.Center;
-                            Vector2 vector33 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                            float num78 = 1f;
-                            int num79 = 1;
-                            for (int num80 = 0; num80 < num79; num80++)
-                            {
-                                value5 += Main.rand.NextVector2Circular(24f, 24f);
-                                //if (vector32.Length() > 700f)
-                                //{
-                                //    vector32 *= 700f / vector32.Length();
-                                //    value5 = NPC.Center + vector32;
-                                //}
-                                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
-                                vector33 *= 1f - num81;
-                                //vector33 += player.velocity * num81;
-                                vector33 = vector33.SafeNormalize(Vector2.UnitX);
-
-                                float num82 = 120f;
-                                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
-                                float num84 = num82 / 2f;
-                                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
-                                Vector2 vector34 = vector33 * scaleFactor3;
-                                Vector2 vector35 = new Vector2(0f, 0f);
-                                Vector2 vector36 = vector34;
-                                int num85 = 0;
-                                while (num85 < num84)
-                                {
-                                    vector35 += vector36;
-                                    vector36 = vector36.RotatedBy(num83, default);
-                                    num85++;
-                                }
-                                Vector2 value6 = -vector35;
-                                Vector2 position1 = value5 + value6;
-                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
-                                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
-                                {
-                                    solusKatanaFractal.drawPlayer = new Player();
-                                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
-                                }
-                            }
+                            SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)));
                         }
                         var counter = (int)ai1 % 120;
                         if (counter == 0)
@@ -828,48 +837,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         #region 初源生成
                         if (timer % 20 == 0)
                         {
-                            var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + (Main.rand.NextBool(5 - stager) ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
-
-                            // Vector2 vector32 = value5 - NPC.Center;
-                            Vector2 vector33 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                            float num78 = 1f;
-                            int num79 = 1;
-                            for (int num80 = 0; num80 < num79; num80++)
-                            {
-                                value5 += Main.rand.NextVector2Circular(24f, 24f);
-                                //if (vector32.Length() > 700f)
-                                //{
-                                //    vector32 *= 700f / vector32.Length();
-                                //    value5 = NPC.Center + vector32;
-                                //}
-                                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
-                                vector33 *= 1f - num81;
-                                //vector33 += player.velocity * num81;
-                                vector33 = vector33.SafeNormalize(Vector2.UnitX);
-
-                                float num82 = 120f;
-                                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
-                                float num84 = num82 / 2f;
-                                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
-                                Vector2 vector34 = vector33 * scaleFactor3;
-                                Vector2 vector35 = new Vector2(0f, 0f);
-                                Vector2 vector36 = vector34;
-                                int num85 = 0;
-                                while (num85 < num84)
-                                {
-                                    vector35 += vector36;
-                                    vector36 = vector36.RotatedBy(num83, default);
-                                    num85++;
-                                }
-                                Vector2 value6 = -vector35;
-                                Vector2 position1 = value5 + value6;
-                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
-                                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
-                                {
-                                    solusKatanaFractal.drawPlayer = new Player();
-                                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
-                                }
-                            }
+                            SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + (Main.rand.NextBool(5 - stager) ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)));
                         }
                         #endregion
 
@@ -1276,51 +1244,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                                     if ((targetPlayer.Center.X - NPC.Center.X) * ai3 < 0 && timer % 4 == 0)
                                     {
                                         #region 初源生成
-                                        if (true)
-                                        {
-                                            var value5 = targetPlayer.Center + targetPlayer.velocity * 20f;
-
-                                            // Vector2 vector32 = value5 - NPC.Center;
-                                            Vector2 vector33 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                                            float num78 = 1f;
-                                            int num79 = 1;
-                                            for (int num80 = 0; num80 < num79; num80++)
-                                            {
-                                                value5 += Main.rand.NextVector2Circular(24f, 24f);
-                                                //if (vector32.Length() > 700f)
-                                                //{
-                                                //    vector32 *= 700f / vector32.Length();
-                                                //    value5 = NPC.Center + vector32;
-                                                //}
-                                                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
-                                                vector33 *= 1f - num81;
-                                                //vector33 += player.velocity * num81;
-                                                vector33 = vector33.SafeNormalize(Vector2.UnitX);
-
-                                                float num82 = 120f;
-                                                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
-                                                float num84 = num82 / 2f;
-                                                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
-                                                Vector2 vector34 = vector33 * scaleFactor3;
-                                                Vector2 vector35 = new Vector2(0f, 0f);
-                                                Vector2 vector36 = vector34;
-                                                int num85 = 0;
-                                                while (num85 < num84)
-                                                {
-                                                    vector35 += vector36;
-                                                    vector36 = vector36.RotatedBy(num83, default);
-                                                    num85++;
-                                                }
-                                                Vector2 value6 = -vector35;
-                                                Vector2 position1 = value5 + value6;
-                                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
-                                                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
-                                                {
-                                                    solusKatanaFractal.drawPlayer = new Player();
-                                                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
-                                                }
-                                            }
-                                        }
+                                        SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f);
                                         #endregion
                                     }
                                 }
@@ -1328,6 +1252,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                                 {
                                     var rot = visualPlayer.compositeFrontArm.rotation;
                                     visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Terraria.Utils.AngleLerp(rot, -MathHelper.PiOver2 * visualPlayer.direction, 0.05f));
+                                    NPC.Center = Vector2.Lerp(NPC.Center, targetPlayer.Center + new Vector2(-visualPlayer.direction * 256, -200), 0.1f);
 
                                 }
                                 projectile.Center = projectile.oldPos[0] = NPC.Center + new Vector2(visualPlayer.direction * 6, 16);
@@ -1409,2496 +1334,2349 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         NPC.oldPos[0] = NPC.oldPosition;
                         break;
                     }
+                #endregion
+
+                #region 追灭
+                case AsraNoxState.陨日残阳_追灭://TODO 陨日残阳_追灭
+                    {
+                        var timer = (int)ai1;
+                        int direct = AsraNoxSky.windDirection;
+                        if (timer == 0)
+                        {
+                            ai2 = Main.rand.Next(-480, 480);
+                            ai3 = -2 * ai2;
+                            ai4 = targetPlayer.Center.X;
+                            ai5 = targetPlayer.Center.Y;
+                        }
+                        if (timer % 20 == 10)
+                        {
+                            if (timer <= 610)
+                            {
+                                if (timer != 10)
+                                {
+                                    ai2 = Main.rand.Next(-480, 480);
+                                    ai3 = -2 * ai2;
+                                    ai4 = targetPlayer.Center.X;
+                                    ai5 = targetPlayer.Center.Y;
+                                }
+                                ai7 = ai6;
+                                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
+                                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
+                            }
+                            else if (timer == 630) ai7 = ai6;
+                        }
+                        if (timer >= 40)
+                        {
+                            const int timeMax = 20;
+                            if (timer % timeMax == 0)
+                            {
+                                ai8 = ai7;
+                            }
+                            int counter = (timer - 40) % timeMax;
+                            var projectile = Main.projectile[(int)ai8];
+                            NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow(counter / (timeMax - 1f), 3);
+                            projectile.Center = NPC.Center + new Vector2(0, 12);
+                            visualPlayer.direction = Math.Sign(projectile.velocity.X);
+                            visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                            visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                            if (timer % 12 == 0)
+                            {
+                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 12f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.02f);
+                                proj.friendly = false;
+                                proj.hostile = true;
+                            }
+                        }
+                        if (timer < 40)
+                        {
+                            var targetVec = timer < 30 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai7].Center;
+                            NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
+                        }
+                        ai1++;
+                        if (ai1 >= 660)
+                        {
+                            SetAI(8);
+                            break;
+                        }
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        break;
+                    }
+                case AsraNoxState.初源日炎_追灭://TODO 初源日炎_追灭
+                    {
+                        if ((int)ai1 < 765)
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                        else
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                        NPC.damage = 0;
+                        visualPlayer.direction = AsraNoxSky.windDirection;
+                        if ((int)ai1 % 10 == 0)
+                        {
+                            SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)), targetPlayer.velocity);
+                        }
+                        var counter = (int)ai1 % 120;
+                        if (counter == 0)
+                        {
+                            ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                            Main.projectile[(int)ai4].extraUpdates = 0;
+                            if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                            if ((int)ai1 == 720)
+                            {
+                                ai5 = targetPlayer.Center.X;
+                                ai6 = targetPlayer.Center.Y;
+                            }
+                        }
+                        var projectile = Main.projectile[(int)ai4];
+                        for (int n = 59; n > 3; n--)
+                        {
+                            projectile.oldPos[n] = projectile.oldPos[n - 4];
+                            projectile.oldRot[n] = projectile.oldRot[n - 4];
+                        }
+                        for (int n = 1; n < 4; n++)
+                        {
+                            projectile.oldPos[n] = projectile.oldPos[0];
+                            projectile.oldRot[n] = projectile.oldRot[0];
+                        }
+                        if (counter <= 60)
+                        {
+                            //projectile.oldPos[0] = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            //if ((int)ai1 < 720)
+                            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
+                            //else
+                            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
+                            //if (visualPlayer.direction == -1) projectile.oldRot[0] = MathHelper.Pi - projectile.oldRot[0];
+                            Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            for (int n = 0; n < 4; n++)
+                            {
+                                projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                if ((int)ai1 < 720)
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                else
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                            }
+                        }
+                        ai1++;
+
+                        if (counter == 60 || (int)ai1 == 780)
+                        {
+                            int max = (int)ai1 / 120 + 4;
+                            for (int n = 0; n < max; n++)
+                            {
+                                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj1.friendly = false;
+                                proj1.hostile = true;
+
+                                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj2.friendly = false;
+                                proj2.hostile = true;
+
+                                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj3.friendly = false;
+                                proj3.hostile = true;
+                            }
+                        }
+
+                        if (ai1 >= 780)
+                        {
+                            SetAI(9);
+                            break;
+                        }
+                        NPC.oldPos[0] = NPC.oldPosition;
+
+                        //if (counter <= 60 && counter >= 45 && counter % 3 == 0 && (int)ai1 < 720)
+                        //{
+                        //    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, 3, 1.05f);
+                        //    proj.friendly = false;
+                        //    proj.hostile = true;
+                        //}
+
+                        break;
+                    }
+                case AsraNoxState.星恒飞刃_追灭://TODO 星恒飞刃_追灭
+                    {
+                        int timer = (int)ai1;
+                        //前180帧妖梦非符同款攻击
+                        //后60帧如下安排
+                        //20帧移动，40帧发射弹幕，最后10帧隐去
+
+                        //这里是新安排
+                        //前3*180帧妖梦非符同款攻击
+                        //最后180帧中60帧移动，120帧发射弹幕
+                        int counter = timer % 180;
+                        int stager = timer / 180;
+                        if (counter % 60 == 0)
+                        {
+                            ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 3);
+                            Main.projectile[(int)ai4].extraUpdates = 0;
+                            if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                        }
+                        var projectile = Main.projectile[(int)ai4];
+                        for (int n = 59; n > 3; n--)
+                        {
+                            projectile.oldPos[n] = projectile.oldPos[n - 4];
+                            projectile.oldRot[n] = projectile.oldRot[n - 4];
+                        }
+                        for (int n = 1; n < 4; n++)
+                        {
+                            projectile.oldPos[n] = projectile.oldPos[0];
+                            projectile.oldRot[n] = projectile.oldRot[0];
+                        }
+                        if (counter % 60 <= 30)
+                        {
+                            Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            for (int n = 0; n < 4; n++)
+                            {
+                                projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 60 / 30f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                            }
+                            if (counter % 60 > 21)
+                            {
+                                var factor = counter % 60 - 21f;
+                                factor /= 8f;
+                                var unit = (targetPlayer.Center + targetPlayer.velocity * 30 - NPC.Center).SafeNormalize(default).RotatedBy(0.6f * MathHelper.Pi * (2 * factor - 1));//(MathHelper.Lerp(-MathHelper.Pi * .35f, MathHelper.Pi * .85f, factor) - MathHelper.Pi / 6).ToRotationVector2()
+                                                                                                                                                                                     //unit *= new Vector2(visualPlayer.direction, 1);
+                                for (int n = 0; n < stager + counter / 60 + 1; n++)
+                                {
+                                    var shootCenter = NPC.Center + 192 * unit;//.RotatedBy(n / (stager + 1f) * MathHelper.Pi * .15f)
+                                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), shootCenter, (targetPlayer.Center + targetPlayer.velocity * 30 - shootCenter).SafeNormalize(default).RotatedBy(MathHelper.Pi / 12f * (n - 0.5f * (stager + counter / 60))) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                    proj.friendly = false;
+                                    proj.hostile = true;
+                                    //proj.timeLeft = 31;
+                                }
+                            }
+                        }
+
+                        visualPlayer.direction = AsraNoxSky.windDirection;
+                        NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
+                        ai1++;
+                        if (ai1 >= 720)
+                        {
+                            SetAI(10);
+                            break;
+                        }
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        break;
+                    }
+                case AsraNoxState.日曜星流_追灭://TODO 日曜星流_追灭
+                    {
+                        //240一次，三个阶段
+                        //一次重劈(120帧)，一次下刺(60帧)，一次冲锋(20帧)
+                        //流星雨，随着阶段而加强
+                        //初源量减少
+                        //冲刺生成的弹幕有所改变
+                        int timer = (int)ai1;
+                        int counter = timer % 240;
+                        int stager = timer / 240;
+
+                        #region 流星生成
+                        if (timer % (36 - stager * 4) == 0)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                if (Main.rand.NextBool(4)) continue;
+                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), targetPlayer.Center + new Vector2(Main.rand.NextFloat(-960, 960) - 480, -Main.rand.NextFloat(480, 560)), new Vector2(Main.rand.NextFloat(8, 12) * (AsraNoxSky.windDirection), 6).SafeNormalize(default) * 3f, solusEnergyShard, 35, 0, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), Main.rand.NextFloat(Main.rand.NextFloat(1f, 1.05f), 1.05f));
+                                proj.friendly = false;
+                                proj.hostile = true;
+                            }
+                        }
+                        #endregion
+
+                        #region 初源生成
+                        if (timer % 20 == 0)
+                        {
+                            SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + (Main.rand.NextBool(5 - stager) ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)), targetPlayer.velocity);
+                        }
+                        #endregion
+
+
+                        visualPlayer.direction = AsraNoxSky.windDirection;
+                        if (counter < 120)
+                        {
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
+
+                            if (counter == 0)
+                            {
+                                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai4].extraUpdates = 0;
+                                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                            }
+                            var projectile = Main.projectile[(int)ai4];
+                            for (int n = 59; n > 3; n--)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[n - 4];
+                                projectile.oldRot[n] = projectile.oldRot[n - 4];
+                            }
+                            for (int n = 1; n < 4; n++)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[0];
+                                projectile.oldRot[n] = projectile.oldRot[0];
+                            }
+                            if (counter <= 60)
+                            {
+                                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                                for (int n = 0; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                                }
+                            }
+                            if (counter == 60)
+                            {
+                                int max = stager + 3;
+                                for (int n = 0; n < max; n++)
+                                {
+                                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj1.friendly = false;
+                                    proj1.hostile = true;
+
+                                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj2.friendly = false;
+                                    proj2.hostile = true;
+
+                                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj3.friendly = false;
+                                    proj3.hostile = true;
+                                }
+                            }
+                        }
+                        else if (counter < 180)
+                        {
+                            if (counter < 165)
+                                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                            else
+                                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+
+                            if (counter == 120)
+                            {
+                                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai4].extraUpdates = 0;
+                                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                                ai5 = targetPlayer.Center.X;
+                                ai6 = targetPlayer.Center.Y;
+                                //Main.NewText((ai5, ai6));
+
+
+                            }
+                            if (counter >= 120)
+                            {
+                                var projectile = Main.projectile[(int)ai4];
+                                for (int n = 59; n > 3; n--)
+                                {
+                                    projectile.oldPos[n] = projectile.oldPos[n - 4];
+                                    projectile.oldRot[n] = projectile.oldRot[n - 4];
+                                }
+                                for (int n = 1; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = projectile.oldPos[0];
+                                    projectile.oldRot[n] = projectile.oldRot[0];
+                                }
+                                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                                for (int n = 0; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 120 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            int direct = AsraNoxSky.windDirection;
+                            if (counter == 180)
+                            {
+                                ai2 = Main.rand.Next(-480, 480);
+                                ai3 = -2 * ai2;
+                                ai4 = targetPlayer.Center.X;
+                                ai5 = targetPlayer.Center.Y;
+
+                                int max = stager + 4;
+                                for (int n = 0; n < max; n++)
+                                {
+                                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj1.friendly = false;
+                                    proj1.hostile = true;
+
+                                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj2.friendly = false;
+                                    proj2.hostile = true;
+
+                                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj3.friendly = false;
+                                    proj3.hostile = true;
+                                }
+                            }
+                            if (counter == 190)
+                            {
+                                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
+                                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
+
+                            }
+                            if (counter < 220)
+                            {
+                                var targetVec = counter < 190 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai6].Center;
+                                NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
+                            }
+                            if (counter >= 220)
+                            {
+                                const int timeMax = 20;
+                                var projectile = Main.projectile[(int)ai6];
+                                NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow((counter - 220f) / (timeMax - 1f), 3);
+                                projectile.Center = NPC.Center + new Vector2(0, 12);
+                                visualPlayer.direction = Math.Sign(projectile.velocity.X);
+                                visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                                visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                                //if (timer % 2 == 0)
+                                //{
+                                //    var unit = projectile.velocity.SafeNormalize(default);
+                                //    unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
+                                //    for (int n = 0; n < 2; n++)
+                                //    {
+                                //        unit = -unit;
+                                //        if (!Main.rand.NextBool(3)) continue;
+                                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                //        proj.friendly = false;
+                                //        proj.hostile = true;
+                                //    }
+                                //    if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
+                                //    {
+                                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                //        proj.friendly = false;
+                                //        proj.hostile = true;
+                                //    }
+
+                                //}
+                                if (timer % 2 == 0)
+                                {
+                                    int max = stager + 6;
+                                    for (int n = 0; n < max; n++)
+                                    {
+                                        var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                        if (Main.rand.NextBool(4))
+                                        {
+                                            var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                            proj1.friendly = false;
+                                            proj1.hostile = true;
+                                        }
+                                        if (Main.rand.NextBool(4))
+                                        {
+                                            var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                            proj2.friendly = false;
+                                            proj2.hostile = true;
+                                        }
+                                        if (Main.rand.NextBool(4))
+                                        {
+                                            var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                            proj3.friendly = false;
+                                            proj3.hostile = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        ai1++;
+                        if (ai1 >= 720)
+                        {
+                            SetAI(11);
+                            break;
+                        }
+                        break;
+                    }
+                case AsraNoxState.太阳风暴_追灭://TODO 太阳风暴_追灭
+                    {
+                        //ai0状态 ai1计时 ai2 ai3控制发射弹幕 ai4 ai5记录玩家坐标 ai6 ai7记录起始位置 ai8记录旋转中心位置
+                        var timer = (int)ai1;
+                        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+                        if ((timer - 30) % 60 == 0 && timer != 30)
+                        {
+                            int max = (timer - 30) / 120 + 3;
+                            for (int n = 0; n < max; n++)
+                            {
+                                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj1.friendly = false;
+                                proj1.hostile = true;
+
+                                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj2.friendly = false;
+                                proj2.hostile = true;
+
+                                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj3.friendly = false;
+                                proj3.hostile = true;
+                            }
+                        }
+                        if (timer < 30)
+                        {
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * visualPlayer.direction, targetPlayer.Center.Y), 0.05f);//
+                        }
+                        else if (timer < 630)
+                        {
+                            timer -= 30;
+                            var counter = timer % 60;
+                            if (counter == 0)
+                            {
+                                ai2 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai2].extraUpdates = 0;
+                                ai3 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai3].extraUpdates = 0;
+                                ai4 = targetPlayer.Center.X + targetPlayer.velocity.X * 20;
+                                ai5 = targetPlayer.Center.Y + targetPlayer.velocity.Y * 20;
+                                ai6 = NPC.Center.X;
+                                ai7 = NPC.Center.Y;
+                                ai8 = Main.rand.NextFloat(-2f, 2f);
+                                var leng = (targetPlayer.Center - NPC.Center).Length();
+                                if (leng * Math.Abs(ai8) > 600)
+                                {
+                                    ai8 = (600 - Main.rand.NextFloat(-50, 50)) / leng * Math.Sign(ai8);
+                                }
+                            }
+                            var rotationCenter = new Vector2(ai6 - ai4, ai7 - ai5);
+                            rotationCenter = new Vector2(-rotationCenter.Y, rotationCenter.X) * ai8 + new Vector2(ai4 + ai6, ai5 + ai7) * .5f;
+                            var toStart = new Vector2(ai6, ai7) - rotationCenter;
+                            var toTarget = new Vector2(ai4, ai5) - rotationCenter;
+                            var cross = toStart.CrossLength(toTarget);
+                            //NPC.Center = MathHelper.Lerp(toStart.ToRotation(), toTarget.ToRotation(), (float)Math.Pow(counter / 60f, 2) * 2).ToRotationVector2() * toStart.Length() + rotationCenter;
+                            //NPC.Center = toStart.RotatedBy(((cross > 0 ? MathHelper.TwoPi : 0) + new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation()) * (float)Math.Pow(counter / 60f, 2) * 2) + rotationCenter;
+
+                            var t = 1 - (float)Math.Cos(counter / 60f * MathHelper.Pi);// (float)Math.Pow(counter / 60f, 2) * 2
+                            //t /= 2f;
+                            t *= .75f;
+                            if (cross < 0)
+                            {
+                                var dummy = toStart;
+                                toStart = toTarget;
+                                toTarget = dummy;
+                                t = 1 - t;
+                                cross *= -1;
+                            }
+                            NPC.Center = toStart.RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation() * t) + rotationCenter;
+
+                            //NPC.Center = (cross < 0 ? toTarget : toStart).RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), Math.Abs(cross)).ToRotation() * (cross < 0 ? (1 - t) : t)) + rotationCenter;
+                            //前置方法:圆心O 起点P 终点T，逆时针生成一段圆弧
+                            //p = (P-O).RotatedBy(new Vector2(Vector2.Dot(P-O,T-O),(P-O).CrossLength(T-O)).ToRotation*t)+O
+                            //生成劣弧则是检测叉积为负就交换PT，保持时间原点不变就再反向一下t,
+
+                            var _projectile = Main.projectile[(int)ai2];
+                            var _count = 0;
+                        _mylabel:
+                            for (int n = 59; n > 3; n--)
+                            {
+                                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
+                                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
+                            }
+                            for (int n = 1; n < 4; n++)
+                            {
+                                _projectile.oldPos[n] = _projectile.oldPos[0];
+                                _projectile.oldRot[n] = _projectile.oldRot[0];
+                            }
+                            Vector2 currentVec = NPC.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            for (int n = 0; n < 4; n++)
+                            {
+                                _projectile.oldPos[n] = Vector2.Lerp(currentVec, _projectile.oldPos[4], n * .25f);//
+                                var rotation = -timer + n * .25f;
+                                _projectile.oldRot[n] = MathHelper.Pi / 10f * rotation - 3 * (float)Math.Sin(MathHelper.Pi / 30f * rotation) + _count * MathHelper.Pi;
+                                //if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
+                            }
+                            _projectile.Center = _projectile.oldPos[0];
+                            _count++;
+                            if (_count < 2)
+                            {
+                                switch (_count)
+                                {
+                                    case 1: _projectile = Main.projectile[(int)ai3]; break;
+                                }
+                                goto _mylabel;
+                            }
+
+                            if (timer % 5 == 0)
+                            {
+                                var projectile = Main.projectile[(int)ai2];
+                                for (int n = 0; n < 2; n++)
+                                {
+                                    if (Main.rand.Next(10) < 7)
+                                    {
+                                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, (projectile.oldRot[0] + n * MathHelper.Pi).ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                        proj.friendly = false;
+                                        proj.hostile = true;
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                        ai1++;
+
+                        if (ai1 >= 660)
+                        {
+                            SetAI(12);
+                            break;
+                        }
+
+                        break;
+                    }
+                case AsraNoxState.破晓之光_追灭://TODO 破晓之光_追灭
+                    {
+                        var timer = (int)ai1 - 60;
+                        if (timer == -60)
+                        {
+                            for (int n = 0; n < 7; n++)
+                            {
+                                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / 6f));
+                                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj1.friendly = false;
+                                proj1.hostile = true;
+
+                                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj2.friendly = false;
+                                proj2.hostile = true;
+
+                                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj3.friendly = false;
+                                proj3.hostile = true;
+                            }
+                        }
+                        if (timer >= 0)
+                        {
+                            if (timer % 240 == 0)
+                            {
+                                ai2 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusLevatine>(), 60, 8, Main.myPlayer, MathHelper.PiOver2);
+                                ai3 = AsraNoxSky.windDirection;
+                                var _projectile = Main.projectile[(int)ai2];
+                                for (int n = _projectile.oldPos.Length - 1; n >= 0; n--)
+                                {
+                                    _projectile.oldPos[n] = NPC.Center;
+                                    _projectile.oldRot[n] = _projectile.ai[0];
+                                }
+                            }
+                            var projectile = Main.projectile[(int)ai2];
+                            for (int n = projectile.oldPos.Length - 1; n > 0; n--)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[n - 1];
+                                projectile.oldRot[n] = projectile.oldRot[n - 1];
+                            }
+                            visualPlayer.direction = (int)ai3;
+                            if (timer % 240 >= 30)
+                            {
+                                NPC.Center += new Vector2((timer - (30f + timer / 240 * 240)).SymmetricalFactor(105, 60) * 16 * ai3, 0);
+                                NPC.Center = Vector2.Lerp(NPC.Center, NPC.Center with { Y = targetPlayer.Center.Y - 400 }, 0.05f);
+                                projectile.oldRot[0] = projectile.ai[0] = MathHelper.PiOver2;
+                                visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, -MathHelper.PiOver2 * visualPlayer.direction);
+
+                                if ((targetPlayer.Center.X - NPC.Center.X) * ai3 < 0 && timer % 4 == 0)
+                                {
+                                    #region 初源生成
+                                    SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f, targetPlayer.velocity);
+                                    #endregion
+                                }
+                            }
+                            else
+                            {
+                                var rot = visualPlayer.compositeFrontArm.rotation;
+                                visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Terraria.Utils.AngleLerp(rot, -MathHelper.PiOver2 * visualPlayer.direction, 0.05f));
+                                NPC.Center = Vector2.Lerp(NPC.Center, targetPlayer.Center + new Vector2(-visualPlayer.direction * 256, -200), 0.1f);
+
+
+                            }
+                            projectile.Center = projectile.oldPos[0] = NPC.Center + new Vector2(visualPlayer.direction * 6, 16);
+                            if (timer % 24 == 0 && timer % 240 > 30)
+                            {
+                                var unit = projectile.oldRot[0].ToRotationVector2();
+                                var normal = new Vector2(-unit.Y, unit.X) * ai3 * -1;
+                                for (int n = 0; n < 12; n++)
+                                {
+                                    if (!Main.rand.NextBool(3))
+                                    {
+                                        var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center + unit * Main.rand.NextFloat(0, 1200), normal * 8f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                        proj1.friendly = false;
+                                        proj1.hostile = true;
+                                    }
+                                }
+                            }
+                        }
+
+
+                        ai1++;
+
+                        if (ai1 >= 780)
+                        {
+                            SetAI(NPC.life < NPC.lifeMax * 7 / 10 ? Main.rand.Next(13, 18) : Main.rand.Next(7, 12));//
+                            break;
+                        }
+
+                        break;
+                    }
+                #endregion
+
+                #region 随机
+                case AsraNoxState.陨日残阳_随机://TODO 陨日残阳_随机
+                    {
+                        if (ai1 >= 660)
+                        {
+                            if (NPC.life < NPC.lifeMax * 3 / 10)
+                            {
+                                PrepareToEscape(660);
+                            }
+                            else
+                            {
+                                SetAI(Main.rand.Next(14, 19));
+                            }
+                            break;
+                        }
+                        var timer = (int)ai1;
+                        int direct = timer >= 10 ? (timer - 10) / 20 % 2 : 0;
+                        if (timer == 0)
+                        {
+                            ai2 = Main.rand.Next(-480, 480);
+                            ai3 = ai1 >= 550 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
+                            ai4 = targetPlayer.Center.X;
+                            ai5 = targetPlayer.Center.Y;
+                        }
+                        if (timer % 20 == 10)
+                        {
+                            if (timer <= 610)
+                            {
+                                if (timer != 10)
+                                {
+                                    ai2 = Main.rand.Next(-480, 480);
+                                    ai3 = (ai1 >= 510 || Main.rand.NextBool(4)) ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
+                                    ai4 = targetPlayer.Center.X + targetPlayer.velocity.X * 30;
+                                    ai5 = targetPlayer.Center.Y + targetPlayer.velocity.Y * 30;
+                                }
+                                ai7 = ai6;
+                                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
+                                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
+                            }
+                            else if (timer == 630) ai7 = ai6;
+                        }
+                        if (timer >= 40)
+                        {
+                            const int timeMax = 20;
+                            if (timer % timeMax == 0)
+                            {
+                                ai8 = ai7;
+                            }
+                            int counter = (timer - 40) % timeMax;
+                            var projectile = Main.projectile[(int)ai8];
+                            NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow(counter / (timeMax - 1f), 3);
+                            projectile.Center = NPC.Center + new Vector2(0, 12);
+                            visualPlayer.direction = Math.Sign(projectile.velocity.X);
+                            visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                            visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                            if (timer % 2 == 0)
+                            {
+                                var unit = projectile.velocity.SafeNormalize(default);
+                                unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
+                                for (int n = 0; n < 2; n++)
+                                {
+                                    unit = -unit;
+                                    if (!Main.rand.NextBool(3)) continue;
+                                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                    proj.friendly = false;
+                                    proj.hostile = true;
+                                }
+                                if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
+                                {
+                                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                    proj.friendly = false;
+                                    proj.hostile = true;
+                                }
+
+                            }
+                        }
+                        if (timer < 40)
+                        {
+                            var targetVec = timer < 30 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai7].Center;
+                            NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
+                        }
+                        ai1++;
+
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        break;
+                    }
+                case AsraNoxState.初源日炎_随机://TODO 初源日炎_随机
+                    {
+                        if (ai1 >= 780)
+                        {
+                            if (NPC.life < NPC.lifeMax * 3 / 10)
+                            {
+                                PrepareToEscape(780);
+                            }
+                            else
+                            {
+                                SetAI(Main.rand.NextBool(2) ? 13 : Main.rand.Next(15, 19));
+                            }
+                            break;
+                        }
+
+                        if ((int)ai1 < 765)
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                        else
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                        NPC.damage = 0;
+                        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+                        if ((int)ai1 % 10 == 0)
+                        {
+                            SpawnFractal(targetPlayer.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 1) * new Vector2(960, 540));
+                        }
+                        var counter = (int)ai1 % 120;
+                        if (counter == 0)
+                        {
+                            ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                            Main.projectile[(int)ai4].extraUpdates = 0;
+                            if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                            if ((int)ai1 == 720)
+                            {
+                                ai5 = targetPlayer.Center.X;
+                                ai6 = targetPlayer.Center.Y;
+                            }
+                        }
+                        var projectile = Main.projectile[(int)ai4];
+                        for (int n = 59; n > 3; n--)
+                        {
+                            projectile.oldPos[n] = projectile.oldPos[n - 4];
+                            projectile.oldRot[n] = projectile.oldRot[n - 4];
+                        }
+                        for (int n = 1; n < 4; n++)
+                        {
+                            projectile.oldPos[n] = projectile.oldPos[0];
+                            projectile.oldRot[n] = projectile.oldRot[0];
+                        }
+                        if (counter <= 60)
+                        {
+                            //projectile.oldPos[0] = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            //if ((int)ai1 < 720)
+                            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
+                            //else
+                            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
+                            //if (visualPlayer.direction == -1) projectile.oldRot[0] = MathHelper.Pi - projectile.oldRot[0];
+                            Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            for (int n = 0; n < 4; n++)
+                            {
+                                projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                if ((int)ai1 < 720)
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                else
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                            }
+                        }
+
+                        if (counter == 60)
+                        {
+                            int max = (int)ai1 / 120 + 4;
+                            for (int n = 0; n < max; n++)
+                            {
+                                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj1.friendly = false;
+                                proj1.hostile = true;
+
+                                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj2.friendly = false;
+                                proj2.hostile = true;
+
+                                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj3.friendly = false;
+                                proj3.hostile = true;
+                            }
+                        }
+                        if ((int)ai1 == 779)
+                        {
+                            for (int n = 0; n < 16; n++)
+                            {
+                                if (Main.rand.NextBool(3))
+                                    SpawnFractal(NPC.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 64));
+                                if (!Main.rand.NextBool(3))
+                                    SpawnFractal(targetPlayer.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 1), 1) * new Vector2(960, 540));
+                            }
+                        }
+                        ai1++;
+
+
+                        NPC.oldPos[0] = NPC.oldPosition;
+
+                        //if (counter <= 60 && counter >= 45 && counter % 3 == 0 && (int)ai1 < 720)
+                        //{
+                        //    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, 3, 1.05f);
+                        //    proj.friendly = false;
+                        //    proj.hostile = true;
+                        //}
+
+                        break;
+                    }
+                case AsraNoxState.星恒飞刃_随机://TODO 星恒飞刃_随机
+                    {
+                        if (ai1 >= 720)
+                        {
+                            if (NPC.life < NPC.lifeMax * 3 / 10)
+                            {
+                                PrepareToEscape(720);
+                            }
+                            else
+                            {
+                                SetAI(Main.rand.NextBool(2) ? Main.rand.Next(13, 15) : Main.rand.Next(16, 19));
+                            }
+                            break;
+                        }
+                        int timer = (int)ai1;
+                        if (timer < 360)
+                        {
+                            int counter = timer % 180;
+                            int stager = timer / 180 + 1;
+                            if (counter % 60 == 0)
+                            {
+                                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 3);
+                                Main.projectile[(int)ai4].extraUpdates = 0;
+                                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                            }
+                            var projectile = Main.projectile[(int)ai4];
+                            for (int n = 59; n > 3; n--)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[n - 4];
+                                projectile.oldRot[n] = projectile.oldRot[n - 4];
+                            }
+                            for (int n = 1; n < 4; n++)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[0];
+                                projectile.oldRot[n] = projectile.oldRot[0];
+                            }
+                            if (counter % 60 <= 30)
+                            {
+                                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                                for (int n = 0; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 60 / 30f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                                }
+                                if (counter % 60 > 21)
+                                {
+                                    var factor = counter % 60 - 21f;
+                                    factor /= 8f;
+                                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(0.6f * MathHelper.Pi * (2 * factor - 1));//(MathHelper.Lerp(-MathHelper.Pi * .35f, MathHelper.Pi * .85f, factor) - MathHelper.Pi / 6).ToRotationVector2()
+                                                                                                                                                            //unit *= new Vector2(visualPlayer.direction, 1);
+                                    for (int n = 0; n < stager + counter / 60 + 1; n++)
+                                    {
+                                        var shootCenter = NPC.Center + 192 * unit;//.RotatedBy(n / (stager + 1f) * MathHelper.Pi * .15f)
+                                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), shootCenter, (targetPlayer.Center - shootCenter).SafeNormalize(default).RotatedBy(MathHelper.Pi / 12f * (n - 0.5f * (stager + counter / 60))) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                        proj.friendly = false;
+                                        proj.hostile = true;
+                                        //proj.timeLeft = 31;
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (timer % 180 == 0)
+                            {
+                                ai5 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
+                                Main.projectile[(int)ai5].extraUpdates = 0;
+                                if (Main.projectile[(int)ai5].ModProjectile is SolusKatanaFractal solusKatanaFractal_0)
+                                {
+                                    solusKatanaFractal_0.drawPlayer = new Player();
+                                    solusKatanaFractal_0.drawPlayer.CopyVisuals(visualPlayer);
+                                }
+                                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
+                                Main.projectile[(int)ai6].extraUpdates = 0;
+                                if (Main.projectile[(int)ai6].ModProjectile is SolusKatanaFractal solusKatanaFractal_1)
+                                {
+                                    solusKatanaFractal_1.drawPlayer = new Player();
+                                    solusKatanaFractal_1.drawPlayer.CopyVisuals(visualPlayer);
+                                }
+                                ai7 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
+                                Main.projectile[(int)ai7].extraUpdates = 0;
+                                if (Main.projectile[(int)ai7].ModProjectile is SolusKatanaFractal solusKatanaFractal_2)
+                                {
+                                    solusKatanaFractal_2.drawPlayer = new Player();
+                                    solusKatanaFractal_2.drawPlayer.CopyVisuals(visualPlayer);
+                                }
+                                ai8 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
+                                Main.projectile[(int)ai8].extraUpdates = 0;
+                                if (Main.projectile[(int)ai8].ModProjectile is SolusKatanaFractal solusKatanaFractal_3)
+                                {
+                                    solusKatanaFractal_3.drawPlayer = new Player();
+                                    solusKatanaFractal_3.drawPlayer.CopyVisuals(visualPlayer);
+                                }
+                            }
+                            if (timer % 180 < 60)
+                            {
+                                var target = targetPlayer.Center + (-MathHelper.Pi / 6).ToRotationVector2() * 400;
+                                var projectile = Main.projectile[(int)ai5];
+                                var count = 0;
+                            mylabel:
+                                projectile.Center += projectile.velocity;
+                                Vector2 targetVec = target - projectile.Center;
+                                targetVec.Normalize();
+                                targetVec *= 40f;
+                                projectile.velocity = (projectile.velocity * 15f + targetVec * 2) / 17f;
+                                if (projectile.ModProjectile is SolusKatanaFractal solusKatanaFractal) solusKatanaFractal.drawPlayer.direction = Math.Sign(targetPlayer.Center.X - projectile.Center.X);//
+                                count++;
+                                if (count < 4)
+                                {
+                                    switch (count)
+                                    {
+                                        case 1: projectile = Main.projectile[(int)ai6]; target = targetPlayer.Center + (-MathHelper.Pi / 6 * 5).ToRotationVector2() * 400; break;
+                                        case 2: projectile = Main.projectile[(int)ai7]; target = targetPlayer.Center + (-MathHelper.Pi / 4).ToRotationVector2() * 400; break;
+                                        case 3: projectile = Main.projectile[(int)ai8]; target = targetPlayer.Center + (-MathHelper.Pi / 4 * 3).ToRotationVector2() * 400; break;
+                                    }
+                                    goto mylabel;
+                                }
+                            }
+                            if (timer % 180 == 60)
+                            {
+                                var target = targetPlayer.Center + (-MathHelper.Pi / 6).ToRotationVector2() * 400;
+                                var projectile = Main.projectile[(int)ai5];
+                                var count = 0;
+                            mylabel:
+                                projectile.Center = target;
+                                projectile.velocity = default;
+                                count++;
+                                if (count < 4)
+                                {
+                                    switch (count)
+                                    {
+                                        case 1: projectile = Main.projectile[(int)ai6]; target = targetPlayer.Center + (-MathHelper.Pi / 6 * 5).ToRotationVector2() * 400; break;
+                                        case 2: projectile = Main.projectile[(int)ai7]; target = targetPlayer.Center + (-MathHelper.Pi / 4).ToRotationVector2() * 400; break;
+                                        case 3: projectile = Main.projectile[(int)ai8]; target = targetPlayer.Center + (-MathHelper.Pi / 4 * 3).ToRotationVector2() * 400; break;
+                                    }
+                                    goto mylabel;
+                                }
+                            }
+                            var _projectile = Main.projectile[(int)ai5];
+                            var _count = 0;
+                        _mylabel:
+                            for (int n = 59; n > 3; n--)
+                            {
+                                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
+                                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
+                            }
+                            for (int n = 1; n < 4; n++)
+                            {
+                                _projectile.oldPos[n] = _projectile.oldPos[0];
+                                _projectile.oldRot[n] = _projectile.oldRot[0];
+                            }
+                            Vector2 currentVec = _projectile.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            for (int n = 0; n < 4; n++)
+                            {
+                                _projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                _projectile.oldRot[n] = (timer - n * .25f) * -MathHelper.Pi / 20f + 19 * MathHelper.PiOver2;
+                                if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
+                            }
+                            _count++;
+                            if (_count < 4)
+                            {
+                                switch (_count)
+                                {
+                                    case 1: _projectile = Main.projectile[(int)ai6]; break;
+                                    case 2: _projectile = Main.projectile[(int)ai7]; break;
+                                    case 3: _projectile = Main.projectile[(int)ai8]; break;
+                                }
+                                goto _mylabel;
+                            }
+                            if (timer >= 420)
+                            {
+                                if (timer % 3 == 0)
+                                {
+                                    var projectile = Main.projectile[(int)ai5];
+                                    var count = 0;
+                                mylabel:
+                                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                    proj.friendly = false;
+                                    proj.hostile = true;
+
+                                    count++;
+                                    if (count < 4)
+                                    {
+                                        switch (count)
+                                        {
+                                            case 1: projectile = Main.projectile[(int)ai6]; break;
+                                            case 2: projectile = Main.projectile[(int)ai7]; break;
+                                            case 3: projectile = Main.projectile[(int)ai8]; break;
+                                        }
+                                        goto mylabel;
+                                    }
+                                }
+
+                            }
+                            else if (timer >= 600)
+                            {
+
+                            }
+                        }
+
+                        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+                        NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
+                        ai1++;
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        break;
+                    }
+                case AsraNoxState.日曜星流_随机://TODO 日曜星流_随机
+                    {
+                        if (ai1 >= 720)
+                        {
+                            if (NPC.life < NPC.lifeMax * 3 / 10)
+                            {
+                                PrepareToEscape(720);
+                            }
+                            else
+                            {
+                                SetAI(Main.rand.NextBool(2) ? Main.rand.Next(13, 16) : Main.rand.Next(17, 19));
+                            }
+                            break;
+                        }
+                        //240一次，三个阶段
+                        //一次重劈(120帧)，一次下刺(60帧)，一次冲锋(20帧)
+                        //流星雨，随着阶段而加强
+                        //初源量减少
+                        //冲刺生成的弹幕有所改变
+                        int timer = (int)ai1;
+                        int counter = timer % 240;
+                        int stager = timer / 240;
+
+                        #region 流星生成
+                        if (timer % (36 - stager * 4) == 0)
+                        {
+                            for (int n = 0; n < 5; n++)
+                            {
+                                if (Main.rand.NextBool(5)) continue;
+                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), targetPlayer.Center + new Vector2(Main.rand.NextFloat(-960, 960) - 480, -Main.rand.NextFloat(480, 560)), new Vector2(Main.rand.NextFloat(4, 8), 6).SafeNormalize(default) * 3f, solusEnergyShard, 35, 0, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), Main.rand.NextFloat(Main.rand.NextFloat(1f, 1.05f), 1.05f));
+                                proj.friendly = false;
+                                proj.hostile = true;
+                            }
+                        }
+                        #endregion
+
+                        #region 初源生成
+                        if (timer % 15 == 0)
+                        {
+                            SpawnFractal(targetPlayer.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 1) * new Vector2(960, 540));
+                        }
+                        #endregion
+
+
+                        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+                        if (counter < 120)
+                        {
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
+
+                            if (counter == 0)
+                            {
+                                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai4].extraUpdates = 0;
+                                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                            }
+                            var projectile = Main.projectile[(int)ai4];
+                            for (int n = 59; n > 3; n--)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[n - 4];
+                                projectile.oldRot[n] = projectile.oldRot[n - 4];
+                            }
+                            for (int n = 1; n < 4; n++)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[0];
+                                projectile.oldRot[n] = projectile.oldRot[0];
+                            }
+                            if (counter <= 60)
+                            {
+                                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                                for (int n = 0; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                                }
+                            }
+                            if (counter == 60)
+                            {
+                                int max = stager + 3;
+                                for (int n = 0; n < max; n++)
+                                {
+                                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj1.friendly = false;
+                                    proj1.hostile = true;
+
+                                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj2.friendly = false;
+                                    proj2.hostile = true;
+
+                                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj3.friendly = false;
+                                    proj3.hostile = true;
+                                }
+                            }
+                        }
+                        else if (counter < 180)
+                        {
+                            if (counter < 165)
+                                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                            else
+                                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+
+                            if (counter == 120)
+                            {
+                                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai4].extraUpdates = 0;
+                                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                                ai5 = targetPlayer.Center.X;
+                                ai6 = targetPlayer.Center.Y;
+                                //Main.NewText((ai5, ai6));
+
+
+                            }
+                            if (counter >= 120)
+                            {
+                                var projectile = Main.projectile[(int)ai4];
+                                for (int n = 59; n > 3; n--)
+                                {
+                                    projectile.oldPos[n] = projectile.oldPos[n - 4];
+                                    projectile.oldRot[n] = projectile.oldRot[n - 4];
+                                }
+                                for (int n = 1; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = projectile.oldPos[0];
+                                    projectile.oldRot[n] = projectile.oldRot[0];
+                                }
+                                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                                for (int n = 0; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 120 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            int direct = visualPlayer.direction == -1 ? 0 : 1;
+                            if (counter == 180)
+                            {
+                                ai2 = Main.rand.Next(-480, 480);
+                                ai3 = stager != 0 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
+                                ai4 = targetPlayer.Center.X;
+                                ai5 = targetPlayer.Center.Y;
+
+                                //for (int n = 0; n < 12 + stager * 2; n++)
+                                //{
+                                //    if (Main.rand.NextBool(3))
+                                //        SpawnFractal(NPC.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 64));
+                                //    if (!Main.rand.NextBool(3))
+                                //        SpawnFractal(targetPlayer.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 1), 1) * new Vector2(960, 540));
+                                //}
+                                int max = stager + 4;
+                                for (int n = 0; n < max; n++)
+                                {
+                                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj1.friendly = false;
+                                    proj1.hostile = true;
+
+                                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 256 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj2.friendly = false;
+                                    proj2.hostile = true;
+
+                                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 256 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj3.friendly = false;
+                                    proj3.hostile = true;
+                                }
+                            }
+                            if (counter == 190)
+                            {
+                                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
+                                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
+
+                            }
+                            if (counter < 220)
+                            {
+                                var targetVec = counter < 190 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai6].Center;
+                                NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
+                            }
+                            if (counter >= 220)
+                            {
+                                const int timeMax = 20;
+                                var projectile = Main.projectile[(int)ai6];
+                                NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow((counter - 220f) / (timeMax - 1f), 3);
+                                projectile.Center = NPC.Center + new Vector2(0, 12);
+                                visualPlayer.direction = Math.Sign(projectile.velocity.X);
+                                visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                                visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                                //if (timer % 2 == 0)
+                                //{
+                                //    var unit = projectile.velocity.SafeNormalize(default);
+                                //    unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
+                                //    for (int n = 0; n < 2; n++)
+                                //    {
+                                //        unit = -unit;
+                                //        if (!Main.rand.NextBool(3)) continue;
+                                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                //        proj.friendly = false;
+                                //        proj.hostile = true;
+                                //    }
+                                //    if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
+                                //    {
+                                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                //        proj.friendly = false;
+                                //        proj.hostile = true;
+                                //    }
+
+                                //}
+                                if (timer % 2 == 0)
+                                {
+                                    int max = stager + 6;
+                                    for (int n = 0; n < max; n++)
+                                    {
+                                        var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                        if (Main.rand.NextBool(3))
+                                        {
+                                            var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                            proj1.friendly = false;
+                                            proj1.hostile = true;
+                                        }
+                                        if (Main.rand.NextBool(3))
+                                        {
+                                            var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                            proj2.friendly = false;
+                                            proj2.hostile = true;
+                                        }
+                                        if (Main.rand.NextBool(3))
+                                        {
+                                            var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                            proj3.friendly = false;
+                                            proj3.hostile = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        ai1++;
+                        break;
+                    }
+                case AsraNoxState.太阳风暴_随机://TODO 太阳风暴_随机
+                    {
+                        if (ai1 >= 660)
+                        {
+                            if (NPC.life < NPC.lifeMax * 3 / 10)
+                            {
+                                PrepareToEscape(660);
+                            }
+                            else
+                            {
+                                SetAI(Main.rand.NextBool(2) ? Main.rand.Next(13, 17) : 18);
+                            }
+                            break;
+                        }
+                        //ai0状态 ai1计时 ai2 ai3控制发射弹幕 ai4 ai5记录玩家坐标 ai6 ai7记录起始位置 ai8记录旋转中心位置
+                        var timer = (int)ai1;
+                        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+                        if ((timer - 30) % 60 == 0 && timer != 30)
+                        {
+                            int max = (timer - 30) / 120 + 3;
+                            for (int n = 0; n < max; n++)
+                            {
+                                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj1.friendly = false;
+                                proj1.hostile = true;
+
+                                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj2.friendly = false;
+                                proj2.hostile = true;
+
+                                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj3.friendly = false;
+                                proj3.hostile = true;
+                            }
+                        }
+                        if (timer < 30)
+                        {
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * visualPlayer.direction, targetPlayer.Center.Y), 0.05f);//
+                        }
+                        else if (timer < 630)
+                        {
+                            timer -= 30;
+                            var counter = timer % 60;
+                            if (counter == 0)
+                            {
+                                ai2 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai2].extraUpdates = 0;
+                                ai3 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai3].extraUpdates = 0;
+                                ai4 = targetPlayer.Center.X;
+                                ai5 = targetPlayer.Center.Y;
+                                ai6 = NPC.Center.X;
+                                ai7 = NPC.Center.Y;
+                                ai8 = Main.rand.NextFloat(-2f, 2f);
+                                var leng = (targetPlayer.Center - NPC.Center).Length();
+                                if (leng * Math.Abs(ai8) > 600)
+                                {
+                                    ai8 = (600 - Main.rand.NextFloat(-50, 50)) / leng * Math.Sign(ai8);
+                                }
+                            }
+                            var rotationCenter = new Vector2(ai6 - ai4, ai7 - ai5);
+                            rotationCenter = new Vector2(-rotationCenter.Y, rotationCenter.X) * ai8 + new Vector2(ai4 + ai6, ai5 + ai7) * .5f;
+                            var toStart = new Vector2(ai6, ai7) - rotationCenter;
+                            var toTarget = new Vector2(ai4, ai5) - rotationCenter;
+                            var cross = toStart.CrossLength(toTarget);
+                            //NPC.Center = MathHelper.Lerp(toStart.ToRotation(), toTarget.ToRotation(), (float)Math.Pow(counter / 60f, 2) * 2).ToRotationVector2() * toStart.Length() + rotationCenter;
+                            //NPC.Center = toStart.RotatedBy(((cross > 0 ? MathHelper.TwoPi : 0) + new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation()) * (float)Math.Pow(counter / 60f, 2) * 2) + rotationCenter;
+
+                            var t = 1 - (float)Math.Cos(counter / 60f * MathHelper.Pi);// (float)Math.Pow(counter / 60f, 2) * 2
+                            //t *= 1.5f;
+                            t *= 3 / 4f;
+                            if (cross < 0)
+                            {
+                                var dummy = toStart;
+                                toStart = toTarget;
+                                toTarget = dummy;
+                                t = 1 - t;
+                                cross *= -1;
+                            }
+                            NPC.Center = toStart.RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation() * t) + rotationCenter;
+
+                            //NPC.Center = (cross < 0 ? toTarget : toStart).RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), Math.Abs(cross)).ToRotation() * (cross < 0 ? (1 - t) : t)) + rotationCenter;
+                            //前置方法:圆心O 起点P 终点T，逆时针生成一段圆弧
+                            //p = (P-O).RotatedBy(new Vector2(Vector2.Dot(P-O,T-O),(P-O).CrossLength(T-O)).ToRotation*t)+O
+                            //生成劣弧则是检测叉积为负就交换PT，保持时间原点不变就再反向一下t,
+
+                            var _projectile = Main.projectile[(int)ai2];
+                            var _count = 0;
+                        _mylabel:
+                            for (int n = 59; n > 3; n--)
+                            {
+                                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
+                                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
+                            }
+                            for (int n = 1; n < 4; n++)
+                            {
+                                _projectile.oldPos[n] = _projectile.oldPos[0];
+                                _projectile.oldRot[n] = _projectile.oldRot[0];
+                            }
+                            Vector2 currentVec = NPC.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            for (int n = 0; n < 4; n++)
+                            {
+                                _projectile.oldPos[n] = Vector2.Lerp(currentVec, _projectile.oldPos[4], n * .25f);//
+                                var rotation = -timer + n * .25f;
+                                _projectile.oldRot[n] = MathHelper.Pi / 10f * rotation - 3 * (float)Math.Sin(MathHelper.Pi / 30f * rotation) + _count * MathHelper.Pi;
+                                //if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
+                            }
+                            _projectile.Center = _projectile.oldPos[0];
+                            _count++;
+                            if (_count < 2)
+                            {
+                                switch (_count)
+                                {
+                                    case 1: _projectile = Main.projectile[(int)ai3]; break;
+                                }
+                                goto _mylabel;
+                            }
+
+                            if (timer % 4 == 0)
+                            {
+                                var projectile = Main.projectile[(int)ai2];
+                                for (int n = 0; n < 2; n++)
+                                {
+                                    if (Main.rand.Next(10) < 7)
+                                    {
+                                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, (projectile.oldRot[0] + n * MathHelper.Pi).ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                        proj.friendly = false;
+                                        proj.hostile = true;
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                        ai1++;
+
+                        break;
+                    }
+                case AsraNoxState.破晓之光_随机://TODO 破晓之光_随机
+                    {
+                        if (ai1 >= 780)
+                        {
+                            if (NPC.life < NPC.lifeMax * 3 / 10)
+                            {
+                                PrepareToEscape(780);
+                            }
+                            else
+                            {
+                                SetAI(Main.rand.Next(13, 18));
+                            }
+                            break;
+                        }
+                        //分三个阶段
+                        //前两个240秒，最后一个300秒
+                        //转动一圈
+                        //持剑平移
+                        //杀意百合
+                        //ai1计时 ai2记弹幕 ai3记录方向
+                        var timer = (int)ai1 - 60;
+                        if (timer == -60)
+                        {
+                            for (int n = 0; n < 7; n++)
+                            {
+                                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / 6f));
+                                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj1.friendly = false;
+                                proj1.hostile = true;
+
+                                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj2.friendly = false;
+                                proj2.hostile = true;
+
+                                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj3.friendly = false;
+                                proj3.hostile = true;
+                            }
+                        }
+                        if (timer % 240 == 0)
+                        {
+                            ai2 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusLevatine>(), 60, 8, Main.myPlayer, -MathHelper.PiOver2);
+                            ai3 = Math.Sign(new Vector2(0, -1).CrossLength(targetPlayer.Center - NPC.Center));
+                            var _projectile = Main.projectile[(int)ai2];
+                            for (int n = _projectile.oldPos.Length - 1; n >= 0; n--)
+                            {
+                                _projectile.oldPos[n] = NPC.Center;
+                                _projectile.oldRot[n] = _projectile.ai[0];
+                            }
+                        }
+                        var projectile = Main.projectile[(int)ai2];
+                        for (int n = projectile.oldPos.Length - 1; n > 0; n--)
+                        {
+                            projectile.oldPos[n] = projectile.oldPos[n - 1];
+                            projectile.oldRot[n] = projectile.oldRot[n - 1];
+                        }
+                        visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, -MathHelper.Pi);
+                        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+
+                        if (timer % 240 >= 30)
+                        {
+                            var factor = (timer - 30f) % 240;
+                            factor /= 210f;
+                            factor *= factor;
+                            projectile.oldRot[0] = projectile.ai[0] = factor * MathHelper.TwoPi * ai3 - MathHelper.PiOver2;
+                            visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.oldRot[0] - MathHelper.PiOver2);
+                            visualPlayer.direction = Math.Sign(Math.Cos(projectile.ai[0]));
+                        }
+                        else
+                        {
+                            NPC.Center = Vector2.Lerp(NPC.Center, targetPlayer.Center + new Vector2(-visualPlayer.direction * 400, 320), 0.1f);
+                        }
+                        projectile.Center = projectile.oldPos[0] = NPC.Center + projectile.ai[0].ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12);
+
+                        if (timer % 24 == 0 && timer % 240 > 30)
+                        {
+                            var unit = projectile.oldRot[0].ToRotationVector2();
+                            var normal = new Vector2(-unit.Y, unit.X) * ai3 * (timer > 240 ? -1 : 1);
+                            for (int n = 0; n < 12; n++)
+                            {
+                                if (!Main.rand.NextBool(3))
+                                {
+                                    var start = projectile.Center + unit * Main.rand.NextFloat(0, 1200);
+                                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), start, (Main.rand.NextBool(3) ? (targetPlayer.Center - start).SafeNormalize(default) : normal) * 8f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                    proj1.friendly = false;
+                                    proj1.hostile = true;
+                                }
+                            }
+                            if (Main.rand.NextBool(8))
+                            {
+                                var targetPos = targetPlayer.Center + new Vector2(Main.rand.NextFloat(-960, 960), 540);
+                                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPos - NPC.Center) / 15, solusEnergyShard, 45, 4, Main.myPlayer, 7, 1f);
+                                proj1.friendly = false;
+                                proj1.hostile = true;
+                                proj1.timeLeft = 46;
+                            }
+                        }
+
+                        ai1++;
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        break;
+                    }
+                #endregion
+
+                #region 后撤
+                case AsraNoxState.陨日残阳_后撤://TODO 陨日残阳_后撤
+                    {
+                        if (ai1 >= 660)
+                        {
+                            var flag = NPC.life < NPC.lifeMax / 4;
+                            TakeARest(660, flag ? 20 : 19);
+                            if (flag && ai1 > 780) NPC.life = NPC.lifeMax / 4;
+                            break;
+                        }
+                        var timer = (int)ai1;
+                        int direct = -AsraNoxSky.windDirection;
+                        if (timer == 0)
+                        {
+                            ai2 = Main.rand.Next(-480, 480);
+                            ai3 = -2 * ai2;
+                            ai4 = targetPlayer.Center.X;
+                            ai5 = targetPlayer.Center.Y;
+                        }
+                        if (timer % 20 == 10)
+                        {
+                            if (timer <= 610)
+                            {
+                                if (timer != 10)
+                                {
+                                    ai2 = Main.rand.Next(-480, 480);
+                                    ai3 = -2 * ai2;
+                                    ai4 = targetPlayer.Center.X;
+                                    ai5 = targetPlayer.Center.Y;
+                                }
+                                ai7 = ai6;
+                                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
+                                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
+                            }
+                            else if (timer == 630) ai7 = ai6;
+                        }
+                        if (timer >= 40)
+                        {
+                            const int timeMax = 20;
+                            if (timer % timeMax == 0)
+                            {
+                                ai8 = ai7;
+                            }
+                            int counter = (timer - 40) % timeMax;
+                            var projectile = Main.projectile[(int)ai8];
+                            NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow(counter / (timeMax - 1f), 3);
+                            projectile.Center = NPC.Center + new Vector2(0, 12);
+                            visualPlayer.direction = Math.Sign(projectile.velocity.X);
+                            visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                            visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                            if (timer % 12 == 0)
+                            {
+                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 12f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.02f);
+                                proj.friendly = false;
+                                proj.hostile = true;
+                            }
+                        }
+                        if (timer < 40)
+                        {
+                            var targetVec = timer < 30 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai7].Center;
+                            NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
+                        }
+                        ai1++;
+
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        break;
+                    }
+                case AsraNoxState.初源日炎_后撤://TODO 初源日炎_后撤
+                    {
+                        if (ai1 >= 780)
+                        {
+                            var flag = NPC.life < NPC.lifeMax / 5;
+                            TakeARest(780, flag ? 21 : 20);
+                            if (flag && ai1 > 900) NPC.life = NPC.lifeMax / 5;
+                            break;
+                        }
+                        if ((int)ai1 < 765)
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                        else
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                        NPC.damage = 0;
+                        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+                        if ((int)ai1 % 10 == 0)
+                        {
+                            SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)), default, (Main.rand.NextFloat(-MathHelper.Pi / 24, MathHelper.Pi / 24) + (Main.rand.NextBool(2) ? -MathHelper.PiOver2 : MathHelper.PiOver2)).ToRotationVector2());
+                        }
+                        var counter = (int)ai1 % 120;
+                        if (counter == 0)
+                        {
+                            ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                            Main.projectile[(int)ai4].extraUpdates = 0;
+                            if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                            if ((int)ai1 == 720)
+                            {
+                                ai5 = targetPlayer.Center.X;
+                                ai6 = targetPlayer.Center.Y;
+                            }
+                        }
+                        var projectile = Main.projectile[(int)ai4];
+                        for (int n = 59; n > 3; n--)
+                        {
+                            projectile.oldPos[n] = projectile.oldPos[n - 4];
+                            projectile.oldRot[n] = projectile.oldRot[n - 4];
+                        }
+                        for (int n = 1; n < 4; n++)
+                        {
+                            projectile.oldPos[n] = projectile.oldPos[0];
+                            projectile.oldRot[n] = projectile.oldRot[0];
+                        }
+                        if (counter <= 60)
+                        {
+                            //projectile.oldPos[0] = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            //if ((int)ai1 < 720)
+                            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
+                            //else
+                            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
+                            //if (visualPlayer.direction == -1) projectile.oldRot[0] = MathHelper.Pi - projectile.oldRot[0];
+                            Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            for (int n = 0; n < 4; n++)
+                            {
+                                projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                if ((int)ai1 < 720)
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                else
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                            }
+                        }
+                        ai1++;
+
+                        if (counter == 60 || (int)ai1 == 780)
+                        {
+                            int max = (int)ai1 / 120 + 4;
+                            for (int n = 0; n < max; n++)
+                            {
+                                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj1.friendly = false;
+                                proj1.hostile = true;
+
+                                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj2.friendly = false;
+                                proj2.hostile = true;
+
+                                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj3.friendly = false;
+                                proj3.hostile = true;
+                            }
+                        }
+
+
+                        NPC.oldPos[0] = NPC.oldPosition;
+
+                        //if (counter <= 60 && counter >= 45 && counter % 3 == 0 && (int)ai1 < 720)
+                        //{
+                        //    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, 3, 1.05f);
+                        //    proj.friendly = false;
+                        //    proj.hostile = true;
+                        //}
+
+                        break;
+                    }
+                case AsraNoxState.星恒飞刃_后撤://TODO 星恒飞刃_后撤
+                    {
+                        if (ai1 >= 720)
+                        {
+                            var flag = NPC.life < NPC.lifeMax * 3 / 20;
+                            TakeARest(720, flag ? 22 : 21);
+                            if (flag && ai1 > 840) NPC.life = NPC.lifeMax * 3 / 20;
+                            break;
+                        }
+                        int timer = (int)ai1;
+                        //前180帧妖梦非符同款攻击
+                        //后60帧如下安排
+                        //20帧移动，40帧发射弹幕，最后10帧隐去
+
+                        //这里是新安排
+                        //前3*180帧妖梦非符同款攻击
+                        //最后180帧中60帧移动，120帧发射弹幕
+                        int counter = timer % 180;
+                        int stager = timer / 180;
+                        if (counter % 60 == 0)
+                        {
+                            ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 3);
+                            Main.projectile[(int)ai4].extraUpdates = 0;
+                            if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                        }
+                        var projectile = Main.projectile[(int)ai4];
+                        if (projectile.type == ModContent.ProjectileType<SolusKatanaFractal>())
+                        {
+                            for (int n = 59; n > 3; n--)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[n - 4];
+                                projectile.oldRot[n] = projectile.oldRot[n - 4];
+                            }
+                            for (int n = 1; n < 4; n++)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[0];
+                                projectile.oldRot[n] = projectile.oldRot[0];
+                            }
+                            if (counter % 60 <= 30)
+                            {
+                                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                                for (int n = 0; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 60 / 30f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                                }
+                                if (counter % 60 > 21)
+                                {
+                                    var factor = counter % 60 - 21f;
+                                    factor /= 8f;
+                                    var unit = (targetPlayer.Center + targetPlayer.velocity * 60 - NPC.Center).SafeNormalize(default).RotatedBy(0.6f * MathHelper.Pi * (2 * factor - 1));//(MathHelper.Lerp(-MathHelper.Pi * .35f, MathHelper.Pi * .85f, factor) - MathHelper.Pi / 6).ToRotationVector2()
+                                                                                                                                                                                         //unit *= new Vector2(visualPlayer.direction, 1);
+                                    for (int n = 0; n < stager + counter / 60 + 1; n++)
+                                    {
+                                        var shootCenter = NPC.Center + 192 * unit;//.RotatedBy(n / (stager + 1f) * MathHelper.Pi * .15f)
+                                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), shootCenter, (targetPlayer.Center + targetPlayer.velocity * 30 - shootCenter).SafeNormalize(default).RotatedBy(MathHelper.Pi / 12f * (n - 0.5f * (stager + counter / 60))) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                        proj.friendly = false;
+                                        proj.hostile = true;
+                                        //proj.timeLeft = 31;
+                                    }
+                                }
+                            }
+                        }
+
+
+                        visualPlayer.direction = AsraNoxSky.windDirection;
+                        NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
+                        ai1++;
+
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        break;
+                    }
+                case AsraNoxState.日曜星流_后撤://TODO 日曜星流_后撤
+                    {
+                        if (ai1 >= 720)
+                        {
+                            var flag = NPC.life < NPC.lifeMax / 10;
+                            TakeARest(720, flag ? 23 : 22);
+                            if (flag && ai1 > 840) NPC.life = NPC.lifeMax / 10;
+                            break;
+                        }
+                        //240一次，三个阶段
+                        //一次重劈(120帧)，一次下刺(60帧)，一次冲锋(20帧)
+                        //流星雨，随着阶段而加强
+                        //初源量减少
+                        //冲刺生成的弹幕有所改变
+                        int timer = (int)ai1;
+                        int counter = timer % 240;
+                        int stager = timer / 240;
+
+                        #region 流星生成
+                        if (timer % (36 - stager * 4) == 0)
+                        {
+                            for (int n = 0; n < 4; n++)
+                            {
+                                if (Main.rand.NextBool(4)) continue;
+                                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), targetPlayer.Center + new Vector2(Main.rand.NextFloat(-960, 960) - 480, -Main.rand.NextFloat(480, 560)), new Vector2(Main.rand.NextFloat(4, 8), 6).SafeNormalize(default) * 3f, solusEnergyShard, 35, 0, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), Main.rand.NextFloat(Main.rand.NextFloat(1f, 1.05f), 1.05f));
+                                proj.friendly = false;
+                                proj.hostile = true;
+                            }
+                        }
+                        #endregion
+
+                        #region 初源生成
+                        if (timer % 20 == 0)
+                        {
+                            SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)), default, (Main.rand.NextFloat(-MathHelper.Pi / 24, MathHelper.Pi / 24) + (Main.rand.NextBool(2) ? -MathHelper.PiOver2 : MathHelper.PiOver2)).ToRotationVector2());
+                        }
+                        #endregion
+
+
+                        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+                        if (counter < 120)
+                        {
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
+
+                            if (counter == 0)
+                            {
+                                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai4].extraUpdates = 0;
+                                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                            }
+                            var projectile = Main.projectile[(int)ai4];
+                            for (int n = 59; n > 3; n--)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[n - 4];
+                                projectile.oldRot[n] = projectile.oldRot[n - 4];
+                            }
+                            for (int n = 1; n < 4; n++)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[0];
+                                projectile.oldRot[n] = projectile.oldRot[0];
+                            }
+                            if (counter <= 60)
+                            {
+                                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                                for (int n = 0; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                                }
+                            }
+                            if (counter == 60)
+                            {
+                                int max = stager + 3;
+                                for (int n = 0; n < max; n++)
+                                {
+                                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj1.friendly = false;
+                                    proj1.hostile = true;
+
+                                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj2.friendly = false;
+                                    proj2.hostile = true;
+
+                                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj3.friendly = false;
+                                    proj3.hostile = true;
+                                }
+                            }
+                        }
+                        else if (counter < 180)
+                        {
+                            if (counter < 165)
+                                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                            else
+                                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+
+                            if (counter == 120)
+                            {
+                                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai4].extraUpdates = 0;
+                                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+                                ai5 = targetPlayer.Center.X;
+                                ai6 = targetPlayer.Center.Y;
+                                //Main.NewText((ai5, ai6));
+
+
+                            }
+                            if (counter >= 120)
+                            {
+                                var projectile = Main.projectile[(int)ai4];
+                                for (int n = 59; n > 3; n--)
+                                {
+                                    projectile.oldPos[n] = projectile.oldPos[n - 4];
+                                    projectile.oldRot[n] = projectile.oldRot[n - 4];
+                                }
+                                for (int n = 1; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = projectile.oldPos[0];
+                                    projectile.oldRot[n] = projectile.oldRot[0];
+                                }
+                                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                                for (int n = 0; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 120 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            int direct = visualPlayer.direction == -1 ? 0 : 1;
+                            if (counter == 180)
+                            {
+                                ai2 = Main.rand.Next(-480, 480);
+                                ai3 = stager == 2 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
+                                ai4 = targetPlayer.Center.X;
+                                ai5 = targetPlayer.Center.Y;
+
+                                int max = stager + 4;
+                                for (int n = 0; n < max; n++)
+                                {
+                                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj1.friendly = false;
+                                    proj1.hostile = true;
+
+                                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj2.friendly = false;
+                                    proj2.hostile = true;
+
+                                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                    proj3.friendly = false;
+                                    proj3.hostile = true;
+                                }
+                            }
+                            if (counter == 190)
+                            {
+                                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
+                                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
+
+                            }
+                            if (counter < 220)
+                            {
+                                var targetVec = counter < 190 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai6].Center;
+                                NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
+                            }
+                            if (counter >= 220)
+                            {
+                                const int timeMax = 20;
+                                var projectile = Main.projectile[(int)ai6];
+                                NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow((counter - 220f) / (timeMax - 1f), 3);
+                                projectile.Center = NPC.Center + new Vector2(0, 12);
+                                visualPlayer.direction = Math.Sign(projectile.velocity.X);
+                                visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                                visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
+                                //if (timer % 2 == 0)
+                                //{
+                                //    var unit = projectile.velocity.SafeNormalize(default);
+                                //    unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
+                                //    for (int n = 0; n < 2; n++)
+                                //    {
+                                //        unit = -unit;
+                                //        if (!Main.rand.NextBool(3)) continue;
+                                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                //        proj.friendly = false;
+                                //        proj.hostile = true;
+                                //    }
+                                //    if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
+                                //    {
+                                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                //        proj.friendly = false;
+                                //        proj.hostile = true;
+                                //    }
+
+                                //}
+                                if (timer % 2 == 0)
+                                {
+                                    int max = stager + 6;
+                                    for (int n = 0; n < max; n++)
+                                    {
+                                        var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                        if (Main.rand.NextBool(4))
+                                        {
+                                            var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                            proj1.friendly = false;
+                                            proj1.hostile = true;
+                                        }
+                                        if (Main.rand.NextBool(4))
+                                        {
+                                            var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                            proj2.friendly = false;
+                                            proj2.hostile = true;
+                                        }
+                                        if (Main.rand.NextBool(4))
+                                        {
+                                            var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                            proj3.friendly = false;
+                                            proj3.hostile = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        NPC.oldPos[0] = NPC.oldPosition;
+                        ai1++;
+
+                        break;
+                    }
+                case AsraNoxState.太阳风暴_后撤://TODO 太阳风暴_后撤
+                    {
+                        if (ai1 >= 660)
+                        {
+                            var flag = NPC.life < NPC.lifeMax / 20;
+                            TakeARest(660, flag ? 24 : 23);
+                            if (flag && ai1 > 780) NPC.life = NPC.lifeMax / 20;
+                            break;
+                        }
+                        //ai0状态 ai1计时 ai2 ai3控制发射弹幕 ai4 ai5记录玩家坐标 ai6 ai7记录起始位置 ai8记录旋转中心位置
+                        var timer = (int)ai1;
+                        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+                        if ((timer - 30) % 60 == 0 && timer != 30)
+                        {
+                            int max = (timer - 30) / 120 + 5;
+                            for (int n = 0; n < max; n++)
+                            {
+                                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
+                                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj1.friendly = false;
+                                proj1.hostile = true;
+
+                                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj2.friendly = false;
+                                proj2.hostile = true;
+
+                                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
+                                proj3.friendly = false;
+                                proj3.hostile = true;
+                            }
+                        }
+                        if (timer < 30)
+                        {
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * visualPlayer.direction, targetPlayer.Center.Y), 0.05f);//
+                        }
+                        else if (timer < 630)
+                        {
+                            timer -= 30;
+                            var counter = timer % 60;
+                            if (counter == 0)
+                            {
+                                ai2 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai2].extraUpdates = 0;
+                                ai3 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
+                                Main.projectile[(int)ai3].extraUpdates = 0;
+                                ai4 = targetPlayer.Center.X + AsraNoxSky.windDirection * 960 + targetPlayer.velocity.X * 30;
+                                ai5 = targetPlayer.Center.Y + Main.rand.NextFloat(-540, 540) + targetPlayer.velocity.Y * 30;
+                                ai6 = NPC.Center.X;
+                                ai7 = NPC.Center.Y;
+                                ai8 = Main.rand.NextFloat(-2f, 2f);
+                                var leng = (targetPlayer.Center - NPC.Center).Length();
+                                if (leng * Math.Abs(ai8) > 600)
+                                {
+                                    ai8 = (600 - Main.rand.NextFloat(-50, 50)) / leng * Math.Sign(ai8);
+                                }
+                            }
+                            var rotationCenter = new Vector2(ai6 - ai4, ai7 - ai5);
+                            rotationCenter = new Vector2(-rotationCenter.Y, rotationCenter.X) * ai8 + new Vector2(ai4 + ai6, ai5 + ai7) * .5f;
+                            var toStart = new Vector2(ai6, ai7) - rotationCenter;
+                            var toTarget = new Vector2(ai4, ai5) - rotationCenter;
+                            var cross = toStart.CrossLength(toTarget);
+                            //NPC.Center = MathHelper.Lerp(toStart.ToRotation(), toTarget.ToRotation(), (float)Math.Pow(counter / 60f, 2) * 2).ToRotationVector2() * toStart.Length() + rotationCenter;
+                            //NPC.Center = toStart.RotatedBy(((cross > 0 ? MathHelper.TwoPi : 0) + new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation()) * (float)Math.Pow(counter / 60f, 2) * 2) + rotationCenter;
+
+                            var t = 1 - (float)Math.Cos(counter / 60f * MathHelper.Pi);// (float)Math.Pow(counter / 60f, 2) * 2
+                            t *= .5f;
+                            if (cross < 0)
+                            {
+                                var dummy = toStart;
+                                toStart = toTarget;
+                                toTarget = dummy;
+                                t = 1 - t;
+                                cross *= -1;
+                            }
+                            NPC.Center = toStart.RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation() * t) + rotationCenter;
+
+                            //NPC.Center = (cross < 0 ? toTarget : toStart).RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), Math.Abs(cross)).ToRotation() * (cross < 0 ? (1 - t) : t)) + rotationCenter;
+                            //前置方法:圆心O 起点P 终点T，逆时针生成一段圆弧
+                            //p = (P-O).RotatedBy(new Vector2(Vector2.Dot(P-O,T-O),(P-O).CrossLength(T-O)).ToRotation*t)+O
+                            //生成劣弧则是检测叉积为负就交换PT，保持时间原点不变就再反向一下t,
+
+                            var _projectile = Main.projectile[(int)ai2];
+                            var _count = 0;
+                        _mylabel:
+                            for (int n = 59; n > 3; n--)
+                            {
+                                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
+                                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
+                            }
+                            for (int n = 1; n < 4; n++)
+                            {
+                                _projectile.oldPos[n] = _projectile.oldPos[0];
+                                _projectile.oldRot[n] = _projectile.oldRot[0];
+                            }
+                            Vector2 currentVec = NPC.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                            for (int n = 0; n < 4; n++)
+                            {
+                                _projectile.oldPos[n] = Vector2.Lerp(currentVec, _projectile.oldPos[4], n * .25f);//
+                                var rotation = -timer + n * .25f;
+                                _projectile.oldRot[n] = MathHelper.Pi / 10f * rotation - 3 * (float)Math.Sin(MathHelper.Pi / 30f * rotation) + _count * MathHelper.Pi;
+                                //if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
+                            }
+                            _projectile.Center = _projectile.oldPos[0];
+                            _count++;
+                            if (_count < 2)
+                            {
+                                switch (_count)
+                                {
+                                    case 1: _projectile = Main.projectile[(int)ai3]; break;
+                                }
+                                goto _mylabel;
+                            }
+
+                            if (timer % 4 == 0)
+                            {
+                                var projectile = Main.projectile[(int)ai2];
+                                for (int n = 0; n < 2; n++)
+                                {
+                                    if (Main.rand.Next(10) < 7)
+                                    {
+                                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, (projectile.oldRot[0] + n * MathHelper.Pi).ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                                        proj.friendly = false;
+                                        proj.hostile = true;
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                        ai1++;
+
+
+
+                        break;
+                    }
+                case AsraNoxState.破晓之光_后撤://TODO 破晓之光_后撤
+                    {
+                        if (ai1 >= 780)
+                        {
+                            TakeARest(780, 24);
+                            break;
+                        }
+                        //分三个阶段
+                        //前两个240秒，最后一个300秒
+                        //转动一圈
+                        //持剑平移
+                        //杀意百合
+                        //ai1计时 ai2记弹幕 ai3记录方向
+                        var timer = (int)ai1;
+                        if (timer < 480)
+                        {
+                            if (timer % 240 == 0)
+                            {
+                                ai2 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusLevatine>(), 60, 8, Main.myPlayer, MathHelper.PiOver2 * (1 + AsraNoxSky.windDirection));
+                                ai3 = Math.Sign(timer - 239) * AsraNoxSky.windDirection;
+                                var _projectile = Main.projectile[(int)ai2];
+                                for (int n = _projectile.oldPos.Length - 1; n >= 0; n--)
+                                {
+                                    _projectile.oldPos[n] = NPC.Center;
+                                    _projectile.oldRot[n] = _projectile.ai[0];
+                                }
+                                ai4 = targetPlayer.Center.X;
+                                ai5 = targetPlayer.Center.Y;
+                            }
+                            var projectile = Main.projectile[(int)ai2];
+                            for (int n = projectile.oldPos.Length - 1; n > 0; n--)
+                            {
+                                projectile.oldPos[n] = projectile.oldPos[n - 1];
+                                projectile.oldRot[n] = projectile.oldRot[n - 1];
+                            }
+
+                            visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, -MathHelper.Pi);
+                            visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+
+                            if (timer >= 30)
+                            {
+                                var factor = timer % 240 - 30f;
+                                factor /= 210f;
+                                factor *= factor;
+                                projectile.oldRot[0] = projectile.ai[0] = factor * MathHelper.TwoPi / 8f * ai3 + (MathHelper.PiOver2 * (1 + AsraNoxSky.windDirection));
+                                visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.oldRot[0] - MathHelper.PiOver2);
+                                visualPlayer.direction = Math.Sign(Math.Cos(projectile.ai[0]));
+                            }
+                            NPC.Center = Vector2.Lerp(NPC.Center, Vector2.Lerp(targetPlayer.Center, new Vector2(ai4, ai5), MathHelper.Clamp(timer / 150f, 0, 0.2f)) + new Vector2(AsraNoxSky.windDirection * 960, 480 * ai3 * AsraNoxSky.windDirection), 0.1f);
+                            projectile.Center = projectile.oldPos[0] = NPC.Center + projectile.ai[0].ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12);
+                            //if (timer % 24 == 0 && timer % 240 > 30)
+                            //{
+                            //    var unit = projectile.oldRot[0].ToRotationVector2();
+                            //    var normal = new Vector2(-unit.Y, unit.X) * ai3 * (timer > 240 ? -1 : 1);
+                            //    for (int n = 0; n < 12; n++)
+                            //    {
+                            //        if (!Main.rand.NextBool(3))
+                            //        {
+                            //            var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center + unit * Main.rand.NextFloat(0, 1200), normal * 8f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
+                            //            proj1.friendly = false;
+                            //            proj1.hostile = true;
+                            //        }
+                            //    }
+                            //}
+                        }
+                        else
+                        {
+                            visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
+                            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 1200 * (AsraNoxSky.windDirection), targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);
+
+                            if (timer % 60 == 0)
+                            {
+                                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 3);
+                                Main.projectile[(int)ai4].extraUpdates = 0;
+                                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
+
+                            }
+                            if (timer % 60 == 30)
+                            {
+                                for (int n = 0; n < 3; n++)
+                                {
+                                    var targetPos = new Vector2(NPC.Center.X - Main.rand.Next(0, Main.rand.Next(0, 1920)) * AsraNoxSky.windDirection, targetPlayer.Center.Y + 540);
+                                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPos - NPC.Center) / 15, solusEnergyShard, 45, 4, Main.myPlayer, 7, 1f);
+                                    proj1.friendly = false;
+                                    proj1.hostile = true;
+                                    proj1.timeLeft = 46;
+                                }
+                            }
+                            var projectile = Main.projectile[(int)ai4];
+                            if (projectile.type == ModContent.ProjectileType<SolusKatanaFractal>())
+                            {
+                                for (int n = 59; n > 3; n--)
+                                {
+                                    projectile.oldPos[n] = projectile.oldPos[n - 4];
+                                    projectile.oldRot[n] = projectile.oldRot[n - 4];
+                                }
+                                for (int n = 1; n < 4; n++)
+                                {
+                                    projectile.oldPos[n] = projectile.oldPos[0];
+                                    projectile.oldRot[n] = projectile.oldRot[0];
+                                }
+                                if (timer % 60 <= 30)
+                                {
+                                    Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
+                                    for (int n = 0; n < 4; n++)
+                                    {
+                                        projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
+                                        projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 60 / 30f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
+                                        if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
+                                    }
+                                }
+                            }
+
+
+                            //if (timer % 60 == 0)
+                            //{
+                            //    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(Main.rand.Next(-960, 960), 540), default, ModContent.ProjectileType<SolusUltraLaser>(), 80, 8, Main.myPlayer, 0, 0);
+                            //}
+                        }
+                        ai1++;
+
+
+                        break;
+                    }
                     #endregion
 
-                    #region MYREGION
-                    //#region 追灭
-                    //case AsraNoxState.陨日残阳_追灭://TODO 陨日残阳_追灭
-                    //    {
-                    //        var timer = (int)ai1;
-                    //        int direct = timer >= 10 ? (timer - 10) / 20 % 2 : 0;
-                    //        if (timer == 0)
-                    //        {
-                    //            ai2 = Main.rand.Next(-480, 480);
-                    //            ai3 = ai1 >= 550 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
-                    //            ai4 = targetPlayer.Center.X;
-                    //            ai5 = targetPlayer.Center.Y;
-                    //        }
-                    //        if (timer % 20 == 10)
-                    //        {
-                    //            if (timer <= 610)
-                    //            {
-                    //                if (timer != 10)
-                    //                {
-                    //                    ai2 = Main.rand.Next(-480, 480);
-                    //                    ai3 = ai1 >= 550 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
-                    //                    ai4 = targetPlayer.Center.X;
-                    //                    ai5 = targetPlayer.Center.Y;
-                    //                }
-                    //                ai7 = ai6;
-                    //                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
-                    //                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-                    //            }
-                    //            else if (timer == 630) ai7 = ai6;
-                    //        }
-                    //        if (timer >= 40)
-                    //        {
-                    //            const int timeMax = 20;
-                    //            if (timer % timeMax == 0)
-                    //            {
-                    //                ai8 = ai7;
-                    //            }
-                    //            int counter = (timer - 40) % timeMax;
-                    //            var projectile = Main.projectile[(int)ai8];
-                    //            NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow(counter / (timeMax - 1f), 3);
-                    //            projectile.Center = NPC.Center + new Vector2(0, 12);
-                    //            visualPlayer.direction = Math.Sign(projectile.velocity.X);
-                    //            visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //            visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //            if (timer % 2 == 0)
-                    //            {
-                    //                var unit = projectile.velocity.SafeNormalize(default);
-                    //                unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
-                    //                for (int n = 0; n < 2; n++)
-                    //                {
-                    //                    unit = -unit;
-                    //                    if (!Main.rand.NextBool(3)) continue;
-                    //                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                    proj.friendly = false;
-                    //                    proj.hostile = true;
-                    //                }
-                    //                if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
-                    //                {
-                    //                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                    proj.friendly = false;
-                    //                    proj.hostile = true;
-                    //                }
-
-                    //            }
-                    //        }
-                    //        if (timer < 40)
-                    //        {
-                    //            var targetVec = timer < 30 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai7].Center;
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
-                    //        }
-                    //        ai1++;
-                    //        if (ai1 >= 660)
-                    //        {
-                    //            SetAI(8);
-                    //            break;
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-                    //        break;
-                    //    }
-                    //case AsraNoxState.初源日炎_追灭://TODO 初源日炎_追灭
-                    //    {
-                    //        if ((int)ai1 < 765)
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
-                    //        else
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
-                    //        NPC.damage = 0;
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        if ((int)ai1 % 10 == 0)
-                    //        {
-                    //            var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
-
-                    //            // Vector2 vector32 = value5 - NPC.Center;
-                    //            Vector2 vector33 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    //            float num78 = 1f;
-                    //            int num79 = 1;
-                    //            for (int num80 = 0; num80 < num79; num80++)
-                    //            {
-                    //                value5 += Main.rand.NextVector2Circular(24f, 24f);
-                    //                //if (vector32.Length() > 700f)
-                    //                //{
-                    //                //    vector32 *= 700f / vector32.Length();
-                    //                //    value5 = NPC.Center + vector32;
-                    //                //}
-                    //                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
-                    //                vector33 *= 1f - num81;
-                    //                //vector33 += player.velocity * num81;
-                    //                vector33 = vector33.SafeNormalize(Vector2.UnitX);
-
-                    //                float num82 = 120f;
-                    //                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
-                    //                float num84 = num82 / 2f;
-                    //                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
-                    //                Vector2 vector34 = vector33 * scaleFactor3;
-                    //                Vector2 vector35 = new Vector2(0f, 0f);
-                    //                Vector2 vector36 = vector34;
-                    //                int num85 = 0;
-                    //                while (num85 < num84)
-                    //                {
-                    //                    vector35 += vector36;
-                    //                    vector36 = vector36.RotatedBy(num83, default);
-                    //                    num85++;
-                    //                }
-                    //                Vector2 value6 = -vector35;
-                    //                Vector2 position1 = value5 + value6;
-                    //                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
-                    //                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
-                    //                {
-                    //                    solusKatanaFractal.drawPlayer = new Player();
-                    //                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //            }
-                    //        }
-                    //        var counter = (int)ai1 % 120;
-                    //        if (counter == 0)
-                    //        {
-                    //            ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //            Main.projectile[(int)ai4].extraUpdates = 0;
-                    //            if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //            if ((int)ai1 == 720)
-                    //            {
-                    //                ai5 = targetPlayer.Center.X;
-                    //                ai6 = targetPlayer.Center.Y;
-                    //            }
-                    //        }
-                    //        var projectile = Main.projectile[(int)ai4];
-                    //        for (int n = 59; n > 3; n--)
-                    //        {
-                    //            projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //            projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //        }
-                    //        for (int n = 1; n < 4; n++)
-                    //        {
-                    //            projectile.oldPos[n] = projectile.oldPos[0];
-                    //            projectile.oldRot[n] = projectile.oldRot[0];
-                    //        }
-                    //        if (counter <= 60)
-                    //        {
-                    //            //projectile.oldPos[0] = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            //if ((int)ai1 < 720)
-                    //            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
-                    //            //else
-                    //            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
-                    //            //if (visualPlayer.direction == -1) projectile.oldRot[0] = MathHelper.Pi - projectile.oldRot[0];
-                    //            Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                if ((int)ai1 < 720)
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                else
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //            }
-                    //        }
-                    //        ai1++;
-
-                    //        if (counter == 60 || (int)ai1 == 780)
-                    //        {
-                    //            int max = (int)ai1 / 120 + 4;
-                    //            for (int n = 0; n < max; n++)
-                    //            {
-                    //                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj1.friendly = false;
-                    //                proj1.hostile = true;
-
-                    //                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj2.friendly = false;
-                    //                proj2.hostile = true;
-
-                    //                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj3.friendly = false;
-                    //                proj3.hostile = true;
-                    //            }
-                    //        }
-
-                    //        if (ai1 >= 780)
-                    //        {
-                    //            SetAI(9);
-                    //            break;
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-
-                    //        //if (counter <= 60 && counter >= 45 && counter % 3 == 0 && (int)ai1 < 720)
-                    //        //{
-                    //        //    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, 3, 1.05f);
-                    //        //    proj.friendly = false;
-                    //        //    proj.hostile = true;
-                    //        //}
-
-                    //        break;
-                    //    }
-                    //case AsraNoxState.星恒飞刃_追灭://TODO 星恒飞刃_追灭
-                    //    {
-                    //        int timer = (int)ai1;
-                    //        //前180帧妖梦非符同款攻击
-                    //        //后60帧如下安排
-                    //        //20帧移动，40帧发射弹幕，最后10帧隐去
-
-                    //        //这里是新安排
-                    //        //前3*180帧妖梦非符同款攻击
-                    //        //最后180帧中60帧移动，120帧发射弹幕
-                    //        if (timer < 540)
-                    //        {
-                    //            int counter = timer % 180;
-                    //            int stager = timer / 180;
-                    //            if (counter % 60 == 0)
-                    //            {
-                    //                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 3);
-                    //                Main.projectile[(int)ai4].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //            }
-                    //            var projectile = Main.projectile[(int)ai4];
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //                projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[0];
-                    //                projectile.oldRot[n] = projectile.oldRot[0];
-                    //            }
-                    //            if (counter % 60 <= 30)
-                    //            {
-                    //                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //                for (int n = 0; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 60 / 30f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //                }
-                    //                if (counter % 60 > 21)
-                    //                {
-                    //                    var factor = counter % 60 - 21f;
-                    //                    factor /= 8f;
-                    //                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(0.6f * MathHelper.Pi * (2 * factor - 1));//(MathHelper.Lerp(-MathHelper.Pi * .35f, MathHelper.Pi * .85f, factor) - MathHelper.Pi / 6).ToRotationVector2()
-                    //                                                                                                                                            //unit *= new Vector2(visualPlayer.direction, 1);
-                    //                    for (int n = 0; n < stager + counter / 60 + 1; n++)
-                    //                    {
-                    //                        var shootCenter = NPC.Center + 192 * unit;//.RotatedBy(n / (stager + 1f) * MathHelper.Pi * .15f)
-                    //                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), shootCenter, (targetPlayer.Center - shootCenter).SafeNormalize(default).RotatedBy(MathHelper.Pi / 12f * (n - 0.5f * (stager + counter / 60))) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                        proj.friendly = false;
-                    //                        proj.hostile = true;
-                    //                        //proj.timeLeft = 31;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            if (timer == 540)
-                    //            {
-                    //                ai5 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai5].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai5].ModProjectile is SolusKatanaFractal solusKatanaFractal_0)
-                    //                {
-                    //                    solusKatanaFractal_0.drawPlayer = new Player();
-                    //                    solusKatanaFractal_0.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai6].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai6].ModProjectile is SolusKatanaFractal solusKatanaFractal_1)
-                    //                {
-                    //                    solusKatanaFractal_1.drawPlayer = new Player();
-                    //                    solusKatanaFractal_1.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //                ai7 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai7].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai7].ModProjectile is SolusKatanaFractal solusKatanaFractal_2)
-                    //                {
-                    //                    solusKatanaFractal_2.drawPlayer = new Player();
-                    //                    solusKatanaFractal_2.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //                ai8 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai8].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai8].ModProjectile is SolusKatanaFractal solusKatanaFractal_3)
-                    //                {
-                    //                    solusKatanaFractal_3.drawPlayer = new Player();
-                    //                    solusKatanaFractal_3.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //            }
-                    //            if (timer < 600)
-                    //            {
-                    //                var target = targetPlayer.Center + (MathHelper.Pi / 6).ToRotationVector2() * 400;
-                    //                var projectile = Main.projectile[(int)ai5];
-                    //                var count = 0;
-                    //            mylabel:
-                    //                projectile.Center += projectile.velocity;
-                    //                Vector2 targetVec = target - projectile.Center;
-                    //                targetVec.Normalize();
-                    //                targetVec *= 40f;
-                    //                projectile.velocity = (projectile.velocity * 15f + targetVec * 2) / 17f;
-                    //                if (projectile.ModProjectile is SolusKatanaFractal solusKatanaFractal) solusKatanaFractal.drawPlayer.direction = Math.Sign(targetPlayer.Center.X - projectile.Center.X);//
-                    //                count++;
-                    //                if (count < 4)
-                    //                {
-                    //                    switch (count)
-                    //                    {
-                    //                        case 1: projectile = Main.projectile[(int)ai6]; target = targetPlayer.Center + (MathHelper.Pi / 6 * 5).ToRotationVector2() * 400; break;
-                    //                        case 2: projectile = Main.projectile[(int)ai7]; target = targetPlayer.Center + (-MathHelper.Pi / 4).ToRotationVector2() * 400; break;
-                    //                        case 3: projectile = Main.projectile[(int)ai8]; target = targetPlayer.Center + (-MathHelper.Pi / 4 * 3).ToRotationVector2() * 400; break;
-                    //                    }
-                    //                    goto mylabel;
-                    //                }
-                    //            }
-                    //            if (timer == 600)
-                    //            {
-                    //                var target = targetPlayer.Center + (MathHelper.Pi / 6).ToRotationVector2() * 400;
-                    //                var projectile = Main.projectile[(int)ai5];
-                    //                var count = 0;
-                    //            mylabel:
-                    //                projectile.Center = target;
-                    //                projectile.velocity = default;
-                    //                count++;
-                    //                if (count < 4)
-                    //                {
-                    //                    switch (count)
-                    //                    {
-                    //                        case 1: projectile = Main.projectile[(int)ai6]; target = targetPlayer.Center + (MathHelper.Pi / 6 * 5).ToRotationVector2() * 400; break;
-                    //                        case 2: projectile = Main.projectile[(int)ai7]; target = targetPlayer.Center + (-MathHelper.Pi / 4).ToRotationVector2() * 400; break;
-                    //                        case 3: projectile = Main.projectile[(int)ai8]; target = targetPlayer.Center + (-MathHelper.Pi / 4 * 3).ToRotationVector2() * 400; break;
-                    //                    }
-                    //                    goto mylabel;
-                    //                }
-                    //            }
-                    //            var _projectile = Main.projectile[(int)ai5];
-                    //            var _count = 0;
-                    //        _mylabel:
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[0];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[0];
-                    //            }
-                    //            Vector2 currentVec = _projectile.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                _projectile.oldRot[n] = (timer - n * .25f) * -MathHelper.Pi / 20f + 19 * MathHelper.PiOver2;
-                    //                if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
-                    //            }
-                    //            _count++;
-                    //            if (_count < 4)
-                    //            {
-                    //                switch (_count)
-                    //                {
-                    //                    case 1: _projectile = Main.projectile[(int)ai6]; break;
-                    //                    case 2: _projectile = Main.projectile[(int)ai7]; break;
-                    //                    case 3: _projectile = Main.projectile[(int)ai8]; break;
-                    //                }
-                    //                goto _mylabel;
-                    //            }
-                    //            if (timer >= 600 && timer % 3 == 0)
-                    //            {
-                    //                var projectile = Main.projectile[(int)ai5];
-                    //                var count = 0;
-                    //            mylabel:
-                    //                if (Main.rand.Next(10) < 7)
-                    //                {
-                    //                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                    proj.friendly = false;
-                    //                    proj.hostile = true;
-                    //                }
-
-                    //                count++;
-                    //                if (count < 4)
-                    //                {
-                    //                    switch (count)
-                    //                    {
-                    //                        case 1: projectile = Main.projectile[(int)ai6]; break;
-                    //                        case 2: projectile = Main.projectile[(int)ai7]; break;
-                    //                        case 3: projectile = Main.projectile[(int)ai8]; break;
-                    //                    }
-                    //                    goto mylabel;
-                    //                }
-                    //            }
-                    //        }
-
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
-                    //        ai1++;
-                    //        if (ai1 >= 720)
-                    //        {
-                    //            SetAI(10);
-                    //            break;
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-                    //        break;
-                    //    }
-                    //case AsraNoxState.日曜星流_追灭://TODO 日曜星流_追灭
-                    //    {
-                    //        //240一次，三个阶段
-                    //        //一次重劈(120帧)，一次下刺(60帧)，一次冲锋(20帧)
-                    //        //流星雨，随着阶段而加强
-                    //        //初源量减少
-                    //        //冲刺生成的弹幕有所改变
-                    //        int timer = (int)ai1;
-                    //        int counter = timer % 240;
-                    //        int stager = timer / 240;
-
-                    //        #region 流星生成
-                    //        if (timer % (36 - stager * 4) == 0)
-                    //        {
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                if (Main.rand.NextBool(4)) continue;
-                    //                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), targetPlayer.Center + new Vector2(Main.rand.NextFloat(-960, 960) - 480, -Main.rand.NextFloat(480, 560)), new Vector2(Main.rand.NextFloat(4, 8), 6).SafeNormalize(default) * 3f, solusEnergyShard, 35, 0, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), Main.rand.NextFloat(Main.rand.NextFloat(1f, 1.05f), 1.05f));
-                    //                proj.friendly = false;
-                    //                proj.hostile = true;
-                    //            }
-                    //        }
-                    //        #endregion
-
-                    //        #region 初源生成
-                    //        if (timer % 20 == 0)
-                    //        {
-                    //            var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + (Main.rand.NextBool(5 - stager) ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
-
-                    //            // Vector2 vector32 = value5 - NPC.Center;
-                    //            Vector2 vector33 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    //            float num78 = 1f;
-                    //            int num79 = 1;
-                    //            for (int num80 = 0; num80 < num79; num80++)
-                    //            {
-                    //                value5 += Main.rand.NextVector2Circular(24f, 24f);
-                    //                //if (vector32.Length() > 700f)
-                    //                //{
-                    //                //    vector32 *= 700f / vector32.Length();
-                    //                //    value5 = NPC.Center + vector32;
-                    //                //}
-                    //                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
-                    //                vector33 *= 1f - num81;
-                    //                //vector33 += player.velocity * num81;
-                    //                vector33 = vector33.SafeNormalize(Vector2.UnitX);
-
-                    //                float num82 = 120f;
-                    //                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
-                    //                float num84 = num82 / 2f;
-                    //                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
-                    //                Vector2 vector34 = vector33 * scaleFactor3;
-                    //                Vector2 vector35 = new Vector2(0f, 0f);
-                    //                Vector2 vector36 = vector34;
-                    //                int num85 = 0;
-                    //                while (num85 < num84)
-                    //                {
-                    //                    vector35 += vector36;
-                    //                    vector36 = vector36.RotatedBy(num83, default);
-                    //                    num85++;
-                    //                }
-                    //                Vector2 value6 = -vector35;
-                    //                Vector2 position1 = value5 + value6;
-                    //                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
-                    //                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
-                    //                {
-                    //                    solusKatanaFractal.drawPlayer = new Player();
-                    //                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //            }
-                    //        }
-                    //        #endregion
-
-
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        if (counter < 120)
-                    //        {
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
-
-                    //            if (counter == 0)
-                    //            {
-                    //                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai4].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //            }
-                    //            var projectile = Main.projectile[(int)ai4];
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //                projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[0];
-                    //                projectile.oldRot[n] = projectile.oldRot[0];
-                    //            }
-                    //            if (counter <= 60)
-                    //            {
-                    //                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //                for (int n = 0; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //                }
-                    //            }
-                    //            if (counter == 60)
-                    //            {
-                    //                int max = stager + 3;
-                    //                for (int n = 0; n < max; n++)
-                    //                {
-                    //                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj1.friendly = false;
-                    //                    proj1.hostile = true;
-
-                    //                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj2.friendly = false;
-                    //                    proj2.hostile = true;
-
-                    //                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj3.friendly = false;
-                    //                    proj3.hostile = true;
-                    //                }
-                    //            }
-                    //        }
-                    //        else if (counter < 180)
-                    //        {
-                    //            if (counter < 165)
-                    //                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
-                    //            else
-                    //                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
-
-                    //            if (counter == 120)
-                    //            {
-                    //                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai4].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //                ai5 = targetPlayer.Center.X;
-                    //                ai6 = targetPlayer.Center.Y;
-                    //                //Main.NewText((ai5, ai6));
-
-
-                    //            }
-                    //            if (counter >= 120)
-                    //            {
-                    //                var projectile = Main.projectile[(int)ai4];
-                    //                for (int n = 59; n > 3; n--)
-                    //                {
-                    //                    projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //                    projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //                }
-                    //                for (int n = 1; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = projectile.oldPos[0];
-                    //                    projectile.oldRot[n] = projectile.oldRot[0];
-                    //                }
-                    //                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //                for (int n = 0; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 120 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //                }
-                    //            }
-
-                    //        }
-                    //        else
-                    //        {
-                    //            int direct = visualPlayer.direction == -1 ? 0 : 1;
-                    //            if (counter == 180)
-                    //            {
-                    //                ai2 = Main.rand.Next(-480, 480);
-                    //                ai3 = stager == 2 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
-                    //                ai4 = targetPlayer.Center.X;
-                    //                ai5 = targetPlayer.Center.Y;
-
-                    //                int max = stager + 4;
-                    //                for (int n = 0; n < max; n++)
-                    //                {
-                    //                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj1.friendly = false;
-                    //                    proj1.hostile = true;
-
-                    //                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj2.friendly = false;
-                    //                    proj2.hostile = true;
-
-                    //                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj3.friendly = false;
-                    //                    proj3.hostile = true;
-                    //                }
-                    //            }
-                    //            if (counter == 190)
-                    //            {
-                    //                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
-                    //                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-
-                    //            }
-                    //            if (counter < 220)
-                    //            {
-                    //                var targetVec = counter < 190 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai6].Center;
-                    //                NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
-                    //            }
-                    //            if (counter >= 220)
-                    //            {
-                    //                const int timeMax = 20;
-                    //                var projectile = Main.projectile[(int)ai6];
-                    //                NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow((counter - 220f) / (timeMax - 1f), 3);
-                    //                projectile.Center = NPC.Center + new Vector2(0, 12);
-                    //                visualPlayer.direction = Math.Sign(projectile.velocity.X);
-                    //                visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //                visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //                //if (timer % 2 == 0)
-                    //                //{
-                    //                //    var unit = projectile.velocity.SafeNormalize(default);
-                    //                //    unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
-                    //                //    for (int n = 0; n < 2; n++)
-                    //                //    {
-                    //                //        unit = -unit;
-                    //                //        if (!Main.rand.NextBool(3)) continue;
-                    //                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                //        proj.friendly = false;
-                    //                //        proj.hostile = true;
-                    //                //    }
-                    //                //    if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
-                    //                //    {
-                    //                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                //        proj.friendly = false;
-                    //                //        proj.hostile = true;
-                    //                //    }
-
-                    //                //}
-                    //                if (timer % 2 == 0)
-                    //                {
-                    //                    int max = stager + 6;
-                    //                    for (int n = 0; n < max; n++)
-                    //                    {
-                    //                        var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                        if (Main.rand.NextBool(4))
-                    //                        {
-                    //                            var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                            proj1.friendly = false;
-                    //                            proj1.hostile = true;
-                    //                        }
-                    //                        if (Main.rand.NextBool(4))
-                    //                        {
-                    //                            var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                            proj2.friendly = false;
-                    //                            proj2.hostile = true;
-                    //                        }
-                    //                        if (Main.rand.NextBool(4))
-                    //                        {
-                    //                            var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                            proj3.friendly = false;
-                    //                            proj3.hostile = true;
-                    //                        }
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-                    //        ai1++;
-                    //        if (ai1 >= 720)
-                    //        {
-                    //            SetAI(11);
-                    //            break;
-                    //        }
-                    //        break;
-                    //    }
-                    //case AsraNoxState.太阳风暴_追灭://TODO 太阳风暴_追灭
-                    //    {
-                    //        //ai0状态 ai1计时 ai2 ai3控制发射弹幕 ai4 ai5记录玩家坐标 ai6 ai7记录起始位置 ai8记录旋转中心位置
-                    //        var timer = (int)ai1;
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        if ((timer - 30) % 60 == 0 && timer != 30)
-                    //        {
-                    //            int max = (timer - 30) / 120 + 3;
-                    //            for (int n = 0; n < max; n++)
-                    //            {
-                    //                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj1.friendly = false;
-                    //                proj1.hostile = true;
-
-                    //                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj2.friendly = false;
-                    //                proj2.hostile = true;
-
-                    //                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj3.friendly = false;
-                    //                proj3.hostile = true;
-                    //            }
-                    //        }
-                    //        if (timer < 30)
-                    //        {
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * visualPlayer.direction, targetPlayer.Center.Y), 0.05f);//
-                    //        }
-                    //        else if (timer < 630)
-                    //        {
-                    //            timer -= 30;
-                    //            var counter = timer % 60;
-                    //            if (counter == 0)
-                    //            {
-                    //                ai2 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai2].extraUpdates = 0;
-                    //                ai3 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai3].extraUpdates = 0;
-                    //                ai4 = targetPlayer.Center.X;
-                    //                ai5 = targetPlayer.Center.Y;
-                    //                ai6 = NPC.Center.X;
-                    //                ai7 = NPC.Center.Y;
-                    //                ai8 = Main.rand.NextFloat(-2f, 2f);
-                    //                var leng = (targetPlayer.Center - NPC.Center).Length();
-                    //                if (leng * Math.Abs(ai8) > 600)
-                    //                {
-                    //                    ai8 = (600 - Main.rand.NextFloat(-50, 50)) / leng * Math.Sign(ai8);
-                    //                }
-                    //            }
-                    //            var rotationCenter = new Vector2(ai6 - ai4, ai7 - ai5);
-                    //            rotationCenter = new Vector2(-rotationCenter.Y, rotationCenter.X) * ai8 + new Vector2(ai4 + ai6, ai5 + ai7) * .5f;
-                    //            var toStart = new Vector2(ai6, ai7) - rotationCenter;
-                    //            var toTarget = new Vector2(ai4, ai5) - rotationCenter;
-                    //            var cross = toStart.CrossLength(toTarget);
-                    //            //NPC.Center = MathHelper.Lerp(toStart.ToRotation(), toTarget.ToRotation(), (float)Math.Pow(counter / 60f, 2) * 2).ToRotationVector2() * toStart.Length() + rotationCenter;
-                    //            //NPC.Center = toStart.RotatedBy(((cross > 0 ? MathHelper.TwoPi : 0) + new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation()) * (float)Math.Pow(counter / 60f, 2) * 2) + rotationCenter;
-
-                    //            var t = 1 - (float)Math.Cos(counter / 60f * MathHelper.Pi);// (float)Math.Pow(counter / 60f, 2) * 2
-                    //            if (cross < 0)
-                    //            {
-                    //                var dummy = toStart;
-                    //                toStart = toTarget;
-                    //                toTarget = dummy;
-                    //                t = 1 - t;
-                    //                cross *= -1;
-                    //            }
-                    //            NPC.Center = toStart.RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation() * t) + rotationCenter;
-
-                    //            //NPC.Center = (cross < 0 ? toTarget : toStart).RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), Math.Abs(cross)).ToRotation() * (cross < 0 ? (1 - t) : t)) + rotationCenter;
-                    //            //前置方法:圆心O 起点P 终点T，逆时针生成一段圆弧
-                    //            //p = (P-O).RotatedBy(new Vector2(Vector2.Dot(P-O,T-O),(P-O).CrossLength(T-O)).ToRotation*t)+O
-                    //            //生成劣弧则是检测叉积为负就交换PT，保持时间原点不变就再反向一下t,
-
-                    //            var _projectile = Main.projectile[(int)ai2];
-                    //            var _count = 0;
-                    //        _mylabel:
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[0];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[0];
-                    //            }
-                    //            Vector2 currentVec = NPC.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = Vector2.Lerp(currentVec, _projectile.oldPos[4], n * .25f);//
-                    //                var rotation = -timer + n * .25f;
-                    //                _projectile.oldRot[n] = MathHelper.Pi / 10f * rotation - 3 * (float)Math.Sin(MathHelper.Pi / 30f * rotation) + _count * MathHelper.Pi;
-                    //                //if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
-                    //            }
-                    //            _projectile.Center = _projectile.oldPos[0];
-                    //            _count++;
-                    //            if (_count < 2)
-                    //            {
-                    //                switch (_count)
-                    //                {
-                    //                    case 1: _projectile = Main.projectile[(int)ai3]; break;
-                    //                }
-                    //                goto _mylabel;
-                    //            }
-
-                    //            if (timer % 5 == 0)
-                    //            {
-                    //                var projectile = Main.projectile[(int)ai2];
-                    //                for (int n = 0; n < 2; n++)
-                    //                {
-                    //                    if (Main.rand.Next(10) < 7)
-                    //                    {
-                    //                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, (projectile.oldRot[0] + n * MathHelper.Pi).ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                        proj.friendly = false;
-                    //                        proj.hostile = true;
-                    //                    }
-                    //                }
-                    //            }
-
-
-                    //        }
-
-                    //        ai1++;
-
-                    //        if (ai1 >= 660)
-                    //        {
-                    //            SetAI(12);
-                    //            break;
-                    //        }
-
-                    //        break;
-                    //    }
-                    //case AsraNoxState.破晓之光_追灭://TODO 破晓之光_追灭
-                    //    {
-                    //        ai1++;
-
-                    //        if (ai1 >= 780)
-                    //        {
-                    //            SetAI(NPC.life < NPC.lifeMax * 7 / 10 ? Main.rand.Next(13, 18) : Main.rand.Next(7, 12));
-                    //            break;
-                    //        }
-
-                    //        break;
-                    //    }
-                    //#endregion
-
-                    //#region 随机
-                    //case AsraNoxState.陨日残阳_随机://TODO 陨日残阳_随机
-                    //    {
-                    //        var timer = (int)ai1;
-                    //        int direct = timer >= 10 ? (timer - 10) / 20 % 2 : 0;
-                    //        if (timer == 0)
-                    //        {
-                    //            ai2 = Main.rand.Next(-480, 480);
-                    //            ai3 = ai1 >= 550 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
-                    //            ai4 = targetPlayer.Center.X;
-                    //            ai5 = targetPlayer.Center.Y;
-                    //        }
-                    //        if (timer % 20 == 10)
-                    //        {
-                    //            if (timer <= 610)
-                    //            {
-                    //                if (timer != 10)
-                    //                {
-                    //                    ai2 = Main.rand.Next(-480, 480);
-                    //                    ai3 = ai1 >= 550 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
-                    //                    ai4 = targetPlayer.Center.X;
-                    //                    ai5 = targetPlayer.Center.Y;
-                    //                }
-                    //                ai7 = ai6;
-                    //                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
-                    //                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-                    //            }
-                    //            else if (timer == 630) ai7 = ai6;
-                    //        }
-                    //        if (timer >= 40)
-                    //        {
-                    //            const int timeMax = 20;
-                    //            if (timer % timeMax == 0)
-                    //            {
-                    //                ai8 = ai7;
-                    //            }
-                    //            int counter = (timer - 40) % timeMax;
-                    //            var projectile = Main.projectile[(int)ai8];
-                    //            NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow(counter / (timeMax - 1f), 3);
-                    //            projectile.Center = NPC.Center + new Vector2(0, 12);
-                    //            visualPlayer.direction = Math.Sign(projectile.velocity.X);
-                    //            visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //            visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //            if (timer % 2 == 0)
-                    //            {
-                    //                var unit = projectile.velocity.SafeNormalize(default);
-                    //                unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
-                    //                for (int n = 0; n < 2; n++)
-                    //                {
-                    //                    unit = -unit;
-                    //                    if (!Main.rand.NextBool(3)) continue;
-                    //                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                    proj.friendly = false;
-                    //                    proj.hostile = true;
-                    //                }
-                    //                if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
-                    //                {
-                    //                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                    proj.friendly = false;
-                    //                    proj.hostile = true;
-                    //                }
-
-                    //            }
-                    //        }
-                    //        if (timer < 40)
-                    //        {
-                    //            var targetVec = timer < 30 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai7].Center;
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
-                    //        }
-                    //        ai1++;
-                    //        if (ai1 >= 660)
-                    //        {
-                    //            SetAI(8);
-                    //            break;
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-                    //        break;
-                    //    }
-                    //case AsraNoxState.初源日炎_随机://TODO 初源日炎_随机
-                    //    {
-                    //        if ((int)ai1 < 765)
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
-                    //        else
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
-                    //        NPC.damage = 0;
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        if ((int)ai1 % 10 == 0)
-                    //        {
-                    //            var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
-
-                    //            // Vector2 vector32 = value5 - NPC.Center;
-                    //            Vector2 vector33 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    //            float num78 = 1f;
-                    //            int num79 = 1;
-                    //            for (int num80 = 0; num80 < num79; num80++)
-                    //            {
-                    //                value5 += Main.rand.NextVector2Circular(24f, 24f);
-                    //                //if (vector32.Length() > 700f)
-                    //                //{
-                    //                //    vector32 *= 700f / vector32.Length();
-                    //                //    value5 = NPC.Center + vector32;
-                    //                //}
-                    //                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
-                    //                vector33 *= 1f - num81;
-                    //                //vector33 += player.velocity * num81;
-                    //                vector33 = vector33.SafeNormalize(Vector2.UnitX);
-
-                    //                float num82 = 120f;
-                    //                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
-                    //                float num84 = num82 / 2f;
-                    //                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
-                    //                Vector2 vector34 = vector33 * scaleFactor3;
-                    //                Vector2 vector35 = new Vector2(0f, 0f);
-                    //                Vector2 vector36 = vector34;
-                    //                int num85 = 0;
-                    //                while (num85 < num84)
-                    //                {
-                    //                    vector35 += vector36;
-                    //                    vector36 = vector36.RotatedBy(num83, default);
-                    //                    num85++;
-                    //                }
-                    //                Vector2 value6 = -vector35;
-                    //                Vector2 position1 = value5 + value6;
-                    //                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
-                    //                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
-                    //                {
-                    //                    solusKatanaFractal.drawPlayer = new Player();
-                    //                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //            }
-                    //        }
-                    //        var counter = (int)ai1 % 120;
-                    //        if (counter == 0)
-                    //        {
-                    //            ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //            Main.projectile[(int)ai4].extraUpdates = 0;
-                    //            if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //            if ((int)ai1 == 720)
-                    //            {
-                    //                ai5 = targetPlayer.Center.X;
-                    //                ai6 = targetPlayer.Center.Y;
-                    //            }
-                    //        }
-                    //        var projectile = Main.projectile[(int)ai4];
-                    //        for (int n = 59; n > 3; n--)
-                    //        {
-                    //            projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //            projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //        }
-                    //        for (int n = 1; n < 4; n++)
-                    //        {
-                    //            projectile.oldPos[n] = projectile.oldPos[0];
-                    //            projectile.oldRot[n] = projectile.oldRot[0];
-                    //        }
-                    //        if (counter <= 60)
-                    //        {
-                    //            //projectile.oldPos[0] = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            //if ((int)ai1 < 720)
-                    //            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
-                    //            //else
-                    //            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
-                    //            //if (visualPlayer.direction == -1) projectile.oldRot[0] = MathHelper.Pi - projectile.oldRot[0];
-                    //            Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                if ((int)ai1 < 720)
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                else
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //            }
-                    //        }
-                    //        ai1++;
-
-                    //        if (counter == 60 || (int)ai1 == 780)
-                    //        {
-                    //            int max = (int)ai1 / 120 + 4;
-                    //            for (int n = 0; n < max; n++)
-                    //            {
-                    //                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj1.friendly = false;
-                    //                proj1.hostile = true;
-
-                    //                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj2.friendly = false;
-                    //                proj2.hostile = true;
-
-                    //                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj3.friendly = false;
-                    //                proj3.hostile = true;
-                    //            }
-                    //        }
-
-                    //        if (ai1 >= 780)
-                    //        {
-                    //            SetAI(9);
-                    //            break;
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-
-                    //        //if (counter <= 60 && counter >= 45 && counter % 3 == 0 && (int)ai1 < 720)
-                    //        //{
-                    //        //    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, 3, 1.05f);
-                    //        //    proj.friendly = false;
-                    //        //    proj.hostile = true;
-                    //        //}
-
-                    //        break;
-                    //    }
-                    //case AsraNoxState.星恒飞刃_随机://TODO 星恒飞刃_随机
-                    //    {
-                    //        int timer = (int)ai1;
-                    //        //前180帧妖梦非符同款攻击
-                    //        //后60帧如下安排
-                    //        //20帧移动，40帧发射弹幕，最后10帧隐去
-
-                    //        //这里是新安排
-                    //        //前3*180帧妖梦非符同款攻击
-                    //        //最后180帧中60帧移动，120帧发射弹幕
-                    //        if (timer < 540)
-                    //        {
-                    //            int counter = timer % 180;
-                    //            int stager = timer / 180;
-                    //            if (counter % 60 == 0)
-                    //            {
-                    //                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 3);
-                    //                Main.projectile[(int)ai4].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //            }
-                    //            var projectile = Main.projectile[(int)ai4];
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //                projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[0];
-                    //                projectile.oldRot[n] = projectile.oldRot[0];
-                    //            }
-                    //            if (counter % 60 <= 30)
-                    //            {
-                    //                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //                for (int n = 0; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 60 / 30f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //                }
-                    //                if (counter % 60 > 21)
-                    //                {
-                    //                    var factor = counter % 60 - 21f;
-                    //                    factor /= 8f;
-                    //                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(0.6f * MathHelper.Pi * (2 * factor - 1));//(MathHelper.Lerp(-MathHelper.Pi * .35f, MathHelper.Pi * .85f, factor) - MathHelper.Pi / 6).ToRotationVector2()
-                    //                                                                                                                                            //unit *= new Vector2(visualPlayer.direction, 1);
-                    //                    for (int n = 0; n < stager + counter / 60 + 1; n++)
-                    //                    {
-                    //                        var shootCenter = NPC.Center + 192 * unit;//.RotatedBy(n / (stager + 1f) * MathHelper.Pi * .15f)
-                    //                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), shootCenter, (targetPlayer.Center - shootCenter).SafeNormalize(default).RotatedBy(MathHelper.Pi / 12f * (n - 0.5f * (stager + counter / 60))) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                        proj.friendly = false;
-                    //                        proj.hostile = true;
-                    //                        //proj.timeLeft = 31;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            if (timer == 540)
-                    //            {
-                    //                ai5 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai5].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai5].ModProjectile is SolusKatanaFractal solusKatanaFractal_0)
-                    //                {
-                    //                    solusKatanaFractal_0.drawPlayer = new Player();
-                    //                    solusKatanaFractal_0.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai6].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai6].ModProjectile is SolusKatanaFractal solusKatanaFractal_1)
-                    //                {
-                    //                    solusKatanaFractal_1.drawPlayer = new Player();
-                    //                    solusKatanaFractal_1.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //                ai7 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai7].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai7].ModProjectile is SolusKatanaFractal solusKatanaFractal_2)
-                    //                {
-                    //                    solusKatanaFractal_2.drawPlayer = new Player();
-                    //                    solusKatanaFractal_2.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //                ai8 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai8].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai8].ModProjectile is SolusKatanaFractal solusKatanaFractal_3)
-                    //                {
-                    //                    solusKatanaFractal_3.drawPlayer = new Player();
-                    //                    solusKatanaFractal_3.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //            }
-                    //            if (timer < 600)
-                    //            {
-                    //                var target = targetPlayer.Center + (MathHelper.Pi / 6).ToRotationVector2() * 400;
-                    //                var projectile = Main.projectile[(int)ai5];
-                    //                var count = 0;
-                    //            mylabel:
-                    //                projectile.Center += projectile.velocity;
-                    //                Vector2 targetVec = target - projectile.Center;
-                    //                targetVec.Normalize();
-                    //                targetVec *= 40f;
-                    //                projectile.velocity = (projectile.velocity * 15f + targetVec * 2) / 17f;
-                    //                if (projectile.ModProjectile is SolusKatanaFractal solusKatanaFractal) solusKatanaFractal.drawPlayer.direction = Math.Sign(targetPlayer.Center.X - projectile.Center.X);//
-                    //                count++;
-                    //                if (count < 4)
-                    //                {
-                    //                    switch (count)
-                    //                    {
-                    //                        case 1: projectile = Main.projectile[(int)ai6]; target = targetPlayer.Center + (MathHelper.Pi / 6 * 5).ToRotationVector2() * 400; break;
-                    //                        case 2: projectile = Main.projectile[(int)ai7]; target = targetPlayer.Center + (-MathHelper.Pi / 4).ToRotationVector2() * 400; break;
-                    //                        case 3: projectile = Main.projectile[(int)ai8]; target = targetPlayer.Center + (-MathHelper.Pi / 4 * 3).ToRotationVector2() * 400; break;
-                    //                    }
-                    //                    goto mylabel;
-                    //                }
-                    //            }
-                    //            if (timer == 600)
-                    //            {
-                    //                var target = targetPlayer.Center + (MathHelper.Pi / 6).ToRotationVector2() * 400;
-                    //                var projectile = Main.projectile[(int)ai5];
-                    //                var count = 0;
-                    //            mylabel:
-                    //                projectile.Center = target;
-                    //                projectile.velocity = default;
-                    //                count++;
-                    //                if (count < 4)
-                    //                {
-                    //                    switch (count)
-                    //                    {
-                    //                        case 1: projectile = Main.projectile[(int)ai6]; target = targetPlayer.Center + (MathHelper.Pi / 6 * 5).ToRotationVector2() * 400; break;
-                    //                        case 2: projectile = Main.projectile[(int)ai7]; target = targetPlayer.Center + (-MathHelper.Pi / 4).ToRotationVector2() * 400; break;
-                    //                        case 3: projectile = Main.projectile[(int)ai8]; target = targetPlayer.Center + (-MathHelper.Pi / 4 * 3).ToRotationVector2() * 400; break;
-                    //                    }
-                    //                    goto mylabel;
-                    //                }
-                    //            }
-                    //            var _projectile = Main.projectile[(int)ai5];
-                    //            var _count = 0;
-                    //        _mylabel:
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[0];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[0];
-                    //            }
-                    //            Vector2 currentVec = _projectile.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                _projectile.oldRot[n] = (timer - n * .25f) * -MathHelper.Pi / 20f + 19 * MathHelper.PiOver2;
-                    //                if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
-                    //            }
-                    //            _count++;
-                    //            if (_count < 4)
-                    //            {
-                    //                switch (_count)
-                    //                {
-                    //                    case 1: _projectile = Main.projectile[(int)ai6]; break;
-                    //                    case 2: _projectile = Main.projectile[(int)ai7]; break;
-                    //                    case 3: _projectile = Main.projectile[(int)ai8]; break;
-                    //                }
-                    //                goto _mylabel;
-                    //            }
-                    //            if (timer >= 600 && timer % 3 == 0)
-                    //            {
-                    //                var projectile = Main.projectile[(int)ai5];
-                    //                var count = 0;
-                    //            mylabel:
-                    //                if (Main.rand.Next(10) < 7)
-                    //                {
-                    //                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                    proj.friendly = false;
-                    //                    proj.hostile = true;
-                    //                }
-
-                    //                count++;
-                    //                if (count < 4)
-                    //                {
-                    //                    switch (count)
-                    //                    {
-                    //                        case 1: projectile = Main.projectile[(int)ai6]; break;
-                    //                        case 2: projectile = Main.projectile[(int)ai7]; break;
-                    //                        case 3: projectile = Main.projectile[(int)ai8]; break;
-                    //                    }
-                    //                    goto mylabel;
-                    //                }
-                    //            }
-                    //        }
-
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
-                    //        ai1++;
-                    //        if (ai1 >= 720)
-                    //        {
-                    //            SetAI(10);
-                    //            break;
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-                    //        break;
-                    //    }
-                    //case AsraNoxState.日曜星流_随机://TODO 日曜星流_随机
-                    //    {
-                    //        //240一次，三个阶段
-                    //        //一次重劈(120帧)，一次下刺(60帧)，一次冲锋(20帧)
-                    //        //流星雨，随着阶段而加强
-                    //        //初源量减少
-                    //        //冲刺生成的弹幕有所改变
-                    //        int timer = (int)ai1;
-                    //        int counter = timer % 240;
-                    //        int stager = timer / 240;
-
-                    //        #region 流星生成
-                    //        if (timer % (36 - stager * 4) == 0)
-                    //        {
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                if (Main.rand.NextBool(4)) continue;
-                    //                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), targetPlayer.Center + new Vector2(Main.rand.NextFloat(-960, 960) - 480, -Main.rand.NextFloat(480, 560)), new Vector2(Main.rand.NextFloat(4, 8), 6).SafeNormalize(default) * 3f, solusEnergyShard, 35, 0, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), Main.rand.NextFloat(Main.rand.NextFloat(1f, 1.05f), 1.05f));
-                    //                proj.friendly = false;
-                    //                proj.hostile = true;
-                    //            }
-                    //        }
-                    //        #endregion
-
-                    //        #region 初源生成
-                    //        if (timer % 20 == 0)
-                    //        {
-                    //            var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + (Main.rand.NextBool(5 - stager) ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
-
-                    //            // Vector2 vector32 = value5 - NPC.Center;
-                    //            Vector2 vector33 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    //            float num78 = 1f;
-                    //            int num79 = 1;
-                    //            for (int num80 = 0; num80 < num79; num80++)
-                    //            {
-                    //                value5 += Main.rand.NextVector2Circular(24f, 24f);
-                    //                //if (vector32.Length() > 700f)
-                    //                //{
-                    //                //    vector32 *= 700f / vector32.Length();
-                    //                //    value5 = NPC.Center + vector32;
-                    //                //}
-                    //                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
-                    //                vector33 *= 1f - num81;
-                    //                //vector33 += player.velocity * num81;
-                    //                vector33 = vector33.SafeNormalize(Vector2.UnitX);
-
-                    //                float num82 = 120f;
-                    //                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
-                    //                float num84 = num82 / 2f;
-                    //                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
-                    //                Vector2 vector34 = vector33 * scaleFactor3;
-                    //                Vector2 vector35 = new Vector2(0f, 0f);
-                    //                Vector2 vector36 = vector34;
-                    //                int num85 = 0;
-                    //                while (num85 < num84)
-                    //                {
-                    //                    vector35 += vector36;
-                    //                    vector36 = vector36.RotatedBy(num83, default);
-                    //                    num85++;
-                    //                }
-                    //                Vector2 value6 = -vector35;
-                    //                Vector2 position1 = value5 + value6;
-                    //                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
-                    //                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
-                    //                {
-                    //                    solusKatanaFractal.drawPlayer = new Player();
-                    //                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //            }
-                    //        }
-                    //        #endregion
-
-
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        if (counter < 120)
-                    //        {
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
-
-                    //            if (counter == 0)
-                    //            {
-                    //                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai4].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //            }
-                    //            var projectile = Main.projectile[(int)ai4];
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //                projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[0];
-                    //                projectile.oldRot[n] = projectile.oldRot[0];
-                    //            }
-                    //            if (counter <= 60)
-                    //            {
-                    //                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //                for (int n = 0; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //                }
-                    //            }
-                    //            if (counter == 60)
-                    //            {
-                    //                int max = stager + 3;
-                    //                for (int n = 0; n < max; n++)
-                    //                {
-                    //                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj1.friendly = false;
-                    //                    proj1.hostile = true;
-
-                    //                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj2.friendly = false;
-                    //                    proj2.hostile = true;
-
-                    //                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj3.friendly = false;
-                    //                    proj3.hostile = true;
-                    //                }
-                    //            }
-                    //        }
-                    //        else if (counter < 180)
-                    //        {
-                    //            if (counter < 165)
-                    //                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
-                    //            else
-                    //                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
-
-                    //            if (counter == 120)
-                    //            {
-                    //                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai4].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //                ai5 = targetPlayer.Center.X;
-                    //                ai6 = targetPlayer.Center.Y;
-                    //                //Main.NewText((ai5, ai6));
-
-
-                    //            }
-                    //            if (counter >= 120)
-                    //            {
-                    //                var projectile = Main.projectile[(int)ai4];
-                    //                for (int n = 59; n > 3; n--)
-                    //                {
-                    //                    projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //                    projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //                }
-                    //                for (int n = 1; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = projectile.oldPos[0];
-                    //                    projectile.oldRot[n] = projectile.oldRot[0];
-                    //                }
-                    //                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //                for (int n = 0; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 120 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //                }
-                    //            }
-
-                    //        }
-                    //        else
-                    //        {
-                    //            int direct = visualPlayer.direction == -1 ? 0 : 1;
-                    //            if (counter == 180)
-                    //            {
-                    //                ai2 = Main.rand.Next(-480, 480);
-                    //                ai3 = stager == 2 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
-                    //                ai4 = targetPlayer.Center.X;
-                    //                ai5 = targetPlayer.Center.Y;
-
-                    //                int max = stager + 4;
-                    //                for (int n = 0; n < max; n++)
-                    //                {
-                    //                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj1.friendly = false;
-                    //                    proj1.hostile = true;
-
-                    //                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj2.friendly = false;
-                    //                    proj2.hostile = true;
-
-                    //                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj3.friendly = false;
-                    //                    proj3.hostile = true;
-                    //                }
-                    //            }
-                    //            if (counter == 190)
-                    //            {
-                    //                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
-                    //                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-
-                    //            }
-                    //            if (counter < 220)
-                    //            {
-                    //                var targetVec = counter < 190 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai6].Center;
-                    //                NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
-                    //            }
-                    //            if (counter >= 220)
-                    //            {
-                    //                const int timeMax = 20;
-                    //                var projectile = Main.projectile[(int)ai6];
-                    //                NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow((counter - 220f) / (timeMax - 1f), 3);
-                    //                projectile.Center = NPC.Center + new Vector2(0, 12);
-                    //                visualPlayer.direction = Math.Sign(projectile.velocity.X);
-                    //                visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //                visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //                //if (timer % 2 == 0)
-                    //                //{
-                    //                //    var unit = projectile.velocity.SafeNormalize(default);
-                    //                //    unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
-                    //                //    for (int n = 0; n < 2; n++)
-                    //                //    {
-                    //                //        unit = -unit;
-                    //                //        if (!Main.rand.NextBool(3)) continue;
-                    //                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                //        proj.friendly = false;
-                    //                //        proj.hostile = true;
-                    //                //    }
-                    //                //    if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
-                    //                //    {
-                    //                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                //        proj.friendly = false;
-                    //                //        proj.hostile = true;
-                    //                //    }
-
-                    //                //}
-                    //                if (timer % 2 == 0)
-                    //                {
-                    //                    int max = stager + 6;
-                    //                    for (int n = 0; n < max; n++)
-                    //                    {
-                    //                        var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                        if (Main.rand.NextBool(4))
-                    //                        {
-                    //                            var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                            proj1.friendly = false;
-                    //                            proj1.hostile = true;
-                    //                        }
-                    //                        if (Main.rand.NextBool(4))
-                    //                        {
-                    //                            var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                            proj2.friendly = false;
-                    //                            proj2.hostile = true;
-                    //                        }
-                    //                        if (Main.rand.NextBool(4))
-                    //                        {
-                    //                            var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                            proj3.friendly = false;
-                    //                            proj3.hostile = true;
-                    //                        }
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-                    //        ai1++;
-                    //        if (ai1 >= 720)
-                    //        {
-                    //            SetAI(11);
-                    //            break;
-                    //        }
-                    //        break;
-                    //    }
-                    //case AsraNoxState.太阳风暴_随机://TODO 太阳风暴_随机
-                    //    {
-                    //        //ai0状态 ai1计时 ai2 ai3控制发射弹幕 ai4 ai5记录玩家坐标 ai6 ai7记录起始位置 ai8记录旋转中心位置
-                    //        var timer = (int)ai1;
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        if ((timer - 30) % 60 == 0 && timer != 30)
-                    //        {
-                    //            int max = (timer - 30) / 120 + 3;
-                    //            for (int n = 0; n < max; n++)
-                    //            {
-                    //                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj1.friendly = false;
-                    //                proj1.hostile = true;
-
-                    //                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj2.friendly = false;
-                    //                proj2.hostile = true;
-
-                    //                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj3.friendly = false;
-                    //                proj3.hostile = true;
-                    //            }
-                    //        }
-                    //        if (timer < 30)
-                    //        {
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * visualPlayer.direction, targetPlayer.Center.Y), 0.05f);//
-                    //        }
-                    //        else if (timer < 630)
-                    //        {
-                    //            timer -= 30;
-                    //            var counter = timer % 60;
-                    //            if (counter == 0)
-                    //            {
-                    //                ai2 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai2].extraUpdates = 0;
-                    //                ai3 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai3].extraUpdates = 0;
-                    //                ai4 = targetPlayer.Center.X;
-                    //                ai5 = targetPlayer.Center.Y;
-                    //                ai6 = NPC.Center.X;
-                    //                ai7 = NPC.Center.Y;
-                    //                ai8 = Main.rand.NextFloat(-2f, 2f);
-                    //                var leng = (targetPlayer.Center - NPC.Center).Length();
-                    //                if (leng * Math.Abs(ai8) > 600)
-                    //                {
-                    //                    ai8 = (600 - Main.rand.NextFloat(-50, 50)) / leng * Math.Sign(ai8);
-                    //                }
-                    //            }
-                    //            var rotationCenter = new Vector2(ai6 - ai4, ai7 - ai5);
-                    //            rotationCenter = new Vector2(-rotationCenter.Y, rotationCenter.X) * ai8 + new Vector2(ai4 + ai6, ai5 + ai7) * .5f;
-                    //            var toStart = new Vector2(ai6, ai7) - rotationCenter;
-                    //            var toTarget = new Vector2(ai4, ai5) - rotationCenter;
-                    //            var cross = toStart.CrossLength(toTarget);
-                    //            //NPC.Center = MathHelper.Lerp(toStart.ToRotation(), toTarget.ToRotation(), (float)Math.Pow(counter / 60f, 2) * 2).ToRotationVector2() * toStart.Length() + rotationCenter;
-                    //            //NPC.Center = toStart.RotatedBy(((cross > 0 ? MathHelper.TwoPi : 0) + new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation()) * (float)Math.Pow(counter / 60f, 2) * 2) + rotationCenter;
-
-                    //            var t = 1 - (float)Math.Cos(counter / 60f * MathHelper.Pi);// (float)Math.Pow(counter / 60f, 2) * 2
-                    //            if (cross < 0)
-                    //            {
-                    //                var dummy = toStart;
-                    //                toStart = toTarget;
-                    //                toTarget = dummy;
-                    //                t = 1 - t;
-                    //                cross *= -1;
-                    //            }
-                    //            NPC.Center = toStart.RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation() * t) + rotationCenter;
-
-                    //            //NPC.Center = (cross < 0 ? toTarget : toStart).RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), Math.Abs(cross)).ToRotation() * (cross < 0 ? (1 - t) : t)) + rotationCenter;
-                    //            //前置方法:圆心O 起点P 终点T，逆时针生成一段圆弧
-                    //            //p = (P-O).RotatedBy(new Vector2(Vector2.Dot(P-O,T-O),(P-O).CrossLength(T-O)).ToRotation*t)+O
-                    //            //生成劣弧则是检测叉积为负就交换PT，保持时间原点不变就再反向一下t,
-
-                    //            var _projectile = Main.projectile[(int)ai2];
-                    //            var _count = 0;
-                    //        _mylabel:
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[0];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[0];
-                    //            }
-                    //            Vector2 currentVec = NPC.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = Vector2.Lerp(currentVec, _projectile.oldPos[4], n * .25f);//
-                    //                var rotation = -timer + n * .25f;
-                    //                _projectile.oldRot[n] = MathHelper.Pi / 10f * rotation - 3 * (float)Math.Sin(MathHelper.Pi / 30f * rotation) + _count * MathHelper.Pi;
-                    //                //if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
-                    //            }
-                    //            _projectile.Center = _projectile.oldPos[0];
-                    //            _count++;
-                    //            if (_count < 2)
-                    //            {
-                    //                switch (_count)
-                    //                {
-                    //                    case 1: _projectile = Main.projectile[(int)ai3]; break;
-                    //                }
-                    //                goto _mylabel;
-                    //            }
-
-                    //            if (timer % 5 == 0)
-                    //            {
-                    //                var projectile = Main.projectile[(int)ai2];
-                    //                for (int n = 0; n < 2; n++)
-                    //                {
-                    //                    if (Main.rand.Next(10) < 7)
-                    //                    {
-                    //                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, (projectile.oldRot[0] + n * MathHelper.Pi).ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                        proj.friendly = false;
-                    //                        proj.hostile = true;
-                    //                    }
-                    //                }
-                    //            }
-
-
-                    //        }
-
-                    //        ai1++;
-
-                    //        if (ai1 >= 660)
-                    //        {
-                    //            SetAI(12);
-                    //            break;
-                    //        }
-
-                    //        break;
-                    //    }
-                    //case AsraNoxState.破晓之光_随机://TODO 破晓之光_随机
-                    //    {
-                    //        ai1++;
-
-                    //        if (ai1 >= 780)
-                    //        {
-                    //            SetAI(NPC.life < NPC.lifeMax * 7 / 10 ? Main.rand.Next(13, 18) : Main.rand.Next(7, 12));
-                    //            break;
-                    //        }
-
-                    //        break;
-                    //    }
-                    //#endregion
-
-                    //#region 后撤
-                    //case AsraNoxState.陨日残阳_后撤://TODO 陨日残阳_后撤
-                    //    {
-                    //        var timer = (int)ai1;
-                    //        int direct = timer >= 10 ? (timer - 10) / 20 % 2 : 0;
-                    //        if (timer == 0)
-                    //        {
-                    //            ai2 = Main.rand.Next(-480, 480);
-                    //            ai3 = ai1 >= 550 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
-                    //            ai4 = targetPlayer.Center.X;
-                    //            ai5 = targetPlayer.Center.Y;
-                    //        }
-                    //        if (timer % 20 == 10)
-                    //        {
-                    //            if (timer <= 610)
-                    //            {
-                    //                if (timer != 10)
-                    //                {
-                    //                    ai2 = Main.rand.Next(-480, 480);
-                    //                    ai3 = ai1 >= 550 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
-                    //                    ai4 = targetPlayer.Center.X;
-                    //                    ai5 = targetPlayer.Center.Y;
-                    //                }
-                    //                ai7 = ai6;
-                    //                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
-                    //                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-                    //            }
-                    //            else if (timer == 630) ai7 = ai6;
-                    //        }
-                    //        if (timer >= 40)
-                    //        {
-                    //            const int timeMax = 20;
-                    //            if (timer % timeMax == 0)
-                    //            {
-                    //                ai8 = ai7;
-                    //            }
-                    //            int counter = (timer - 40) % timeMax;
-                    //            var projectile = Main.projectile[(int)ai8];
-                    //            NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow(counter / (timeMax - 1f), 3);
-                    //            projectile.Center = NPC.Center + new Vector2(0, 12);
-                    //            visualPlayer.direction = Math.Sign(projectile.velocity.X);
-                    //            visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //            visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //            if (timer % 2 == 0)
-                    //            {
-                    //                var unit = projectile.velocity.SafeNormalize(default);
-                    //                unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
-                    //                for (int n = 0; n < 2; n++)
-                    //                {
-                    //                    unit = -unit;
-                    //                    if (!Main.rand.NextBool(3)) continue;
-                    //                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                    proj.friendly = false;
-                    //                    proj.hostile = true;
-                    //                }
-                    //                if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
-                    //                {
-                    //                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                    proj.friendly = false;
-                    //                    proj.hostile = true;
-                    //                }
-
-                    //            }
-                    //        }
-                    //        if (timer < 40)
-                    //        {
-                    //            var targetVec = timer < 30 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai7].Center;
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
-                    //        }
-                    //        ai1++;
-                    //        if (ai1 >= 660)
-                    //        {
-                    //            SetAI(8);
-                    //            break;
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-                    //        break;
-                    //    }
-                    //case AsraNoxState.初源日炎_后撤://TODO 初源日炎_后撤
-                    //    {
-                    //        if ((int)ai1 < 765)
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
-                    //        else
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
-                    //        NPC.damage = 0;
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        if ((int)ai1 % 10 == 0)
-                    //        {
-                    //            var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
-
-                    //            // Vector2 vector32 = value5 - NPC.Center;
-                    //            Vector2 vector33 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    //            float num78 = 1f;
-                    //            int num79 = 1;
-                    //            for (int num80 = 0; num80 < num79; num80++)
-                    //            {
-                    //                value5 += Main.rand.NextVector2Circular(24f, 24f);
-                    //                //if (vector32.Length() > 700f)
-                    //                //{
-                    //                //    vector32 *= 700f / vector32.Length();
-                    //                //    value5 = NPC.Center + vector32;
-                    //                //}
-                    //                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
-                    //                vector33 *= 1f - num81;
-                    //                //vector33 += player.velocity * num81;
-                    //                vector33 = vector33.SafeNormalize(Vector2.UnitX);
-
-                    //                float num82 = 120f;
-                    //                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
-                    //                float num84 = num82 / 2f;
-                    //                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
-                    //                Vector2 vector34 = vector33 * scaleFactor3;
-                    //                Vector2 vector35 = new Vector2(0f, 0f);
-                    //                Vector2 vector36 = vector34;
-                    //                int num85 = 0;
-                    //                while (num85 < num84)
-                    //                {
-                    //                    vector35 += vector36;
-                    //                    vector36 = vector36.RotatedBy(num83, default);
-                    //                    num85++;
-                    //                }
-                    //                Vector2 value6 = -vector35;
-                    //                Vector2 position1 = value5 + value6;
-                    //                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
-                    //                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
-                    //                {
-                    //                    solusKatanaFractal.drawPlayer = new Player();
-                    //                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //            }
-                    //        }
-                    //        var counter = (int)ai1 % 120;
-                    //        if (counter == 0)
-                    //        {
-                    //            ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //            Main.projectile[(int)ai4].extraUpdates = 0;
-                    //            if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //            if ((int)ai1 == 720)
-                    //            {
-                    //                ai5 = targetPlayer.Center.X;
-                    //                ai6 = targetPlayer.Center.Y;
-                    //            }
-                    //        }
-                    //        var projectile = Main.projectile[(int)ai4];
-                    //        for (int n = 59; n > 3; n--)
-                    //        {
-                    //            projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //            projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //        }
-                    //        for (int n = 1; n < 4; n++)
-                    //        {
-                    //            projectile.oldPos[n] = projectile.oldPos[0];
-                    //            projectile.oldRot[n] = projectile.oldRot[0];
-                    //        }
-                    //        if (counter <= 60)
-                    //        {
-                    //            //projectile.oldPos[0] = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            //if ((int)ai1 < 720)
-                    //            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
-                    //            //else
-                    //            //    projectile.oldRot[0] = (1 - (1 - MathHelper.Clamp(ai1 % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .75f) - MathHelper.Pi / 6;
-                    //            //if (visualPlayer.direction == -1) projectile.oldRot[0] = MathHelper.Pi - projectile.oldRot[0];
-                    //            Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                if ((int)ai1 < 720)
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                else
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //            }
-                    //        }
-                    //        ai1++;
-
-                    //        if (counter == 60 || (int)ai1 == 780)
-                    //        {
-                    //            int max = (int)ai1 / 120 + 4;
-                    //            for (int n = 0; n < max; n++)
-                    //            {
-                    //                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj1.friendly = false;
-                    //                proj1.hostile = true;
-
-                    //                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj2.friendly = false;
-                    //                proj2.hostile = true;
-
-                    //                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj3.friendly = false;
-                    //                proj3.hostile = true;
-                    //            }
-                    //        }
-
-                    //        if (ai1 >= 780)
-                    //        {
-                    //            SetAI(9);
-                    //            break;
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-
-                    //        //if (counter <= 60 && counter >= 45 && counter % 3 == 0 && (int)ai1 < 720)
-                    //        //{
-                    //        //    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, 3, 1.05f);
-                    //        //    proj.friendly = false;
-                    //        //    proj.hostile = true;
-                    //        //}
-
-                    //        break;
-                    //    }
-                    //case AsraNoxState.星恒飞刃_后撤://TODO 星恒飞刃_后撤
-                    //    {
-                    //        int timer = (int)ai1;
-                    //        //前180帧妖梦非符同款攻击
-                    //        //后60帧如下安排
-                    //        //20帧移动，40帧发射弹幕，最后10帧隐去
-
-                    //        //这里是新安排
-                    //        //前3*180帧妖梦非符同款攻击
-                    //        //最后180帧中60帧移动，120帧发射弹幕
-                    //        if (timer < 540)
-                    //        {
-                    //            int counter = timer % 180;
-                    //            int stager = timer / 180;
-                    //            if (counter % 60 == 0)
-                    //            {
-                    //                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 3);
-                    //                Main.projectile[(int)ai4].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //            }
-                    //            var projectile = Main.projectile[(int)ai4];
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //                projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[0];
-                    //                projectile.oldRot[n] = projectile.oldRot[0];
-                    //            }
-                    //            if (counter % 60 <= 30)
-                    //            {
-                    //                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //                for (int n = 0; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((ai1 - 0.25f * n) % 60 / 30f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //                }
-                    //                if (counter % 60 > 21)
-                    //                {
-                    //                    var factor = counter % 60 - 21f;
-                    //                    factor /= 8f;
-                    //                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(0.6f * MathHelper.Pi * (2 * factor - 1));//(MathHelper.Lerp(-MathHelper.Pi * .35f, MathHelper.Pi * .85f, factor) - MathHelper.Pi / 6).ToRotationVector2()
-                    //                                                                                                                                            //unit *= new Vector2(visualPlayer.direction, 1);
-                    //                    for (int n = 0; n < stager + counter / 60 + 1; n++)
-                    //                    {
-                    //                        var shootCenter = NPC.Center + 192 * unit;//.RotatedBy(n / (stager + 1f) * MathHelper.Pi * .15f)
-                    //                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), shootCenter, (targetPlayer.Center - shootCenter).SafeNormalize(default).RotatedBy(MathHelper.Pi / 12f * (n - 0.5f * (stager + counter / 60))) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                        proj.friendly = false;
-                    //                        proj.hostile = true;
-                    //                        //proj.timeLeft = 31;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            if (timer == 540)
-                    //            {
-                    //                ai5 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai5].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai5].ModProjectile is SolusKatanaFractal solusKatanaFractal_0)
-                    //                {
-                    //                    solusKatanaFractal_0.drawPlayer = new Player();
-                    //                    solusKatanaFractal_0.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai6].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai6].ModProjectile is SolusKatanaFractal solusKatanaFractal_1)
-                    //                {
-                    //                    solusKatanaFractal_1.drawPlayer = new Player();
-                    //                    solusKatanaFractal_1.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //                ai7 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai7].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai7].ModProjectile is SolusKatanaFractal solusKatanaFractal_2)
-                    //                {
-                    //                    solusKatanaFractal_2.drawPlayer = new Player();
-                    //                    solusKatanaFractal_2.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //                ai8 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 4);
-                    //                Main.projectile[(int)ai8].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai8].ModProjectile is SolusKatanaFractal solusKatanaFractal_3)
-                    //                {
-                    //                    solusKatanaFractal_3.drawPlayer = new Player();
-                    //                    solusKatanaFractal_3.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //            }
-                    //            if (timer < 600)
-                    //            {
-                    //                var target = targetPlayer.Center + (MathHelper.Pi / 6).ToRotationVector2() * 400;
-                    //                var projectile = Main.projectile[(int)ai5];
-                    //                var count = 0;
-                    //            mylabel:
-                    //                projectile.Center += projectile.velocity;
-                    //                Vector2 targetVec = target - projectile.Center;
-                    //                targetVec.Normalize();
-                    //                targetVec *= 40f;
-                    //                projectile.velocity = (projectile.velocity * 15f + targetVec * 2) / 17f;
-                    //                if (projectile.ModProjectile is SolusKatanaFractal solusKatanaFractal) solusKatanaFractal.drawPlayer.direction = Math.Sign(targetPlayer.Center.X - projectile.Center.X);//
-                    //                count++;
-                    //                if (count < 4)
-                    //                {
-                    //                    switch (count)
-                    //                    {
-                    //                        case 1: projectile = Main.projectile[(int)ai6]; target = targetPlayer.Center + (MathHelper.Pi / 6 * 5).ToRotationVector2() * 400; break;
-                    //                        case 2: projectile = Main.projectile[(int)ai7]; target = targetPlayer.Center + (-MathHelper.Pi / 4).ToRotationVector2() * 400; break;
-                    //                        case 3: projectile = Main.projectile[(int)ai8]; target = targetPlayer.Center + (-MathHelper.Pi / 4 * 3).ToRotationVector2() * 400; break;
-                    //                    }
-                    //                    goto mylabel;
-                    //                }
-                    //            }
-                    //            if (timer == 600)
-                    //            {
-                    //                var target = targetPlayer.Center + (MathHelper.Pi / 6).ToRotationVector2() * 400;
-                    //                var projectile = Main.projectile[(int)ai5];
-                    //                var count = 0;
-                    //            mylabel:
-                    //                projectile.Center = target;
-                    //                projectile.velocity = default;
-                    //                count++;
-                    //                if (count < 4)
-                    //                {
-                    //                    switch (count)
-                    //                    {
-                    //                        case 1: projectile = Main.projectile[(int)ai6]; target = targetPlayer.Center + (MathHelper.Pi / 6 * 5).ToRotationVector2() * 400; break;
-                    //                        case 2: projectile = Main.projectile[(int)ai7]; target = targetPlayer.Center + (-MathHelper.Pi / 4).ToRotationVector2() * 400; break;
-                    //                        case 3: projectile = Main.projectile[(int)ai8]; target = targetPlayer.Center + (-MathHelper.Pi / 4 * 3).ToRotationVector2() * 400; break;
-                    //                    }
-                    //                    goto mylabel;
-                    //                }
-                    //            }
-                    //            var _projectile = Main.projectile[(int)ai5];
-                    //            var _count = 0;
-                    //        _mylabel:
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[0];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[0];
-                    //            }
-                    //            Vector2 currentVec = _projectile.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = currentVec;//Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                _projectile.oldRot[n] = (timer - n * .25f) * -MathHelper.Pi / 20f + 19 * MathHelper.PiOver2;
-                    //                if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
-                    //            }
-                    //            _count++;
-                    //            if (_count < 4)
-                    //            {
-                    //                switch (_count)
-                    //                {
-                    //                    case 1: _projectile = Main.projectile[(int)ai6]; break;
-                    //                    case 2: _projectile = Main.projectile[(int)ai7]; break;
-                    //                    case 3: _projectile = Main.projectile[(int)ai8]; break;
-                    //                }
-                    //                goto _mylabel;
-                    //            }
-                    //            if (timer >= 600 && timer % 3 == 0)
-                    //            {
-                    //                var projectile = Main.projectile[(int)ai5];
-                    //                var count = 0;
-                    //            mylabel:
-                    //                if (Main.rand.Next(10) < 7)
-                    //                {
-                    //                    var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, projectile.oldRot[0].ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                    proj.friendly = false;
-                    //                    proj.hostile = true;
-                    //                }
-
-                    //                count++;
-                    //                if (count < 4)
-                    //                {
-                    //                    switch (count)
-                    //                    {
-                    //                        case 1: projectile = Main.projectile[(int)ai6]; break;
-                    //                        case 2: projectile = Main.projectile[(int)ai7]; break;
-                    //                        case 3: projectile = Main.projectile[(int)ai8]; break;
-                    //                    }
-                    //                    goto mylabel;
-                    //                }
-                    //            }
-                    //        }
-
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
-                    //        ai1++;
-                    //        if (ai1 >= 720)
-                    //        {
-                    //            SetAI(10);
-                    //            break;
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-                    //        break;
-                    //    }
-                    //case AsraNoxState.日曜星流_后撤://TODO 日曜星流_后撤
-                    //    {
-                    //        //240一次，三个阶段
-                    //        //一次重劈(120帧)，一次下刺(60帧)，一次冲锋(20帧)
-                    //        //流星雨，随着阶段而加强
-                    //        //初源量减少
-                    //        //冲刺生成的弹幕有所改变
-                    //        int timer = (int)ai1;
-                    //        int counter = timer % 240;
-                    //        int stager = timer / 240;
-
-                    //        #region 流星生成
-                    //        if (timer % (36 - stager * 4) == 0)
-                    //        {
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                if (Main.rand.NextBool(4)) continue;
-                    //                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), targetPlayer.Center + new Vector2(Main.rand.NextFloat(-960, 960) - 480, -Main.rand.NextFloat(480, 560)), new Vector2(Main.rand.NextFloat(4, 8), 6).SafeNormalize(default) * 3f, solusEnergyShard, 35, 0, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), Main.rand.NextFloat(Main.rand.NextFloat(1f, 1.05f), 1.05f));
-                    //                proj.friendly = false;
-                    //                proj.hostile = true;
-                    //            }
-                    //        }
-                    //        #endregion
-
-                    //        #region 初源生成
-                    //        if (timer % 20 == 0)
-                    //        {
-                    //            var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + (Main.rand.NextBool(5 - stager) ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
-
-                    //            // Vector2 vector32 = value5 - NPC.Center;
-                    //            Vector2 vector33 = Main.rand.NextVector2CircularEdge(1f, 1f);
-                    //            float num78 = 1f;
-                    //            int num79 = 1;
-                    //            for (int num80 = 0; num80 < num79; num80++)
-                    //            {
-                    //                value5 += Main.rand.NextVector2Circular(24f, 24f);
-                    //                //if (vector32.Length() > 700f)
-                    //                //{
-                    //                //    vector32 *= 700f / vector32.Length();
-                    //                //    value5 = NPC.Center + vector32;
-                    //                //}
-                    //                float num81 = Terraria.Utils.GetLerpValue(0f, 6f, NPC.velocity.Length(), true) * 0.8f;
-                    //                vector33 *= 1f - num81;
-                    //                //vector33 += player.velocity * num81;
-                    //                vector33 = vector33.SafeNormalize(Vector2.UnitX);
-
-                    //                float num82 = 120f;
-                    //                float num83 = Main.rand.NextFloatDirection() * 3.14159274f * (1f / num82) * 0.5f * num78;
-                    //                float num84 = num82 / 2f;
-                    //                float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
-                    //                Vector2 vector34 = vector33 * scaleFactor3;
-                    //                Vector2 vector35 = new Vector2(0f, 0f);
-                    //                Vector2 vector36 = vector34;
-                    //                int num85 = 0;
-                    //                while (num85 < num84)
-                    //                {
-                    //                    vector35 += vector36;
-                    //                    vector36 = vector36.RotatedBy(num83, default);
-                    //                    num85++;
-                    //                }
-                    //                Vector2 value6 = -vector35;
-                    //                Vector2 position1 = value5 + value6;
-                    //                var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), position1, vector34, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, num83);
-                    //                if (proj.ModProjectile is SolusKatanaFractal solusKatanaFractal)
-                    //                {
-                    //                    solusKatanaFractal.drawPlayer = new Player();
-                    //                    solusKatanaFractal.drawPlayer.CopyVisuals(visualPlayer);
-                    //                }
-                    //            }
-                    //        }
-                    //        #endregion
-
-
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        if (counter < 120)
-                    //        {
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
-
-                    //            if (counter == 0)
-                    //            {
-                    //                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai4].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //            }
-                    //            var projectile = Main.projectile[(int)ai4];
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //                projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                projectile.oldPos[n] = projectile.oldPos[0];
-                    //                projectile.oldRot[n] = projectile.oldRot[0];
-                    //            }
-                    //            if (counter <= 60)
-                    //            {
-                    //                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //                for (int n = 0; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(-MathHelper.Pi * 0.75f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //                }
-                    //            }
-                    //            if (counter == 60)
-                    //            {
-                    //                int max = stager + 3;
-                    //                for (int n = 0; n < max; n++)
-                    //                {
-                    //                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj1.friendly = false;
-                    //                    proj1.hostile = true;
-
-                    //                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj2.friendly = false;
-                    //                    proj2.hostile = true;
-
-                    //                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj3.friendly = false;
-                    //                    proj3.hostile = true;
-                    //                }
-                    //            }
-                    //        }
-                    //        else if (counter < 180)
-                    //        {
-                    //            if (counter < 165)
-                    //                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
-                    //            else
-                    //                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
-
-                    //            if (counter == 120)
-                    //            {
-                    //                ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai4].extraUpdates = 0;
-                    //                if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-                    //                ai5 = targetPlayer.Center.X;
-                    //                ai6 = targetPlayer.Center.Y;
-                    //                //Main.NewText((ai5, ai6));
-
-
-                    //            }
-                    //            if (counter >= 120)
-                    //            {
-                    //                var projectile = Main.projectile[(int)ai4];
-                    //                for (int n = 59; n > 3; n--)
-                    //                {
-                    //                    projectile.oldPos[n] = projectile.oldPos[n - 4];
-                    //                    projectile.oldRot[n] = projectile.oldRot[n - 4];
-                    //                }
-                    //                for (int n = 1; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = projectile.oldPos[0];
-                    //                    projectile.oldRot[n] = projectile.oldRot[0];
-                    //                }
-                    //                Vector2 currentVec = NPC.Center - projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //                for (int n = 0; n < 4; n++)
-                    //                {
-                    //                    projectile.oldPos[n] = Vector2.Lerp(currentVec, projectile.oldPos[4], n * .25f);
-                    //                    projectile.oldRot[n] = (1 - (1 - MathHelper.Clamp((counter - 120 - 0.25f * n) % 120 / 60f, 0, 1)).HillFactor2()).Lerp(MathHelper.Pi * 0.25f, MathHelper.Pi * .875f) - MathHelper.Pi / 6;
-                    //                    if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
-                    //                }
-                    //            }
-
-                    //        }
-                    //        else
-                    //        {
-                    //            int direct = visualPlayer.direction == -1 ? 0 : 1;
-                    //            if (counter == 180)
-                    //            {
-                    //                ai2 = Main.rand.Next(-480, 480);
-                    //                ai3 = stager == 2 ? (-2 * ai2) : (Main.rand.Next(0, 280) * Main.rand.Next(new int[] { -1, 1 }));
-                    //                ai4 = targetPlayer.Center.X;
-                    //                ai5 = targetPlayer.Center.Y;
-
-                    //                int max = stager + 4;
-                    //                for (int n = 0; n < max; n++)
-                    //                {
-                    //                    var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                    var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj1.friendly = false;
-                    //                    proj1.hostile = true;
-
-                    //                    var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj2.friendly = false;
-                    //                    proj2.hostile = true;
-
-                    //                    var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                    proj3.friendly = false;
-                    //                    proj3.hostile = true;
-                    //                }
-                    //            }
-                    //            if (counter == 190)
-                    //            {
-                    //                var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
-                    //                ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-
-                    //            }
-                    //            if (counter < 220)
-                    //            {
-                    //                var targetVec = counter < 190 ? new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2 : Main.projectile[(int)ai6].Center;
-                    //                NPC.Center = Vector2.Lerp(NPC.Center, targetVec, 0.05f);
-                    //            }
-                    //            if (counter >= 220)
-                    //            {
-                    //                const int timeMax = 20;
-                    //                var projectile = Main.projectile[(int)ai6];
-                    //                NPC.Center = new Vector2(projectile.ai[0], projectile.ai[1]) + projectile.velocity * (float)Math.Pow((counter - 220f) / (timeMax - 1f), 3);
-                    //                projectile.Center = NPC.Center + new Vector2(0, 12);
-                    //                visualPlayer.direction = Math.Sign(projectile.velocity.X);
-                    //                visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //                visualPlayer.SetCompositeArmBack(true, Player.CompositeArmStretchAmount.Full, projectile.velocity.ToRotation() - MathHelper.PiOver2);
-                    //                //if (timer % 2 == 0)
-                    //                //{
-                    //                //    var unit = projectile.velocity.SafeNormalize(default);
-                    //                //    unit = unit.RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 6 + MathHelper.PiOver2);
-                    //                //    for (int n = 0; n < 2; n++)
-                    //                //    {
-                    //                //        unit = -unit;
-                    //                //        if (!Main.rand.NextBool(3)) continue;
-                    //                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                //        proj.friendly = false;
-                    //                //        proj.hostile = true;
-                    //                //    }
-                    //                //    if (Main.rand.NextBool((int)MathHelper.Clamp((targetPlayer.Center - NPC.Center).Length() / 16, 3, 64)))
-                    //                //    {
-                    //                //        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(Main.rand.NextFloat(-1, 1) * MathHelper.Pi / 32) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                //        proj.friendly = false;
-                    //                //        proj.hostile = true;
-                    //                //    }
-
-                    //                //}
-                    //                if (timer % 2 == 0)
-                    //                {
-                    //                    int max = stager + 6;
-                    //                    for (int n = 0; n < max; n++)
-                    //                    {
-                    //                        var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                        if (Main.rand.NextBool(4))
-                    //                        {
-                    //                            var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                            proj1.friendly = false;
-                    //                            proj1.hostile = true;
-                    //                        }
-                    //                        if (Main.rand.NextBool(4))
-                    //                        {
-                    //                            var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                            proj2.friendly = false;
-                    //                            proj2.hostile = true;
-                    //                        }
-                    //                        if (Main.rand.NextBool(4))
-                    //                        {
-                    //                            var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                            proj3.friendly = false;
-                    //                            proj3.hostile = true;
-                    //                        }
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        NPC.oldPos[0] = NPC.oldPosition;
-                    //        ai1++;
-                    //        if (ai1 >= 720)
-                    //        {
-                    //            SetAI(11);
-                    //            break;
-                    //        }
-                    //        break;
-                    //    }
-                    //case AsraNoxState.太阳风暴_后撤://TODO 太阳风暴_后撤
-                    //    {
-                    //        //ai0状态 ai1计时 ai2 ai3控制发射弹幕 ai4 ai5记录玩家坐标 ai6 ai7记录起始位置 ai8记录旋转中心位置
-                    //        var timer = (int)ai1;
-                    //        visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                    //        if ((timer - 30) % 60 == 0 && timer != 30)
-                    //        {
-                    //            int max = (timer - 30) / 120 + 3;
-                    //            for (int n = 0; n < max; n++)
-                    //            {
-                    //                var unit = (targetPlayer.Center - NPC.Center).SafeNormalize(default).RotatedBy(MathHelper.Lerp(-MathHelper.Pi / 3, MathHelper.Pi / 3, n / (max - 1f)));
-                    //                var proj1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, unit * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj1.friendly = false;
-                    //                proj1.hostile = true;
-
-                    //                var proj2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(unit.Y, -unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj2.friendly = false;
-                    //                proj2.hostile = true;
-
-                    //                var proj3 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + 128 * unit, new Vector2(-unit.Y, unit.X) * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 0, 2, 3, 3 }), 1.05f);
-                    //                proj3.friendly = false;
-                    //                proj3.hostile = true;
-                    //            }
-                    //        }
-                    //        if (timer < 30)
-                    //        {
-                    //            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * visualPlayer.direction, targetPlayer.Center.Y), 0.05f);//
-                    //        }
-                    //        else if (timer < 630)
-                    //        {
-                    //            timer -= 30;
-                    //            var counter = timer % 60;
-                    //            if (counter == 0)
-                    //            {
-                    //                ai2 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai2].extraUpdates = 0;
-                    //                ai3 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, ModContent.ProjectileType<SolusKatanaFractal>(), 45, 4, Main.myPlayer, 0, 2);
-                    //                Main.projectile[(int)ai3].extraUpdates = 0;
-                    //                ai4 = targetPlayer.Center.X;
-                    //                ai5 = targetPlayer.Center.Y;
-                    //                ai6 = NPC.Center.X;
-                    //                ai7 = NPC.Center.Y;
-                    //                ai8 = Main.rand.NextFloat(-2f, 2f);
-                    //                var leng = (targetPlayer.Center - NPC.Center).Length();
-                    //                if (leng * Math.Abs(ai8) > 600)
-                    //                {
-                    //                    ai8 = (600 - Main.rand.NextFloat(-50, 50)) / leng * Math.Sign(ai8);
-                    //                }
-                    //            }
-                    //            var rotationCenter = new Vector2(ai6 - ai4, ai7 - ai5);
-                    //            rotationCenter = new Vector2(-rotationCenter.Y, rotationCenter.X) * ai8 + new Vector2(ai4 + ai6, ai5 + ai7) * .5f;
-                    //            var toStart = new Vector2(ai6, ai7) - rotationCenter;
-                    //            var toTarget = new Vector2(ai4, ai5) - rotationCenter;
-                    //            var cross = toStart.CrossLength(toTarget);
-                    //            //NPC.Center = MathHelper.Lerp(toStart.ToRotation(), toTarget.ToRotation(), (float)Math.Pow(counter / 60f, 2) * 2).ToRotationVector2() * toStart.Length() + rotationCenter;
-                    //            //NPC.Center = toStart.RotatedBy(((cross > 0 ? MathHelper.TwoPi : 0) + new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation()) * (float)Math.Pow(counter / 60f, 2) * 2) + rotationCenter;
-
-                    //            var t = 1 - (float)Math.Cos(counter / 60f * MathHelper.Pi);// (float)Math.Pow(counter / 60f, 2) * 2
-                    //            if (cross < 0)
-                    //            {
-                    //                var dummy = toStart;
-                    //                toStart = toTarget;
-                    //                toTarget = dummy;
-                    //                t = 1 - t;
-                    //                cross *= -1;
-                    //            }
-                    //            NPC.Center = toStart.RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), cross).ToRotation() * t) + rotationCenter;
-
-                    //            //NPC.Center = (cross < 0 ? toTarget : toStart).RotatedBy(new Vector2(Vector2.Dot(toStart, toTarget), Math.Abs(cross)).ToRotation() * (cross < 0 ? (1 - t) : t)) + rotationCenter;
-                    //            //前置方法:圆心O 起点P 终点T，逆时针生成一段圆弧
-                    //            //p = (P-O).RotatedBy(new Vector2(Vector2.Dot(P-O,T-O),(P-O).CrossLength(T-O)).ToRotation*t)+O
-                    //            //生成劣弧则是检测叉积为负就交换PT，保持时间原点不变就再反向一下t,
-
-                    //            var _projectile = Main.projectile[(int)ai2];
-                    //            var _count = 0;
-                    //        _mylabel:
-                    //            for (int n = 59; n > 3; n--)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[n - 4];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[n - 4];
-                    //            }
-                    //            for (int n = 1; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = _projectile.oldPos[0];
-                    //                _projectile.oldRot[n] = _projectile.oldRot[0];
-                    //            }
-                    //            Vector2 currentVec = NPC.Center - _projectile.velocity.SafeNormalize(Vector2.Zero) * 42f;
-                    //            for (int n = 0; n < 4; n++)
-                    //            {
-                    //                _projectile.oldPos[n] = Vector2.Lerp(currentVec, _projectile.oldPos[4], n * .25f);//
-                    //                var rotation = -timer + n * .25f;
-                    //                _projectile.oldRot[n] = MathHelper.Pi / 10f * rotation - 3 * (float)Math.Sin(MathHelper.Pi / 30f * rotation) + _count * MathHelper.Pi;
-                    //                //if (_count % 2 == 1) _projectile.oldRot[n] = MathHelper.Pi - _projectile.oldRot[n];
-                    //            }
-                    //            _projectile.Center = _projectile.oldPos[0];
-                    //            _count++;
-                    //            if (_count < 2)
-                    //            {
-                    //                switch (_count)
-                    //                {
-                    //                    case 1: _projectile = Main.projectile[(int)ai3]; break;
-                    //                }
-                    //                goto _mylabel;
-                    //            }
-
-                    //            if (timer % 5 == 0)
-                    //            {
-                    //                var projectile = Main.projectile[(int)ai2];
-                    //                for (int n = 0; n < 2; n++)
-                    //                {
-                    //                    if (Main.rand.Next(10) < 7)
-                    //                    {
-                    //                        var proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), projectile.Center, (projectile.oldRot[0] + n * MathHelper.Pi).ToRotationVector2() * 5f, solusEnergyShard, 45, 4, Main.myPlayer, Main.rand.Next(new int[] { 4, 5, 6, 6 }), 1.05f);
-                    //                        proj.friendly = false;
-                    //                        proj.hostile = true;
-                    //                    }
-                    //                }
-                    //            }
-
-
-                    //        }
-
-                    //        ai1++;
-
-                    //        if (ai1 >= 660)
-                    //        {
-                    //            SetAI(12);
-                    //            break;
-                    //        }
-
-                    //        break;
-                    //    }
-                    //case AsraNoxState.破晓之光_后撤://TODO 破晓之光_后撤
-                    //    {
-                    //        ai1++;
-
-                    //        if (ai1 >= 780)
-                    //        {
-                    //            SetAI(NPC.life < NPC.lifeMax * 7 / 10 ? Main.rand.Next(13, 18) : Main.rand.Next(7, 12));
-                    //            break;
-                    //        }
-
-                    //        break;
-                    //    }
-                    //    #endregion
-                    #endregion  
+            }
+
+
+        }
+        private void PrepareToEscape(int starter)
+        {
+            //放弃了，本来想让音乐淡出然后重新播放的，但是我整不出
+            //ai1++;
+            //var timer = (int)ai1 - starter;
+            ////if (timer == 1)
+            ////{
+            ////    ai2 = Main.musicVolume;
+            ////}
+            ////Music = 0;
+            //NPC.dontTakeDamage = true;
+            //if (timer > 120)
+            //{
+            //    SetAI(19);
+            //    //Main.musicVolume = ai2;
+            //}
+            ////else
+            ////{
+            ////    Main.musicVolume = MathHelper.Clamp(1 - timer / 60f, 0, 1) * ai2;
+            ////}
+            //
+            SetAI(19);
+
+        }
+        private void TakeARest(int starter, int stateToSet)
+        {
+            ai1++;
+            var timer = (int)ai1 - starter;
+            if (timer < 105)
+            {
+                NPC.Center = Vector2.Lerp(NPC.Center, targetPlayer.Center + new Vector2(960 * AsraNoxSky.windDirection, -400), 0.05f);
+            }
+            else
+            {
+                AsraNoxSky.windToLeft = targetPlayer.Center.X - NPC.Center.X > 0;
+            }
+            if (timer > 120)
+            {
+                SetAI(stateToSet);
             }
         }
         public Player visualPlayer;
@@ -3914,7 +3692,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
                 var timer = (int)ai1;
-                if (state != AsraNoxState.太阳风暴)
+                var nState = (byte)state;
+                if (nState != 5)
                 {
                     var fireRot = (NPC.position - NPC.oldPos[0]) == default ? -MathHelper.PiOver2 : (NPC.position - NPC.oldPos[0]).ToRotation().AngleLerp(-MathHelper.PiOver2, 0.25f);
                     spriteBatch.Draw(tex, NPC.Center + new Vector2(6, 28f) - Main.screenPosition, tex.Frame(1, 4, 0, (int)IllusionBoundMod.ModTime / 4 % 4), Color.White with { A = 0 } * alpha, -MathHelper.Pi * 3 / 4 + fireRot, new Vector2(20, 64), new Vector2(0.25f), 0, 0);
@@ -3932,42 +3711,36 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall_Glow"), NPC.Center - Main.screenPosition, null, Color.White, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
                     }
                 }
-                if (state == AsraNoxState.陨日残阳 || (state == AsraNoxState.日曜星流 && timer % 240 >= 180))
+                if (nState % 6 == 1 || ((nState % 6 == 4) && timer % 240 >= 180))
                 {
                     float rotation = 0;
-
-                    switch (state)
+                    if (nState % 6 == 1)
                     {
-                        case AsraNoxState.陨日残阳:
-                            {
-                                Projectile proj = null;
-                                if (timer < 10)
-                                {
-                                    int direct = timer >= 10 ? (timer - 10) / 20 % 2 : 0;
-                                    rotation = new Vector2(direct == 1 ? 2048 : -2048, ai3).ToRotation();
-                                }
-                                else if (timer < 30)
-                                {
-                                    proj = Main.projectile[(int)ai6];
-                                }
-                                else if (timer < 40)
-                                {
-                                    proj = Main.projectile[(int)ai7];
-                                }
-                                else
-                                {
-                                    proj = Main.projectile[(int)ai8];
-                                }
-                                if (proj != null && proj.active && proj.type == ModContent.ProjectileType<SolusDash>()) rotation = proj.velocity.ToRotation();
-                                break;
-                            }
-                        case AsraNoxState.日曜星流:
-                            {
-                                if (timer % 240 <= 190) rotation = new Vector2(2048 * visualPlayer.direction, ai3).ToRotation();
-                                else rotation = Main.projectile[(int)ai6].velocity.ToRotation();
-                                alpha = (ai1 % 240 - 180).SymmetricalFactor(30, 10);
-                                break;
-                            }
+                        Projectile proj = null;
+                        if (timer < 10)
+                        {
+                            int direct = timer >= 10 ? (timer - 10) / 20 % 2 : 0;
+                            rotation = new Vector2(direct == 1 ? 2048 : -2048, ai3).ToRotation();
+                        }
+                        else if (timer < 30)
+                        {
+                            proj = Main.projectile[(int)ai6];
+                        }
+                        else if (timer < 40)
+                        {
+                            proj = Main.projectile[(int)ai7];
+                        }
+                        else
+                        {
+                            proj = Main.projectile[(int)ai8];
+                        }
+                        if (proj != null && proj.active && proj.type == ModContent.ProjectileType<SolusDash>()) rotation = proj.velocity.ToRotation();
+                    }
+                    if (nState % 6 == 4)
+                    {
+                        if (timer % 240 <= 190) rotation = new Vector2(2048 * visualPlayer.direction, ai3).ToRotation();
+                        else rotation = Main.projectile[(int)ai6].velocity.ToRotation();
+                        alpha = (ai1 % 240 - 180).SymmetricalFactor(30, 10);
                     }
                     spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center + new Vector2(0, 12f) - Main.screenPosition, null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
 
@@ -4002,9 +3775,24 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                             alpha = (ai1 - 240).SymmetricalFactor(120, 30);
                             spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + new Vector2(visualPlayer.direction * 6, 16), null, Color.White * alpha, MathHelper.Pi * 3 / 4, new Vector2(12, 66), 1, 0, 0);
                         }
-
                     }
-
+                }
+                if (state == AsraNoxState.破晓之光_追灭 && timer > 60)
+                {
+                    alpha = ((timer - 60f) % 240).SymmetricalFactor(120, 30);
+                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + new Vector2(visualPlayer.direction * 6, 16), null, Color.White * alpha, MathHelper.Pi * 3 / 4, new Vector2(12, 66), 1, 0, 0);
+                }
+                if (state == AsraNoxState.破晓之光_随机 && timer > 60)
+                {
+                    var rotation = Main.projectile[(int)ai2].oldRot[0];
+                    alpha = ((timer - 60f) % 240).SymmetricalFactor(120, 30);
+                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + rotation.ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12), null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
+                }
+                if (state == AsraNoxState.破晓之光_后撤 && timer < 480)
+                {
+                    var rotation = Main.projectile[(int)ai2].oldRot[0];
+                    alpha = (timer % 240f).SymmetricalFactor(120, 30);
+                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + rotation.ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12), null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
                 }
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -4047,20 +3835,20 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         //风场停止，参考开始状态，弹幕难度提升，时间持久，随机性增加
         陨日残阳_随机,//无双风神，但是最后五击或者中途随机会预判玩家而后穿刺
         初源日炎_随机,//本体隐去，分身使用日炎风格初源峰巅，范围覆盖全屏，天降正义后生成一堆
-        星恒飞刃_随机,//白莲二符，直线冲刺，冲刺频率逐渐增加，弹幕量逐渐降低
+        星恒飞刃_随机,//妖梦非符式奇偶狙+白莲二符
         日曜星流_随机,//陨日残阳+初源日炎
         太阳风暴_随机,//式神「蓝」，但是频率更高
         破晓之光_随机,//莱瓦汀,但是全程挥动+自机狙
 
 
         //最后30%血量  bgm先暂停后重新开始
-        //风场重开且全程固定方向，世界右半部开始则向左......               阶段血量相关
-        陨日残阳_后撤,//无双风神，但是是闪飞然后水平向弹幕
-        初源日炎_后撤,//本体隐去，分身使用日炎风格初源峰巅，但是是纵向弹幕干扰移动
-        星恒飞刃_后撤,//妖梦非符式奇偶狙，但是增加散狙
-        日曜星流_后撤,//闪飞后 水平干扰纵向干扰兼具
-        太阳风暴_后撤,//上下版边冲撞以发出大量滞留弹幕
-        破晓之光_后撤,//参考月总大激光(x
+        //风场重开且全程固定方向，世界右半部开始则向左......                        阶段血量相关
+        陨日残阳_后撤,//无双风神，但是是闪飞然后水平向弹幕                          30-25
+        初源日炎_后撤,//本体隐去，分身使用日炎风格初源峰巅，但是是纵向弹幕干扰移动  25-20
+        星恒飞刃_后撤,//妖梦非符式奇偶狙，但是增加散狙                              20-15
+        日曜星流_后撤,//闪飞后 水平干扰纵向干扰兼具                                 15-10
+        太阳风暴_后撤,//上下版边冲撞以发出大量滞留弹幕                              10-05
+        破晓之光_后撤,//参考月总大激光(x                                            05-00
     }
     //TODO 阿斯拉诺克斯
     //8.22 完成大致结构设计
@@ -4310,7 +4098,29 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 else
                     foreach (var npc in Main.npc)
                     {
-                        if (npc.active && npc.type == ModContent.NPCType<AsraNox>() && npc.ai[0] != 2 && (npc.ai[0] != 4 || npc.ai[1] % 240 >= 180 || npc.ai[1] % 240 <= 60) && (npc.ai[0] != 3 || (npc.ai[1] < 540 && (int)projectile.ai[1] == 4) || (npc.ai[1] <= 60 && (int)projectile.ai[1] == 2)) && (npc.ai[0] != 6 || npc.ai[1] < 480))
+                        if (
+                            npc.active && npc.type == ModContent.NPCType<AsraNox>() &&
+                            npc.ai[0] != 2 &&
+                            (npc.ai[0] != 3 || (npc.ai[1] < 540 && (int)projectile.ai[1] == 4) || (npc.ai[1] <= 60 && (int)projectile.ai[1] == 2)) &&
+                            (npc.ai[0] != 4 || npc.ai[1] % 240 >= 180) &&
+                            npc.ai[0] != 5 &&
+                            npc.ai[0] != 6 &&
+
+                            npc.ai[0] != 8 &&
+                            npc.ai[0] != 9 &&
+                            (npc.ai[0] != 10 || npc.ai[1] % 240 >= 180) &&
+                            npc.ai[0] != 11 &&
+
+                            npc.ai[0] != 14 &&
+                            npc.ai[0] != 15 &&
+                            (npc.ai[0] != 16 || npc.ai[1] % 240 >= 180) &&
+                            npc.ai[0] != 17 &&
+
+                            npc.ai[0] != 20 &&
+                            npc.ai[0] != 21 &&
+                            (npc.ai[0] != 22 || npc.ai[1] % 240 >= 180) &&
+                            npc.ai[0] != 23
+                            )
                         {
 
                             for (int n = 59; n > 3; n--)
@@ -4500,6 +4310,22 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         }
         public override bool PreDraw(ref Color lightColor)
         {
+            if (projectile.timeLeft > 195)
+            {
+                var timer = (240 - projectile.timeLeft) % 15 / 15f;
+                //spriteBatch.Draw(IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), projectile.Center + u * 12 - Main.screenPosition, null, Color.Lerp(Color.Orange, Color.White, timer) with { A = 0 } * timer.HillFactor2(1), 0, new Vector2(99), projectile.timeLeft < 210 ? MathHelper.Lerp(0, 24, timer * timer) : MathHelper.Lerp(16, 0, (float)Math.Sqrt(timer)), 0, 0);
+                var u = projectile.ai[0].ToRotationVector2();
+                Texture2D tex = IllusionBoundMod.GetTexture("Terraria/Images/Misc/Perlin", false);
+                int v = 600;
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                Terraria.DataStructures.DrawData data = new Terraria.DataStructures.DrawData(tex, projectile.Center + u * 12 - Main.screenPosition, new Rectangle(0, 0, 2 * v, 2 * v), Color.Lerp(Color.Orange, Color.White, timer) with { A = 0 }, 0, new Vector2(v), (projectile.timeLeft < 210 ? MathHelper.Lerp(0, 4, timer * timer) : MathHelper.Lerp(2, 0, (float)Math.Sqrt(timer))) * new Vector2(1.5f, 1), 0, 0);
+                Terraria.Graphics.Shaders.GameShaders.Misc["ForceField"].UseColor(new Vector3(timer.HillFactor2(1)));//
+                Terraria.Graphics.Shaders.GameShaders.Misc["ForceField"].Apply(data);
+                data.Draw(Main.spriteBatch);
+                Main.spriteBatch.End();
+                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            }
             return false;
         }
         public void DrawLaser()
@@ -4509,6 +4335,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             var width = projectile.timeLeft <= 210 ? 800f * factor : 16f;//4.47213f * 16 * 4 * factor * 4 + 16f//1600f * factor
             var u = projectile.ai[0].ToRotationVector2();
             //spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center + u * 12, u, new Color(240, 139, 78), 1600 * MathHelper.Clamp(240 - projectile.timeLeft, 0, 30) / 30f, width, styleIndex: 10);// * factor
+
             spriteBatch.DrawQuadraticLaser_PassColorBar(projectile.Center + u * 12, u, 15, 1600 * MathHelper.Clamp(240 - projectile.timeLeft, 0, 30) / 30f, width, styleIndex: 10);
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);

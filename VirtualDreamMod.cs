@@ -204,7 +204,7 @@ namespace VirtualDream
 
         public override void Load()
         {
-            //IllusionBoundExtensionMethods.ShaderItemEffectInWorld
+            //IllusionBoundExtensionMethods.ShaderItemEffectInWorld 
             //将exampleUI实例化
             //vertexUI = new Items.Others.StrawBerryLinerUI();
             ////将exampleUI初始化
@@ -652,7 +652,7 @@ namespace VirtualDream
                                 ShaderSwooshEX.Parameters["lightShift"].SetValue(0f);
 
                                 Main.graphics.GraphicsDevice.Textures[0] = GetTexture("Images/BaseTex_7");
-                                Main.graphics.GraphicsDevice.Textures[1] = GetTexture("Images/AniTex_3");
+                                Main.graphics.GraphicsDevice.Textures[1] = GetTexture("Images/AniTex_7");
                                 Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[ItemType<SolusKatana>()].Value;
                                 Main.graphics.GraphicsDevice.Textures[3] = HeatMap[24];
 
@@ -1042,7 +1042,7 @@ namespace VirtualDream
         public static Effect ColorfulLaserEffect;
         public static Effect TerraEffect;
         public static Effect IMBellEffect;
-        public static Texture2D[] HeatMap = new Texture2D[26];
+        public static Texture2D[] HeatMap = new Texture2D[29];
         public static Texture2D[] BaseTexes = new Texture2D[4];
         public static Texture2D[] AniTexes = new Texture2D[11];
         public static Texture2D[] LaserTex = new Texture2D[4];
