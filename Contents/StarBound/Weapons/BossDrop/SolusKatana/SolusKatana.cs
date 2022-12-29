@@ -11,7 +11,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("日炎刀");
+            DisplayName.SetDefault("日炎刀啊啊啊啊啊啊啊啊啊啊啊");
             Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n由阿斯拉诺克斯造的是初版，后来她开源了......我的意思是，她公布了制作方法，方法很简单:搜集好材料然后怼到秘银砧上面(\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
 
         }

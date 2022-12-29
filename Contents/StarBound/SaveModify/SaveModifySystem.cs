@@ -10,6 +10,12 @@ namespace VirtualDream.Contents.StarBound.SaveModify
 {
     public class SaveModifySystem : ModSystem
     {
+        public static Vector2 positionLoader;
+        public static Vector2 velocityLoader;
+        public static int lifeLoader;
+        public static int manaLoader;
+        public static bool loadingData;
+        public static string PlrName;
         public override void SaveWorldData(TagCompound tag)
         {
             tag.Add("uniqueID", uniqueID);
@@ -41,14 +47,19 @@ namespace VirtualDream.Contents.StarBound.SaveModify
             #region Player
             var player = Main.LocalPlayer;
             var IDCode = player.GetModPlayer<SaveModifyPlayer>().uniqueID;
-            if (tag.TryGet("position" + IDCode, out Vector2 position))
-                player.position = position;
+            PlrName = player.name;
+            if (tag.TryGet("position" + IDCode, out Vector2 position)) 
+            { 
+                positionLoader = position; 
+                loadingData = true; 
+            }
+               
             if (tag.TryGet("velocity" + IDCode, out Vector2 velocity))
-                player.velocity = velocity;
+                velocityLoader= velocity;
             if (tag.TryGet("Life" + IDCode, out int life))
-                player.statLife = life;
+                lifeLoader = life;
             if (tag.TryGet("Mana" + IDCode, out int mana))
-                player.statMana = mana;
+                manaLoader = mana;
             #endregion
         }
         public override void OnWorldLoad()
@@ -79,6 +90,24 @@ namespace VirtualDream.Contents.StarBound.SaveModify
             {
                 uniqueID = Main.rand.Next(int.MaxValue);
             }
+        }
+        public override void ResetEffects()
+        {
+            if (SaveModifySystem.loadingData)
+            {
+                Player.position = SaveModifySystem.positionLoader;
+                Player.velocity = SaveModifySystem.velocityLoader;
+                Player.statLife = SaveModifySystem.lifeLoader;
+                Player.statMana = SaveModifySystem.manaLoader;
+                //SaveModifySystem.loadingData = false;
+            }
+            Main.NewText("你是一个一个一个");
+            Main.NewText(SaveModifySystem.PlrName);
+
+        }
+        public override void OnEnterWorld(Player player)
+        {
+
         }
     }
 }

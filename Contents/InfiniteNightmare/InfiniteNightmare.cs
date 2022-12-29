@@ -830,7 +830,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             tag.Set("hasGivenBell", hasGivenBell);
             tag.Set("hasGivenBellEX", hasGivenBellEX);
         }
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
+        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
         {
             double d = damage + player.statDefense * (Main.expertMode ? 0.75 : 0.5);
             if (PreInfiniteNightmareModeActive)

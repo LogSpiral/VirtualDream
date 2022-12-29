@@ -17,6 +17,11 @@
     <Folder Include="Contents\Storm\Wind\" />
     <Folder Include="Contents\Storm\Cloud\" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SubworldLibrary">
+      <HintPath>SubworldLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 
 	
 </Project>
