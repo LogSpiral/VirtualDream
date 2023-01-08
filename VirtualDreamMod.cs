@@ -271,7 +271,7 @@ namespace VirtualDream
             {
                 icon[i] = GetTexture($"icons/icon_ani_{i}");
             }
-            On.Terraria.Main.DrawMenu += Main_DrawMenu;
+            //On.Terraria.Main.DrawMenu += Main_DrawMenu;
             //On.Terraria.Main.DrawPlayer += WeaponDisplayDrawPlayer;
             //On.Terraria.Utilities.UnifiedRandom.Next_int_int += UnifiedRandom_Next_int_int;
         }
@@ -1028,7 +1028,7 @@ namespace VirtualDream
             Instance = null;
             On.Terraria.Graphics.Effects.FilterManager.EndCapture -= FilterManager_EndCapture_IllusionBound;
             Main.OnResolutionChanged -= Main_OnResolutionChanged;
-            On.Terraria.Main.DrawMenu -= Main_DrawMenu;
+            //On.Terraria.Main.DrawMenu -= Main_DrawMenu;
             //On.Terraria.Main.DrawPlayer -= WeaponDisplayDrawPlayer;
         }
         private void Main_OnResolutionChanged(Vector2 obj)//在分辨率更改时，重建render防止某些bug

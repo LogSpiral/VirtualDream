@@ -54,7 +54,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             visualPlayer.hairColor = new Color(38, 38, 38, 255);
             visualPlayer.hair = 85;
             visualPlayer.isFirstFractalAfterImage = true;
-            visualPlayer.ResetEffects();
+            //visualPlayer.ResetEffects();
             visualPlayer.ResetVisibleAccessories();
             visualPlayer.UpdateDyes();
             visualPlayer.DisplayDollUpdate();

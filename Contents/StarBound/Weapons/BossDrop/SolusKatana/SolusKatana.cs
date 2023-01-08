@@ -113,7 +113,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("日炎刀EX");
+            DisplayName.SetDefault("日炎刀EX啊啊啊啊");
         }
         //public override void UseStyle(Player player)
         //{
@@ -185,7 +185,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯化日炎刀与绝唱机甲日炎刀交汇的辉光，请确保你能驾驭它的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//二次强化的日炎刀，是由阿斯拉诺克斯制造的吗？\n
-            DisplayName.SetDefault("日炎刀NEO");
+            DisplayName.SetDefault("日炎刀NEO啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊");
         }
         public override void SetDefaults()
         {
@@ -981,7 +981,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 
                     if (projectile.ai[0] == 7)
                     {
-                        Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), projectile.Center, default, ModContent.ProjectileType<SolusUltraLaser>(), 80, 8, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, default, ModContent.ProjectileType<SolusUltraLaser>(), 80, 8, Main.myPlayer, 0, 0);
                     }
                     //else
                     //    SoundEngine.PlaySound(Terraria.ID.SoundID.Item38);

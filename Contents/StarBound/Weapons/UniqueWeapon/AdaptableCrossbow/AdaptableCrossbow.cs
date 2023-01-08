@@ -39,7 +39,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         }
         public override void HoldStyle(Player player, Rectangle heldItemFrame)
         {
-            if (CanUseItem(player)) { Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, default, item.shoot, player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI); }
+            if (CanUseItem(player)) { Projectile.NewProjectile(GetSource_StarboundWeapon(), player.Center, default, item.shoot, player.GetWeaponDamage(item), player.GetWeaponKnockback(item), player.whoAmI); }
             base.HoldStyle(player, heldItemFrame);
         }
         //public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -326,7 +326,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             projectile.ignoreWater = true;
             projectile.tileCollide = true;
             projectile.penetrate = 5;
-            projectile.light = 0.5f;
+            //projectile.light = 0.5f;
             projectile.timeLeft = 300;
             projectile.aiStyle = -1;
         }

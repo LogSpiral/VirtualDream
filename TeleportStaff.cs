@@ -7,7 +7,7 @@ namespace VirtualDream
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("传送法杖");
-            Tooltip.SetDefault("走你");
+            Tooltip.SetDefault("走你\n右键进入子世界_时之风");
         }
         Item item => Item;
         public override void SetDefaults()
@@ -117,7 +117,7 @@ namespace VirtualDream
                 }
             }
         }
-        public override string Texture => "Terraria/Images/Item_" + ItemID.RubyStaff;
+        public override string Texture => "VirtualDream/Contents/StarBound/Weapons/BossDrop/KluexStaff/KluexStaffPH";//"Terraria/Images/Item_" + ItemID.RubyStaff
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
             texture = TextureAssets.Item[ItemID.RubyStaff].Value;

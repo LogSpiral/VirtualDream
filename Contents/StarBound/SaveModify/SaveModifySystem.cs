@@ -10,22 +10,57 @@ namespace VirtualDream.Contents.StarBound.SaveModify
 {
     public class SaveModifySystem : ModSystem
     {
-        public static Vector2 positionLoader;
-        public static Vector2 velocityLoader;
-        public static int lifeLoader;
-        public static int manaLoader;
+        public struct PlrData
+        {
+            public Vector2 position;
+            public Vector2 velocity;
+            public int life;
+            public int mana;
+            public TagCompound ToTag()
+            {
+                return new TagCompound() { ["position"] = position, ["velocity"] = velocity, ["life"] = life, ["mana"] = mana };
+            }
+            public PlrData(TagCompound tag)
+            {
+                position = tag.Get<Vector2>("position");
+                velocity = tag.Get<Vector2>("velocity");
+                life = tag.Get<int>("life");
+                mana = tag.Get<int>("mana");
+            }
+        }
+        public static Dictionary<int, PlrData> plrSaver = new Dictionary<int, PlrData>();
         public static bool loadingData;
-        public static string PlrName;
+        public static TagCompound[] itemData = new TagCompound[400];
         public override void SaveWorldData(TagCompound tag)
         {
             tag.Add("uniqueID", uniqueID);
             #region Player
-            var player = Main.LocalPlayer;
-            int IDCode = player.GetModPlayer<SaveModifyPlayer>().uniqueID;
-            tag.Add("position" + IDCode, player.position);
-            tag.Add("velocity" + IDCode, player.velocity);
-            tag.Add("Life" + IDCode, player.statLife);
-            tag.Add("Mana" + IDCode, player.statMana);
+            var plr = Main.LocalPlayer;
+            var IDCode = plr.GetModPlayer<SaveModifyPlayer>().uniqueID;
+            var data = new PlrData() with { position = plr.position, velocity = plr.velocity, life = plr.statLife, mana = plr.statMana };
+            foreach (var key in plrSaver.Keys)
+            {
+                tag.Add("plrdata" + key, (key == IDCode ? data : plrSaver[key]).ToTag());
+            }
+            if (!plrSaver.ContainsKey(IDCode))
+            {
+                tag.Add("plrdata" + IDCode, data.ToTag());
+            }
+            #endregion
+            #region Item
+            for (int n = 0; n < Main.maxItems; n++)
+            {
+                var item = Main.item[n];
+                if (item.active)
+                {
+                    var itemData = ItemIO.Save(item);
+                    itemData.Add("position", item.position);
+                    tag.Add("item_" + n, itemData);
+                    //Console.WriteLine((n, item.Name));
+                }
+            }
+            #endregion
+            #region NPC
             #endregion
         }
         public override void LoadWorldData(TagCompound tag)
@@ -45,21 +80,30 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 uniqueID = Main.rand.Next(int.MaxValue);
             }
             #region Player
-            var player = Main.LocalPlayer;
-            var IDCode = player.GetModPlayer<SaveModifyPlayer>().uniqueID;
-            PlrName = player.name;
-            if (tag.TryGet("position" + IDCode, out Vector2 position)) 
-            { 
-                positionLoader = position; 
-                loadingData = true; 
+            plrSaver.Clear();
+            foreach (var file in Main.PlayerList)
+            {
+                int IDCode = file.Player.GetModPlayer<SaveModifyPlayer>().uniqueID;
+                if (tag.TryGet("plrdata" + IDCode, out TagCompound data))
+                {
+                    plrSaver.Add(IDCode, new PlrData(data));
+                }
             }
-               
-            if (tag.TryGet("velocity" + IDCode, out Vector2 velocity))
-                velocityLoader= velocity;
-            if (tag.TryGet("Life" + IDCode, out int life))
-                lifeLoader = life;
-            if (tag.TryGet("Mana" + IDCode, out int mana))
-                manaLoader = mana;
+            loadingData = true;
+            #endregion
+            #region Item
+            for (int n = 0; n < Main.maxItems; n++)
+            {
+                if (tag.TryGet("item_" + n, out TagCompound data))
+                {
+                    itemData[n] = data;
+                    //Console.WriteLine((n, data.Get<string>("name")));
+                }
+                else 
+                {
+                    itemData[n] = null;
+                }
+            }
             #endregion
         }
         public override void OnWorldLoad()
@@ -90,19 +134,34 @@ namespace VirtualDream.Contents.StarBound.SaveModify
             {
                 uniqueID = Main.rand.Next(int.MaxValue);
             }
+            if (uniqueID == -1) uniqueID = Main.rand.Next(int.MaxValue);
         }
         public override void ResetEffects()
         {
-            if (SaveModifySystem.loadingData)
+            if (Player.whoAmI >= 0 && Player.whoAmI < 256 && !Main.gameMenu)
             {
-                Player.position = SaveModifySystem.positionLoader;
-                Player.velocity = SaveModifySystem.velocityLoader;
-                Player.statLife = SaveModifySystem.lifeLoader;
-                Player.statMana = SaveModifySystem.manaLoader;
-                //SaveModifySystem.loadingData = false;
+                if (SaveModifySystem.loadingData)
+                {
+                    if (SaveModifySystem.plrSaver.TryGetValue(uniqueID, out SaveModifySystem.PlrData data))
+                    {
+                        Player.position = data.position;
+                        Player.velocity = data.velocity;
+                        Player.statLife = data.life;
+                        Player.statMana = data.mana;
+                    }
+                    for (int n = 0; n < 400; n++)
+                    {
+                        if (SaveModifySystem.itemData[n] == null) continue;
+                        ItemIO.Load(Main.item[n], SaveModifySystem.itemData[n]);
+                        Main.item[n].active = true;
+                        Main.item[n].position = SaveModifySystem.itemData[n].Get<Vector2>("position");
+                        //Console.WriteLine((n, Main.item[n].Name, Main.item[n].active));
+                    }
+                    SaveModifySystem.loadingData = false;
+                }
+                //Main.NewText(SaveModifySystem.PlrName);
             }
-            Main.NewText("你是一个一个一个");
-            Main.NewText(SaveModifySystem.PlrName);
+
 
         }
         public override void OnEnterWorld(Player player)

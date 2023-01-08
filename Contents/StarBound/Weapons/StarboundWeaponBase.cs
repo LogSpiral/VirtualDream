@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader.IO;
 
 namespace VirtualDream.Contents.StarBound.Weapons
@@ -27,6 +28,19 @@ namespace VirtualDream.Contents.StarBound.Weapons
     /// </summary>
     public abstract class StarboundWeaponBase : ModItem
     {
+        public Player owner
+        {
+            get
+            {
+                if (Main.netMode == NetmodeID.SinglePlayer) return Main.LocalPlayer;
+                //我不打算适配联机，我也不知道我下面在写什么寄吧。
+                foreach (var plr in Main.player)
+                {
+                    if (plr.HeldItem.GetHashCode() == Item.GetHashCode()) return plr;
+                }
+                return null;
+            }
+        }
         public const float defaultBrokenHurt = 150000f;
         public const int defaultBrokenKill = 500;
 
@@ -120,10 +134,10 @@ namespace VirtualDream.Contents.StarBound.Weapons
             var hurtTip = new TooltipLine(Mod, "Hurt!", $"目前这把武器已经造成了{hurtCount}点伤害");
             var colorStart = Color.Gray;
             var colorMax = Color.Orange;
-            if (MaxLevel) 
+            if (MaxLevel)
             {
                 colorStart = Color.Orange;
-                colorMax = Color.Lerp(Color.Orange,Color.Red, 0.5f + MathF.Sin((float)IllusionBoundModSystem.ModTime / 120f * MathHelper.Pi) * .5f);
+                colorMax = Color.Lerp(Color.Orange, Color.Red, 0.5f + MathF.Sin((float)IllusionBoundModSystem.ModTime / 120f * MathHelper.Pi) * .5f);
             }
             hurtTip.OverrideColor = Color.Lerp(colorStart, colorMax, MathHelper.Clamp(Terraria.Utils.GetLerpValue(0, UpgradeNeed.hurt + 1, hurtCount, true), 0, 1));
             var killTip = new TooltipLine(Mod, "kill!", $"目前这把武器已经夺去{killCount}个生命");
@@ -158,6 +172,11 @@ namespace VirtualDream.Contents.StarBound.Weapons
         //5 残品
         public virtual T UpgradeValue<T>(params T[] values)
         {
+            if (weapon == null)
+            {
+                Main.NewText("兄啊你武器null了，快来星界弹幕基类瞅瞅!");
+                return default;
+            }
             try
             {
                 if (weapon.BossDrop) return values[(byte)weapon.State];
@@ -181,7 +200,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
         {
             if (source is EntitySource_StarboundWeapon starboundWeapon)
             {
-                weapon = starboundWeapon.Item;
+                weapon = starboundWeapon.StarboundWeapon;
             }
             if (source is EntitySource_ItemUse_WithAmmo _source)
             {
@@ -239,21 +258,42 @@ namespace VirtualDream.Contents.StarBound.Weapons
         public Texture2D projTex => TextureAssets.Projectile[Projectile.type].Value;
 
     }
-    public class EntitySource_StarboundWeapon : IEntitySource
+    public class EntitySource_StarboundWeapon : EntitySource_ItemUse_WithAmmo
     {
-        public readonly Entity Entity;
+        //public readonly Entity Entity;
 
-        public readonly StarboundWeaponBase Item;
+        //public readonly StarboundWeaponBase starboundWeapon;
+        //public string Context
+        //{
+        //    get;
+        //}
 
-        public string Context
+        //public EntitySource_StarboundWeapon(StarboundWeaponBase item, string context = null)
+        //{
+        //    starboundWeapon = item;
+        //    Context = context;
+        //}
+        public StarboundWeaponBase StarboundWeapon
         {
-            get;
+            get
+            {
+                weapon ??= Item.ModItem as StarboundWeaponBase;
+                if (weapon == null)
+                {
+                    Main.NewText("兄啊你武器null了");
+                }
+                return weapon;
+            }
+            set => weapon = value;
         }
-
-        public EntitySource_StarboundWeapon(StarboundWeaponBase item, string context = null)
+        StarboundWeaponBase weapon;
+        public EntitySource_StarboundWeapon(Entity entity, Item item, int ammoItemIdUsed, string context = null) : base(entity, item, ammoItemIdUsed, context)
         {
-            Item = item;
-            Context = context;
+
+        }
+        public EntitySource_StarboundWeapon(StarboundWeaponBase item, string context = null) : base(item.owner, item.Item, 0, context)
+        {
+            weapon = item;
         }
     }
 }

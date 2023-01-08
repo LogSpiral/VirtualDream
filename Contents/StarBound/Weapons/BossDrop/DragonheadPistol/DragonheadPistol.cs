@@ -351,6 +351,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 42 + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * Player.direction * 7;
         public override void OnRelease(bool charged, bool left)
         {
+            if (controlState == 3) return;
             if (left)
             {
                 if (Player.PickAmmo(sourceItem, out int _, out float _, out int _, out float _, out int _))
@@ -376,6 +377,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
                     Projectile.timeLeft = 10;
                     controlState = 3;
                 }
+            }
+            else 
+            {
+                Projectile.timeLeft = 10;
+                controlState = 3;
             }
         }
         public override float Factor

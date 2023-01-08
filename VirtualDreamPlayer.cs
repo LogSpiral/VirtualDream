@@ -35,7 +35,7 @@ namespace VirtualDream
             //    //Player.statLife -= 1;
             //    lifeCost++;
             //}
-            CombatText.NewText(Player.Hitbox, Color.Purple, Player.statDefense);
+            //CombatText.NewText(Player.Hitbox, Color.Purple, Player.statDefense);
             if (lifeCost > 0) Player.HealEffect(-lifeCost);
             Player.statLife -= lifeCost;
             poisionLifeCostPerSecond = 0;

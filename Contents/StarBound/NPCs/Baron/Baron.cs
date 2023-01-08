@@ -4,6 +4,7 @@ using Terraria.GameContent.Bestiary;
 using System.Collections.Generic;
 using ReLogic.Content;
 using VirtualDream.Contents.StarBound.Materials;
+using Terraria.ModLoader.IO;
 
 namespace VirtualDream.Contents.StarBound.NPCs.Baron
 {
