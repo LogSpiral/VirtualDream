@@ -11,8 +11,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("日炎刀啊啊啊啊啊啊啊啊啊啊啊");
-            Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n由阿斯拉诺克斯造的是初版，后来她开源了......我的意思是，她公布了制作方法，方法很简单:搜集好材料然后怼到秘银砧上面(\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            DisplayName.SetDefault("日炎刀");
+            Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//由阿斯拉诺克斯造的是初版，后来她开源了......我的意思是，她公布了制作方法，方法很简单:搜集好材料然后怼到秘银砧上面(
 
         }
         //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
@@ -113,7 +113,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("日炎刀EX啊啊啊啊");
+            DisplayName.SetDefault("日炎刀EX");
         }
         //public override void UseStyle(Player player)
         //{
@@ -185,7 +185,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void SetStaticDefaults()
         {
             Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯化日炎刀与绝唱机甲日炎刀交汇的辉光，请确保你能驾驭它的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//二次强化的日炎刀，是由阿斯拉诺克斯制造的吗？\n
-            DisplayName.SetDefault("日炎刀NEO啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊");
+            DisplayName.SetDefault("日炎刀NEO");
         }
         public override void SetDefaults()
         {
@@ -969,6 +969,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
 
                     }
+                    var num = projectile.ai[0];
                     SoundEngine.PlaySound(SoundID.Item74);
 
                     var p1 = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, projectile.type, projectile.damage, 5f, projectile.owner, 1);
@@ -1045,6 +1046,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             if ((int)projectile.ai[0] == 2 || (int)projectile.ai[0] == 5)
             {
                 projectile.timeLeft = 31;
+                projectile.velocity = default;
+                projectile.tileCollide = false;
             }
             return false;
         }
