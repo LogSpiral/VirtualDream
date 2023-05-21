@@ -449,7 +449,7 @@ namespace VirtualDream
             }
             currentWindSpeed = MathHelper.Lerp(currentWindSpeed, WindSpeedGeter, 0.05f);
 
-            if (IllusionBoundModSystem.ModTime2 % 1200 == 0) windToLeft = !windToLeft;
+            //if (IllusionBoundModSystem.ModTime2 % 1200 == 0) windToLeft = !windToLeft;
             if (Main.netMode == NetmodeID.SinglePlayer)
             {
                 if (Math.Abs(Main.LocalPlayer.velocity.X) < 32 * Math.Abs(currentWindSpeed))
@@ -554,7 +554,7 @@ namespace VirtualDream
                 int num3 = _meteors[j].FrameCounter / 3;
                 _meteors[j].FrameCounter = (_meteors[j].FrameCounter + 1) % 12;
                 if (rectangle.Contains((int)position.X, (int)position.Y))
-                    spriteBatch.Draw(_meteorTexture.Value, position, new Rectangle(0, num3 * (_meteorTexture.Height() / 4), _meteorTexture.Width(), _meteorTexture.Height() / 4), Color.White * scale * _fadeOpacity, 0f, Vector2.Zero, value4.X * 5f * _meteors[j].Scale, SpriteEffects.None, 0f);
+                    spriteBatch.Draw(_meteorTexture.Value, position, new Rectangle(0, num3 * (_meteorTexture.Height() / 4), _meteorTexture.Width(), _meteorTexture.Height() / 4), Color.White * scale * _fadeOpacity * .25f, 0f, Vector2.Zero, value4.X * 5f * _meteors[j].Scale, SpriteEffects.None, 0f);
             }
         }
 

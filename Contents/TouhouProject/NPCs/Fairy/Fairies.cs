@@ -1295,19 +1295,20 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
             ProjectileID.Sets.TrailingMode[projectile.type] = 0;
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 10;
         }
-        //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-        //{
-        //	spriteBatch.End();
-        //	spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, projectile.width, projectile.height), Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
-        //	if ((int)projectile.ai[1] == 2)
-        //	{
-        //		DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Nebula, ShaderTailStyle.Dust);
-        //	}
-        //	spriteBatch.End();
-        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	return false;
-        //}
+        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, 32, 32), Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
+            if ((int)projectile.ai[1] == 2)
+            {
+                Main.spriteBatch.DrawShaderTail(projectile, IllusionBoundMod.HeatMap[5], IllusionBoundMod.AniTexes[10], IllusionBoundMod.AniTexes[6]);
+                //DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Nebula, ShaderTailStyle.Dust);
+            }
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            return false;
+        }
     }
     public class DropBullet : BulletProjectile
     {
@@ -1939,7 +1940,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, projectile.width, projectile.height), Color.White with { A = 0 } * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
+            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, 32, 32), Color.White with { A = 0 } * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
             if ((int)projectile.ai[1] == 2)
             {
                 VirtualDreamDrawMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Solar, ShaderTailStyle.Light);

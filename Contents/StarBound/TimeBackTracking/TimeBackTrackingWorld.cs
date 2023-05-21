@@ -94,7 +94,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 )
         };
         public override bool NoPlayerSaving => base.NoPlayerSaving;
-        public override bool NormalUpdates => base.NormalUpdates;
+        public override bool NormalUpdates => true;
         public override bool ShouldSave => base.ShouldSave;
         public int timeLeft;
         public override void DrawMenu(GameTime gameTime)

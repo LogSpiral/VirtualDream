@@ -1,6 +1,8 @@
 ﻿using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Terraria.Audio;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
 using static VirtualDream.Utils.VirtualDreamDrawMethods;
@@ -188,6 +190,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         //}
         public override void AI()
         {
+
             if (musics.Item1 != 0)
             {
                 Music = (byte)state < 7 || (byte)state > 18 ? musics.Item1 : musics.Item2;
@@ -342,10 +345,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     #endregion
 
             }
-
-
         }
-        private void _0() 
+        private void _0()
         {
             ai1++;
             if (ai1 >= 420)
@@ -369,7 +370,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     }
                 }
         }
-        private void _1_1() 
+        private void _1_1()
         {
             var timer = (int)ai1;
             int direct = timer >= 10 ? (timer - 10) / 20 % 2 : 0;
@@ -489,9 +490,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
             NPC.damage = 0;
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-            if ((int)ai1 % 20 == 0)
+            if ((int)ai1 % 80 == 0)
             {
-                SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)));
+                int rand = Main.rand.Next(-2, 3);
+                for (int n = 0; n < 6 + rand; n++)
+                    SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + (/*(int)ai1 % 60 < ai1 / 13f ? default :*/ Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, Main.rand.NextFloat(0, 960))));
             }
             var counter = (int)ai1 % 120;
             if (counter == 0)
@@ -3852,6 +3855,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         public Player visualPlayer;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            //if (Main.gamePaused)
+            //    Main.audioSystem.PauseAll();
+
             if (state != 0)
             {
                 var tex = Main.Assets.Request<Texture2D>("Images/Misc/SolarSky/Meteor").Value;
@@ -4264,7 +4270,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     if ((int)projectile.ai[1] == 1) rotator = MathHelper.Pi / 192;
                     projectile.oldRot[0] = projectile.velocity.ToRotation() + rotator * (offset / timeToFly).Lerp(-180, 90, true);
                 }
-                else if (updateOldDataMyself) 
+                else if (updateOldDataMyself)
                 {
                     for (int n = 59; n > 3; n--)
                     {

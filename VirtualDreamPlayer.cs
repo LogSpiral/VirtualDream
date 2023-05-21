@@ -1,4 +1,5 @@
 ﻿using ReLogic.Graphics;
+using System;
 using Terraria.DataStructures;
 
 namespace VirtualDream

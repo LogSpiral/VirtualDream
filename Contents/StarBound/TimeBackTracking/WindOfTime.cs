@@ -14,7 +14,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             Tooltip.SetDefault("这是一个能扭曲时空的怀表\n没有人知道这货究竟是怎么工作的，而你也不知道自己是怎么鬼使神差造出这玩意的");//\"堆积一切又风化一切的时之风，孕育一切又埋没一切的星之河\"
             DisplayName.SetDefault("时之风");
         }
-        public override string Texture => "Terraria/Images/Item_" + Terraria.ID.ItemID.PlatinumWatch;
+        //public override string Texture => "Terraria/Images/Item_" + Terraria.ID.ItemID.PlatinumWatch;
         public int chargeCount;
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

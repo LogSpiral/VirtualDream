@@ -110,8 +110,8 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons
             //        //	t.type = TileID.Glass;
             //        //	t.wall = WallID.Glass;
             //        //}
-            //        t.liquid = 0;
-            //        t.wall = 0;
+            //        t.LiquidAmount = 0;
+            //        t.WallType = 0;
             //        player.PickTile(v.X, v.Y, 10000);
             //    }
             //}

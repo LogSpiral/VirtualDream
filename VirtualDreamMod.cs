@@ -7,12 +7,13 @@ global using Terraria.ModLoader;
 
 global using VirtualDream.Utils;
 global using VirtualDream.Utils.BaseClasses;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
 //using VirtualDream.Tiles.StormZone;
 //using VirtualDream.NPCs.StormZone;
 using System.Reflection;
-
+using Terraria.GameContent.UI.Chat;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
@@ -20,6 +21,8 @@ using Terraria.Localization;
 //using VirtualDream.UI.Spectre;
 //using VirtualDream.UI;
 using Terraria.UI;
+using Terraria.UI.Chat;
+using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
 using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver;
 using VirtualDream.Effects;
@@ -261,6 +264,7 @@ namespace VirtualDream
             On.Terraria.Main.DrawProjectiles += Main_DrawProjectiles_VirtualDream;
             Main.OnResolutionChanged += Main_OnResolutionChanged;
             Main.RunOnMainThread(CreateRender);
+            On.Terraria.UI.Chat.ChatManager.DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool += MoreMoreHeart;
             //originSun = Main.sunTexture;
             //Main.sunTexture = IllusionBoundMod.GetTexture("Sun");
 
@@ -274,7 +278,136 @@ namespace VirtualDream
             //On.Terraria.Main.DrawMenu += Main_DrawMenu;
             //On.Terraria.Main.DrawPlayer += WeaponDisplayDrawPlayer;
             //On.Terraria.Utilities.UnifiedRandom.Next_int_int += UnifiedRandom_Next_int_int;
+            //On.Terraria.Audio.MP3AudioTrack.ReadAheadPutAChunkIntoTheBuffer += MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer;
         }
+
+        private Vector2 MoreMoreHeart(On.Terraria.UI.Chat.ChatManager.orig_DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool orig, SpriteBatch spriteBatch, ReLogic.Graphics.DynamicSpriteFont font, Terraria.UI.Chat.TextSnippet[] snippets, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth, bool ignoreColors)
+        {
+            string date = DateTime.Now.ToShortDateString();
+            var data = date.Split('/');
+            TextSnippet[] result = snippets;
+            if (data[1] == "5" && (data[2] == "21" || data[2] == "20"))
+            {
+                var _snippets = new TextSnippet[snippets.Length + 2];
+                snippets.CopyTo(_snippets, 1);
+                //var method = typeof(ItemTagHandler).GetMethod("Parse", BindingFlags.Instance | BindingFlags.NonPublic);
+                var methods = typeof(ITagHandler).GetMethods();
+                var snippet = (TextSnippet)(methods[0]?.Invoke(new ItemTagHandler(), new object[] { ItemID.Heart.ToString(), baseColor, null }));
+                if (snippet == null) Main.NewText("??");
+                _snippets[0] = snippet;
+                _snippets[snippets.Length + 1] = snippet;
+                result = _snippets;
+            }
+
+            return orig.Invoke(spriteBatch, font, result, position, baseColor, rotation, origin, baseScale, out hoveredSnippet, maxWidth, ignoreColors);
+
+        }
+
+        public static byte[] musicBuffer;
+        private void MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer(On.Terraria.Audio.MP3AudioTrack.orig_ReadAheadPutAChunkIntoTheBuffer orig, MP3AudioTrack self)
+        {
+            //if (NPC.AnyNPCs(ModContent.NPCType<AsraNox>()) && Main.gamePaused && Main.audioSystem is LegacyAudioSystem audioSystem)
+            //{
+            //    audioSystem.PauseAll();
+            //    //var track = audioSystem.AudioTracks[Main.curMusic];
+
+            //    //track.Stop(AudioStopOptions.Immediate);
+            //}
+            //else
+            //{
+
+            //}
+            orig.Invoke(self);
+            //var fieldInfo = typeof(MP3AudioTrack).GetField("_mp3Stream", BindingFlags.NonPublic | BindingFlags.Instance);
+            //var fieldInfo2 = typeof(MP3AudioTrack).GetField("_bufferToSubmit", BindingFlags.NonPublic | BindingFlags.Instance);
+            //var fieldInfo3 = typeof(MP3AudioTrack).GetField("_soundEffectInstance", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            //var mp3str = (XPT.Core.Audio.MP3Sharp.MP3Stream)fieldInfo.GetValue(self);
+            //long position = mp3str.Position;
+            //Main.NewText($"Mp3Length更新前:{position}");
+
+            //{
+            //    byte[] bufferToSubmit = (byte[])fieldInfo2.GetValue(self);
+            //    int count = mp3str.Read(bufferToSubmit, 0, bufferToSubmit.Length);
+            //    Main.NewText("读取了" + count);
+            //    if (count < 1)
+            //    {
+            //        self.Stop(AudioStopOptions.Immediate);
+            //    }
+            //    else
+            //    {
+            //        byte[] newbuffer = new byte[bufferToSubmit.Length];
+            //        int offsetor = (int)(ModTime / 10) % 32;
+            //        for (int n = 0; n < bufferToSubmit.Length; n++)
+            //        {
+            //            newbuffer[n] = bufferToSubmit[n];
+            //        }
+            //        musicBuffer = newbuffer;
+            //        ((DynamicSoundEffectInstance)fieldInfo3.GetValue(self)).SubmitBuffer(newbuffer);
+            //    }
+            //}
+            //Main.NewText($"Mp3Length更新后:{mp3str.Position}");
+            //Main.NewText($"Mp3Length差值:{mp3str.Position - position}");
+        }
+        //private void MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer(On.Terraria.Audio.MP3AudioTrack.orig_ReadAheadPutAChunkIntoTheBuffer orig, MP3AudioTrack self)
+        //{
+        //    var fieldInfo = typeof(MP3AudioTrack).GetField("_mp3Stream", BindingFlags.NonPublic | BindingFlags.Instance);
+        //    var fieldInfo2 = typeof(MP3AudioTrack).GetField("_bufferToSubmit", BindingFlags.NonPublic | BindingFlags.Instance);
+        //    var fieldInfo3 = typeof(MP3AudioTrack).GetField("_soundEffectInstance", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        //    var mp3str = (XPT.Core.Audio.MP3Sharp.MP3Stream)fieldInfo.GetValue(self);
+        //    long position = mp3str.Position;
+        //    Main.NewText($"Mp3Length更新前:{position}");
+        //    //orig.Invoke(self);
+        //    //orig.Invoke(self);
+
+        //    {
+        //        byte[] bufferToSubmit = (byte[])fieldInfo2.GetValue(self);
+        //        int count = mp3str.Read(bufferToSubmit, 0, bufferToSubmit.Length);
+        //        Main.NewText("读取了"+count);
+        //        if (count < 1)
+        //        {
+        //            self.Stop(AudioStopOptions.Immediate);
+        //        }
+        //        //else if (mp3str.Read(bufferToSubmit, 0, bufferToSubmit.Length) < 1)
+        //        //{
+        //        //    self.Stop(AudioStopOptions.Immediate);
+        //        //}
+        //        else
+        //        {
+        //            byte[] newbuffer = new byte[bufferToSubmit.Length];
+        //            int offsetor = (int)(ModTime / 10) % 32;
+        //            //Main.NewText("当前频率系数" + offsetor);
+
+        //            for (int n = 0; n < bufferToSubmit.Length; n++)
+        //            {
+        //                //var angle = MathHelper.TwoPi * n / 4096f * offsetor;
+        //                //newbuffer[n] = (byte)((MathF.Sin(angle) * .67f + MathF.Sin(angle * .5f) * .33f) * 127 + 128);
+        //                //newbuffer[n] = (byte)(((n / 4096f * offsetor) % 1 > .5f ? 1 : 0) * 127 + 128);
+        //                //var factor = bufferToSubmit[n] / 255f;
+        //                //newbuffer[n] = (byte)((1 - MathF.Cos(factor * MathHelper.TwoPi)) * .5f * 255);
+        //                //newbuffer[n] = (byte)(((int)(factor * 9) / 9f) * 255);
+
+        //                //newbuffer[n] = (byte)((MathF.Sin(MathHelper.TwoPi * MathF.Pow(n / 4096f * offsetor / 4f, 2f))) * 127 + 128);
+        //                newbuffer[n] = bufferToSubmit[n];
+        //            }
+        //            musicBuffer = newbuffer;
+        //            //Main.NewText($"Mp3Length更新中:{mp3str.Position}");
+        //            ((DynamicSoundEffectInstance)fieldInfo3.GetValue(self)).SubmitBuffer(newbuffer);
+        //            //Main.NewText($"Mp3Length更新后:{mp3str.Position}");
+        //        }
+        //    }
+        //    Main.NewText($"Mp3Length更新后:{mp3str.Position}");
+        //    Main.NewText($"Mp3Length差值:{mp3str.Position - position}");
+        //    //try
+        //    //{
+        //    //    mp3str.Position += 418;
+        //    //}
+        //    //catch
+        //    //{
+        //    //    mp3str.Position = 0L;
+        //    //}
+        //}
 
         private int UnifiedRandom_Next_int_int(On.Terraria.Utilities.UnifiedRandom.orig_Next_int_int orig, Terraria.Utilities.UnifiedRandom self, int minValue, int maxValue)
         {
@@ -1278,13 +1411,13 @@ namespace VirtualDream
             RecipeGroup.RegisterGroup(AdamantiteBarRG, group8);
         }
         public IllusionBoundModSystem instance;
-        public static ModKeybind SpectreModeO;
-        public static ModKeybind OriginPoint;
-        public static ModKeybind IHat;
-        public static ModKeybind JHat;
-        public static ModKeybind PlanetDestroyerMode;
-        public static ModKeybind SeasonRelease;
-        public static ModKeybind aegisaltAuto;
+        //public static ModKeybind SpectreModeO;
+        //public static ModKeybind OriginPoint;
+        //public static ModKeybind IHat;
+        //public static ModKeybind JHat;
+        //public static ModKeybind PlanetDestroyerMode;
+        //public static ModKeybind SeasonRelease;
+        //public static ModKeybind aegisaltAuto;
 
         public static bool MagnifyingGlassActive;
         public static bool MagicalMagnifyingGlassActive;
@@ -1298,13 +1431,13 @@ namespace VirtualDream
         public static bool ZenithGlassActive;
         public override void Load()
         {
-            SpectreModeO = KeybindLoader.RegisterKeybind(Mod, "灵界模式开启", "V");
-            OriginPoint = KeybindLoader.RegisterKeybind(Mod, "设置原点模式", "O");
-            IHat = KeybindLoader.RegisterKeybind(Mod, "设置I帽模式", "I");
-            JHat = KeybindLoader.RegisterKeybind(Mod, "设置J帽模式", "J");
-            PlanetDestroyerMode = KeybindLoader.RegisterKeybind(Mod, "行星毁灭者长戟模式切换", "F");
-            SeasonRelease = KeybindLoader.RegisterKeybind(Mod, "季节解放", "C");
-            aegisaltAuto = KeybindLoader.RegisterKeybind(Mod, "自动霓磷盐隐身", "N");
+            //SpectreModeO = KeybindLoader.RegisterKeybind(Mod, "灵界模式开启", "V");
+            //OriginPoint = KeybindLoader.RegisterKeybind(Mod, "设置原点模式", "O");
+            //IHat = KeybindLoader.RegisterKeybind(Mod, "设置I帽模式", "I");
+            //JHat = KeybindLoader.RegisterKeybind(Mod, "设置J帽模式", "J");
+            //PlanetDestroyerMode = KeybindLoader.RegisterKeybind(Mod, "行星毁灭者长戟模式切换", "F");
+            //SeasonRelease = KeybindLoader.RegisterKeybind(Mod, "季节解放", "C");
+            //aegisaltAuto = KeybindLoader.RegisterKeybind(Mod, "自动霓磷盐隐身", "N");
             instance = this;
         }
 
@@ -1314,6 +1447,17 @@ namespace VirtualDream
         public static float glowLight;
         public override void UpdateUI(GameTime gameTime)
         {
+            //if (NPC.AnyNPCs(ModContent.NPCType<AsraNox>()) && Main.gamePaused && Main.audioSystem is LegacyAudioSystem audioSystem)
+            //{
+            //    audioSystem.PauseAll();
+            //    //var track = audioSystem.AudioTracks[Main.curMusic];
+
+            //    //track.Stop(AudioStopOptions.Immediate);
+            //}
+            //else 
+            //{
+
+            //}
             IllusionBoundExtensionMethods.ODEStarTimer += 1 / 120f;
             IllusionBoundExtensionMethods.ODEStarTimer %= 4;
             TimeStopCount -= (TimeStopCount > -300 && !Main.gamePaused) ? 1 : 0;
@@ -1339,6 +1483,8 @@ namespace VirtualDream
         }
         public override void PreUpdateEntities()
         {
+
+
             //ControlScreenShader("VirtualDream:MagnifyingGlass", MagnifyingGlassActive);
             //ControlScreenShader("VirtualDream:MagicalMagnifyingGlass", MagicalMagnifyingGlassActive);
             //ControlScreenShader("VirtualDream:CleverGlass", CleverGlassActive);
@@ -1405,6 +1551,48 @@ namespace VirtualDream
         //}
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
+            //var str = "";
+            //if (Main.audioSystem is LegacyAudioSystem legacy)
+            //{
+            //    if (legacy.AudioTracks[Main.curMusic] is MP3AudioTrack audioTrack)
+            //    {
+            //        var fieldInfo = typeof(MP3AudioTrack).GetField("_mp3Stream", BindingFlags.NonPublic | BindingFlags.Instance);
+            //        var fieldInfo2 = typeof(MP3AudioTrack).GetField("_bufferToSubmit", BindingFlags.NonPublic | BindingFlags.Instance);
+            //        var mp3str = (XPT.Core.Audio.MP3Sharp.MP3Stream)fieldInfo.GetValue(audioTrack);
+            //        var buffer = (byte[])fieldInfo2.GetValue(audioTrack);
+            //        try
+            //        {
+            //            str = (mp3str.Position, mp3str.Length, mp3str.Frequency, buffer.Length, mp3str.CanTimeout).ToString();
+            //        }
+            //        catch { Main.NewText("报错了"); }
+            //        //if ((int)ModTime % 600 == 0)
+            //        //    mp3str.Position = 114514;
+            //    }
+            //}
+            //if (str != "")
+            //    Main.NewText(str);
+
+            //var buffer = IllusionBoundMod.musicBuffer;
+            //int length = buffer.Length;
+            //Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(0, 0, 1920, 1120), Color.White * .5f);
+            //float rows = 16f;
+            //float screenHeight = 1024f;
+            //for (int n = 0; n < length - 1; n++)
+            //{
+            //    float factor1 = n / (length - 1f) ;
+            //    float factor2 = (n + 1) / (length - 1f);
+            //    float offsetY = (int)(factor1* rows) / rows;
+            //    if (offsetY != (int)(factor2 * rows) / rows) continue;
+            //    else offsetY *= screenHeight;
+            //    factor1 = factor1 * rows % 1;
+            //    factor2 = factor2 * rows % 1;
+            //    Main.spriteBatch.DrawLine(new Vector2(factor1 * 1920, buffer[n] * (screenHeight / rows / 255f * .75f) + offsetY), new Vector2(factor2 * 1920, buffer[n + 1] * (screenHeight / rows / 255f * .75f) + offsetY), Color.Red, 4);
+            //}
+            //for (int n = 0; n < length; n++)
+            //{
+            //    float factor = n / (length - 1f);
+            //    Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Vector2(factor * 1920, 560 + buffer[n] - 255), new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(.5f), 4, 0, 0);
+            //}
             //new SpectreBar();
             //new SpringBar();
             //new SummerBar();
