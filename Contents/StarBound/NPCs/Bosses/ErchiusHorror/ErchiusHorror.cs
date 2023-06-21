@@ -1,8 +1,7 @@
-﻿using System;
+﻿using LogSpiralLibrary;
+using System;
 using System.Collections.Generic;
 using Terraria.ID;
-
-using static VirtualDream.Utils.IllusionBoundExtensionMethods;
 
 namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
 {
@@ -119,7 +118,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
 
             if ((npc.Center - targetPlayer.Center).Length() > 1200f && npc.ai[0] == 0)
             {
-                LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 480), MyDustId.PinkBubble);
+                OtherMethods.LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 480), MyDustId.PinkBubble);
                 npc.Center = targetPlayer.Center - new Vector2(0, 480);
                 for (int n = 0; n < 72; n++)
                 {
@@ -281,7 +280,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
                 npc.ai[0] = (int)npc.ai[0] / 900 * 900;
                 npc.ai[0] -= npc.ai[0] >= 900 ? 900 : 0;
-                LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 240), MyDustId.PinkBubble);
+                OtherMethods.LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 240), MyDustId.PinkBubble);
                 npc.Center = targetPlayer.Center - new Vector2(0, 240);
                 for (int n = 0; n < 72; n++)
                 {
@@ -313,8 +312,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 {
                     float a = -50 + (float)Math.Sqrt(4 * l * l - 30000) / 2;
                     float r = (float)Math.Acos((a * a - l * l - 10000) / (-200 * l)) * (npc.ai[1] % 2 == 1 ? -1f : 1f);
-                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorRotStopLaser>(), 55 * damageScaler, 0, Main.myPlayer, GetRad(targetPlayer.Center - npc.Center) + r + MathHelper.Pi / 6, npc.ai[1] % 2 == 1 ? -1f : 1f).frameCounter = npc.whoAmI;//+ MathHelper.Pi / 12 * (npc.ai[1] % 2 == 1 ? -1f : 1f)
-                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorRotStopLaser>(), 55 * damageScaler, 0, Main.myPlayer, GetRad(targetPlayer.Center - npc.Center) + r, npc.ai[1] % 2 == 1 ? -1f : 1f).frameCounter = npc.whoAmI;//npc.Center - targetPlayer.Center
+                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorRotStopLaser>(), 55 * damageScaler, 0, Main.myPlayer, (targetPlayer.Center - npc.Center).ToRotation() + r + MathHelper.Pi / 6, npc.ai[1] % 2 == 1 ? -1f : 1f).frameCounter = npc.whoAmI;//+ MathHelper.Pi / 12 * (npc.ai[1] % 2 == 1 ? -1f : 1f)
+                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorRotStopLaser>(), 55 * damageScaler, 0, Main.myPlayer, (targetPlayer.Center - npc.Center).ToRotation() + r, npc.ai[1] % 2 == 1 ? -1f : 1f).frameCounter = npc.whoAmI;//npc.Center - targetPlayer.Center
                 }
             }
             if ((int)npc.ai[0] % (30 - 5 * Stage) == 0)
@@ -537,7 +536,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
                 if (npc.life < npc.lifeMax / 100 && oldLife > npc.lifeMax / 100 && npc.life < oldLife)
                 {
-                    npc.ai.ResetArray();
+                    Array.Clear(npc.ai);
                     npc.life = npc.lifeMax / 100 - 1;
                 }
                 npc.ai[0]++;
@@ -610,7 +609,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             else
             {
-                Vector2 offset = IllusionBoundExtensionMethods.RandVec(32);
+                Vector2 offset = Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32);
                 rectangle1 = new Rectangle(0, 442, 221, 221);
                 spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.Center - Main.screenPosition, new Rectangle(0, 330, 55, 55), Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(55, 55) * 0.5f, size, 0, 0);
                 //spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Eye"), npc.Center + Vector2.Normalize(targetPlayer.Center - npc.Center) * ((targetPlayer.Center - npc.Center).Length() * 7.5f / ((targetPlayer.Center - npc.Center).Length() + 1)) - Main.screenPosition, rectangle, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(55, 55) * 0.5f, 2f, 0, 0);
@@ -797,7 +796,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //	Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         //}
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(r.Create3DRotation(DirOf3DRotation.z_Axis_P) * ((float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi).Create3DRotation(DirOf3DRotation.x_Axis_P));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(r) * Matrix.CreateRotationX((float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -867,7 +866,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, set[n].start - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 24, 0, 0);
                 set[n].unit = u;
             }
-            spriteBatch.DrawQuadraticLaser_PassNormal(set, Main.hslToRgb(0.8f, 1, 0.75f) * factor, 3200, width, styleIndex: 1);
+            spriteBatch.DrawQuadraticLaser_PassNormal(set, Main.hslToRgb(0.8f, 1, 0.75f) * factor, LogSpiralLibraryMod.AniTex[1].Value, 3200, width);
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);//IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath+"StrawBerryArea")//IllusionBoundMod.MagicZone[2]
             return false;
@@ -1242,7 +1241,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //	Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         //}
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (((v * size).ApplyMatrix(((float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi).Create3DRotation(DirOf3DRotation.x_Axis_P)) - new Vector3(200, 0, 0)).ApplyMatrix((projectile.ai[1] * MathHelper.TwoPi / 3).Create3DRotation(DirOf3DRotation.z_Axis_P)) + new Vector3(200, 0, 0)).ApplyMatrix(r.Create3DRotation(DirOf3DRotation.z_Axis_P));//Main.time////size *//* ModContent.GetInstance<IllusionConfigClient>().offSetSize
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (((v * size).ApplyMatrix(Matrix.CreateRotationX(((float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi))) - new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ((projectile.ai[1] * MathHelper.TwoPi / 3))) + new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ(r));//Main.time////size *//* ModContent.GetInstance<IllusionConfigClient>().offSetSize
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1317,7 +1316,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                                                                                                                                                                 //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, set[n].start - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 24, 0, 0);
                 set[n].unit = (MathHelper.TwoPi / 6 * n + projectile.ai[0]).ToRotationVector2();
             }
-            spriteBatch.DrawQuadraticLaser_PassNormal(set, Main.hslToRgb(0.8f, 1, 0.75f) * factor, 3200, width, styleIndex: 1);
+            spriteBatch.DrawQuadraticLaser_PassNormal(set, Main.hslToRgb(0.8f, 1, 0.75f) * factor, LogSpiralLibraryMod.AniTex[1].Value, 3200, width);
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);
             return false;
@@ -1660,7 +1659,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(projectile.ai[0].Create3DRotation(DirOf3DRotation.z_Axis_P) * (r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi).Create3DRotation(DirOf3DRotation.x_Axis_P));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1745,7 +1744,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             //}
 
 
-            spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center + u * 30, u, Main.hslToRgb(0.8f, 1, 0.75f), 3200 * MathHelper.Clamp(360 - projectile.timeLeft, 0, 30) / 30f, width, styleIndex: 10);
+            spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center + u * 30, u, Main.hslToRgb(0.8f, 1, 0.75f), LogSpiralLibraryMod.AniTex[10].Value, 3200 * MathHelper.Clamp(360 - projectile.timeLeft, 0, 30) / 30f, width);
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);//IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath+"StrawBerryArea")//IllusionBoundMod.MagicZone[2]
             return false;
@@ -1910,7 +1909,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(projectile.ai[0].Create3DRotation(DirOf3DRotation.z_Axis_P) * (r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi).Create3DRotation(DirOf3DRotation.x_Axis_P));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1967,7 +1966,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             var factor = projectile.timeLeft <= 30 ? (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 30f)) : 0.2f * MathHelper.Clamp(90 - projectile.timeLeft, 0, 30) / 30f;
             var width = projectile.timeLeft <= 30 ? 300f * factor : 4f;
             var u = projectile.ai[0].ToRotationVector2();
-            spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center + u * 20, u, Main.hslToRgb(0.8f, 1, 0.75f), 3200, width, styleIndex: 1);
+            spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center + u * 20, u, Main.hslToRgb(0.8f, 1, 0.75f), LogSpiralLibraryMod.AniTex[1].Value, 3200, width);
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);//IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath+"StrawBerryArea")//IllusionBoundMod.MagicZone[2]
             return false;
@@ -2106,7 +2105,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //public Vector2 dirVec => new Vector2(projectile.ai[0], projectile.ai[1]);
         public Vector2 dirVec;
 
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(r.Create3DRotation(DirOf3DRotation.z_Axis_P) * ((float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi).Create3DRotation(DirOf3DRotation.x_Axis_P));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(r) * Matrix.CreateRotationX((float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             var size = new Vector3(projectile.ai[1] * 0.5f, 96 * factor, 96 * factor);

@@ -85,7 +85,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         public override void WhipSettings(ref int segments, ref float rangeMultiplier)
         {
             if (Player.altFunctionUse == 2) rangeMultiplier *= 1.5f;
-            rangeMultiplier *= UpgradeValue(1.25f, 1.5f, 1f);
+            rangeMultiplier *= this.UpgradeValue(1.25f, 1.5f, 1f);
         }
         public override int DustType => MyDustId.GreenGrass;
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)

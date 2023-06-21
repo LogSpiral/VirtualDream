@@ -198,7 +198,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             item.rare = MyRareID.Tier3;
         }
     }
-    public class AdaptableCrossbowProj : RangedHeldProjectile
+    public class AdaptableCrossbowProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * new Vector2(4, 8);// + Projectile.velocity * new Vector2(4, 8)
         public override bool UseRight => true;
@@ -249,13 +249,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                 {
                     Projectile.frameCounter++;
                     Projectile.frameCounter %= 7;
-                    Projectile.ai[0] = UpgradeValue(15, 10);
+                    Projectile.ai[0] = this.UpgradeValue(15, 10);
                     SoundEngine.PlaySound(new SoundStyle("VirtualDream/Assets/Sound/shotgun_reload_clip3"));
                 }
-                else if (left && Player.PickAmmo(sourceItem, out int _, out float _, out int _, out float _, out int _))
+                else if (left && Player.PickAmmo(((IStarboundWeaponProjectile)this).sourceItem, out int _, out float _, out int _, out float _, out int _))
                 {
-                    Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * 32, ModContent.ProjectileType<CrossBowArrow>(), Projectile.damage, Projectile.knockBack, Projectile.owner, Projectile.frameCounter, UpgradeValue(0, 1));
-                    Projectile.ai[0] = UpgradeValue(27, 21);
+                    Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * 32, ModContent.ProjectileType<CrossBowArrow>(), Projectile.damage, Projectile.knockBack, Projectile.owner, Projectile.frameCounter, this.UpgradeValue(0, 1));
+                    Projectile.ai[0] = this.UpgradeValue(27, 21);
                     //SoundEngine.PlaySound(SoundID.Item17);
                     SoundEngine.PlaySound(new SoundStyle("VirtualDream/Assets/Sound/crossbow1"));
 
@@ -266,13 +266,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 46 + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * Player.direction * 12;
         public override void OnRelease(bool charged, bool left)
         {
-            if (UpgradeValue(false, false, true) || sourceItemIndex != Player.selectedItem) { Projectile.Kill(); }
+            if (this.UpgradeValue(false, false, true) || sourceItemIndex != Player.selectedItem) { Projectile.Kill(); }
         }
         public override float Factor
         {
             get
             {
-                return MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(30f, 24f, 16f), 0, 1);
+                return MathHelper.Clamp(Projectile.ai[0] / this.UpgradeValue(30f, 24f, 16f), 0, 1);
             }
         }
         public override void OnSpawn(IEntitySource source)
@@ -280,7 +280,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             base.OnSpawn(source);
             sourceItemIndex = (byte)Player.selectedItem;
         }
-        public int sourceItemType => sourceItem.type;
+        public int sourceItemType => ((IStarboundWeaponProjectile)this).sourceItem.type;
         public byte sourceItemIndex;
         public override void PostDraw(Color lightColor)
         {
@@ -297,7 +297,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
             var left = (int)Projectile.ai[1] == 1;
-            var factor = 1 - Projectile.ai[0] / (left ? UpgradeValue(27, 21) : UpgradeValue(15, 10));
+            var factor = 1 - Projectile.ai[0] / (left ? this.UpgradeValue(27, 21) : this.UpgradeValue(15, 10));
             factor = factor.HillFactor2(1);
             //if (left)
             //{
@@ -305,11 +305,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             //}
             center = center + (left ? new Vector2(-6 * Player.direction, 0) : new Vector2(-12 * Player.direction, 12)) * factor;
             rotation += -factor * MathHelper.Pi / 6f * Player.direction * (left ? .5f : 1f);
-            frame = texture.Frame(FrameMax.X, FrameMax.Y, Projectile.frameCounter, UpgradeValue(0, 1));
+            frame = texture.Frame(FrameMax.X, FrameMax.Y, Projectile.frameCounter, this.UpgradeValue(0, 1));
             origin = new Vector2(12, 14);
         }
     }
-    public class CrossBowArrow : StarboundWeaponProjectile
+    public class CrossBowArrow : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -433,8 +433,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                     }
                     for (int num431 = 4; num431 < 31; num431++)
                     {
-                        float num432 = projectile.oldVelocity.X * (30f / (float)num431);
-                        float num433 = projectile.oldVelocity.Y * (30f / (float)num431);
+                        float num432 = projectile.oldVelocity.X * (30f / num431);
+                        float num433 = projectile.oldVelocity.Y * (30f / num431);
                         for (int n = 0; n < 4; n++)
                         {
                             int num434 = Dust.NewDust(new Vector2(projectile.oldPosition.X - num432, projectile.oldPosition.Y - num433) + Main.rand.NextVector2Unit() * Main.rand.NextFloat(4) + projectile.velocity, 8, 8, MyDustId.Fire, projectile.oldVelocity.X, projectile.oldVelocity.Y, 100, Color.Orange, 1.2f);
@@ -452,8 +452,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                         SoundEngine.PlaySound(SoundID.Item27, projectile.position);
                         for (int num431 = 4; num431 < 31; num431++)
                         {
-                            float num432 = projectile.oldVelocity.X * (30f / (float)num431);
-                            float num433 = projectile.oldVelocity.Y * (30f / (float)num431);
+                            float num432 = projectile.oldVelocity.X * (30f / num431);
+                            float num433 = projectile.oldVelocity.Y * (30f / num431);
                             int num434 = Dust.NewDust(new Vector2(projectile.oldPosition.X - num432, projectile.oldPosition.Y - num433), 8, 8, 197, projectile.oldVelocity.X, projectile.oldVelocity.Y, 100, default(Color), 1.2f);
                             Main.dust[num434].noGravity = true;
                             Dust dust = Main.dust[num434];

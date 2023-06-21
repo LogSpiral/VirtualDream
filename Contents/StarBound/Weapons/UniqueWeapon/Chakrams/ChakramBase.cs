@@ -43,7 +43,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             return false;
         }
     }
-    public abstract class ChakramBaseProjectile : StarboundWeaponProjectile
+    public abstract class ChakramBaseProjectile : ModProjectile, IStarboundWeaponProjectile
     {
         public Projectile projectile => Projectile;
         public override void SetStaticDefaults()

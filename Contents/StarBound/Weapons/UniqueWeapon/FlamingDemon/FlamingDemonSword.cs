@@ -99,16 +99,16 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
         {
         }
     }
-    public class FlamingDemonSwordProj : RangedHeldProjectile
+    public class FlamingDemonSwordProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {
         public override (int X, int Y) FrameMax => (6, 2);
         public override void OnCharging(bool left, bool right)
         {
             if (Charged && (int)Projectile.ai[0] % 5 == 0)
             {
-                if (Player.CheckMana(sourceItem, -1, true))
+                if (Player.CheckMana(((IStarboundWeaponProjectile)this).sourceItem, -1, true))
                 {
-                    Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity.RotatedBy(Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)) * 32, ModContent.ProjectileType<OtherProjectiles.FlameCloud>(), Projectile.damage / 8, Projectile.knockBack, Projectile.owner, 0.975f);
+                    Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity.RotatedBy(Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)) * 32, ModContent.ProjectileType<OtherProjectiles.FlameCloud>(), Projectile.damage / 8, Projectile.knockBack, Projectile.owner, 0.975f);
                 }
                 else Projectile.Kill();
             }
@@ -118,7 +118,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
             origin = new Vector2(18, 22);
-            frame = texture.Frame(FrameMax.X, FrameMax.Y, (int)Projectile.ai[0] / 2 % 6, UpgradeValue(0, 1));
+            frame = texture.Frame(FrameMax.X, FrameMax.Y, (int)Projectile.ai[0] / 2 % 6, this.UpgradeValue(0, 1));
         }
         public override bool Charged => base.Charged;
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 76;
@@ -126,7 +126,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
         {
             get
             {
-                return MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(30f, 24f), 0, 1);
+                return MathHelper.Clamp(Projectile.ai[0] / this.UpgradeValue(30f, 24f), 0, 1);
             }
         }
     }

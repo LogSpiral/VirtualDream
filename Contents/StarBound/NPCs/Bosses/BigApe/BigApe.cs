@@ -1,12 +1,11 @@
-﻿using System;
+﻿using LogSpiralLibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Terraria;
 using Terraria.ID;
 
 using static VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe.BigApeTools;
-using static VirtualDream.Utils.IllusionBoundExtensionMethods;
-using static VirtualDream.Utils.VirtualDreamDrawMethods;
 
 
 namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
@@ -579,7 +578,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             npc.ai[0]++;
             if ((int)npc.ai[0] >= 1020)
             {
-                npc.ai.ResetArray();
+                Array.Clear(npc.ai);
                 attackMode = BigApeAttackMode.AfterAttack;
                 FrameCounter = 12;
             }
@@ -991,7 +990,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
             if ((int)npc.ai[0] >= period)
             {
-                npc.ai.ResetArray();
+                Array.Clear(npc.ai);
                 attackMode = BigApeAttackMode.AfterAttack;
                 FrameCounter = 12;
             }
@@ -1402,7 +1401,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 spriteBatch.DrawPath
                 (
                     (r) => (r * MathHelper.TwoPi).ToRotationVector2() * fac * (attackMode == BigApeAttackMode.BulletHell && !Main.expertMode ? 1280 : 1024),
-                    (f) => ((f + Main.GameUpdateCount / 600f) % 1).GetLerpValue(Color.Cyan, Color.White, Color.Blue, Color.Cyan),
+                    (f) => ((f + Main.GameUpdateCount / 600f) % 1).ArrayLerp(Color.Cyan, Color.White, Color.Blue, Color.Cyan),
                     IllusionBoundMod.ShaderSwoosh,
                     IllusionBoundMod.AniTexes[6],
                     IllusionBoundMod.GetTexture("Images/line_1"),//IllusionBoundMod.LaserTex[(int)IllusionBoundMod.ModTime / 4 % 4]
@@ -1419,8 +1418,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 var fac = MathHelper.Clamp(510 - Math.Abs(510 - npc.ai[0]), 0, 120) / 120f;
                 spriteBatch.DrawPath
                 (
-                    (r) => r.GetLerpValue(new Vector2(960, 960), new Vector2(-960, 960), new Vector2(-960, -960), new Vector2(960, -960), new Vector2(960, 960)) + npc.Center * 0,
-                    (f) => ((f + Main.GameUpdateCount / 600f) % 1).GetLerpValue(Color.Cyan, Color.White, Color.Blue, Color.Cyan),
+                    (r) => r.ArrayLerp(new Vector2(960, 960), new Vector2(-960, 960), new Vector2(-960, -960), new Vector2(960, -960), new Vector2(960, 960)) + npc.Center * 0,
+                    (f) => ((f + Main.GameUpdateCount / 600f) % 1).ArrayLerp(Color.Cyan, Color.White, Color.Blue, Color.Cyan),
                     IllusionBoundMod.ShaderSwoosh,
                     IllusionBoundMod.AniTexes[6],
                     IllusionBoundMod.GetTexture("Images/line_1"),//IllusionBoundMod.LaserTex[(int)IllusionBoundMod.ModTime / 4 % 4]
@@ -1632,7 +1631,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     }
                     modOwner.FrameCounter = counter == -3 ? 0 : 12;
                     modOwner.stage++;
-                    Owner.ai.ResetArray();
+                    Array.Clear(Owner.ai);
                     modOwner.attackMode = BigApeAttackMode.AfterAttack;
                     foreach (var p in Main.projectile)
                     {
@@ -1805,7 +1804,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //}
             for (int n = 0; n < vs.Length; n++)
             {
-                if (new int[] { 0, 1, 3, 5, 7 }.ContainsValue(vs[n]))
+                if (new int[] { 0, 1, 3, 5, 7 }.Contains(vs[n]))
                 {
                     //setZ(n);
                     triangles[n].TexCoord.Z = 0;
@@ -1878,9 +1877,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     {
                         var f = 1 - (i + 1) / 30f;
                         var v = projectile.oldRot[i].ToRotationVector2() * 256;
-                        spriteBatch.Draw(projTex, projectile.oldPos[i] - (3 + projectile.frame * .5f) * v - Main.screenPosition, null, f.GetLerpValue(Color.Blue, Color.Cyan, Color.White) * (i == 0 ? alpha2 : alpha) * f * f, projectile.oldRot[i], new Vector2(15, 12), new Vector2(8f + 4 * projectile.frame, 3f) / new Vector2(120, 24) * new Vector2(36, 23), 0, 0);
-                        bars.Add(new CustomVertexInfo(projectile.oldPos[i] - 2 * v, f.GetLerpValue(Color.Blue, Color.Cyan, Color.White), new Vector3(1 - f, 1, 3 * f / (3 * f + 1) * alpha)));//(3 * f - 4) / (4 * f - 3)
-                        bars.Add(new CustomVertexInfo(projectile.oldPos[i] - (3 + projectile.frame * .5f) * v, f.GetLerpValue(Color.Blue, Color.Cyan, Color.White), new Vector3(0, 0, 0)));
+                        spriteBatch.Draw(projTex, projectile.oldPos[i] - (3 + projectile.frame * .5f) * v - Main.screenPosition, null, f.ArrayLerp(Color.Blue, Color.Cyan, Color.White) * (i == 0 ? alpha2 : alpha) * f * f, projectile.oldRot[i], new Vector2(15, 12), new Vector2(8f + 4 * projectile.frame, 3f) / new Vector2(120, 24) * new Vector2(36, 23), 0, 0);
+                        bars.Add(new CustomVertexInfo(projectile.oldPos[i] - 2 * v, f.ArrayLerp(Color.Blue, Color.Cyan, Color.White), new Vector3(1 - f, 1, 3 * f / (3 * f + 1) * alpha)));//(3 * f - 4) / (4 * f - 3)
+                        bars.Add(new CustomVertexInfo(projectile.oldPos[i] - (3 + projectile.frame * .5f) * v, f.ArrayLerp(Color.Blue, Color.Cyan, Color.White), new Vector3(0, 0, 0)));
                     }
                     DrawLightSword(Color.Cyan, new Vector2(8f + 4 * projectile.frame, 3f) * new Vector2(36, 23), alpha, false);
                     //Main.NewText(new Vector3(fac, MathHelper.Clamp(modPlayer.negativeDir ? (4 * fac - 3) : 4 * fac, 0, 1), modPlayer.negativeDir ? -1 : 1));
@@ -2120,7 +2119,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, Width: 20);
+            DrawingMethods.DrawShaderTail(spriteBatch, projectile, LogSpiralLibraryMod.HeatMap[7].Value, LogSpiralLibraryMod.AniTex[2].Value, LogSpiralLibraryMod.BaseTex[12].Value, 20);
             if (projectile.timeLeft > 1)
             {
                 spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, projTex.Frame(2, 1, projectile.frame / 3 % 2, 0), Color.White, projectile.rotation, projTex.Size() / new Vector2(4, 2), 2, 0, 0);
@@ -2419,7 +2418,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     {
                         projectile.hostile = !(projectile.timeLeft <= 60 || projectile.timeLeft >= 900);
                         var alpha1 = MathHelper.Clamp(480 - Math.Abs(480 - projectile.timeLeft), 0, 60) / 120f;
-                        DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, alpha: alpha1 * 2, additive: true);
+                        DrawingMethods.DrawShaderTail(spriteBatch, projectile, LogSpiralLibraryMod.HeatMap[7].Value, LogSpiralLibraryMod.AniTex[2].Value, LogSpiralLibraryMod.BaseTex[12].Value, 900, alpha: alpha1 * 2, additive: true);
+                        //DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, alpha: alpha1 * 2, additive: true);
                         for (int n = 0; n < 4; n++)
                         {
                             spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
@@ -2437,7 +2437,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                                 var fac = (300 - projectile.timeLeft) / 60f;
                                 //fac = (float)Math.Sin(MathHelper.Pi * Math.Sqrt(fac));
                                 var unit = Vector2.Normalize(projectile.velocity) * 2560;
-                                spriteBatch.DrawEffectLine_StartAndEnd(spawnPos - unit, spawnPos + unit, Color.Cyan, 1 - fac, 1 - fac, 512 * fac, 1);
+                                spriteBatch.DrawEffectLine_StartAndEnd(spawnPos - unit, spawnPos + unit, Color.Cyan, LogSpiralLibraryMod.AniTex[1].Value, 1 - fac, 1 - fac, 512 * fac);
                             }
                             //try
                             //{
@@ -2453,7 +2453,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                         projectile.hostile = !(projectile.timeLeft <= 60 || projectile.timeLeft >= 240);
                         var alpha1 = MathHelper.Clamp(150 - Math.Abs(150 - projectile.timeLeft), 0, 60) / 120f;
-                        DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, ShaderTailMainStyle.MiddleLine2, alpha: alpha1);
+                        DrawingMethods.DrawShaderTail(spriteBatch, projectile, LogSpiralLibraryMod.HeatMap[7].Value, LogSpiralLibraryMod.AniTex[2].Value, LogSpiralLibraryMod.AniTex[2].Value, 900, alpha: alpha1 * 2, additive: true);
+
+                        //DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, ShaderTailMainStyle.MiddleLine2, alpha: alpha1);
                         for (int n = 0; n < 4; n++)
                         {
                             spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
@@ -2674,7 +2676,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     spriteBatch.DrawPath
                     (
                         t => pos[(int)(119 * t)],
-                        t => t.GetLerpValue(Color.Blue, Color.Cyan, Color.White),
+                        t => t.ArrayLerp(Color.Blue, Color.Cyan, Color.White),
                         IllusionBoundMod.GetEffect("Effects/EightTrigramsFurnaceEffect"),
                         IllusionBoundMod.AniTexes[6],
                         IllusionBoundMod.AniTexes[10],
@@ -2696,7 +2698,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     spriteBatch.DrawPath
                     (
                         t => pos1[(int)(29 * t)],
-                        t => t.GetLerpValue(Color.Blue, Color.Cyan, Color.White),
+                        t => t.ArrayLerp(Color.Blue, Color.Cyan, Color.White),
                         IllusionBoundMod.GetEffect("Effects/EightTrigramsFurnaceEffect"),
                         IllusionBoundMod.AniTexes[6],
                         IllusionBoundMod.AniTexes[10],
@@ -2745,7 +2747,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 {
                     for (int i = 1; i < 5; i++)
                     {
-                        if (targetHitbox.Intersects(CenteredRectangle(this[n, i], new Vector2(16, 16))))
+                        if (targetHitbox.Intersects(Terraria.Utils.CenteredRectangle(this[n, i], new Vector2(16, 16))))
                         {
                             return true;
                         }
@@ -2832,7 +2834,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     spriteBatch.DrawPath
                     (
                         t => GetVec(projectile.timeLeft + (int)(t * 5 * projectile.localAI[0]), n, i),
-                        t => (1 - t).GetLerpValue(Color.White, Color.Cyan, Color.Blue, Color.Purple) * attackFac,
+                        t => (1 - t).ArrayLerp(Color.White, Color.Cyan, Color.Blue, Color.Purple) * attackFac,
                         IllusionBoundMod.GetEffect("Effects/EightTrigramsFurnaceEffect"),
                         IllusionBoundMod.AniTexes[6],
                         IllusionBoundMod.AniTexes[10],
@@ -2988,7 +2990,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             if (projectile.ai[0] < 240)
             {
                 float factor = projectile.ai[0] / 240f;
-                var p = factor.GetLerpValue_Loop(pointList.array);
+                var p = factor.ArrayLerp_Loop(pointList.array);
                 Color color = Color.White;
                 for (int i = -1; i < 2; i += 2)
                 {
@@ -3001,7 +3003,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     {
                         for (int n = 0; n < 32; n++)
                         {
-                            LinerDust((pointList[n] + new Vector4(8)) * i, (pointList[n + 1] + new Vector4(8)) * i, hZ, hW,
+                            OtherMethods.LinerDust((pointList[n] + new Vector4(8)) * i, (pointList[n + 1] + new Vector4(8)) * i, hZ, hW,
                                 d =>
                                 {
                                     d.noGravity = true;
@@ -3217,12 +3219,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     lines[n].Item2 = projPos[n + 1];
                 }
 
-                spriteBatch.DrawEffectLine_StartAndEnd(lines, Color.Cyan * v, 1, 1, 16 * v, 1);
+                spriteBatch.DrawEffectLine_StartAndEnd(lines, Color.Cyan * v, LogSpiralLibraryMod.AniTex[1].Value, 1, 1, 16 * v);
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int n = 0; n < 256; n++)
                 {
-                    spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, ((n / 128f) % 1).GetLerpValue_Loop(projPos.array) - Main.screenPosition, new Rectangle(128, 0, 32, 32), Color.White * v, (float)Main.time / 60f * MathHelper.TwoPi, new Vector2(16), 1.5f, 0, 0);// + (float)Main.time / 6000f
+                    spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, ((n / 128f) % 1).ArrayLerp_Loop(projPos.array) - Main.screenPosition, new Rectangle(128, 0, 32, 32), Color.White * v, (float)Main.time / 60f * MathHelper.TwoPi, new Vector2(16), 1.5f, 0, 0);// + (float)Main.time / 6000f
                 }
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -3248,7 +3250,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             for (int n = 0; n < 256; n++)
             {
-                if (Terraria.Utils.CenteredRectangle(((n / 128f) % 1).GetLerpValue(projPos), new Vector2(24)).Intersects(targetHitbox))
+                if (Terraria.Utils.CenteredRectangle(((n / 128f) % 1).ArrayLerp(projPos), new Vector2(24)).Intersects(targetHitbox))
                 {
                     return true;//+ (float)Main.time / 6000f
                 }
@@ -3720,21 +3722,21 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             {
                 //vertexs[n].Position *= MathHelper.Clamp(150 - Math.Abs(150 - projectile.timeLeft), 0, 60) / 60f * 32f;
                 vertexs[n].TexCoord.Z *= factor;
-                if (new int[] { 15, 0, 1 }.ContainsValue(n))
+                if (new int[] { 15, 0, 1 }.Contains(n))
                 {
                     vertexs[n].Position.X = MathHelper.Lerp(0.5f, vertexs[n].Position.X, factor);
                 }
-                else if (new int[] { 7, 8, 9 }.ContainsValue(n))
+                else if (new int[] { 7, 8, 9 }.Contains(n))
                 {
                     vertexs[n].Position.X = MathHelper.Lerp(-0.5f, vertexs[n].Position.X, factor);
 
                 }
-                else if (new int[] { 3, 4, 5 }.ContainsValue(n))
+                else if (new int[] { 3, 4, 5 }.Contains(n))
                 {
                     vertexs[n].Position.Y = MathHelper.Lerp(0.5f, vertexs[n].Position.Y, factor);
 
                 }
-                else if (new int[] { 11, 12, 13 }.ContainsValue(n))
+                else if (new int[] { 11, 12, 13 }.Contains(n))
                 {
                     vertexs[n].Position.Y = MathHelper.Lerp(-0.5f, vertexs[n].Position.Y, factor);
 
@@ -3772,7 +3774,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     //lines[n].Item1 = Vector2.Lerp(Main.npc[(int)projectile.ai[1]].Center + new Vector2(-66 * (n == 0 ? -1 : 1), -18), projectile.Center, fac);
                     lines[n].Item1 = Main.npc[(int)projectile.ai[1]].Center + new Vector2(-66 * (n == 0 ? -1 : 1), -18);
                 }
-                spriteBatch.DrawEffectLine_StartAndEnd(lines, new Color(255, 51, 51) * fac, 1, 1, 32 * (1 - fac), 10, false);
+                spriteBatch.DrawEffectLine_StartAndEnd(lines, new Color(255, 51, 51) * fac, LogSpiralLibraryMod.AniTex[10].Value, 1, 1, 32 * (1 - fac), false);
             }
             if (projectile.timeLeft > 240 && projectile.frameCounter == 1)
             {
@@ -3788,7 +3790,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     //lines[n].Item1 = Vector2.Lerp(Main.npc[(int)projectile.ai[1]].Center + new Vector2(-66 * (n == 0 ? -1 : 1), -18), projectile.Center, fac);
                     lines[n].Item1 = Main.npc[(int)projectile.ai[1]].Center + new Vector2(-66 * (n == 0 ? -1 : 1), -18);
                 }
-                spriteBatch.DrawEffectLine_StartAndEnd(lines, new Color(255, 51, 51) * fac, 1, 1, 32 * (1 - fac), 10, false);
+                spriteBatch.DrawEffectLine_StartAndEnd(lines, new Color(255, 51, 51) * fac, LogSpiralLibraryMod.AniTex[10].Value, 1, 1, 32 * (1 - fac), false);
             }
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             RasterizerState rasterizerState = new RasterizerState
@@ -3868,7 +3870,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(projectile.ai[0].Create3DRotation(DirOf3DRotation.z_Axis_P) * (r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi).Create3DRotation(DirOf3DRotation.x_Axis_P));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             var size = new Vector3(20, 48 * factor, 48 * factor);
@@ -3917,7 +3919,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             var factor = (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 300f));
             var width = 300f * factor;
             var u = projectile.ai[0].ToRotationVector2();
-            spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center, u, Color.Red, 3200, width, styleIndex: 10);//Main.hslToRgb(0.8f, 1, 0.75f)
+            spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center, u, Color.Red, LogSpiralLibraryMod.AniTex[10].Value, 3200, width);//Main.hslToRgb(0.8f, 1, 0.75f)
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);//IllusionBoundMod.GetTexture("NPCs/BigApe/StrawBerryArea")//IllusionBoundMod.MagicZone[2]
             return false;
@@ -4077,21 +4079,21 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             {
                 //vertexs[n].Position *= MathHelper.Clamp(150 - Math.Abs(150 - projectile.timeLeft), 0, 60) / 60f * 32f;
                 vertexs[n].TexCoord.Z *= factor;//MathHelper.Clamp(factor + .25f, 0, 1);
-                if (new int[] { 15, 0, 1 }.ContainsValue(n))
+                if (new int[] { 15, 0, 1 }.Contains(n))
                 {
                     vertexs[n].Position.X = MathHelper.Lerp(0.5f, vertexs[n].Position.X, factor);
                 }
-                else if (new int[] { 7, 8, 9 }.ContainsValue(n))
+                else if (new int[] { 7, 8, 9 }.Contains(n))
                 {
                     vertexs[n].Position.X = MathHelper.Lerp(-0.5f, vertexs[n].Position.X, factor);
 
                 }
-                else if (new int[] { 3, 4, 5 }.ContainsValue(n))
+                else if (new int[] { 3, 4, 5 }.Contains(n))
                 {
                     vertexs[n].Position.Y = MathHelper.Lerp(0.5f, vertexs[n].Position.Y, factor);
 
                 }
-                else if (new int[] { 11, 12, 13 }.ContainsValue(n))
+                else if (new int[] { 11, 12, 13 }.Contains(n))
                 {
                     vertexs[n].Position.Y = MathHelper.Lerp(-0.5f, vertexs[n].Position.Y, factor);
 

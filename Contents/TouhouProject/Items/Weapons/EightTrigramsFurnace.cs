@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System.Diagnostics;
 using VirtualDream.Contents.TouhouProject.Items.Weapons.PhilosopherStone;
+using LogSpiralLibrary;
 
 namespace VirtualDream.Contents.TouhouProject.Items.Weapons
 {
@@ -168,8 +169,8 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons
             //    , projectile.velocity, MainColor, 3200 * fac, 4.47213f * 16 * 4 * factor * 4 + 16f
             //    , Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48) * factor, (projectile.ai[0] >= 180 ? MathHelper.Clamp(projectile.timeLeft / 12f, 0, 1) : fac) * 4, 10);
             spriteBatch.DrawQuadraticLaser_PassColorBar((vertexInfos[0].Position + vertexInfos[2].Position) * 0.5f
-    , projectile.velocity, 13, 1920 * fac, (4.47213f * 16 * 4 * factor * 4 + 16f) * .4f
-    , Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48) * factor, (projectile.ai[0] >= 180 ? MathHelper.Clamp(projectile.timeLeft / 12f, 0, 1) : fac) * 4, 10, true);
+    , projectile.velocity, LogSpiralLibraryMod.HeatMap[13].Value, LogSpiralLibraryMod.AniTex[10].Value, 1920 * fac, (4.47213f * 16 * 4 * factor * 4 + 16f) * .4f
+    , Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48) * factor, (projectile.ai[0] >= 180 ? MathHelper.Clamp(projectile.timeLeft / 12f, 0, 1) : fac) * 4, true);
             //stopWatch.Stop();
             //Main.NewText(stopWatch.ElapsedTicks);
         }

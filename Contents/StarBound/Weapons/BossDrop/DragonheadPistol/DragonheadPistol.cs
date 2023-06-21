@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogSpiralLibrary;
+using System;
 //using static VirtualDream.Contents.StarBound.Weapons.BossDrop.UpgradeWeaponExtension;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -324,7 +325,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         //    }
         //}
     }
-    public class DragonHeadPistolProj : RangedHeldProjectile
+    public class DragonHeadPistolProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * new Vector2(4, 8);// + Vector2.Normalize(Main.screenPosition - Player.Center) * 4 + new Vector2(0, 8)//Main.MouseWorld - Player.Center
 
@@ -342,8 +343,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             {
                 if ((int)Projectile.ai[0] % 30 == 0)
                     SoundEngine.PlaySound(SoundID.Item74);
-                if ((int)Projectile.ai[0] % UpgradeValue(4, 3, 2) == 0)
-                    Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity.RotatedBy(Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)) * 32f, ModContent.ProjectileType<DragonFireCloud>(), Player.GetWeaponDamage(sourceItem) / 2, 0.5f, Player.whoAmI, this.UpgradeValue(0.9f, 0.925f, 0.95f));
+                if ((int)Projectile.ai[0] % this.UpgradeValue(4, 3, 2) == 0)
+                    Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity.RotatedBy(Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)) * 32f, ModContent.ProjectileType<DragonFireCloud>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem) / 2, 0.5f, Player.whoAmI, this.UpgradeValue(0.9f, 0.925f, 0.95f));
             }
             if (Projectile.friendly && (int)Projectile.ai[0] % 20 == 0)
                 SoundEngine.PlaySound(SoundID.Item15);
@@ -354,15 +355,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             if (controlState == 3) return;
             if (left)
             {
-                if (Player.PickAmmo(sourceItem, out int _, out float _, out int _, out float _, out int _))
+                if (Player.PickAmmo(((IStarboundWeaponProjectile)this).sourceItem, out int _, out float _, out int _, out float _, out int _))
                 {
-                    var m = UpgradeValue(1, 2, 3);
+                    var m = this.UpgradeValue(1, 2, 3);
                     if (Charged)
                     {
                         SoundEngine.PlaySound(SoundID.Item62);
                         for (int n = 0; n < m; n++)
                         {
-                            Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), ShootCenter + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * 16f * (n - m * 0.5f), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBall>(), Player.GetWeaponDamage(sourceItem), 0.25f, Player.whoAmI, UpgradeValue(6, 8, 10));
+                            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * 16f * (n - m * 0.5f), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBall>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), 0.25f, Player.whoAmI, this.UpgradeValue(6, 8, 10));
                         }
 
                     }
@@ -371,14 +372,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
                         SoundEngine.PlaySound(SoundID.Item36);//36//38
                         for (int n = 0; n < m; n++)
                         {
-                            Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), ShootCenter + Projectile.velocity * (n * 8), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBullet>(), (int)(Player.GetWeaponDamage(sourceItem) * Factor), 0.25f, Player.whoAmI);
+                            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter + Projectile.velocity * (n * 8), Projectile.velocity * 32f, ModContent.ProjectileType<DragonFireBullet>(), (int)(Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem) * Factor), 0.25f, Player.whoAmI);
                         }
                     }
                     Projectile.timeLeft = 10;
                     controlState = 3;
                 }
             }
-            else 
+            else
             {
                 Projectile.timeLeft = 10;
                 controlState = 3;
@@ -388,7 +389,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         {
             get
             {
-                return MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(30f, 24f, 16f), 0, 1);
+                return MathHelper.Clamp(Projectile.ai[0] / this.UpgradeValue(30f, 24f, 16f), 0, 1);
             }
         }
         public override void PostDraw(Color lightColor)
@@ -396,7 +397,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             if (Player.name == "Sans" && Factor > 0.5f && Player.controlUseTile)
             {
                 var factor = 2 * (Factor - 0.5f);
-                Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(ShootCenter, Vector2.Normalize(Projectile.velocity), 15, 1024 * factor, 256 * factor, 0.2f * factor, 4, 1);
+                Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(ShootCenter, Vector2.Normalize(Projectile.velocity), LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[1].Value, 1024 * factor, 256 * factor, 0.2f * factor, 4);
             }
         }
         public override (int X, int Y) FrameMax => (3, 6);
@@ -411,7 +412,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             {
                 y = Factor >= 1 ? ((int)(IllusionBoundModSystem.ModTime / 4) % 3 + 3) : (int)(Factor * 3);
             }
-            frame = texture.Frame(FrameMax.X, FrameMax.Y, UpgradeValue(0, 1, 2), y);
+            frame = texture.Frame(FrameMax.X, FrameMax.Y, this.UpgradeValue(0, 1, 2), y);
             origin = new Vector2(5, 24);
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -443,7 +444,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             DisplayName.SetDefault("龙息");
         }
     }
-    public class DragonFireBullet : StarboundWeaponProjectile
+    public class DragonFireBullet : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -515,7 +516,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             var rot = Main.rand.NextFloat(0, MathHelper.TwoPi);
             for (int n = 0; n < (int)projectile.ai[0]; n++)
             {
-                Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), projectile.Center, (rot + n / projectile.ai[0] * MathHelper.TwoPi).ToRotationVector2() * 4f, ModContent.ProjectileType<DragonFireCloud>(), projectile.damage, projectile.knockBack, projectile.owner, 0.95f);// / 4
+                Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), projectile.Center, (rot + n / projectile.ai[0] * MathHelper.TwoPi).ToRotationVector2() * 4f, ModContent.ProjectileType<DragonFireCloud>(), projectile.damage, projectile.knockBack, projectile.owner, 0.95f);// / 4
             }
             SoundEngine.PlaySound(SoundID.Item74);
 

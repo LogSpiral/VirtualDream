@@ -88,12 +88,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             return true;
         }
     }
-    public class LucainesEnergyWhipProj : WhipBase_Projectile
+    public class LucainesEnergyWhipProj : WhipBase_Projectile, IStarboundWeaponProjectile
     {
         public override void WhipSettings(ref int segments, ref float rangeMultiplier)
         {
             if (Player.altFunctionUse == 2) rangeMultiplier *= 1.5f;
-            rangeMultiplier *= UpgradeValue(1.25f, 1.5f, 1f);
+            rangeMultiplier *= this.UpgradeValue(1.25f, 1.5f, 1f);
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
@@ -123,7 +123,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             }
         }
     }
-    public class LucainesEnergyWhipShock : StarboundWeaponProjectile
+    public class LucainesEnergyWhipShock : ModProjectile
     {
         public override void SetStaticDefaults()
         {

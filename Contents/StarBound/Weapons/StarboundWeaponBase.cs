@@ -106,7 +106,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
             Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, type, damage, knockback, player.whoAmI);
             return false;
         }
-        public virtual float UnitHealth => IllusionBoundExtensionMethods.HardmodeValue(1, 1.5f, 2f) * 50 * PeriodMultiplyer;
+        public virtual float UnitHealth => OtherMethods.HardmodeValue(1, 1.5f, 2f) * 50 * PeriodMultiplyer;
         public virtual float RealHurtCount => Math.Min(MaxLevel ? hurtCount : MathHelper.Clamp(hurtCount, 0, UpgradeNeed.hurt), (MaxLevel ? killCount : MathHelper.Clamp(killCount, 0, UpgradeNeed.kill)) * UnitHealth);
         public virtual bool MaxLevel => (byte)State % 3 == (BossDrop ? 2 : 1);
         public override void LoadData(TagCompound tag)
@@ -158,10 +158,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
             }
         }
     }
-    /// <summary>
-    /// 星界边境成长型武器弹幕对应的基类
-    /// </summary>
-    public abstract class StarboundWeaponProjectile : ModProjectile
+    public static class StarboundWeaponExtension
     {
         //0 赝品   | 赝品
         //1 赝品ex | 赝品ex
@@ -170,7 +167,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
         //4 真品ex | 残品
         //4 真品ul
         //5 残品
-        public virtual T UpgradeValue<T>(params T[] values)
+        public static T UpgradeValue<T>(this StarboundWeaponBase weapon, params T[] values)
         {
             if (weapon == null)
             {
@@ -196,7 +193,12 @@ namespace VirtualDream.Contents.StarBound.Weapons
                 return default;
             }
         }
-        public override void OnSpawn(IEntitySource source)
+        public static T UpgradeValue<T>(this IStarboundWeaponProjectile weaponProj, params T[] values) => UpgradeValue(weaponProj.weapon, values);
+    }
+    public class StarboundGlobalProjectile : GlobalProjectile
+    {
+        public override bool InstancePerEntity => true;
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
             if (source is EntitySource_StarboundWeapon starboundWeapon)
             {
@@ -206,58 +208,107 @@ namespace VirtualDream.Contents.StarBound.Weapons
             {
                 _sourceItem = _source.Item;
             }
+            base.OnSpawn(projectile, source);
         }
         public StarboundWeaponBase weapon;
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(Projectile projectile, NPC target, int damage, float knockback, bool crit)
         {
             if (weapon != null)
             {
-                if (target.type == Terraria.ID.NPCID.TargetDummy) return;
+                if (target.type == NPCID.TargetDummy) return;
                 if (target.life - damage <= 0)
                 {
                     weapon.killCount++;
                 }
                 weapon.hurtCount += damage;
             }
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(projectile, target, damage, knockback, crit);
         }
         private Item _sourceItem;
         public Item sourceItem => _sourceItem ?? weapon.Item;
-        public Player Player => Main.player[Projectile.owner];
     }
-    /// <summary>
-    /// 星界边境成长型武器手持弹幕对应的基类
-    /// 以下是需要经常重写的属性
-    /// Charged
-    /// FrameMax
-    /// Factor
-    /// </summary>
-    public abstract class StarboundHeldProjectile : StarboundWeaponProjectile, IChannelProj
+    ///// <summary>
+    ///// 星界边境成长型武器弹幕对应的基类
+    ///// 已弃用
+    ///// </summary>
+    //public abstract class StarboundWeaponProjectile : ModProjectile
+    //{
+    //    //0 赝品   | 赝品
+    //    //1 赝品ex | 赝品ex
+    //    //2 赝品ul | 真品
+    //    //3 真品   | 真品ex
+    //    //4 真品ex | 残品
+    //    //4 真品ul
+    //    //5 残品
+    //    public virtual T UpgradeValue<T>(params T[] values)
+    //    {
+    //        if (weapon == null)
+    //        {
+    //            Main.NewText("兄啊你武器null了，快来星界弹幕基类瞅瞅!");
+    //            return default;
+    //        }
+    //        try
+    //        {
+    //            if (weapon.BossDrop) return values[(byte)weapon.State];
+    //            return values[(byte)weapon.State switch
+    //            {
+    //                0 => 0,
+    //                1 => 1,
+    //                3 => 2,
+    //                4 => 3,
+    //                6 => 4,
+    //                _ => 0
+    //            }];
+    //        }
+    //        catch
+    //        {
+    //            Main.NewText("兄啊，你自己的码都能写歪来啊");
+    //            return default;
+    //        }
+    //    }
+    //    public override void OnSpawn(IEntitySource source)
+    //    {
+    //        if (source is EntitySource_StarboundWeapon starboundWeapon)
+    //        {
+    //            weapon = starboundWeapon.StarboundWeapon;
+    //        }
+    //        if (source is EntitySource_ItemUse_WithAmmo _source)
+    //        {
+    //            _sourceItem = _source.Item;
+    //        }
+    //    }
+    //    public StarboundWeaponBase weapon;
+    //    public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+    //    {
+    //        if (weapon != null)
+    //        {
+    //            if (target.type == Terraria.ID.NPCID.TargetDummy) return;
+    //            if (target.life - damage <= 0)
+    //            {
+    //                weapon.killCount++;
+    //            }
+    //            weapon.hurtCount += damage;
+    //        }
+    //        base.OnHitNPC(target, damage, knockback, crit);
+    //    }
+    //    private Item _sourceItem;
+    //    public Item sourceItem => _sourceItem ?? weapon.Item;
+    //    public Player Player => Main.player[Projectile.owner];
+    //}
+    public interface IStarboundWeaponProjectile 
     {
-        public virtual void OnCharging(bool left, bool right) { }
-        public virtual void OnRelease(bool charged, bool left) { Projectile.Kill(); }
-        public virtual bool UseLeft => true;
-        public virtual bool UseRight => false;
-        public virtual bool Charging => (UseLeft && Player.controlUseItem) || (UseRight && Player.controlUseTile);
-        public virtual bool Charged => true;
-        public virtual (int X, int Y) FrameMax => (1, 1);
-        public virtual Texture2D GlowEffect
-        {
-            get
-            {
-                if (Mod.HasAsset(GlowTexture.Replace("VirtualDream/", "")))
-                {
-                    return IllusionBoundMod.GetTexture(GlowTexture, false);
-                }
-                return null;
-            }
-        }
-        public virtual float Factor => 0;
-        public virtual Color GlowColor => Color.White;
-        public byte controlState;
-        public Texture2D projTex => TextureAssets.Projectile[Projectile.type].Value;
-
+        public Projectile Projectile { get; }
+        public StarboundGlobalProjectile StarBoundProjectile => Projectile.GetGlobalProjectile<StarboundGlobalProjectile>();
+        public Item sourceItem => StarBoundProjectile.sourceItem;
+        public StarboundWeaponBase weapon => StarBoundProjectile.weapon;
+        public T UpgradeValue<T>(params T[] values) => weapon.UpgradeValue(values);
     }
+    //public class StarboundRangedHeldProjectile : RangedHeldProjectile 
+    //{
+    //    public StarboundGlobalProjectile StarBoundProjectile => Projectile.GetGlobalProjectile<StarboundGlobalProjectile>();
+    //    public Item sourceItem => StarBoundProjectile.sourceItem;
+    //    public StarboundWeaponBase weapon => StarBoundProjectile.weapon;
+    //}
     public class EntitySource_StarboundWeapon : EntitySource_ItemUse_WithAmmo
     {
         //public readonly Entity Entity;

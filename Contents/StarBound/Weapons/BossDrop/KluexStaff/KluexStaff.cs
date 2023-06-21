@@ -279,7 +279,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         //    }
         //}
     }
-    public class KluexStaffProj : RangedHeldProjectile
+    public class KluexStaffProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {
         //TODO 右键单点BUG修复
 
@@ -292,29 +292,29 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         {
             if (left)
             {
-                if (plasmaBallCount < UpgradeValue(60, 120, 180) && (int)Projectile.ai[0] % UpgradeValue(24, 18, 12) == 0)
+                if (plasmaBallCount < this.UpgradeValue(60, 120, 180) && (int)Projectile.ai[0] % this.UpgradeValue(24, 18, 12) == 0)
                 {
                     var type = ModContent.ProjectileType<KluexPlasmaBall>();
                     Vector2 vec;
-                    switch (UpgradeValue(0, 1, 2))
+                    switch (this.UpgradeValue(0, 1, 2))
                     {
                         case 0:
-                            Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), Main.MouseWorld, default, type, 0, 6, Player.whoAmI, plasmaBallCount);
+                            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld, default, type, 0, 6, Player.whoAmI, plasmaBallCount);
                             break;
                         case 1:
                             vec = ((float)IllusionBoundModSystem.ModTime2).ToRotationVector2() * 32;
-                            Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), Main.MouseWorld + vec, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
-                            Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), Main.MouseWorld - vec, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
-                            Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), Main.MouseWorld, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
+                            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld + vec, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
+                            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld - vec, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
+                            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
                             break;
                         case 2:
                             vec = ((float)IllusionBoundMod.ModTime2 * 0.05f).ToRotationVector2() * new Vector2(5, 3) * 32;
                             for (int n = 0; n < 4; n++)
                             {
-                                Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), Main.MouseWorld + vec, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
+                                Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld + vec, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
                                 vec = new Vector2(-vec.Y, vec.X);
                             }
-                            Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), Main.MouseWorld, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
+                            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
                             break;
                     }
                     plasmaBallCount++;
@@ -334,7 +334,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                 if (plasmaBallCount > 0)
                 {
                     Projectile.ai[0]++;
-                    if ((int)Projectile.ai[0] % UpgradeValue(10, 8, 6) == 0)
+                    if ((int)Projectile.ai[0] % this.UpgradeValue(10, 8, 6) == 0)
                     {
                         int count = 0;
                         foreach (var proj in Main.projectile)
@@ -344,7 +344,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                                 proj.ai[1] = 1;
 
                                 var vec = (Main.MouseWorld - proj.Center).SafeNormalize(Vector2.UnitX);
-                                Projectile.NewProjectileDirect(proj.GetSource_FromThis(), proj.Center, vec * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(sourceItem), 6, Player.whoAmI, plasmaBallCount).rotation = vec.ToRotation();
+                                Projectile.NewProjectileDirect(proj.GetSource_FromThis(), proj.Center, vec * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), 6, Player.whoAmI, plasmaBallCount).rotation = vec.ToRotation();
 
                                 count++;
                             }
@@ -385,14 +385,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                 Projectile.timeLeft = 2;
                 if (Charged)
                 {
-                    Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), Main.MouseWorld, default, ModContent.ProjectileType<KluexZone>(), 0, 0, Projectile.owner, UpgradeValue(1, 2, 3));
+                    Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld, default, ModContent.ProjectileType<KluexZone>(), 0, 0, Projectile.owner, this.UpgradeValue(1, 2, 3));
                     SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
                 }
 
             }
             if (plasmaBallCount == 0)
             {
-                Projectile.ai[0] = UpgradeValue(15, 12, 9) + 1;
+                Projectile.ai[0] = this.UpgradeValue(15, 12, 9) + 1;
                 plasmaBallCount--;
             }
             if (plasmaBallCount < 0)
@@ -406,7 +406,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                         if (proj.active && proj.type == ModContent.ProjectileType<KluexPlasmaBall>())
                         {
                             proj.ai[1] = 1;
-                            Projectile.NewProjectile(proj.GetSource_FromThis(), proj.Center, Vector2.Normalize(Main.MouseWorld - proj.Center) * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(sourceItem), 6, Player.whoAmI, plasmaBallCount);
+                            Projectile.NewProjectile(proj.GetSource_FromThis(), proj.Center, Vector2.Normalize(Main.MouseWorld - proj.Center) * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), 6, Player.whoAmI, plasmaBallCount);
 
                         }
                     }
@@ -417,18 +417,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         {
             get
             {
-                return plasmaBallCount < 0 ? Projectile.ai[0] / UpgradeValue(15, 12, 9) : MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(60f, 48f, 36f), 0, 1);
+                return plasmaBallCount < 0 ? Projectile.ai[0] / this.UpgradeValue(15, 12, 9) : MathHelper.Clamp(Projectile.ai[0] / this.UpgradeValue(60f, 48f, 36f), 0, 1);
             }
         }
         public override bool Charged => Projectile.ai[1] == 0 ? plasmaBallCount == 0 && base.Charged : base.Charged;
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
-            frame = texture.Frame(20, 3, plasmaBallCount < 0 ? (19 - (int)(Factor * 3)) : (Factor < 1 ? (int)(Factor * 12) : (int)(IllusionBoundModSystem.ModTime / 4) % 5 + 12), UpgradeValue(0, 1, 2));
+            frame = texture.Frame(20, 3, plasmaBallCount < 0 ? (19 - (int)(Factor * 3)) : (Factor < 1 ? (int)(Factor * 12) : (int)(IllusionBoundModSystem.ModTime / 4) % 5 + 12), this.UpgradeValue(0, 1, 2));
             origin = new Vector2(29, 63) * .5f;
             scale = 2;
         }
     }
-    public class KluexPlasmaBall : StarboundWeaponProjectile
+    public class KluexPlasmaBall : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -465,7 +465,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             return Color.White;
         }
     }
-    public class KluexPlasmaCrystal : StarboundWeaponProjectile
+    public class KluexPlasmaCrystal : ModProjectile, IStarboundWeaponProjectile
     {
         Projectile projectile => Projectile;
 
@@ -532,7 +532,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             return Color.White;
         }
     }
-    public class KluexZone : StarboundWeaponProjectile
+    public class KluexZone : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {

@@ -1,6 +1,7 @@
 ﻿using ReLogic.Graphics;
 using System;
 using Terraria.DataStructures;
+using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;
 
 namespace VirtualDream
 {
@@ -18,6 +19,7 @@ namespace VirtualDream
         }
         public override void ResetEffects()
         {
+
             screenShakeStrength = 0;
             if (poisionLifeCostPerSecond > 0)
             {

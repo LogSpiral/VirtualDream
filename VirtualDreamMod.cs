@@ -4,9 +4,8 @@ global using Terraria;
 global using Terraria.Audio;
 global using Terraria.GameContent;
 global using Terraria.ModLoader;
-
 global using VirtualDream.Utils;
-global using VirtualDream.Utils.BaseClasses;
+global using LogSpiralLibrary.CodeLibrary;
 using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
@@ -28,6 +27,8 @@ using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver;
 using VirtualDream.Effects;
 
 using static Terraria.ModLoader.ModContent;
+using System.Linq;
+using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;
 
 //using static VirtualDream.IllusionBoundOnIlFunctions;
 // 用两个斜杠开头的句子都是注释QAQ，对程序运行没有任何影响，读我就行了，不用删
@@ -468,6 +469,7 @@ namespace VirtualDream
             {
                 if (proj.active && proj.ModProjectile != null && proj.ModProjectile is SolusEnergyShard shard)
                 {
+                    var shardPlayer = Main.player[proj.owner];
                     foreach (var swoosh in shard.swooshes)
                     {
                         if (swoosh != null && swoosh.Active)
@@ -478,7 +480,7 @@ namespace VirtualDream
                                 var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
                                 float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
                                 if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
-                                var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;//* (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11
+                                var scaler = 50 * shardPlayer.GetAdjustedItemScale(shardPlayer.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;//* (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11
                                 Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
                                 var realColor = Color.Lerp(Color.White, Color.Orange, f);
                                 realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
@@ -524,8 +526,8 @@ namespace VirtualDream
                         bool isLevatine = projectile.type == ProjectileType<Contents.StarBound.NPCs.Bosses.AsraNox.SolusLevatine>();
                         float _scaler = isLevatine ? 1600 : 98f;
                         var multiValue = isLevatine ? MathHelper.Clamp((210f - projectile.timeLeft).HillFactor2(210) * 2, 0, 1) : 1;//1 - (projectile.localAI[0] - 60) / 90f
-                        bars.Add(new CustomVertexInfo(projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * _scaler, default, new Vector3(1, 1, 0.6f)));
-                        bars.Add(new CustomVertexInfo(projectile.oldPos[0], default, new Vector3(0, 0, 0.6f)));
+                        bars.Add(new CustomVertexInfo(projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * _scaler, default(Color), new Vector3(1, 1, 0.6f)));
+                        bars.Add(new CustomVertexInfo(projectile.oldPos[0], default(Color), new Vector3(0, 0, 0.6f)));
                         for (int i = min; i < max; i++)
                         {
                             var f = (i - min) / (max - min - 1f);
@@ -551,7 +553,7 @@ namespace VirtualDream
                     CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];//
                     for (int i = 0; i < bars.Count - 2; i += 2)
                     {
-                        if (indexer.ToArray().ContainsValue(i)) continue;
+                        if (indexer.ToArray().Contains(i)) continue;
                         var k = i / 2;
                         if (6 * k < triangleList.Length)
                         {
@@ -706,7 +708,7 @@ namespace VirtualDream
                     {
                         if (proj.active && proj.ModProjectile != null && proj.ModProjectile is SolusEnergyShard shard)
                         {
-
+                            var shardPlayer = Main.player[proj.owner];
                             foreach (var swoosh in shard.swooshes)
                             {
                                 if (swoosh != null && swoosh.Active)
@@ -717,7 +719,7 @@ namespace VirtualDream
                                         var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
                                         float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
                                         if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
-                                        var scaler = 50 * shard.Player.GetAdjustedItemScale(shard.Player.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;// (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f
+                                        var scaler = 50 * shardPlayer.GetAdjustedItemScale(shardPlayer.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;// (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f
                                         Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
                                         var realColor = Color.Lerp(Color.White, Color.Orange, f);
                                         realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
@@ -730,7 +732,7 @@ namespace VirtualDream
 
                                     }
                                     indexer.Add(bars.Count - 2);
-                                    player = shard.Player;
+                                    player = shardPlayer;
 
                                     if (swoosh.timeLeft > timeLeft)
                                     {
@@ -742,8 +744,8 @@ namespace VirtualDream
                             }
                         }
                         if (proj.active && proj.type == ProjectileType<OculusReaverTear>()) oculusTears.Add(proj);
-                        if (proj.active && proj.type == ProjectileType<Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX.AstralTear>() && (int)proj.ai[1] != 0) astralTears.Add(proj);
-                        if (proj.active && (proj.type == ProjectileType<Contents.StarBound.NPCs.Bosses.AsraNox.SolusKatanaFractal>() || proj.type == ProjectileType<Contents.StarBound.NPCs.Bosses.AsraNox.SolusLevatine>())) solusKatanaFractal.Add(proj);
+                        if (proj.active && proj.type == ProjectileType<AstralTear>() && (int)proj.ai[1] != 0) astralTears.Add(proj);
+                        if (proj.active && (proj.type == ProjectileType<SolusKatanaFractal>() || proj.type == ProjectileType<SolusLevatine>())) solusKatanaFractal.Add(proj);
                     }
                     #endregion
                     if (bars.Count > 2 || oculusTears.Count > 0 || astralTears.Count > 0 || solusKatanaFractal.Count > 0)
@@ -779,12 +781,12 @@ namespace VirtualDream
                                         currentVec = projectile.oldPos[n];
                                     }
                                     if (max - min < 2) { /*Main.NewText("太短了太短了！！  " + max + "   " + projectile.localAI[0] + "   " + projectile.oldPos[0]);*/ continue; }
-                                    bool isLevatine = projectile.type == ProjectileType<Contents.StarBound.NPCs.Bosses.AsraNox.SolusLevatine>();
+                                    bool isLevatine = projectile.type == ProjectileType<SolusLevatine>();
                                     float _scaler = isLevatine ? 1600 : 98f;
                                     var multiValue = isLevatine ? MathHelper.Clamp((210f - projectile.timeLeft).HillFactor2(210) * 2, 0, 1) : 1;//1 - (projectile.localAI[0] - 60) / 90f
-                                    bars.Add(new CustomVertexInfo(projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * _scaler, default, new Vector3(1, 1, 0.6f)));
+                                    bars.Add(new CustomVertexInfo(projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * _scaler, default(Color), new Vector3(1, 1, 0.6f)));
                                     bars_2.Add(bars[^1] with { Position = projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * _scaler * 1.5f });
-                                    bars.Add(new CustomVertexInfo(projectile.oldPos[0], default, new Vector3(0, 0, 0.6f)));
+                                    bars.Add(new CustomVertexInfo(projectile.oldPos[0], default(Color), new Vector3(0, 0, 0.6f)));
                                     bars_2.Add(bars[^1]);
                                     for (int i = min; i < max; i++)
                                     {
@@ -813,7 +815,7 @@ namespace VirtualDream
                                 CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];
                                 for (int i = 0; i < bars.Count - 2; i += 2)
                                 {
-                                    if (indexer.ToArray().ContainsValue(i)) continue;
+                                    if (indexer.ToArray().Contains(i)) continue;
                                     var k = i / 2;
                                     if (6 * k < triangleList.Length)
                                     {
@@ -864,7 +866,7 @@ namespace VirtualDream
                                 ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
                                 for (int i = 0; i < bars_2.Count - 2; i += 2)
                                 {
-                                    if (indexer.ToArray().ContainsValue(i)) continue;
+                                    if (indexer.ToArray().Contains(i)) continue;
                                     var k = i / 2;
                                     if (6 * k < triangleList.Length)
                                     {
@@ -1458,8 +1460,8 @@ namespace VirtualDream
             //{
 
             //}
-            IllusionBoundExtensionMethods.ODEStarTimer += 1 / 120f;
-            IllusionBoundExtensionMethods.ODEStarTimer %= 4;
+            //IllusionBoundExtensionMethods.ODEStarTimer += 1 / 120f;
+            //IllusionBoundExtensionMethods.ODEStarTimer %= 4;
             TimeStopCount -= (TimeStopCount > -300 && !Main.gamePaused) ? 1 : 0;
             //GlassLightUpdate(ref IllusionBoundWorld.StormGlassGrowLightPink, 1);
             //GlassLightUpdate(ref IllusionBoundWorld.StormGlassGrowLightPurple, 2);
@@ -1696,7 +1698,7 @@ namespace VirtualDream
         public void Update()
         {
             if (timeLeft < 0) return;
-            var d = Dust.NewDustPerfect(position + (timeLeft / (float)cycle % 1).GetLerpValue_Loop(new Vector2(0.8660254f, -0.5f), new Vector2(0, 1), new Vector2(-0.8660254f, -0.5f)).RotatedBy(rotation) * size, dustType, default, 0, Color.White, dustSclaer);
+            var d = Dust.NewDustPerfect(position + (timeLeft / (float)cycle % 1).ArrayLerp_Loop(new Vector2(0.8660254f, -0.5f), new Vector2(0, 1), new Vector2(-0.8660254f, -0.5f)).RotatedBy(rotation) * size, dustType, default, 0, Color.White, dustSclaer);
             d.noGravity = true;
             d.velocity = default;
             timeLeft--;

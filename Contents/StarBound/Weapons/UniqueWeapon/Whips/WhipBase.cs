@@ -18,10 +18,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             Item.DefaultToWhip(type, damage, knockBack, shootSpeed, animationTime);
         }
     }
-    public abstract class WhipBase_Projectile : StarboundWeaponProjectile
+    public abstract class WhipBase_Projectile : ModProjectile,IStarboundWeaponProjectile
     {
         //public IEntitySource source;
         //public int sourceItemType => weapon.Item.type;
+        public Player Player => Main.player[projectile.owner];
         public override void OnSpawn(IEntitySource _source)
         {
             //source = _source;
@@ -66,7 +67,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             // could fix the calculation to `player.itemAnimationMax - (int)((ai[0] - 1) / MaxUpdates);` but the code doesn't do anything useful (even in vanilla)
             // player.itemAnimation = player.itemAnimationMax - (int)(ai[0] / MaxUpdates);
             // player.itemTime = player.itemAnimation;
-            if (Projectile.ai[0] == (float)(int)(timeToFlyOut / 2f))
+            if (Projectile.ai[0] == (int)(timeToFlyOut / 2f))
             {
                 Projectile.WhipPointsForCollision.Clear();
                 Projectile.FillWhipControlPoints(Projectile, Projectile.WhipPointsForCollision);

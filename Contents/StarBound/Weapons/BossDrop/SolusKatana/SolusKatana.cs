@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using System;
 using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
+using LogSpiralLibrary.CodeLibrary;
+using LogSpiralLibrary;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 {
@@ -262,15 +264,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             }
         }
     }
-    public class SolusKatanaProj : VertexHammerProj
+    public class SolusKatanaProj : VertexHammerProj, IStarboundWeaponProjectile
     {
         public override string HammerName => base.HammerName;
         public override float MaxTime
         {
             get
             {
-                if (controlState == 1 && Projectile.ai[1] > 0) return UpgradeValue(6, 5, 4);
-                return Charging && Projectile.ai[1] == 0 && controlState == 1 ? (UpgradeValue(MathHelper.Clamp(16 - counter / 5, 10, 16), MathHelper.Clamp(13 - counter / 4, 8, 13), MathHelper.Clamp(10 - counter / 3, 5, 10))) : UpgradeValue(30, 25, 20);
+                if (controlState == 1 && Projectile.ai[1] > 0) return this.UpgradeValue(6, 5, 4);
+                return Charging && Projectile.ai[1] == 0 && controlState == 1 ? (this.UpgradeValue(MathHelper.Clamp(16 - counter / 5, 10, 16), MathHelper.Clamp(13 - counter / 4, 8, 13), MathHelper.Clamp(10 - counter / 3, 5, 10))) : this.UpgradeValue(30, 25, 20);
             }
         }
         public override float Factor => base.Factor;
@@ -279,7 +281,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override Vector2 CollidingCenter => new Vector2(projTex.Size().X / 3 - 16, 16);
         public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-16, 12);// + new Vector2(-12, 12)
         public override Color color => base.color;
-        public override float MaxTimeLeft => (controlState == 2 ? UpgradeValue(7, 6, 5) : swooshTimeLeft);
+        public override float MaxTimeLeft => (controlState == 2 ? this.UpgradeValue(7, 6, 5) : swooshTimeLeft);
 
         public override Color VertexColor(float time) => Color.Lerp(Color.White, Color.Orange, time);
         public override bool UseRight => true;
@@ -287,7 +289,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap)
         {
             additive = true;
-            indexOfGreyTex = UpgradeValue(5, 5, 7);
+            indexOfGreyTex = this.UpgradeValue(5, 5, 7);
             useHeatMap = true;
         }
         public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha, bool inverse) useMask)
@@ -362,7 +364,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             //return flag2;
             if (controlState == 1)// || (Charged && projectile.ai[1] > MaxTimeLeft * factor - 1)
             {
-                if (UpgradeValue(false, false, true))
+                if (this.UpgradeValue(false, false, true))
                 {
                     foreach (var swoosh in leftSwooshes)
                     {
@@ -458,7 +460,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     }
                     else
                     {
-                        swoosh.rotation = vec.ToRotation() + Main.rand.NextFloat(-1, 1) * MathHelper.Pi / UpgradeValue(6, 4, 3);//+ (Projectile.ai[1] == maxCount ? 0 : Main.rand.NextFloat(-1, 1) * MathHelper.Pi / UpgradeValue(6, 4, 3))
+                        swoosh.rotation = vec.ToRotation() + Main.rand.NextFloat(-1, 1) * MathHelper.Pi / this.UpgradeValue(6, 4, 3);//+ (Projectile.ai[1] == maxCount ? 0 : Main.rand.NextFloat(-1, 1) * MathHelper.Pi / UpgradeValue(6, 4, 3))
                         swoosh.direction = (byte)(counter % 2);
                     }
                     swoosh.center = projCenter;
@@ -496,18 +498,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             {
                 if (Projectile.frame == 0)
                 {
-                    Projectile.frame = (int)MathHelper.Clamp((counter - (int)Projectile.ai[1]) / UpgradeValue(3, 2, 1), UpgradeValue(2, 3, 4), UpgradeValue(5, 7, 9));
+                    Projectile.frame = (int)MathHelper.Clamp((counter - (int)Projectile.ai[1]) / this.UpgradeValue(3, 2, 1), this.UpgradeValue(2, 3, 4), this.UpgradeValue(5, 7, 9));
                     //Main.NewText(counter);
                 }
                 //var maxCount = (int)MathHelper.Clamp((counter - (int)Projectile.ai[1]) / UpgradeValue(3, 2, 1), UpgradeValue(2, 3, 4), UpgradeValue(5, 7, 9));
                 //Main.NewText(maxCount);
                 if (Projectile.ai[1] < Projectile.frame)
                 {
-                    if (timeCount % UpgradeValue(6, 5, 4) == 0 && Projectile.ai[1] < Projectile.frame)
+                    if (timeCount % this.UpgradeValue(6, 5, 4) == 0 && Projectile.ai[1] < Projectile.frame)
                     {
                         if (Projectile.ai[1] == 0)
                         {
-                            Player.velocity = (Main.MouseWorld - Player.Center).SafeNormalize(default) * 24 * new Vector2(1, UpgradeValue(0, 0.5f, 1));
+                            Player.velocity = (Main.MouseWorld - Player.Center).SafeNormalize(default) * 24 * new Vector2(1, this.UpgradeValue(0, 0.5f, 1));
                             //Player.velocity = Player.velocity.SafeNormalize(default) * 24;
                         }
 
@@ -621,7 +623,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             return bars.ToArray();//base.CreateVertexs(drawCen, scaler, startAngle, endAngle, alphaLight).Union(bars)
         }
         public override bool WhenVertexDraw => controlState == 1 || base.WhenVertexDraw;
-        public virtual void OnChargedShoot()
+        public override void OnChargedShoot()
         {
             int max = (int)(30 * Factor);
             var vec = (CollidingCenter - DrawOrigin).RotatedBy(Rotation) + projCenter;
@@ -629,14 +631,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             {
                 Dust.NewDustPerfect(vec, MyDustId.OrangeFx, (MathHelper.TwoPi / max * n).ToRotationVector2() * Main.rand.NextFloat(2, 8)).noGravity = true;
             }
-            if (Player.CheckMana(UpgradeValue(50, 60, 65), true))
+            if (Player.CheckMana(this.UpgradeValue(50, 60, 65), true))
             {
-                var count = UpgradeValue(3, 5, 7);
+                var count = this.UpgradeValue(3, 5, 7);
                 for (int i = 0; i < count; i++)
                 {
                     float factor = i / (count - 1f);
                     Vector2 finalVec = Vector2.Normalize(Main.MouseWorld - projCenter).RotatedBy(factor.Lerp(-MathHelper.Pi / 6, MathHelper.Pi / 6)) * 72f;
-                    Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(sourceItem), Projectile.knockBack, Projectile.owner);
+                    Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), Projectile.knockBack, Projectile.owner);
                 }
                 SoundEngine.PlaySound(SoundID.Item62);
             }
@@ -694,18 +696,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 Vector2 baseVec = (Rotation - MathHelper.PiOver2).ToRotationVector2();
                 Vector2 start = new Vector2(23 * baseVec.X - 20 * baseVec.Y, 23 * baseVec.Y + 20 * baseVec.X);
                 Vector2 end = new Vector2(70 * baseVec.X - 77 * baseVec.Y, 70 * baseVec.Y + 77 * baseVec.X);
-                Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(start + projCenter, Vector2.Normalize(end - start), 15, (start - end).Length() * Factor, 30, texcoord: (0, 0, Factor, 1));
+                Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(start + projCenter, Vector2.Normalize(end - start), LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[10].Value, (start - end).Length() * Factor, 30, texcoord: (0, 0, Factor, 1));
             }
             return base.PreDraw(ref lightColor);
         }
-        public virtual bool DrawLaserFire => UpgradeValue(false, true, true);
+        public virtual bool DrawLaserFire => this.UpgradeValue(false, true, true);
         public float swooshTimeLeft => 30;
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             base.OnHitNPC(target, damage, knockback, crit);
             target.AddBuff(BuffID.OnFire, controlState == 2 ? 750 : 450);
             target.AddBuff(BuffID.Daybreak, controlState == 2 ? 750 : 450);
-            target.immune[Projectile.owner] = (controlState == 2 || Projectile.ai[1] > 0) ? UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
+            target.immune[Projectile.owner] = (controlState == 2 || Projectile.ai[1] > 0) ? this.UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
             //var strength = 0f;
             //if (controlState == 1 && projectile.ai[1] < 1)
             //{
@@ -719,9 +721,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             //VirtualDreamPlayer.screenShakeStrength += strength;
             //Dust.NewDustPerfect(target.Center, MyDustId.Fire, (Rotation + MathHelper.PiOver2 * (counter % 2 == 0 ? 1 : -1)).ToRotationVector2());
         }
-        public override Rectangle? frame => projTex.Frame(3, 1, UpgradeValue(0, 1, 2));
+        public override Rectangle? frame => projTex.Frame(3, 1, this.UpgradeValue(0, 1, 2));
     }
-    public class SolusEnergyShard : StarboundWeaponProjectile
+    public class SolusEnergyShard : ModProjectile, IStarboundWeaponProjectile
     {
         Projectile projectile => Projectile;
         public override void SetStaticDefaults()
@@ -774,7 +776,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 spriteBatch.Draw(projectileTexture, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(7.5f, 3.5f), scaleVec, SpriteEffects.None, 0f);
                 //Main.instance.GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
-                spriteBatch.DrawQuadraticLaser_PassHeatMap(unit * 8 + projectile.Center, -unit, 15, MathHelper.Clamp(length, 0, 16) * 2 + 28, 30);
+                spriteBatch.DrawQuadraticLaser_PassHeatMap(unit * 8 + projectile.Center, -unit, LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[10].Value, MathHelper.Clamp(length, 0, 16) * 2 + 28, 30);
 
 
                 //var length = projectile.velocity.Length();
@@ -804,7 +806,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             }
             if ((int)projectile.ai[0] >= 4 && (int)projectile.ai[0] <= 6 && projectile.timeLeft >= 150)
             {
-                spriteBatch.DrawEffectLine(projectile.Center, projectile.velocity.SafeNormalize(default), Color.Orange * (180f - projectile.timeLeft).HillFactor2(30), 1, 0, 240, 30, 1);
+                spriteBatch.DrawEffectLine(projectile.Center, projectile.velocity.SafeNormalize(default), Color.Orange * (180f - projectile.timeLeft).HillFactor2(30), LogSpiralLibraryMod.AniTex[1].Value, 1, 0, 240, 30);
             }
             //else 
             //{
@@ -987,16 +989,16 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     //else
                     //    SoundEngine.PlaySound(Terraria.ID.SoundID.Item38);
                     projectile.damage = 0;
-                    if((Main.LocalPlayer.Center - projectile.Center).Length() < 1200)
-                    for (int n = 0; n < 3; n++)
-                    {
-                        var swoosh = swooshes[n] = new();
-                        swoosh.timeLeft = 30;
-                        swoosh.xScaler = Main.rand.NextFloat(1, 3);
-                        swoosh.rotation = Main.rand.NextFloat(0, MathHelper.TwoPi);
-                        swoosh.center = projectile.Center;
-                        swoosh.direction = (byte)Main.rand.Next(2);
-                    }
+                    if ((Main.LocalPlayer.Center - projectile.Center).Length() < 1200)
+                        for (int n = 0; n < 3; n++)
+                        {
+                            var swoosh = swooshes[n] = new();
+                            swoosh.timeLeft = 30;
+                            swoosh.xScaler = Main.rand.NextFloat(1, 3);
+                            swoosh.rotation = Main.rand.NextFloat(0, MathHelper.TwoPi);
+                            swoosh.center = projectile.Center;
+                            swoosh.direction = (byte)Main.rand.Next(2);
+                        }
                 }
                 if (projectile.timeLeft < 31 && (Main.LocalPlayer.Center - projectile.Center).Length() < 1200)
                 {
@@ -1005,7 +1007,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         var swoosh = swooshes[n];
                         if (swoosh != null && swooshes[n].timeLeft > 0) swoosh.timeLeft--;
                     }
-                    VirtualDreamPlayer.screenShakeStrength += (projectile.timeLeft / 30f).HillFactor(1);
+                    //TODO 这里原来是HillFactor
+                    VirtualDreamPlayer.screenShakeStrength += (projectile.timeLeft / 30f).HillFactor2(1);
                 }
                 //Main.NewText(projectile.penetrate);
                 //if (projectile.timeLeft < 147)

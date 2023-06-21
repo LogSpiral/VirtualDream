@@ -1,6 +1,7 @@
 ﻿using Terraria.ID;
 using Terraria.DataStructures;
 using System;
+using LogSpiralLibrary;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
 {
@@ -43,6 +44,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         public override bool AltFunctionUse(Player player)
         {
             return true;
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, item.shoot, damage, knockback, player.whoAmI);
+            return false;
         }
         //public override void UseStyle(Player player, Rectangle rectangle)
         //{
@@ -359,14 +365,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         {
         }
     }
-    public class MiniknogLauncherProj : RangedHeldProjectile
+    public class MiniknogLauncherProj : RangedHeldProjectile,IStarboundWeaponProjectile
     {
         //BossDropWeaponProj<ErchiusEye, ErchiusEyeEX, ErchiusEyeDL>
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * 6;//Main.MouseWorld - Player.Center
         public override bool UseRight => true;
         public override void OnCharging(bool left, bool right)
         {
-            if ((int)Projectile.ai[0] % UpgradeValue(20, 16, 12) == 0 && Projectile.ai[0] != 0)
+            if ((int)Projectile.ai[0] % this.UpgradeValue(20, 16, 12) == 0 && Projectile.ai[0] != 0)
             {
                 if (right)
                 {
@@ -374,10 +380,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     SoundEngine.PlaySound(SoundID.Item62);
                 }
 
-                else if ((int)Projectile.ai[0] <= UpgradeValue(80, 64, 48) && Player.PickAmmo(sourceItem, out int _, out float _, out int _, out float _, out int _))
+                else if ((int)Projectile.ai[0] <= this.UpgradeValue(80, 64, 48) && Player.PickAmmo(((IStarboundWeaponProjectile)this).sourceItem, out int _, out float _, out int _, out float _, out int _))
                 {
                     var str = "";
-                    switch ((int)Projectile.ai[0] / UpgradeValue(20, 16, 12))
+                    switch ((int)Projectile.ai[0] / this.UpgradeValue(20, 16, 12))
                     {
                         case 1:
                             str = "穿墙";
@@ -400,9 +406,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     {
                         var text = Main.combatText[index];
                         text.velocity.Y = -16;
-                        text.lifeTime /= UpgradeValue(3, 4, 5);
+                        text.lifeTime /= this.UpgradeValue(3, 4, 5);
                     }
-                    if ((int)Projectile.ai[0] == UpgradeValue(80, 64, 48))
+                    if ((int)Projectile.ai[0] == this.UpgradeValue(80, 64, 48))
                     {
                         rect.Offset(0, -32);
                         index = CombatText.NewText(rect, Color.Blue, "所有导弹填充完毕！", true);
@@ -410,7 +416,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                         {
                             var text = Main.combatText[index];
                             text.velocity.Y = -16;
-                            text.lifeTime /= UpgradeValue(3, 4, 5);
+                            text.lifeTime /= this.UpgradeValue(3, 4, 5);
                         }
                     }
                 }
@@ -422,7 +428,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         {
             get
             {
-                return MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(80f, 64f, 48f), 0, 1);
+                return MathHelper.Clamp(Projectile.ai[0] / this.UpgradeValue(80f, 64f, 48f), 0, 1);
             }
         }
         //public override bool PreDraw(ref Color lightColor)
@@ -433,7 +439,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         {
             if (!left) return;
             int tier = (int)(Factor * 4);
-            int upgradeState = UpgradeValue(0, 1, 2);
+            int upgradeState = this.UpgradeValue(0, 1, 2);
             var vec = Projectile.velocity * 16;
 
             switch (tier)
@@ -515,19 +521,19 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         }
         private void ShootRocket(Vector2 vel, int ai0 = 0)
         {
-            Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), ShootCenter, vel, ModContent.ProjectileType<MiniknogRocket>(), Projectile.damage, 5f, Projectile.owner, ai0);
+            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, vel, ModContent.ProjectileType<MiniknogRocket>(), Projectile.damage, 5f, Projectile.owner, ai0);
             //0穿墙1折射2爆炸3buff4小爆炸5追踪//6普通爆炸效果//7小爆炸效果//8buff爆炸效果
         }
         public override (int X, int Y) FrameMax => (4, 3);
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
-            frame = texture.Frame(FrameMax.X, FrameMax.Y, (int)Projectile.ai[0] / 2 % 4, UpgradeValue(0, 1, 2));
+            frame = texture.Frame(FrameMax.X, FrameMax.Y, (int)Projectile.ai[0] / 2 % 4, this.UpgradeValue(0, 1, 2));
             origin = new Vector2(5, 10);
             scale = 2f;
         }
         public override Color GlowColor => base.GlowColor;//base.GlowColor * (MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(40f, 30f, 20f), 1, 2) - 1)
     }
-    public class MiniknogRocket : StarboundWeaponProjectile
+    public class MiniknogRocket : ModProjectile, IStarboundWeaponProjectile
     {
         Projectile projectile => Projectile;
         public override void SetDefaults()
@@ -555,7 +561,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         }
         private void ShootTinyRocket()
         {
-            Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), projectile.Center, Main.rand.NextVector2Unit() * 16, projectile.type, projectile.damage / 2, 5f, projectile.owner, 4);
+            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), projectile.Center, Main.rand.NextVector2Unit() * 16, projectile.type, projectile.damage / 2, 5f, projectile.owner, 4);
         }
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
@@ -722,7 +728,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         {
             if ((int)projectile.ai[0] > 5) return false;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            VirtualDreamDrawMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, Width: (int)projectile.ai[0] == 4 ? 10 : 20);
+            DrawingMethods.DrawShaderTail(spriteBatch, projectile, LogSpiralLibraryMod.HeatMap[7].Value, LogSpiralLibraryMod.AniTex[2].Value, LogSpiralLibraryMod.BaseTex[12].Value, (int)projectile.ai[0] == 4 ? 10 : 20);
+            //VirtualDreamDrawMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, Width: (int)projectile.ai[0] == 4 ? 10 : 20);
             if (projectile.timeLeft > 1)
             {
                 spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(10, 7), (int)projectile.ai[0] == 4 ? 0.5f : 1, 0, 0);

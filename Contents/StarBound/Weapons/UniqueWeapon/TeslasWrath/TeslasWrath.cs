@@ -74,7 +74,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
         {
         }
     }
-    public class TeslasWrathProj : RangedHeldProjectile
+    public class TeslasWrathProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * new Vector2(4, 8);// + Vector2.Normalize(Main.screenPosition - Player.Center) * 4 + new Vector2(0, 8)//Main.MouseWorld - Player.Center
 
@@ -115,12 +115,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 62 + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * Player.direction * 8;
         public override void OnRelease(bool charged, bool left)
         {
-            if (controlState < 3 && Player.PickAmmo(sourceItem, out int _, out float speed, out int damage, out float knockBack, out int _))
+            if (controlState < 3 && Player.PickAmmo(((IStarboundWeaponProjectile)this).sourceItem, out int _, out float speed, out int damage, out float knockBack, out int _))
             {
                 if (charged || left)
                 {
                     SoundEngine.PlaySound(SoundID.Item62);
-                    Projectile.NewProjectileDirect(weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * (32f + speed), ModContent.ProjectileType<TeslasWrathBullet>(), Player.GetWeaponDamage(sourceItem) + damage, knockBack + 4f, Player.whoAmI).extraUpdates *= left ? 1 : 2;
+                    Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * (32f + speed), ModContent.ProjectileType<TeslasWrathBullet>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem) + damage, knockBack + 4f, Player.whoAmI).extraUpdates *= left ? 1 : 2;
                     Projectile.timeLeft = 20;
                     controlState = 3;
                 }
@@ -130,12 +130,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
         {
             get
             {
-                return MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(24f, 18f), 0, 1);
+                return MathHelper.Clamp(Projectile.ai[0] / ((IStarboundWeaponProjectile)this).UpgradeValue(24f, 18f), 0, 1);
             }
         }
         public override void PostDraw(Color lightColor)
         {
-            var shift = Projectile.ai[0] - UpgradeValue(30f, 24f);
+            var shift = Projectile.ai[0] - ((IStarboundWeaponProjectile)this).UpgradeValue(30f, 24f);
             var factor = Factor * Factor;
             var factor_2 = controlState == 3 ? MathHelper.Clamp((Projectile.timeLeft - 12) / 8f, 0, 1) : 1;
             var length = 0f;
@@ -170,7 +170,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
         public override (int X, int Y) FrameMax => (1, 2);
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
-            frame = texture.Frame(FrameMax.X, FrameMax.Y, 0, UpgradeValue(0, 1));
+            frame = texture.Frame(FrameMax.X, FrameMax.Y, 0, ((IStarboundWeaponProjectile)this).UpgradeValue(0, 1));
             if (controlState == 3)
             {
                 var fac = (1 - Projectile.timeLeft / 20f).HillFactor2();
@@ -180,7 +180,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
             origin = new Vector2(28, 16);
         }
     }
-    public class TeslasWrathBullet : StarboundWeaponProjectile
+    public class TeslasWrathBullet : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {

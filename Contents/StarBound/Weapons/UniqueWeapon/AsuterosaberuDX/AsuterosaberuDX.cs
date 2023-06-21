@@ -1,5 +1,4 @@
-﻿using static VirtualDream.Utils.IllusionBoundExtensionMethods;
-using Terraria.ID;
+﻿using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
 {
@@ -929,14 +928,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     {
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
-            target.immune[Projectile.owner] = (controlState == 2 || Projectile.ai[1] > 0) ? UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
+            target.immune[Projectile.owner] = (controlState == 2 || Projectile.ai[1] > 0) ? this.UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
             base.OnHitNPC(target, damage, knockback, crit);
         }
         public override string Texture => base.Texture;//"VirtualDream/Contents/StarBound/Weapons/UniqueWeapon/AsuterosaberuDX/AsuterosaberuDX"
         public override bool DrawLaserFire => false;
         public override void OnChargedShoot()
         {
-            if (!Player.CheckMana(UpgradeValue(75, 90, 80), true)) return;
+            if (!Player.CheckMana(this.UpgradeValue(75, 90, 80), true)) return;
             SoundEngine.PlaySound(SoundID.Item60, Projectile.position);
             Vector2 unit = (Main.MouseWorld - Player.Center).SafeNormalize(default);
             //for (int n = 0; n < 4; n++) 
@@ -944,7 +943,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //    Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), projectile.damage / 9, projectile.knockBack, projectile.owner, 0, UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
             //    unit = new Vector2(-unit.Y, unit.X);
             //}
-            Projectile.NewProjectileDirect(weapon.GetSource_StarboundWeapon(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), Projectile.damage / 9, Projectile.knockBack, Projectile.owner, 0, UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
+            Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), Projectile.damage / 9, Projectile.knockBack, Projectile.owner, 0, this.UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
 
         }
         public override void SetStaticDefaults()
@@ -954,7 +953,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap)
         {
             additive = true;
-            indexOfGreyTex = UpgradeValue(5, 7, 7);
+            indexOfGreyTex = this.UpgradeValue(5, 7, 7);
             useHeatMap = true;
         }
         public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha,bool inverse) useMask)
@@ -963,7 +962,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             useMask = (IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8, true, false);
         }
     }
-    public class AstralTear : StarboundWeaponProjectile
+    public class AstralTear : ModProjectile, IStarboundWeaponProjectile
     {
 
         public override void SetStaticDefaults()
@@ -1120,10 +1119,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
                 case 0:
                 case 1:
                     {
-                        var oldpos = projectile.Center;
-                        projectile.Center = target.position + new Vector2(projectile.localAI[0], projectile.localAI[1]) + projectile.rotation.ToRotationVector2() * (state == 1 ? 384 : 256) * (2 / 15f * projectile.ai[0] - 1);
-                        projectile.velocity = projectile.Center - oldpos;
-                        if (projectile.ai[0] > 15) projectile.Kill();
+                        //var oldpos = projectile.Center;
+                        //projectile.Center = target.position + new Vector2(projectile.localAI[0], projectile.localAI[1]) + projectile.rotation.ToRotationVector2() * (state == 1 ? 384 : 256) * (2 / 15f * projectile.ai[0] - 1);
+                        //projectile.velocity = projectile.Center - oldpos;
+                        //if (projectile.ai[0] > 15) projectile.Kill();
+                        Main.NewText("???");
                         break;
                     }
                 case 2:
@@ -1139,7 +1139,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
                                 {
                                     //n++;
                                     var rand = Main.rand.NextFloat(0, MathHelper.TwoPi);
-                                    var p = Projectile.NewProjectileDirect(weapon.GetSource_StarboundWeapon(), default, default, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, 0, state - 2);
+                                    var p = Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), default, default, projectile.type, projectile.damage, projectile.knockBack, projectile.owner, 0, state - 2);
                                     p.rotation = rand;
                                     p.frame = target.whoAmI + 1;
                                     p.height = p.width = 20;

@@ -1,4 +1,5 @@
-﻿using Terraria.DataStructures;
+﻿using LogSpiralLibrary;
+using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifle
@@ -78,7 +79,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             item.knockBack = 9f;
         }
     }
-    public class VintageScopedRifleProj : RangedHeldProjectile
+    public class VintageScopedRifleProj : RangedHeldProjectile,IStarboundWeaponProjectile
     {
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * new Vector2(4, 8);// + Vector2.Normalize(Main.screenPosition - Player.Center) * 4 + new Vector2(0, 8)//Main.MouseWorld - Player.Center
 
@@ -95,12 +96,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 50 + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * Player.direction * 8;
         public override void OnRelease(bool charged, bool left)
         {
-            if (controlState < 3 && Player.PickAmmo(sourceItem, out int bulletType, out float speed, out int damage, out float knockBack, out int _))
+            if (controlState < 3 && Player.PickAmmo(((IStarboundWeaponProjectile)this).sourceItem, out int bulletType, out float speed, out int damage, out float knockBack, out int _))
             {
                 if (charged || left)
                 {
                     SoundEngine.PlaySound(SoundID.Item62);
-                    var proj = Projectile.NewProjectileDirect(weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * (32f + speed), left ? bulletType : ModContent.ProjectileType<PiercingBullet>(), Player.GetWeaponDamage(sourceItem) + damage, knockBack + 4f, Player.whoAmI);
+                    var proj = Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * (32f + speed), left ? bulletType : ModContent.ProjectileType<PiercingBullet>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem) + damage, knockBack + 4f, Player.whoAmI);
                     if (left) proj.extraUpdates += 2;
                     Projectile.timeLeft = 20;
                     controlState = 3;
@@ -111,12 +112,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
         {
             get
             {
-                return MathHelper.Clamp(Projectile.ai[0] / UpgradeValue(30f, 24f), 0, 1);
+                return MathHelper.Clamp(Projectile.ai[0] / this.UpgradeValue(30f, 24f), 0, 1);
             }
         }
         public override void PostDraw(Color lightColor)
         {
-            var shift = Projectile.ai[0] - UpgradeValue(30f, 24f);
+            var shift = Projectile.ai[0] - this.UpgradeValue(30f, 24f);
             var factor = Factor * Factor;
             var factor_2 = controlState == 3 ? MathHelper.Clamp((Projectile.timeLeft - 12) / 8f, 0, 1) : 1;
             var length = 0f;
@@ -151,7 +152,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
         public override (int X, int Y) FrameMax => (1, 2);
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
-            frame = texture.Frame(FrameMax.X, FrameMax.Y, 0, UpgradeValue(0, 1));
+            frame = texture.Frame(FrameMax.X, FrameMax.Y, 0, this.UpgradeValue(0, 1));
             if (controlState == 3)
             {
                 var fac = (1 - Projectile.timeLeft / 20f).HillFactor2();
@@ -161,7 +162,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             origin = new Vector2(20, 18);
         }
     }
-    public class PiercingBullet : StarboundWeaponProjectile
+    public class PiercingBullet : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -219,9 +220,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
+            //var tex = LogSpiralLibraryMod.HeatMap[0];
+            //Main.NewText(LogSpiralLibraryMod.HeatMap[0] == null ? "Null辣" : "好欸");
             spriteBatch.DrawShaderTail(projectile, IllusionBoundMod.HeatMap[0], IllusionBoundMod.AniTexes[0], IllusionBoundMod.BaseTexes[0], 40, new Vector2(projectile.width, projectile.height) * .5f, (1 - projectile.timeLeft / 180f).HillFactor2());
-            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(10, 3), new Vector2(2, 1), 0, 0);
-            return base.PreDraw(ref lightColor);
+            spriteBatch.Draw(TextureAssets.Projectile[Type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(10, 3), new Vector2(2, 1), 0, 0);
+            return false;
         }
     }
 }

@@ -11,7 +11,6 @@ using Terraria.ModLoader.IO;
 using VirtualDream.Contents.TouhouProject.NPCs.Fairy;
 
 using static Terraria.ModLoader.ModContent;
-using static VirtualDream.Utils.IllusionBoundExtensionMethods;
 
 namespace VirtualDream.Contents.InfiniteNightmare
 {
@@ -850,22 +849,40 @@ namespace VirtualDream.Contents.InfiniteNightmare
     }
     public class InfiniteNightmareNPC : GlobalNPC
     {
+        public static int MultiplyK(int value, float k, bool negative = false)
+        {
+            if (negative)
+            {
+                return (int)(value * (1 - k));
+            }
+
+            return (int)(value * (1 + k));
+        }
+        public static float MultiplyK(float value, float k, bool negative = false)
+        {
+            if (negative)
+            {
+                return value * (1 - k);
+            }
+
+            return value * (1 + k);
+        }
         private void SetValue(NPC npc, float k)
         {
             if (!npc.friendly)
             {
-                npc.lifeMax = npc.lifeMax.MultiplyK(k);
-                npc.defense = npc.defense.MultiplyK(k);
-                npc.damage = npc.damage.MultiplyK(k);
-                npc.knockBackResist = npc.knockBackResist.MultiplyK(k, true);
-                npc.value = npc.value.MultiplyK(k);
+                npc.lifeMax = MultiplyK(npc.lifeMax, k);
+                npc.defense = MultiplyK(npc.defense, k);
+                npc.damage = MultiplyK(npc.damage, k);
+                npc.knockBackResist = MultiplyK(npc.knockBackResist, k, true);
+                npc.value = MultiplyK(npc.value, k);
             }
             if (npc.friendly)
             {
-                npc.lifeMax = npc.lifeMax.MultiplyK(k, true);
-                npc.defense = npc.defense.MultiplyK(k, true);
-                npc.damage = npc.damage.MultiplyK(k, true);
-                npc.knockBackResist = npc.knockBackResist.MultiplyK(k);
+                npc.lifeMax = MultiplyK(npc.lifeMax, k, true);
+                npc.defense = MultiplyK(npc.defense, k, true);
+                npc.damage = MultiplyK(npc.damage, k, true);
+                npc.knockBackResist = MultiplyK(npc.knockBackResist, k);
             }
         }
         public override void SetDefaults(NPC npc)
@@ -1442,8 +1459,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
             List<CustomVertexInfo> bars2 = new List<CustomVertexInfo>();
             List<CustomVertexInfo> bars3 = new List<CustomVertexInfo>();
             List<CustomVertexInfo> bars4 = new List<CustomVertexInfo>();
-            int sint = IllusionBoundExtensionMethods.ValueRange((int)Time - 180, 1, 120);
-            int eint = IllusionBoundExtensionMethods.ValueRange((int)Time, 1, 120);
+            int sint = Math.Clamp((int)Time - 180, 1, 120);
+            int eint = Math.Clamp((int)Time, 1, 120);
             for (int i = sint; i < eint; ++i)
             {
                 var factor = ((float)i - sint) / ((float)eint - sint);
@@ -1631,7 +1648,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             Time++;
             for (float n = 0; n < 121; n++)
             {
-                float x = (Time - n).ValueRange(0, 180);
+                float x = Math.Clamp(Time - n, 0, 180);
                 posG[(int)n] = new Vector2(4 * (float)Math.Sin(Math.Sqrt(x + 10)), -x).RotatedBy(projectile.ai[1] * MathHelper.PiOver2) * 20f;
                 //posG2[(int)n] = projectile.Center - new Vector2(4 * (float)Math.Sin(Math.Sqrt(x + 10)), +x) * 20f;
                 posP[(int)n] = new Vector2(-8 * ((float)Math.Sin(0.05f * x) * 60 / x + (float)Math.Sqrt(0.05d * x) * 2 - 3), -x).RotatedBy(projectile.ai[1] * MathHelper.PiOver2) * 20f;

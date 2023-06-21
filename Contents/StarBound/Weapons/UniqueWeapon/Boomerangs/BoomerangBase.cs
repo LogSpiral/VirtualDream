@@ -3,7 +3,7 @@ using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
 {
-    public abstract class BoomerangBaseProj : StarboundWeaponProjectile
+    public abstract class BoomerangBaseProj : ModProjectile, IStarboundWeaponProjectile
     {
 		public Projectile projectile => Projectile;
 		public override void SetStaticDefaults()
@@ -57,9 +57,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
 				projectile.tileCollide = false;
 				float num42 = 16f;
 				float num43 = 1.2f;
-				Vector2 vector2 = new Vector2(projectile.position.X + (float)projectile.width * 0.5f, projectile.position.Y + (float)projectile.height * 0.5f);
-				float num44 = Main.player[projectile.owner].position.X + (float)(Main.player[projectile.owner].width / 2) - vector2.X;
-				float num45 = Main.player[projectile.owner].position.Y + (float)(Main.player[projectile.owner].height / 2) - vector2.Y;
+				Vector2 vector2 = new Vector2(projectile.position.X + projectile.width * 0.5f, projectile.position.Y + projectile.height * 0.5f);
+				float num44 = Main.player[projectile.owner].position.X + Main.player[projectile.owner].width / 2 - vector2.X;
+				float num45 = Main.player[projectile.owner].position.Y + Main.player[projectile.owner].height / 2 - vector2.Y;
 				float num46 = (float)Math.Sqrt((double)(num44 * num44 + num45 * num45));
 				if (num46 > 3000f)
 				{

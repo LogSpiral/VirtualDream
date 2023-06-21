@@ -50,7 +50,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
         }
     }
-    public abstract class GauntletsProj : StarboundWeaponProjectile
+    public abstract class GauntletsProj : ModProjectile, IStarboundWeaponProjectile
     {
         public Projectile projectile => Projectile;
         public virtual float swooshAlpha => WhenSA ? 0.75f : 0.3f;
@@ -294,17 +294,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
                 target.immune[projectile.whoAmI] = owner.itemAnimationMax / 4;//3
                 if (target.CanBeChasedBy())
                     target.velocity += (target.Center - owner.Center).SafeNormalize(default) * (float)Math.Sqrt(KnockBackValue / 2f) * 4f;//4f
-                if (weapon != null)
-                {
-                    if (target.type != NPCID.TargetDummy)
-                    {
-                        if (target.life - damage <= 0)
-                        {
-                            weapon.killCount++;
-                        }
-                        weapon.hurtCount += damage;
-                    }
-                }
+                //if (((IStarboundWeaponProjectile)this).weapon != null)
+                //{
+                //    if (target.type != NPCID.TargetDummy)
+                //    {
+                //        if (target.life - damage <= 0)
+                //        {
+                //            ((IStarboundWeaponProjectile)this).weapon.killCount++;
+                //        }
+                //        ((IStarboundWeaponProjectile)this).weapon.hurtCount += damage;
+                //    }
+                //}
             }
             else
             {

@@ -239,7 +239,7 @@ namespace VirtualDream
             {
                 return;
             }
-            Vector2 value3 = Main.screenPosition + new Vector2((float)(Main.screenWidth >> 1), (float)(Main.screenHeight >> 1));
+            Vector2 value3 = Main.screenPosition + new Vector2(Main.screenWidth >> 1, Main.screenHeight >> 1);
             Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
             float scale = Math.Min(1f, (Main.screenPosition.Y - 1000f) / 1000f);
             for (int j = num; j < num2; j++)
@@ -255,7 +255,7 @@ namespace VirtualDream
                     for (float num5 = 0f; num5 <= 1f; num5 += 0.03f)
                     {
                         float num6 = 1f - (num5 + Main.GlobalTimeWrappedHourly * 0.02f + (float)Math.Sin((double)((float)j))) % 1f;
-                        spriteBatch.Draw(this._rockTextures[num4], vector2 + new Vector2((float)Math.Sin((double)(num5 * 1582f)) * (num3 * 0.5f) + num3 * 0.5f, num6 * 2000f), null, Color.White * num6 * scale * this._fadeOpacity, num6 * 20f, new Vector2((float)(this._rockTextures[num4].Width >> 1), (float)(this._rockTextures[num4].Height >> 1)), 0.9f, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(this._rockTextures[num4], vector2 + new Vector2((float)Math.Sin((double)(num5 * 1582f)) * (num3 * 0.5f) + num3 * 0.5f, num6 * 2000f), null, Color.White * num6 * scale * this._fadeOpacity, num6 * 20f, new Vector2(this._rockTextures[num4].Width >> 1, this._rockTextures[num4].Height >> 1), 0.9f, SpriteEffects.None, 0f);
                         num4 = (num4 + 1) % this._rockTextures.Length;
                     }
                 }
@@ -276,7 +276,7 @@ namespace VirtualDream
             this._pillars = new LightPillar[40];
             for (int i = 0; i < this._pillars.Length; i++)
             {
-                this._pillars[i].Position.X = (float)i / (float)this._pillars.Length * ((float)Main.maxTilesX * 16f + 20000f) + this._random.NextFloat() * 40f - 20f - 20000f;
+                this._pillars[i].Position.X = i / (float)this._pillars.Length * (Main.maxTilesX * 16f + 20000f) + this._random.NextFloat() * 40f - 20f - 20000f;
                 this._pillars[i].Position.Y = this._random.NextFloat() * 200f - 2000f;
                 this._pillars[i].Depth = this._random.NextFloat() * 8f + 7f;
             }
@@ -391,12 +391,12 @@ namespace VirtualDream
             //    case 1: case 3: num = 1200; break;
             //    case 2: case 4: num = 2400; break;
             //}
-            float num = (tierFactor / 5f).GetLerpValue(0f, 1200, 4800, 3600, 2400);
+            float num = (tierFactor / 5f).ArrayLerp(0f, 1200, 4800, 3600, 2400);
             for (int i = 0; i < _meteors.Length; i++)
             {
                 _meteors[i].Position.X -= num * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 _meteors[i].Position.Y += num * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if ((double)_meteors[i].Position.Y > Main.worldSurface * 16.0)
+                if (_meteors[i].Position.Y > Main.worldSurface * 16.0)
                 {
                     _meteors[i].Position.X = _meteors[i].StartX;
                     _meteors[i].Position.Y = -10000f;
@@ -502,7 +502,7 @@ namespace VirtualDream
                 //    //Main.graphics.GraphicsDevice.BlendState = BlendState.NonPremultiplied;
                 //}
 
-                Color color = (tierFactor / 5f).GetLerpValue(default, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);
+                Color color = (tierFactor / 5f).ArrayLerp(default, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 CustomVertexInfo[] triangleArry = new CustomVertexInfo[6];
@@ -567,8 +567,8 @@ namespace VirtualDream
             _meteors = new Meteor[150];
             for (int i = 0; i < _meteors.Length; i++)
             {
-                float num = (float)i / (float)_meteors.Length;
-                _meteors[i].Position.X = num * ((float)Main.maxTilesX * 16f) + _random.NextFloat() * 40f - 20f;
+                float num = i / (float)_meteors.Length;
+                _meteors[i].Position.X = num * (Main.maxTilesX * 16f) + _random.NextFloat() * 40f - 20f;
                 _meteors[i].Position.Y = _random.NextFloat() * (0f - ((float)Main.worldSurface * 16f + 10000f)) - 10000f;
                 if (_random.Next(3) != 0)
                     _meteors[i].Depth = _random.NextFloat() * 3f + 1.8f;
@@ -638,7 +638,7 @@ namespace VirtualDream
                     num++;
                 }
                 this._bolts[num].IsAlive = true;
-                this._bolts[num].Position.X = this._random.NextFloat() * ((float)Main.maxTilesX * 16f + 4000f) - 2000f;
+                this._bolts[num].Position.X = this._random.NextFloat() * (Main.maxTilesX * 16f + 4000f) - 2000f;
                 this._bolts[num].Position.Y = this._random.NextFloat() * 500f;
                 this._bolts[num].Depth = this._random.NextFloat() * 8f + 2f;
                 this._bolts[num].Life = 30;
@@ -680,7 +680,7 @@ namespace VirtualDream
                 //spriteBatch.Draw(this._planetTexture, value + new Vector2(-200f, -200f) + value2, null, Color.White * 0.9f * this._fadeOpacity, 0f, new Vector2((float)(this._planetTexture.Width >> 1), (float)(this._planetTexture.Height >> 1)), 1f, SpriteEffects.None, 1f);
             }
             float scale = Math.Min(1f, (Main.screenPosition.Y - 1000f) / 1000f);
-            Vector2 value3 = Main.screenPosition + new Vector2((float)(Main.screenWidth >> 1), (float)(Main.screenHeight >> 1));
+            Vector2 value3 = Main.screenPosition + new Vector2(Main.screenWidth >> 1, Main.screenHeight >> 1);
             Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
             for (int i = 0; i < this._bolts.Length; i++)
             {
@@ -696,7 +696,7 @@ namespace VirtualDream
                         {
                             texture = this._flashTexture;
                         }
-                        float scale2 = (float)life / 30f;
+                        float scale2 = life / 30f;
                         spriteBatch.Draw(texture, vector2, null, Color.White * scale * scale2 * this._fadeOpacity, 0f, Vector2.Zero, vector.X * 5f, SpriteEffects.None, 0f);
                     }
                 }

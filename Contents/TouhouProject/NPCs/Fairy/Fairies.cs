@@ -1,10 +1,10 @@
-﻿using System;
+﻿using LogSpiralLibrary;
+using System;
 using System.Collections.Generic;
 
 using Terraria.ID;
 
 using static Terraria.ModLoader.ModContent;
-using static VirtualDream.Utils.IllusionBoundExtensionMethods;
 
 namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy //基类
 {
@@ -1943,7 +1943,8 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
             spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, 32, 32), Color.White with { A = 0 } * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
             if ((int)projectile.ai[1] == 2)
             {
-                VirtualDreamDrawMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Solar, ShaderTailStyle.Light);
+                DrawingMethods.DrawShaderTail(spriteBatch, projectile, LogSpiralLibraryMod.HeatMap[4].Value, LogSpiralLibraryMod.AniTex[1].Value, LogSpiralLibraryMod.AniTex[1].Value);
+                //DrawingMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Solar, ShaderTailStyle.Light);
             }
             return false;
         }

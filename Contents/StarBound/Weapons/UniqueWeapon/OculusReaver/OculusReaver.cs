@@ -74,10 +74,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             item.rare = MyRareID.Tier3;
         }
     }
-    public class OculusReaverProj : VertexHammerProj
+    public class OculusReaverProj : VertexHammerProj, IStarboundWeaponProjectile
     {
         //TODO 添加血刺弹幕
-        public static void ShootSharpTears(Vector2 targetPos, Player player, Projectile projectile, StarboundWeaponProjectile starboundWeaponProjectile)
+        public static void ShootSharpTears(Vector2 targetPos, Player player, Projectile projectile, IStarboundWeaponProjectile starboundWeaponProjectile)
         {
             player.LimitPointToPlayerReachableArea(ref targetPos);
             Vector2 vector22 = targetPos + Main.rand.NextVector2Circular(8f, 8f);
@@ -87,7 +87,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             Projectile.NewProjectile(starboundWeaponProjectile.weapon.GetSource_StarboundWeapon(), value7.X, value7.Y, vector23.X, vector23.Y, ProjectileID.SharpTears, projectile.damage / 12, projectile.knockBack, player.whoAmI, 0f, Main.rand.NextFloat() * 0.5f + 0.5f);
         }
         public override string HammerName => base.HammerName;
-        public override float MaxTime => (controlState == 2 ? 2f : 1f) * UpgradeValue(12, 9);
+        public override float MaxTime => (controlState == 2 ? 2f : 1f) * this.UpgradeValue(12, 9);
         public override float Factor => base.Factor;
         public override Vector2 CollidingSize => base.CollidingSize * 2;
         //public override Vector2 projCenter => base.projCenter + new Vector2(Player.direction * 16, -16);
@@ -95,7 +95,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
         public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-12, 12);
         public override Color color => base.color;
         public override Color VertexColor(float time) => default;
-        public override float MaxTimeLeft => (controlState == 2 ? 0.75f : 1f) * UpgradeValue(8, 7);
+        public override float MaxTimeLeft => (controlState == 2 ? 0.75f : 1f) * this.UpgradeValue(8, 7);
         public override float Rotation => base.Rotation;
         public override bool UseRight => true;
         public override (int X, int Y) FrameMax => (2, 1);
@@ -111,7 +111,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             {
                 for (int n = 0; n < max; n++)
                 {
-                    Dust.NewDustPerfect(vec, UpgradeValue(MyDustId.YellowHallowFx, MyDustId.GreenFXPowder, MyDustId.PinkBubble), (MathHelper.TwoPi / max * n).ToRotationVector2() * Main.rand.NextFloat(2, 8)).noGravity = true;
+                    Dust.NewDustPerfect(vec, this.UpgradeValue(MyDustId.YellowHallowFx, MyDustId.GreenFXPowder, MyDustId.PinkBubble), (MathHelper.TwoPi / max * n).ToRotationVector2() * Main.rand.NextFloat(2, 8)).noGravity = true;
                 }
             }
             //if (factor == 1)
@@ -130,9 +130,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             {
                 if (left)
                 {
-                    if (Player.CheckMana(UpgradeValue(5, 7), true))
+                    if (Player.CheckMana(this.UpgradeValue(5, 7), true))
                     {
-                        int max = UpgradeValue(2, 5);
+                        int max = this.UpgradeValue(2, 5);
                         for (int n = 0; n < max; n++)
                         {
                             Vector2 pointPoisition2 = Player.Center + new Vector2(128 * Player.direction, 0) * ((Projectile.ai[1] + (float)n / max) / MaxTimeLeft) * max;
@@ -142,11 +142,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
                 }
                 else
                 {
-                    if ((int)Projectile.ai[1] == 1 && Player.CheckMana(UpgradeValue(50, 70), true))
+                    if ((int)Projectile.ai[1] == 1 && Player.CheckMana(this.UpgradeValue(50, 70), true))
                     {
                         Player.Teleport(Main.MouseWorld, 1);
                         SoundEngine.PlaySound(SoundID.Item60, Projectile.position);
-                        Projectile.NewProjectileDirect(weapon.GetSource_StarboundWeapon(), Player.Center, default, ModContent.ProjectileType<OculusReaverTear>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, UpgradeValue(2, 3)).rotation = Projectile.rotation;// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
+                        Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Player.Center, default, ModContent.ProjectileType<OculusReaverTear>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, this.UpgradeValue(2, 3)).rotation = Projectile.rotation;// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
                     }
                 }
 
@@ -154,7 +154,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             //Main.NewText(new NPCs.Baron.Baron().CanTownNPCSpawn(10, 10));
             base.OnRelease(charged, left);
         }
-        public override Rectangle? frame => projTex.Frame(2, 1, UpgradeValue(0, 1));
+        public override Rectangle? frame => projTex.Frame(2, 1, this.UpgradeValue(0, 1));
         public override bool PreDraw(ref Color lightColor)
         {
             base.PreDraw(ref lightColor);
@@ -183,7 +183,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             return false;
         }
     }
-    public class OculusReaverTear : StarboundWeaponProjectile
+    public class OculusReaverTear : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -273,7 +273,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
                         //p.height = p.width = 20;
                         //p.Center = target.Center - rand.ToRotationVector2() * (state == 3 ? 192 : 128);
                         //p.localAI[0] = Main.rand.NextFloat(0, 1);
-                        OculusReaverProj.ShootSharpTears(target.Center, Player, projectile, this);
+                        OculusReaverProj.ShootSharpTears(target.Center, Main.player[projectile.owner], projectile, this);
 
                     }
                     if (n > (state == 3 ? 8 : 5)) break;

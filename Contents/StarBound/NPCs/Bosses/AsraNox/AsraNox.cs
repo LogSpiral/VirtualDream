@@ -1,11 +1,11 @@
-﻿using ReLogic.Graphics;
+﻿using LogSpiralLibrary;
+using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Terraria.Audio;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
-using static VirtualDream.Utils.VirtualDreamDrawMethods;
 namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 {
     [AutoloadBossHead]
@@ -4067,7 +4067,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             const float length = 2203f;
             if (projectile.timeLeft > 50)
             {
-                Main.spriteBatch.DrawEffectLine(projectile.Center, projectile.velocity.SafeNormalize(default), Color.Orange * (80f - projectile.timeLeft).HillFactor2(30), 1, 0, length, 30, 1);
+                Main.spriteBatch.DrawEffectLine(projectile.Center, projectile.velocity.SafeNormalize(default), Color.Orange * (80f - projectile.timeLeft).HillFactor2(30), LogSpiralLibraryMod.AniTex[1].Value, 1, 0, length, 30);
             }
             else
             {
@@ -4396,7 +4396,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     if ((int)projectile.ai[1] != 4)
                     {
                         player.direction = (projectile.velocity.X > 0f) ? 1 : (-1);
-                        player.itemRotation = (float)Math.Atan2(projectile.velocity.Y * (float)player.direction, projectile.velocity.X * (float)player.direction);
+                        player.itemRotation = (float)Math.Atan2(projectile.velocity.Y * player.direction, projectile.velocity.X * player.direction);
                     }
                     player.velocity.Y = 0.01f;
                     player.wingFrame = 2;
@@ -4447,7 +4447,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(projectile.ai[0].Create3DRotation(DirOf3DRotation.z_Axis_P) * (r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi).Create3DRotation(DirOf3DRotation.x_Axis_P));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX((r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi)));//Main.time
         public void UpdateTris(float factor)
         {
             var size = new Vector3(32, 96 * factor, 96 * factor);
@@ -4526,7 +4526,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             var u = projectile.ai[0].ToRotationVector2();
             //spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center + u * 12, u, new Color(240, 139, 78), 1600 * MathHelper.Clamp(240 - projectile.timeLeft, 0, 30) / 30f, width, styleIndex: 10);// * factor
 
-            spriteBatch.DrawQuadraticLaser_PassHeatMap(projectile.Center + u * 12, u, 15, 1600 * MathHelper.Clamp(240 - projectile.timeLeft, 0, 30) / 30f, width, styleIndex: 10);
+            spriteBatch.DrawQuadraticLaser_PassHeatMap(projectile.Center + u * 12, u, LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[10].Value, 1600 * MathHelper.Clamp(240 - projectile.timeLeft, 0, 30) / 30f, width);
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);
         }
@@ -4611,8 +4611,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             List<CustomVertexInfo> bars2 = new List<CustomVertexInfo>();
             List<CustomVertexInfo> bars3 = new List<CustomVertexInfo>();
             List<CustomVertexInfo> bars4 = new List<CustomVertexInfo>();
-            int sint = IllusionBoundExtensionMethods.ValueRange((int)Time * 4 - 120, 1, 120);
-            int eint = IllusionBoundExtensionMethods.ValueRange((int)Time * 4, 1, 120);
+            int sint = Math.Clamp((int)Time * 4 - 120, 1, 120);
+            int eint = Math.Clamp((int)Time * 4, 1, 120);
             var _orange = Color.Lerp(Color.Orange, Color.OrangeRed, .5f);
             for (int i = sint; i < eint; ++i)
             {
@@ -4692,7 +4692,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 var factor = (float)Math.Pow(MathHelper.Clamp((60 - projectile.timeLeft) / 30f, 0, 1), 2);
 
-                Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(projectile.Center, ((projectile.ai[1] - 1) * MathHelper.PiOver2).ToRotationVector2(), 15, 2400 * factor, 128 * (60f - projectile.timeLeft).HillFactor2(60), texcoord: (0, 0, factor, 1));
+                Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(projectile.Center, ((projectile.ai[1] - 1) * MathHelper.PiOver2).ToRotationVector2(), LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[10].Value, 2400 * factor, 128 * (60f - projectile.timeLeft).HillFactor2(60), texcoord: (0, 0, factor, 1));
 
 
                 spriteBatch.End();
@@ -4764,7 +4764,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             {
                 for (int n = 0; n < 4; n++)
                 {
-                    float x = (Time - .25f * n).ValueRange(0, 30) * 6;
+                    float x = Math.Clamp(Time - .25f * n, 0, 30) * 6;
                     posG[n] = new Vector2(4 * (float)Math.Sin(Math.Sqrt(x + 10)), -x).RotatedBy(projectile.ai[1] * MathHelper.PiOver2) * 20f;
                     posP[n] = new Vector2(-8 * ((float)Math.Sin(0.05f * x) * 60 / x + (float)Math.Sqrt(0.05d * x) * 2 - 3), -x).RotatedBy(projectile.ai[1] * MathHelper.PiOver2) * 20f;
                 }

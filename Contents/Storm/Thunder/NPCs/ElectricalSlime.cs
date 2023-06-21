@@ -3,7 +3,6 @@
 using Terraria.ID;
 
 using static Terraria.ModLoader.ModContent;
-using static VirtualDream.Utils.IllusionBoundExtensionMethods;
 
 namespace VirtualDream.Contents.Storm.Thunder.NPCs
 {
@@ -950,7 +949,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             }
             else if ((player.Center - npc.Center).Length() <= 1024f && (player.Center - npc.Center).Length() >= 512f && (int)IllusionBoundMod.ModTime2 % 60 == 0 && Main.rand.NextBool(5) && flag)
             {
-                Vector2 vec = player.Center + 160.RandVec();
+                Vector2 vec = player.Center + 160 * Main.rand.NextVector2Unit();
                 bool flag2 = false;
                 while (!flag2)
                 {
@@ -964,10 +963,10 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
                     }
                     if (!flag2)
                     {
-                        vec = player.Center + 160.RandVec();
+                        vec = player.Center + 160 * Main.rand.NextVector2Unit();
                     }
                 }
-                LinerDust(vec, npc.Center, MyDustId.RedBubble);
+                OtherMethods.LinerDust(vec, npc.Center, MyDustId.RedBubble);
                 npc.Center = vec;
                 for (int n = 0; n < 36; n++)
                 {

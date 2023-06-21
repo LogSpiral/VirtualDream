@@ -145,10 +145,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             //}
         }
     }
-    public class IxodoomClawProj : VertexHammerProj
+    public class IxodoomClawProj : VertexHammerProj,IStarboundWeaponProjectile
     {
         public override string HammerName => base.HammerName;
-        public override float MaxTime => (controlState == 2 ? 2f : 1f) * UpgradeValue(30, 24, 18);
+        public override float MaxTime => (controlState == 2 ? 2f : 1f) * this.UpgradeValue(30, 24, 18);
         public override float Factor => base.Factor;
         public override Vector2 CollidingSize => base.CollidingSize * 2;
         //public override Vector2 projCenter => base.projCenter + new Vector2(Player.direction * 16, -16);
@@ -156,7 +156,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-12, 12);
         public override Color color => base.color;
         public override Color VertexColor(float time) => default;
-        public override float MaxTimeLeft => (controlState == 2 ? 0.75f : 1f) * UpgradeValue(10, 8, 7);
+        public override float MaxTimeLeft => (controlState == 2 ? 0.75f : 1f) * this.UpgradeValue(10, 8, 7);
         public override float Rotation => base.Rotation;
 
         public override bool UseRight => true;
@@ -169,7 +169,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             {
                 for (int n = 0; n < max; n++)
                 {
-                    Dust.NewDustPerfect(vec, UpgradeValue(MyDustId.YellowHallowFx, MyDustId.GreenFXPowder, MyDustId.PinkBubble), (MathHelper.TwoPi / max * n).ToRotationVector2() * Main.rand.NextFloat(2, 8)).noGravity = true;
+                    Dust.NewDustPerfect(vec, this.UpgradeValue(MyDustId.YellowHallowFx, MyDustId.GreenFXPowder, MyDustId.PinkBubble), (MathHelper.TwoPi / max * n).ToRotationVector2() * Main.rand.NextFloat(2, 8)).noGravity = true;
                 }
             }
             //if (factor == 1)
@@ -181,12 +181,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             base.OnHitNPC(target, damage, knockback, crit);
-            if (controlState == 2 && Player.CheckMana(UpgradeValue(20, 30, 50), true))
+            if (controlState == 2 && Player.CheckMana(this.UpgradeValue(20, 30, 50), true))
             {
-                target.AddBuff(UpgradeValue(ModContent.BuffType<ToxicⅠ>(), ModContent.BuffType<ToxicⅡ>(), ModContent.BuffType<ToxicⅢ>()), UpgradeValue(600, 1200, 1800));
+                target.AddBuff(this.UpgradeValue(ModContent.BuffType<ToxicⅠ>(), ModContent.BuffType<ToxicⅡ>(), ModContent.BuffType<ToxicⅢ>()), this.UpgradeValue(600, 1200, 1800));
             }
         }
-        public override Rectangle? frame => projTex.Frame(3, 1, UpgradeValue(0, 1, 2));
+        public override Rectangle? frame => projTex.Frame(3, 1, this.UpgradeValue(0, 1, 2));
     }
 
 }
