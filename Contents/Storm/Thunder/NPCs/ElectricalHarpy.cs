@@ -296,7 +296,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //IllusionBoundMod.Contents.Storm.Thunder.NPCs
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/Storm/Thunder/NPCs/ElectricalHarpy_Glow"), npc.Center - new Vector2(0, 22) - Main.screenPosition, new Rectangle(0, npc.frame.Y, 100, 86), Color.White * IllusionBoundMod.GlowLight, npc.rotation, new Vector2(50, 43), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/Storm/Thunder/NPCs/ElectricalHarpy_Glow"), npc.Center - new Vector2(0, 22) - Main.screenPosition, new Rectangle(0, npc.frame.Y, 100, 86), Color.White * VirtualDreamMod.GlowLight, npc.rotation, new Vector2(50, 43), 1f, npc.velocity.X < 0f ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
         }
         public override void FindFrame(int frameHeight)
         {

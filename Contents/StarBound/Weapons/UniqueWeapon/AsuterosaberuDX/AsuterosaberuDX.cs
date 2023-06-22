@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using LogSpiralLibrary;
+using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
 {
@@ -959,7 +960,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha,bool inverse) useMask)
         {
             //base.RenderInfomation(ref useBloom, ref useDistort, ref useMask);
-            useMask = (IllusionBoundMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8, true, false);
+            useMask = (VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
         }
     }
     public class AstralTear : ModProjectile, IStarboundWeaponProjectile
@@ -973,12 +974,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override bool PreDraw(ref Color lightColor)
         {
             var spriteBatch = Main.spriteBatch;
-            if (state == 0 || (state == 1 && !IllusionBoundMod.UseRender))
+            if (state == 0 || (state == 1 && !LogSpiralLibraryMod.CanUseRender))
             {
                 Vector2 scale = new Vector2(0.5f, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
                 var _color = Main.hslToRgb(projectile.localAI[0] % 1, 1, 0.75f);
                 _color.A = 0;
-                var tex = IllusionBoundMod.GetTexture(Texture.Replace("AstralTear", "CrystalLight"), false);
+                var tex = VirtualDreamMod.GetTexture(Texture.Replace("AstralTear", "CrystalLight"), false);
                 spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, _color * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);
                 spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, new Color(1f, 1f, 1f, 0f) * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale, 0, 0);
             }

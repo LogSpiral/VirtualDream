@@ -257,7 +257,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         }
         public override void HoldItem(Player player)
         {
-            float theta = 3.1415926f / 180 * (float)IllusionBoundMod.ModTime2;
+            float theta = 3.1415926f / 180 * (float)VirtualDreamMod.ModTime2;
             for (float n = 0; n < 4; n++)
             {
                 Dust.NewDustPerfect(player.Center + (n * MathHelper.PiOver2 + theta).ToRotationVector2() * (float)(Math.Tan(0.5f * 8 * theta) + 8) * 25, MyDustId.Fire, new Vector2(0f, 0f), 0, Color.White, 2f).noGravity = true;
@@ -324,7 +324,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 //    );
                 //}
                 //return IllusionBoundMod.HeatMap[19];
-                return IllusionBoundMod.HeatMap[27];
+                return LogSpiralLibraryMod.HeatMap[27].Value;
             }
         }
         public override float Rotation
@@ -389,6 +389,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         }
         public override void OnCharging(bool left, bool right)
         {
+            //Main.NewText(Factor);
             //Main.NewText(WhenVertexDraw);
             if (left && !right)
             {
@@ -483,6 +484,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         //public override bool Charged => base.Charged;
         public override void OnRelease(bool charged, bool left)
         {
+            //Main.NewText(Factor);
+
             //if (timeCount % MaxTime == 0)
             //{
             //    currentSwoosh = NewSwoosh();
@@ -646,10 +649,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void Kill(int timeLeft)
         {
 
-            if (Charged && controlState == 2)
-            {
-                OnChargedShoot();
-            }
+            //if (Charged && controlState == 2)
+            //{
+            //    OnChargedShoot();
+            //}
 
 
             //if (factor == 1)

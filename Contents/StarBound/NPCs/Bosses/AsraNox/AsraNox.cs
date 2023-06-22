@@ -485,9 +485,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         {
 
             if ((int)ai1 < 765)
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
             else
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
             NPC.damage = 0;
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             if ((int)ai1 % 80 == 0)
@@ -771,7 +771,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
 
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
+            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
             #region 放弃的
             //if (counter < 180)
             //{
@@ -992,7 +992,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             if (counter < 120)
             {
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
 
                 if (counter == 0)
                 {
@@ -1046,9 +1046,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             else if (counter < 180)
             {
                 if (counter < 165)
-                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
                 else
-                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
 
                 if (counter == 120)
                 {
@@ -1429,7 +1429,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             else
             {
                 visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
 
                 if (timer % 60 == 0)
                 {
@@ -1552,9 +1552,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         private void _2_2()
         {
             if ((int)ai1 < 765)
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
             else
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
             NPC.damage = 0;
             visualPlayer.direction = AsraNoxSky.windDirection;
             if ((int)ai1 % 20 == 0)
@@ -1700,7 +1700,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
 
             visualPlayer.direction = AsraNoxSky.windDirection;
-            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
+            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
             ai1++;
             if (ai1 >= 720)
             {
@@ -1744,7 +1744,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             visualPlayer.direction = AsraNoxSky.windDirection;
             if (counter < 120)
             {
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
 
                 if (counter == 0)
                 {
@@ -1798,9 +1798,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             else if (counter < 180)
             {
                 if (counter < 165)
-                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
                 else
-                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
 
                 if (counter == 120)
                 {
@@ -2265,9 +2265,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
 
             if ((int)ai1 < 765)
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
             else
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
             NPC.damage = 0;
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             if ((int)ai1 % 15 == 0)
@@ -2568,7 +2568,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
 
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
+            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
             ai1++;
             NPC.oldPos[0] = NPC.oldPosition;
         }
@@ -2619,7 +2619,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             if (counter < 120)
             {
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
 
                 if (counter == 0)
                 {
@@ -2673,9 +2673,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             else if (counter < 180)
             {
                 if (counter < 165)
-                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
                 else
-                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(ai5, ai6 + 400 - (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
 
                 if (counter == 120)
                 {
@@ -3135,9 +3135,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 return;
             }
             if ((int)ai1 < 765)
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
             else
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
             NPC.damage = 0;
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             if ((int)ai1 % 10 == 0)
@@ -3308,7 +3308,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 
 
             visualPlayer.direction = -AsraNoxSky.windDirection;
-            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 960 * visualPlayer.direction, targetPlayer.Center.Y + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
+            NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 960 * visualPlayer.direction, targetPlayer.Center.Y + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
             ai1++;
 
             NPC.oldPos[0] = NPC.oldPosition;
@@ -3355,7 +3355,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             if (counter < 120)
             {
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.125f);
 
                 if (counter == 0)
                 {
@@ -3409,9 +3409,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             else if (counter < 180)
             {
                 if (counter < 165)
-                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 600 * (AsraNoxSky.windDirection), targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
                 else
-                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
+                    NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 400 * (AsraNoxSky.windDirection), ai6 + 400 - (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 2 / 15f);
 
                 if (counter == 120)
                 {
@@ -3754,7 +3754,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             else
             {
                 visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
-                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 1200 * (AsraNoxSky.windDirection), targetPlayer.Center.Y - 400 + (float)Math.Sin(IllusionBoundModSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);
+                NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X + 1200 * (AsraNoxSky.windDirection), targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);
 
                 if (timer % 60 == 0)
                 {
@@ -3872,19 +3872,19 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 if (nState % 6 != 5)
                 {
                     var fireRot = (NPC.position - NPC.oldPos[0]) == default ? -MathHelper.PiOver2 : (NPC.position - NPC.oldPos[0]).ToRotation().AngleLerp(-MathHelper.PiOver2, 0.25f);
-                    spriteBatch.Draw(tex, NPC.Center + new Vector2(6, 28f) - Main.screenPosition, tex.Frame(1, 4, 0, (int)IllusionBoundMod.ModTime / 4 % 4), Color.White with { A = 0 } * alpha, -MathHelper.Pi * 3 / 4 + fireRot, new Vector2(20, 64), new Vector2(0.25f), 0, 0);
-                    spriteBatch.Draw(tex, NPC.Center + new Vector2(-6, 28f) - Main.screenPosition, tex.Frame(1, 4, 0, (int)IllusionBoundMod.ModTime / 4 % 4), Color.White with { A = 0 } * alpha, -MathHelper.Pi * 3 / 4 + fireRot, new Vector2(20, 64), new Vector2(0.25f), 0, 0);
+                    spriteBatch.Draw(tex, NPC.Center + new Vector2(6, 28f) - Main.screenPosition, tex.Frame(1, 4, 0, (int)VirtualDreamMod.ModTime / 4 % 4), Color.White with { A = 0 } * alpha, -MathHelper.Pi * 3 / 4 + fireRot, new Vector2(20, 64), new Vector2(0.25f), 0, 0);
+                    spriteBatch.Draw(tex, NPC.Center + new Vector2(-6, 28f) - Main.screenPosition, tex.Frame(1, 4, 0, (int)VirtualDreamMod.ModTime / 4 % 4), Color.White with { A = 0 } * alpha, -MathHelper.Pi * 3 / 4 + fireRot, new Vector2(20, 64), new Vector2(0.25f), 0, 0);
                     Main.PlayerRenderer.DrawPlayer(Main.Camera, visualPlayer, NPC.Center - new Vector2(10, 14), 0, default, 0, 1);
                 }
                 else
                 {
                     if (timer < 30 || timer > 630)
-                        spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/ballAction_Real"), NPC.Center - Main.screenPosition, new Rectangle((330 - Math.Abs(timer - 330)) / 2 * 90, 0, 90, 86), drawColor, 0, new Vector2(45, 43), 1f + (330 - Math.Abs(timer - 330f)) / 30f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
+                        spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/ballAction_Real"), NPC.Center - Main.screenPosition, new Rectangle((330 - Math.Abs(timer - 330)) / 2 * 90, 0, 90, 86), drawColor, 0, new Vector2(45, 43), 1f + (330 - Math.Abs(timer - 330f)) / 30f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
                     else
                     {
                         var rotation = Main.projectile[(int)ai2].oldRot[0];
-                        spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall"), NPC.Center - Main.screenPosition, null, drawColor, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
-                        spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall_Glow"), NPC.Center - Main.screenPosition, null, Color.White, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
+                        spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall"), NPC.Center - Main.screenPosition, null, drawColor, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
+                        spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall_Glow"), NPC.Center - Main.screenPosition, null, Color.White, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
                     }
                 }
                 if ((nState % 6 == 1 && timer < 660) || ((nState % 6 == 4) && timer % 240 >= 180))
@@ -3918,14 +3918,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         else rotation = Main.projectile[(int)ai6].velocity.ToRotation();
                         alpha = (ai1 % 240 - 180).SymmetricalFactor(30, 10);
                     }
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center + new Vector2(0, 12f) - Main.screenPosition, null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center + new Vector2(0, 12f) - Main.screenPosition, null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
 
                     spriteBatch.End();
                     spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                     var fireCen = NPC.Center + new Vector2(0, 12f) - Main.screenPosition;
-                    spriteBatch.Draw(tex, fireCen, tex.Frame(1, 4, 0, (int)IllusionBoundMod.ModTime / 4 % 4), Color.White with { A = 0 } * alpha, rotation - MathHelper.Pi * 3 / 4, new Vector2(20, 64), 0.75f, 0, 0);
+                    spriteBatch.Draw(tex, fireCen, tex.Frame(1, 4, 0, (int)VirtualDreamMod.ModTime / 4 % 4), Color.White with { A = 0 } * alpha, rotation - MathHelper.Pi * 3 / 4, new Vector2(20, 64), 0.75f, 0, 0);
 
-                    var rot = (float)IllusionBoundModSystem.ModTime / 360f * MathHelper.TwoPi;
+                    var rot = (float)VirtualDreamSystem.ModTime / 360f * MathHelper.TwoPi;
                     var sizeOffset = (float)Math.Sin(rot * 4) * 0.05f;
                     alpha *= .25f;
                     Main.spriteBatch.Draw(TextureAssets.Extra[98].Value, fireCen, null, Color.Orange with { A = 0 } * alpha, rot, new Vector2(36), new Vector2(1, 4) * (.75f + sizeOffset), 0, 0);
@@ -3944,31 +3944,31 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         {
                             var rotation = Main.projectile[(int)ai2].oldRot[0];
                             alpha = ai1.SymmetricalFactor(120, 30);
-                            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + rotation.ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12), null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
+                            spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + rotation.ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12), null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
                         }
                         else
                         {
                             alpha = (ai1 - 240).SymmetricalFactor(120, 30);
-                            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + new Vector2(visualPlayer.direction * 6, 16), null, Color.White * alpha, MathHelper.Pi * 3 / 4, new Vector2(12, 66), 1, 0, 0);
+                            spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + new Vector2(visualPlayer.direction * 6, 16), null, Color.White * alpha, MathHelper.Pi * 3 / 4, new Vector2(12, 66), 1, 0, 0);
                         }
                     }
                 }
                 if (state == AsraNoxState.破晓之光_追灭 && timer > 60)
                 {
                     alpha = ((timer - 60f) % 240).SymmetricalFactor(120, 30);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + new Vector2(visualPlayer.direction * 6, 16), null, Color.White * alpha, MathHelper.Pi * 3 / 4, new Vector2(12, 66), 1, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + new Vector2(visualPlayer.direction * 6, 16), null, Color.White * alpha, MathHelper.Pi * 3 / 4, new Vector2(12, 66), 1, 0, 0);
                 }
                 if (state == AsraNoxState.破晓之光_随机 && timer > 60)
                 {
                     var rotation = Main.projectile[(int)ai2].oldRot[0];
                     alpha = ((timer - 60f) % 240).SymmetricalFactor(120, 30);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + rotation.ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12), null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + rotation.ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12), null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
                 }
                 if (state == AsraNoxState.破晓之光_后撤 && timer < 480)
                 {
                     var rotation = Main.projectile[(int)ai2].oldRot[0];
                     alpha = (timer % 240f).SymmetricalFactor(120, 30);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + rotation.ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12), null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusKatanaFractal"), NPC.Center - Main.screenPosition + rotation.ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12), null, Color.White * alpha, rotation + MathHelper.Pi / 4, new Vector2(12, 66), 1, 0, 0);
                 }
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -4071,7 +4071,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             else
             {
-                Effect effect = IllusionBoundMod.GetEffect("Effects/EightTrigramsFurnaceEffect");
+                Effect effect = LogSpiralLibraryMod.EightTrigramsFurnaceEffect;
                 //List<CustomVertexInfo> bars1 = new List<CustomVertexInfo>();
                 CustomVertexInfo[] bars1 = new CustomVertexInfo[5];
 
@@ -4122,11 +4122,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
                     effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                     effect.Parameters["maxFactor"].SetValue(0f);
-                    effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
+                    effect.Parameters["uTime"].SetValue(-(float)VirtualDreamMod.ModTime * 0.03f);
                     Main.graphics.GraphicsDevice.BlendState = BlendState.Additive;
-                    Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
-                    Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[10];
-                    Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.HeatMap[24];
+                    Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.BaseTex[8].Value;
+                    Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.AniTex[10].Value;
+                    Main.graphics.GraphicsDevice.Textures[2] = LogSpiralLibraryMod.HeatMap[24].Value;
                     Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                     Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
                     Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
@@ -4364,7 +4364,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     position += velocity;
                     velocity = velocity.RotatedBy(rotator);// * (Main.rand.NextFloat(-15f, 15f))
                 }
-                var rot = (float)IllusionBoundModSystem.ModTime / 360f * MathHelper.TwoPi;
+                var rot = (float)VirtualDreamSystem.ModTime / 360f * MathHelper.TwoPi;
                 var sizeOffset = (float)Math.Sin(rot * 4) * 0.05f;
                 Main.spriteBatch.Draw(TextureAssets.Extra[98].Value, projectile.Center - Main.screenPosition, null, Color.Orange * alpha, rot, new Vector2(36), new Vector2(1, 4) * (.75f + sizeOffset), 0, 0);
                 Main.spriteBatch.Draw(TextureAssets.Extra[98].Value, projectile.Center - Main.screenPosition, null, Color.Orange * alpha, rot + MathHelper.PiOver2, new Vector2(36), new Vector2(1, 4) * (.75f + sizeOffset), 0, 0);
@@ -4447,7 +4447,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX((r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi)));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX((r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi)));//Main.time
         public void UpdateTris(float factor)
         {
             var size = new Vector3(32, 96 * factor, 96 * factor);
@@ -4505,7 +4505,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 var timer = (240 - projectile.timeLeft) % 15 / 15f;
                 //spriteBatch.Draw(IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), projectile.Center + u * 12 - Main.screenPosition, null, Color.Lerp(Color.Orange, Color.White, timer) with { A = 0 } * timer.HillFactor2(1), 0, new Vector2(99), projectile.timeLeft < 210 ? MathHelper.Lerp(0, 24, timer * timer) : MathHelper.Lerp(16, 0, (float)Math.Sqrt(timer)), 0, 0);
                 var u = projectile.ai[0].ToRotationVector2();
-                Texture2D tex = IllusionBoundMod.GetTexture("Terraria/Images/Misc/Perlin", false);
+                Texture2D tex = VirtualDreamMod.GetTexture("Terraria/Images/Misc/Perlin", false);
                 int v = 600;
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -4528,7 +4528,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 
             spriteBatch.DrawQuadraticLaser_PassHeatMap(projectile.Center + u * 12, u, LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[10].Value, 1600 * MathHelper.Clamp(240 - projectile.timeLeft, 0, 30) / 30f, width);
             UpdateTris(factor);
-            spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);
+            spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);
         }
         public override bool ShouldUpdatePosition()
         {
@@ -4601,7 +4601,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Effect effect = IllusionBoundMod.ShaderSwoosh;
+            Effect effect = LogSpiralLibraryMod.ShaderSwooshEffect;
             if (effect == null)
             {
                 return false;
@@ -4682,9 +4682,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
                 effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-                effect.Parameters["uTime"].SetValue(-(float)IllusionBoundModSystem.ModTime * 0.06f);
-                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[1];
-                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[6];
+                effect.Parameters["uTime"].SetValue(-(float)VirtualDreamSystem.ModTime * 0.06f);
+                Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.BaseTex[12].Value;
+                Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.BaseTex[8].Value;
                 Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.LinearWrap;
                 effect.CurrentTechnique.Passes[0].Apply();

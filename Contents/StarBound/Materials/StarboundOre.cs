@@ -45,7 +45,7 @@ namespace VirtualDream.Contents.StarBound.Materials
                 zero = Vector2.Zero;
             }
             Tile tile = Main.tile[i, j];
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/Materials/" + GetType().Name + "_Glow"), new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16), Color.White * IllusionBoundMod.GlowLight * 2f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/Materials/" + GetType().Name + "_Glow"), new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16), Color.White * VirtualDreamMod.GlowLight * 2f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
     }
     public class VioliumOreTile : StarboundOre

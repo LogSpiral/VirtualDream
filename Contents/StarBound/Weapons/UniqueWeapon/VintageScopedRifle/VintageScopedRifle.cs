@@ -222,7 +222,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             SpriteBatch spriteBatch = Main.spriteBatch;
             //var tex = LogSpiralLibraryMod.HeatMap[0];
             //Main.NewText(LogSpiralLibraryMod.HeatMap[0] == null ? "Null辣" : "好欸");
-            spriteBatch.DrawShaderTail(projectile, IllusionBoundMod.HeatMap[0], IllusionBoundMod.AniTexes[0], IllusionBoundMod.BaseTexes[0], 40, new Vector2(projectile.width, projectile.height) * .5f, (1 - projectile.timeLeft / 180f).HillFactor2());
+            spriteBatch.DrawShaderTail(projectile, LogSpiralLibraryMod.HeatMap[0].Value, LogSpiralLibraryMod.AniTex[0].Value, LogSpiralLibraryMod.BaseTex[12].Value, 40, new Vector2(projectile.width, projectile.height) * .5f, (1 - projectile.timeLeft / 180f).HillFactor2());
             spriteBatch.Draw(TextureAssets.Projectile[Type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(10, 3), new Vector2(2, 1), 0, 0);
             return false;
         }

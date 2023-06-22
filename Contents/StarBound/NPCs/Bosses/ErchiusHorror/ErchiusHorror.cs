@@ -10,7 +10,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         public static Effect QuadraticLaserEffect;
         static ErchiusHorrorTools()
         {
-            QuadraticLaserEffect = IllusionBoundMod.GetEffect("Effects/EightTrigramsFurnaceEffect");
+            QuadraticLaserEffect = LogSpiralLibraryMod.EightTrigramsFurnaceEffect;
         }
         public const string Path = "VirtualDream/Contents/StarBound/NPCs/Bosses/ErchiusHorror/";
     }
@@ -602,10 +602,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
 
                 spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.Center - Main.screenPosition, rectangle, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(55, 55) * 0.5f, size, 0, 0);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Eye"), npc.Center + Vector2.Normalize(targetPlayer.Center - npc.Center) * ((targetPlayer.Center - npc.Center).Length() * 7.5f / ((targetPlayer.Center - npc.Center).Length() + 1)) - Main.screenPosition, rectangle, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(55, 55) * 0.5f, size, 0, 0);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body"), npc.Center - Main.screenPosition, rectangle1, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body_Glow"), npc.Center - Main.screenPosition, rectangle1, Color.White * IllusionBoundMod.GlowLight, 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Glow"), npc.Center - Main.screenPosition, new Rectangle((int)npc.ai[0] % 3 * 221, 0, 221, 221), Color.White * 0.2f * (int)(5 - npc.frameCounter), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Eye"), npc.Center + Vector2.Normalize(targetPlayer.Center - npc.Center) * ((targetPlayer.Center - npc.Center).Length() * 7.5f / ((targetPlayer.Center - npc.Center).Length() + 1)) - Main.screenPosition, rectangle, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(55, 55) * 0.5f, size, 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body"), npc.Center - Main.screenPosition, rectangle1, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body_Glow"), npc.Center - Main.screenPosition, rectangle1, Color.White * VirtualDreamMod.GlowLight, 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Glow"), npc.Center - Main.screenPosition, new Rectangle((int)npc.ai[0] % 3 * 221, 0, 221, 221), Color.White * 0.2f * (int)(5 - npc.frameCounter), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
             }
             else
             {
@@ -613,17 +613,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 rectangle1 = new Rectangle(0, 442, 221, 221);
                 spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.Center - Main.screenPosition, new Rectangle(0, 330, 55, 55), Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(55, 55) * 0.5f, size, 0, 0);
                 //spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Eye"), npc.Center + Vector2.Normalize(targetPlayer.Center - npc.Center) * ((targetPlayer.Center - npc.Center).Length() * 7.5f / ((targetPlayer.Center - npc.Center).Length() + 1)) - Main.screenPosition, rectangle, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(55, 55) * 0.5f, 2f, 0, 0);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body"), npc.Center - Main.screenPosition, rectangle1, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body_Glow"), npc.Center - Main.screenPosition, rectangle1, Color.White * IllusionBoundMod.GlowLight, 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Glow"), npc.Center - Main.screenPosition, new Rectangle((int)npc.ai[0] % 3 * 221, 0, 221, 221), Color.White * 0.2f * (int)(5 - npc.frameCounter), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body"), npc.Center - Main.screenPosition, rectangle1, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body_Glow"), npc.Center - Main.screenPosition, rectangle1, Color.White * VirtualDreamMod.GlowLight, 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Glow"), npc.Center - Main.screenPosition, new Rectangle((int)npc.ai[0] % 3 * 221, 0, 221, 221), Color.White * 0.2f * (int)(5 - npc.frameCounter), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
                 for (int n = 0; n < 4; n++)
                 {
                     float r = Main.rand.NextFloat(0.125f, 0.625f);
                     spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.Center - Main.screenPosition + offset.RotatedBy(MathHelper.PiOver2 * n), new Rectangle(0, 330, 55, 55), Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16) * r, 0, new Vector2(55, 55) * 0.5f, size, 0, 0);
                     //spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Eye"), npc.Center + offset.RotatedBy(MathHelper.PiOver2 * n) + Vector2.Normalize(targetPlayer.Center - npc.Center) * ((targetPlayer.Center - npc.Center).Length() * 7.5f / ((targetPlayer.Center - npc.Center).Length() + 1)) - Main.screenPosition, rectangle, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16) * r, 0, new Vector2(55, 55) * 0.5f, 2f, 0, 0);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body"), npc.Center + offset.RotatedBy(MathHelper.PiOver2 * n) - Main.screenPosition, rectangle1, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16) * r, 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body_Glow"), npc.Center + offset.RotatedBy(MathHelper.PiOver2 * n) - Main.screenPosition, rectangle1, Color.White * IllusionBoundMod.GlowLight * r, 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Glow"), npc.Center + offset.RotatedBy(MathHelper.PiOver2 * n) - Main.screenPosition, new Rectangle((int)npc.ai[0] % 3 * 221, 0, 221, 221), Color.White * r * 0.2f * (int)(5 - npc.frameCounter), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body"), npc.Center + offset.RotatedBy(MathHelper.PiOver2 * n) - Main.screenPosition, rectangle1, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16) * r, 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body_Glow"), npc.Center + offset.RotatedBy(MathHelper.PiOver2 * n) - Main.screenPosition, rectangle1, Color.White * VirtualDreamMod.GlowLight * r, 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Glow"), npc.Center + offset.RotatedBy(MathHelper.PiOver2 * n) - Main.screenPosition, new Rectangle((int)npc.ai[0] % 3 * 221, 0, 221, 221), Color.White * r * 0.2f * (int)(5 - npc.frameCounter), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
                 }
             }
             return false;
@@ -733,14 +733,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
                 if (Length < (ownerNPC.life >= ownerNPC.lifeMax / 4 ? 800 : 480))
                 {
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/TinyErchiusCrystal_Glow"), npc.Center - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, 0, new Vector2(16, 22), size, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/TinyErchiusCrystal_Glow"), npc.Center - Main.screenPosition, null, Color.White * VirtualDreamMod.GlowLight, 0, new Vector2(16, 22), size, 0, 0);
                 }
             }
             else
             {
                 if (Length < 640 || ownerNPC.life >= ownerNPC.lifeMax / 4)
                 {
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/TinyErchiusCrystal_Glow"), npc.Center - Main.screenPosition, null, Color.White * IllusionBoundMod.GlowLight, 0, new Vector2(16, 22), size, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/TinyErchiusCrystal_Glow"), npc.Center - Main.screenPosition, null, Color.White * VirtualDreamMod.GlowLight, 0, new Vector2(16, 22), size, 0, 0);
                 }
             }
             if (ownerNPC.life <= ownerNPC.lifeMax / 4)
@@ -748,7 +748,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 npc.defense = 75;
                 for (int n = 0; n < 6; n++)
                 {
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/TinyErchiusCrystal_Shield"), npc.Center + (npc.ai[0] * MathHelper.TwoPi / 180 + MathHelper.Pi / 3 * n).ToRotationVector2() * 56 - Main.screenPosition, null, Color.White * MathHelper.Clamp(npc.ai[0] / 60f, 0, 1), npc.ai[0] * MathHelper.TwoPi / 180 + MathHelper.Pi / 3 * n - MathHelper.PiOver4, new Vector2(12, 16), size, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/TinyErchiusCrystal_Shield"), npc.Center + (npc.ai[0] * MathHelper.TwoPi / 180 + MathHelper.Pi / 3 * n).ToRotationVector2() * 56 - Main.screenPosition, null, Color.White * MathHelper.Clamp(npc.ai[0] / 60f, 0, 1), npc.ai[0] * MathHelper.TwoPi / 180 + MathHelper.Pi / 3 * n - MathHelper.PiOver4, new Vector2(12, 16), size, 0, 0);
                 }
             }
             return false;
@@ -796,7 +796,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //	Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         //}
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(r) * Matrix.CreateRotationX((float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(r) * Matrix.CreateRotationX((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -868,7 +868,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             spriteBatch.DrawQuadraticLaser_PassNormal(set, Main.hslToRgb(0.8f, 1, 0.75f) * factor, LogSpiralLibraryMod.AniTex[1].Value, 3200, width);
             UpdateTris(factor);
-            spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);//IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath+"StrawBerryArea")//IllusionBoundMod.MagicZone[2]
+            spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);//IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath+"StrawBerryArea")//IllusionBoundMod.MagicZone[2]
             return false;
         }
         //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -1157,16 +1157,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
-                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
-                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/laser1");
-                Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.AniTexes[6];
+                VirtualDreamMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+                VirtualDreamMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
+                VirtualDreamMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
+                Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.Misc[11].Value;
+                Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.Misc[11].Value;
+                Main.graphics.GraphicsDevice.Textures[2] = LogSpiralLibraryMod.BaseTex[8].Value;
                 Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-                IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+                VirtualDreamMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList1.ToArray(), 0, triangleList1.Count / 3);
                 if (projectile.ai[0] < 1)
                 {
@@ -1241,7 +1241,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //	Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         //}
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (((v * size).ApplyMatrix(Matrix.CreateRotationX(((float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi))) - new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ((projectile.ai[1] * MathHelper.TwoPi / 3))) + new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ(r));//Main.time////size *//* ModContent.GetInstance<IllusionConfigClient>().offSetSize
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (((v * size).ApplyMatrix(Matrix.CreateRotationX(((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi))) - new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ((projectile.ai[1] * MathHelper.TwoPi / 3))) + new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ(r));//Main.time////size *//* ModContent.GetInstance<IllusionConfigClient>().offSetSize
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1318,7 +1318,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             spriteBatch.DrawQuadraticLaser_PassNormal(set, Main.hslToRgb(0.8f, 1, 0.75f) * factor, LogSpiralLibraryMod.AniTex[1].Value, 3200, width);
             UpdateTris(factor);
-            spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);
+            spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);
             return false;
         }
         //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -1597,12 +1597,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         {
             if (projectile.timeLeft > 210)
             {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), baseOfX + projectile.Center - 24 * Vector2.Normalize(baseOfX) - Main.screenPosition, new Rectangle(0, 0, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((480 - projectile.timeLeft) / 30f, 0, 1), baseOfX.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), 1f, 0, 0);
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), (baseOfX - 48 * Vector2.Normalize(baseOfX)) * 0.5f + projectile.Center - Main.screenPosition, new Rectangle(0, 48, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((480 - projectile.timeLeft) / 30f, 0, 1), baseOfX.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), new Vector2(1, (baseOfX.Length() - 48) / 48), 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), baseOfX + projectile.Center - 24 * Vector2.Normalize(baseOfX) - Main.screenPosition, new Rectangle(0, 0, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((480 - projectile.timeLeft) / 30f, 0, 1), baseOfX.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), 1f, 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), (baseOfX - 48 * Vector2.Normalize(baseOfX)) * 0.5f + projectile.Center - Main.screenPosition, new Rectangle(0, 48, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((480 - projectile.timeLeft) / 30f, 0, 1), baseOfX.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), new Vector2(1, (baseOfX.Length() - 48) / 48), 0, 0);
                 if (projectile.timeLeft < 360)
                 {
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), baseOfY + projectile.Center - 24 * Vector2.Normalize(baseOfY) - Main.screenPosition, new Rectangle(0, 0, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((360 - projectile.timeLeft) / 30f, 0, 1), baseOfY.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), 1f, 0, 0);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), (baseOfY - 48 * Vector2.Normalize(baseOfY)) * 0.5f + projectile.Center - Main.screenPosition, new Rectangle(0, 48, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((360 - projectile.timeLeft) / 30f, 0, 1), baseOfY.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), new Vector2(1, (baseOfY.Length() - 48) / 48), 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), baseOfY + projectile.Center - 24 * Vector2.Normalize(baseOfY) - Main.screenPosition, new Rectangle(0, 0, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((360 - projectile.timeLeft) / 30f, 0, 1), baseOfY.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), 1f, 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusCrystalArrow"), (baseOfY - 48 * Vector2.Normalize(baseOfY)) * 0.5f + projectile.Center - Main.screenPosition, new Rectangle(0, 48, 32, 48), Color.White with { A = 0 } * MathHelper.Clamp((360 - projectile.timeLeft) / 30f, 0, 1), baseOfY.ToRotation() + MathHelper.PiOver2, new Vector2(16, 24), new Vector2(1, (baseOfY.Length() - 48) / 48), 0, 0);
                 }
             }
             else
@@ -1627,10 +1627,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 f = MathHelper.Clamp(f * 7, 0, 1);
                 for (int n = -10; n <= 10; n++)
                 {
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfY - Main.screenPosition, null, Color.Purple with { A = 0 } * l, baseOfX.ToRotation(), new Vector2(16, 48), new Vector2(baseOfX.Length() * 0.625f * f, 0.5f), 0, 0);// 20 / 32
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfX - Main.screenPosition, null, Color.Purple with { A = 0 } * l, baseOfY.ToRotation(), new Vector2(16, 48), new Vector2(baseOfY.Length() * 0.625f * f, 0.5f), 0, 0);
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfY - Main.screenPosition, null, Color.White with { A = 0 } * l * (0.75f + projectile.timeLeft % 2 * 0.25f), baseOfX.ToRotation(), new Vector2(16, 48), new Vector2(baseOfX.Length() * 0.625f * f, 0.25f), 0, 0);// 20 / 32
-                    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfX - Main.screenPosition, null, Color.White with { A = 0 } * l * (0.75f + projectile.timeLeft % 2 * 0.25f), baseOfY.ToRotation(), new Vector2(16, 48), new Vector2(baseOfY.Length() * 0.625f * f, 0.25f), 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfY - Main.screenPosition, null, Color.Purple with { A = 0 } * l, baseOfX.ToRotation(), new Vector2(16, 48), new Vector2(baseOfX.Length() * 0.625f * f, 0.5f), 0, 0);// 20 / 32
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfX - Main.screenPosition, null, Color.Purple with { A = 0 } * l, baseOfY.ToRotation(), new Vector2(16, 48), new Vector2(baseOfY.Length() * 0.625f * f, 0.5f), 0, 0);
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfY - Main.screenPosition, null, Color.White with { A = 0 } * l * (0.75f + projectile.timeLeft % 2 * 0.25f), baseOfX.ToRotation(), new Vector2(16, 48), new Vector2(baseOfX.Length() * 0.625f * f, 0.25f), 0, 0);// 20 / 32
+                    spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + n * baseOfX - Main.screenPosition, null, Color.White with { A = 0 } * l * (0.75f + projectile.timeLeft % 2 * 0.25f), baseOfY.ToRotation(), new Vector2(16, 48), new Vector2(baseOfY.Length() * 0.625f * f, 0.25f), 0, 0);
                 }
             }
             return false;
@@ -1659,7 +1659,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1746,7 +1746,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
 
             spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center + u * 30, u, Main.hslToRgb(0.8f, 1, 0.75f), LogSpiralLibraryMod.AniTex[10].Value, 3200 * MathHelper.Clamp(360 - projectile.timeLeft, 0, 30) / 30f, width);
             UpdateTris(factor);
-            spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);//IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath+"StrawBerryArea")//IllusionBoundMod.MagicZone[2]
+            spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);
+
             return false;
         }
         //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
@@ -1909,7 +1910,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1968,7 +1969,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             var u = projectile.ai[0].ToRotationVector2();
             spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center + u * 20, u, Main.hslToRgb(0.8f, 1, 0.75f), LogSpiralLibraryMod.AniTex[1].Value, 3200, width);
             UpdateTris(factor);
-            spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);//IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath+"StrawBerryArea")//IllusionBoundMod.MagicZone[2]
+            spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);
+
             return false;
         }
 
@@ -2105,7 +2107,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //public Vector2 dirVec => new Vector2(projectile.ai[0], projectile.ai[1]);
         public Vector2 dirVec;
 
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(r) * Matrix.CreateRotationX((float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(r) * Matrix.CreateRotationX((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             var size = new Vector3(projectile.ai[1] * 0.5f, 96 * factor, 96 * factor);
@@ -2163,11 +2165,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             var factor = projectile.timeLeft <= 60 ? (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 60f)) : 0.5f * (90 - projectile.timeLeft) / 30f;
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + dirVec * 0.5f - Main.screenPosition, null, Color.Purple with { A = 0 } * factor, projectile.ai[0], new Vector2(16, 48), new Vector2(projectile.ai[1] / 32f, (projectile.timeLeft <= 180 ? 240f * factor : 16f) / 192f), 0, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + dirVec * 0.5f - Main.screenPosition, null, Color.White with { A = 0 } * factor, projectile.ai[0], new Vector2(16, 48), new Vector2(projectile.ai[1] / 32f, (projectile.timeLeft <= 180 ? 240f * factor : 16f) / 384f), 0, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + dirVec * 0.5f - Main.screenPosition, null, Color.Purple with { A = 0 } * factor, projectile.ai[0], new Vector2(16, 48), new Vector2(projectile.ai[1] / 32f, (projectile.timeLeft <= 180 ? 240f * factor : 16f) / 192f), 0, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex_2"), projectile.Center + dirVec * 0.5f - Main.screenPosition, null, Color.White with { A = 0 } * factor, projectile.ai[0], new Vector2(16, 48), new Vector2(projectile.ai[1] / 32f, (projectile.timeLeft <= 180 ? 240f * factor : 16f) / 384f), 0, 0);
 
             UpdateTris(factor);
-            spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);
+            spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);
+
             return false;
         }
         public override bool ShouldUpdatePosition()

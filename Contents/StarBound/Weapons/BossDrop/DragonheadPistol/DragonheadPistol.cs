@@ -256,7 +256,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         {
             int d = MyDustId.Fire;
             int r = 50;
-            float W = (3.1415926f / 180) * (float)IllusionBoundModSystem.ModTime2;
+            float W = (3.1415926f / 180) * (float)VirtualDreamSystem.ModTime2;
             float X1 = (float)Math.Cos(6 * W) * 1 / (float)(Math.Cos(W)) * r;
             float Y1 = (float)Math.Sin(6 * W) * 1 / (float)(Math.Cos(W)) * r;
             float s = 2f;
@@ -410,7 +410,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             }
             else
             {
-                y = Factor >= 1 ? ((int)(IllusionBoundModSystem.ModTime / 4) % 3 + 3) : (int)(Factor * 3);
+                y = Factor >= 1 ? ((int)(VirtualDreamSystem.ModTime / 4) % 3 + 3) : (int)(Factor * 3);
             }
             frame = texture.Frame(FrameMax.X, FrameMax.Y, this.UpgradeValue(0, 1, 2), y);
             origin = new Vector2(5, 24);
@@ -455,7 +455,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         {
             if (projectile.velocity != default && projectile.timeLeft == 179)
                 projectile.rotation = projectile.velocity.ToRotation();
-            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 4, 0, (int)IllusionBoundModSystem.ModTime / 2 % 4), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(1, 0.25f), 1f, 0, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 4, 0, (int)VirtualDreamSystem.ModTime / 2 % 4), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(1, 0.25f), 1f, 0, 0);
             return false;
         }
         public override void SetDefaults()

@@ -1,6 +1,7 @@
 ﻿using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 using Terraria.DataStructures;
+using LogSpiralLibrary;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
 {
@@ -110,8 +111,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.instance.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[4];
-            ColorChange.Parameters["uTime"].SetValue(-0.03f * (float)IllusionBoundModSystem.ModTime);
+            Main.instance.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.AniTex[5].Value;
+            ColorChange.Parameters["uTime"].SetValue(-0.03f * (float)VirtualDreamSystem.ModTime);
             ColorChange.CurrentTechnique.Passes[0].Apply();
             return true;
         }

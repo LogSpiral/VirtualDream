@@ -159,7 +159,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
         {
             base.PreDraw(ref lightColor);
             var tex = ModContent.Request<Texture2D>(Texture + "_Lid").Value;
-            var f = (float)Math.Sin(IllusionBoundMod.ModTime / 60f * MathHelper.Pi) * 10 - 6.0001f;
+            var f = (float)Math.Sin(VirtualDreamMod.ModTime / 60f * MathHelper.Pi) * 10 - 6.0001f;
             var cen = projCenter + new Vector2(26).RotatedBy(Rotation - MathHelper.PiOver2);
             var vec = Main.MouseWorld - cen;
             var _s = 1 - 1 / (vec.Length() / 32 + 1);

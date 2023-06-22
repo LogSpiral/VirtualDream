@@ -329,7 +329,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         //}
         public override void HoldItem(Player player)
         {
-            var theta = (float)IllusionBoundMod.ModTime2 * MathHelper.Pi / 180f;
+            var theta = (float)VirtualDreamMod.ModTime2 * MathHelper.Pi / 180f;
             float a = 256f * (float)(Math.Sin(6 * theta) + 0.5);
             //TimeD += MathHelper.Pi / 180;
             for (int n = 0; n < 6; n++)

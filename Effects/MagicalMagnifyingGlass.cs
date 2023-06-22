@@ -16,7 +16,7 @@ namespace VirtualDream.Effects
         public override void Apply()
         {
             Shader.Parameters["mousePos"].SetValue(new Vector2((Main.MouseWorld - Main.screenPosition).X / Main.screenWidth, (Main.MouseWorld - Main.screenPosition).Y / Main.screenHeight));
-            Shader.Parameters["lightConst"].SetValue(IllusionBoundMod.lightConst);
+            Shader.Parameters["lightConst"].SetValue(VirtualDreamMod.lightConst);
             base.Apply();
         }
     }

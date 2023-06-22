@@ -79,7 +79,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
                     unit *= -1;
                 }
 
-                if ((int)IllusionBoundModSystem.ModTime2 % 5 == 0)
+                if ((int)VirtualDreamSystem.ModTime2 % 5 == 0)
                 {
                     float distanceMax = 256;
                     NPC target = null;

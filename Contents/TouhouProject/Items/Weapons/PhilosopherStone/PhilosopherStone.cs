@@ -7,6 +7,7 @@ using System;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using LogSpiralLibrary;
 
 namespace VirtualDream.Contents.TouhouProject.Items.Weapons.PhilosopherStone
 {
@@ -106,10 +107,10 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons.PhilosopherStone
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            Effect effect = IllusionBoundMod.ShaderSwoosh;
+            Effect effect = LogSpiralLibraryMod.ShaderSwooshEffect;
             effect.Parameters["uTransform"].SetValue(model * projection);
             effect.Parameters["uTime"].SetValue(0);
-            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
+            Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.BaseTex[8].Value;
             Main.graphics.GraphicsDevice.Textures[1] = TextureAssets.Projectile[projectile.type].Value;
             Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
@@ -208,9 +209,9 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons.PhilosopherStone
             recipe.AddIngredient(ItemID.ManaCrystal, 20);
             recipe.AddIngredient(ItemID.SoulofNight, 30);
             recipe.AddIngredient(ItemID.SoulofLight, 30);
-            recipe.AddRecipeGroup(IllusionBoundModSystem.CobaltRG, 30);
-            recipe.AddRecipeGroup(IllusionBoundModSystem.MythrilBarRG, 30);
-            recipe.AddRecipeGroup(IllusionBoundModSystem.AdamantiteBarRG, 30);
+            recipe.AddRecipeGroup(VirtualDreamSystem.CobaltRG, 30);
+            recipe.AddRecipeGroup(VirtualDreamSystem.MythrilBarRG, 30);
+            recipe.AddRecipeGroup(VirtualDreamSystem.AdamantiteBarRG, 30);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

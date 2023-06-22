@@ -66,7 +66,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         {
             if (Mod.HasAsset((Texture + "_Glow").Replace("VirtualDream/", "")))
-                spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow", false), Item.Center - Main.screenPosition, null, Color.White, rotation, IllusionBoundMod.GetTexture(Texture + "_Glow", false).Size() * .5f, scale, 0, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture(Texture + "_Glow", false), Item.Center - Main.screenPosition, null, Color.White, rotation, VirtualDreamMod.GetTexture(Texture + "_Glow", false).Size() * .5f, scale, 0, 0);
         }
         public virtual (float hurt, int kill) UpgradeNeed => State switch
         {
@@ -137,14 +137,14 @@ namespace VirtualDream.Contents.StarBound.Weapons
             if (MaxLevel)
             {
                 colorStart = Color.Orange;
-                colorMax = Color.Lerp(Color.Orange, Color.Red, 0.5f + MathF.Sin((float)IllusionBoundModSystem.ModTime / 120f * MathHelper.Pi) * .5f);
+                colorMax = Color.Lerp(Color.Orange, Color.Red, 0.5f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .5f);
             }
             hurtTip.OverrideColor = Color.Lerp(colorStart, colorMax, MathHelper.Clamp(Terraria.Utils.GetLerpValue(0, UpgradeNeed.hurt + 1, hurtCount, true), 0, 1));
             var killTip = new TooltipLine(Mod, "kill!", $"目前这把武器已经夺去{killCount}个生命");
             if (MaxLevel)
             {
                 colorStart = Color.Red;
-                colorMax = Color.Lerp(Color.Red, Color.DarkRed, 0.5f + MathF.Sin((float)IllusionBoundModSystem.ModTime / 120f * MathHelper.Pi) * .5f);
+                colorMax = Color.Lerp(Color.Red, Color.DarkRed, 0.5f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .5f);
             }
             killTip.OverrideColor = Color.Lerp(colorStart, colorMax, MathHelper.Clamp(Terraria.Utils.GetLerpValue(0, UpgradeNeed.kill + 1, killCount, true), 0, 1));
             tooltips.Add(hurtTip);
@@ -153,7 +153,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
             {
                 bool canUpg = hurtCount >= UpgradeNeed.hurt && killCount >= UpgradeNeed.kill;
                 var upgradeTip = new TooltipLine(Mod, "upgrade!", canUpg ? "已达成修复/升级条件" : $"还需造成{MathHelper.Clamp(UpgradeNeed.hurt - hurtCount, 0, float.MaxValue)}点伤害与{MathHelper.Clamp(UpgradeNeed.kill - killCount, 0, float.MaxValue)}击杀以达到修复/升级条件");
-                upgradeTip.OverrideColor = canUpg ? (Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)IllusionBoundModSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f)) : Color.Gray;
+                upgradeTip.OverrideColor = canUpg ? (Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f)) : Color.Gray;
                 tooltips.Add(upgradeTip);
             }
         }

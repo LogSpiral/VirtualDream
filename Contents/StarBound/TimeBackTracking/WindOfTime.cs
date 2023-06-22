@@ -19,7 +19,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             var tip = new TooltipLine(Mod, "Charge", $"目前已经充能了{chargeCount} / 8");
-            tip.OverrideColor = Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)IllusionBoundModSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f);
+            tip.OverrideColor = Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f);
             tooltips.Add(tip);
         }
         public override void SetDefaults()

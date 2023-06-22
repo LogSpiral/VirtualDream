@@ -1,4 +1,5 @@
-﻿using ReLogic.Content;
+﻿using LogSpiralLibrary;
+using ReLogic.Content;
 using System;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
@@ -179,13 +180,13 @@ namespace VirtualDream
 
         public override void OnLoad()
         {
-            this._planetTexture = IllusionBoundMod.GetTexture("Terraria/Images/Misc/NebulaSky/Planet", false);
-            this._bgTexture = IllusionBoundMod.GetTexture("Terraria/Images/Misc/NebulaSky/Background", false);
-            this._beamTexture = IllusionBoundMod.GetTexture("Terraria/Images/Misc/NebulaSky/Beam", false);
+            this._planetTexture = VirtualDreamMod.GetTexture("Terraria/Images/Misc/NebulaSky/Planet", false);
+            this._bgTexture = VirtualDreamMod.GetTexture("Terraria/Images/Misc/NebulaSky/Background", false);
+            this._beamTexture = VirtualDreamMod.GetTexture("Terraria/Images/Misc/NebulaSky/Beam", false);
             this._rockTextures = new Texture2D[3];
             for (int i = 0; i < this._rockTextures.Length; i++)
             {
-                this._rockTextures[i] = IllusionBoundMod.GetTexture("Terraria/Images/Misc/NebulaSky/Rock_" + i, false);
+                this._rockTextures[i] = VirtualDreamMod.GetTexture("Terraria/Images/Misc/NebulaSky/Rock_" + i, false);
             }
         }
 
@@ -212,7 +213,7 @@ namespace VirtualDream
         {
             if (maxDepth >= 3.40282347E+38f && minDepth < 3.40282347E+38f)
             {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Backgrounds/WhiteSky"), new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Lerp(Color.Purple, Color.Pink, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);//Main.bgColor//Color.White
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Backgrounds/WhiteSky"), new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Lerp(Color.Purple, Color.Pink, (float)Math.Sin(VirtualDreamMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);//Main.bgColor//Color.White
 
                 //spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * this._fadeOpacity);
                 //spriteBatch.Draw(this._bgTexture, new Rectangle(0, Math.Max(0, (int)((Main.worldSurface * 16.0 - (double)Main.screenPosition.Y - 2400.0) * 0.10000000149011612)), Main.screenWidth, Main.screenHeight), Color.White * Math.Min(1f, (Main.screenPosition.Y - 800f) / 1000f * this._fadeOpacity));
@@ -502,7 +503,7 @@ namespace VirtualDream
                 //    //Main.graphics.GraphicsDevice.BlendState = BlendState.NonPremultiplied;
                 //}
 
-                Color color = (tierFactor / 5f).ArrayLerp(default, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(IllusionBoundMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);
+                Color color = (tierFactor / 5f).ArrayLerp(default, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(VirtualDreamMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(VirtualDreamMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(VirtualDreamMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity, Color.Lerp(Color.OrangeRed, Color.Orange, (float)Math.Sin(VirtualDreamMod.ModTime / 90f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 CustomVertexInfo[] triangleArry = new CustomVertexInfo[6];
@@ -516,14 +517,14 @@ namespace VirtualDream
                 triangleArry[5] = triangleArry[0];
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                IllusionBoundMod.IMBellEffect.Parameters["uTransform"].SetValue(model * projection);
-                IllusionBoundMod.IMBellEffect.Parameters["uTime"].SetValue(timerOfWind);
+                LogSpiralLibraryMod.ItemEffect.Parameters["uTransform"].SetValue(model * projection);
+                LogSpiralLibraryMod.ItemEffect.Parameters["uTime"].SetValue(timerOfWind);
                 //Main.graphics.GraphicsDevice.BlendState = BlendState.Additive;
-                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
-                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Backgrounds/StormSky");
+                Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.BaseTex[8].Value;
+                Main.graphics.GraphicsDevice.Textures[1] = VirtualDreamMod.GetTexture("Backgrounds/StormSky");
                 Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.AnisotropicWrap;
-                IllusionBoundMod.IMBellEffect.CurrentTechnique.Passes[0].Apply();
+                LogSpiralLibraryMod.ItemEffect.CurrentTechnique.Passes[0].Apply();
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleArry, 0, 2);
             }
 
@@ -612,10 +613,10 @@ namespace VirtualDream
             //this._bgTexture = TextureManager.Load("Images/Misc/VortexSky/Background");
             //this._boltTexture = TextureManager.Load("Images/Misc/VortexSky/Bolt");
             //this._flashTexture = TextureManager.Load("Images/Misc/VortexSky/Flash");
-            this._planetTexture = IllusionBoundMod.GetTexture("Terraria/Images/Misc/VortexSky/Planet", false);
-            this._bgTexture = IllusionBoundMod.GetTexture("Terraria/Images/Misc/VortexSky/Background", false);
-            this._boltTexture = IllusionBoundMod.GetTexture("Terraria/Images/Misc/VortexSky/Bolt", false);
-            this._flashTexture = IllusionBoundMod.GetTexture("Terraria/Images/Misc/VortexSky/Flash", false);
+            this._planetTexture = VirtualDreamMod.GetTexture("Terraria/Images/Misc/VortexSky/Planet", false);
+            this._bgTexture = VirtualDreamMod.GetTexture("Terraria/Images/Misc/VortexSky/Background", false);
+            this._boltTexture = VirtualDreamMod.GetTexture("Terraria/Images/Misc/VortexSky/Bolt", false);
+            this._flashTexture = VirtualDreamMod.GetTexture("Terraria/Images/Misc/VortexSky/Flash", false);
         }
 
         // Token: 0x060024DE RID: 9438 RVA: 0x004806CC File Offset: 0x0047E8CC
@@ -671,7 +672,7 @@ namespace VirtualDream
         {
             if (maxDepth >= 3.40282347E+38f && minDepth < 3.40282347E+38f)
             {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Backgrounds/WhiteSky"), new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Lerp(new Color(0, 255, 255), new Color(0, 0, 255), (float)Math.Sin(IllusionBoundMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);//Main.bgColor//Color.White
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Backgrounds/WhiteSky"), new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Lerp(new Color(0, 255, 255), new Color(0, 0, 255), (float)Math.Sin(VirtualDreamMod.ModTime / 180f * MathHelper.TwoPi) * .5f + .5f) * _fadeOpacity);//Main.bgColor//Color.White
 
                 //spriteBatch.Draw(Main.blackTileTexture, new Rectangle(0, 0, Main.screenWidth, Main.screenHeight), Color.Black * this._fadeOpacity);
                 //spriteBatch.Draw(this._bgTexture, new Rectangle(0, Math.Max(0, (int)((Main.worldSurface * 16.0 - (double)Main.screenPosition.Y - 2400.0) * 0.10000000149011612)), Main.screenWidth, Main.screenHeight), Color.White * Math.Min(1f, (Main.screenPosition.Y - 800f) / 1000f) * this._fadeOpacity);

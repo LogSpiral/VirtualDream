@@ -29,13 +29,8 @@ using VirtualDream.Effects;
 using static Terraria.ModLoader.ModContent;
 using System.Linq;
 using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;
+using LogSpiralLibrary;
 
-//using static VirtualDream.IllusionBoundOnIlFunctions;
-// 用两个斜杠开头的句子都是注释QAQ，对程序运行没有任何影响，读我就行了，不用删
-
-// 以上都是需要使用的程序集，不要乱动，不然代码会出问题
-
-// 引入命名空间，这里就是MOD的名字IllusionBoundMod
 namespace VirtualDream
 {
     //public class VirtualDreamMenu : ModMenu
@@ -53,13 +48,13 @@ namespace VirtualDream
     //    public abstract Texture2D GetBranchTextures(int i, int j, int trunkOffset, ref int frame, int y);
     //}
     // MOD的主类名字，需要与文件名、MOD名完全一致，并且继承Mod类
-    public class IllusionBoundMod : Mod
+    public class VirtualDreamMod : Mod
     {
-        public static float GlowLight => IllusionBoundModSystem.glowLight;
-        public static double ModTime => IllusionBoundModSystem.ModTime;
-        public static double ModTime2 => IllusionBoundModSystem.ModTime2;
+        public static float GlowLight => VirtualDreamSystem.glowLight;
+        public static double ModTime => LogSpiralLibrarySystem.ModTime;
+        public static double ModTime2 => LogSpiralLibrarySystem.ModTime2;
 
-        public static IllusionBoundMod Instance;
+        public static VirtualDreamMod Instance;
         public static Mod mod;
         public static float lightConst;
         public static bool HarderActive
@@ -103,12 +98,9 @@ namespace VirtualDream
             }
         }
         public static bool UnderGroundActive;
-        //public static StormRain[] rain = new StormRain[750];
-        //public static int[] StormNPCType = new int[] { ModContent.NPCType<NegativeElectricalSlime>(), ModContent.NPCType<PositiveElectricalSlime>(), ModContent.NPCType<NeutralSlime>(), ModContent.NPCType<ElectricalHarpy>() };
         public static ElectricTriangle[] electricTriangle = new ElectricTriangle[100];
         private int iconFrame = 0;
         private byte iconFrameCounter = 0;
-
         private Texture2D[] icon = new Texture2D[22];
         private void Main_DrawMenu(On.Terraria.Main.orig_DrawMenu orig, Main self, GameTime gameTime)
         {
@@ -186,102 +178,40 @@ namespace VirtualDream
             }
             orig(self, gameTime);
         }
-        //public static float StormTileGrowLight 
-        //{
-        //	get 
-        //	{
-        //		return ((float)Math.Sin(ModTime * MathHelper.TwoPi / 120) + 1) / 2;
-        //	}
-        //}
-        public static bool TestFlag = true;
-
-        //public Texture2D originTex;
         public static Effect GetEffect(string path, bool autoModName = true) => Request<Effect>((autoModName ? "VirtualDream/" : "") + path, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
         public static Texture2D GetTexture(string path, bool autoModName = true) => Request<Texture2D>((autoModName ? "VirtualDream/" : "") + path, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
-
         public override void Load()
         {
-            //IllusionBoundExtensionMethods.ShaderItemEffectInWorld 
-            //将exampleUI实例化
-            //vertexUI = new Items.Others.StrawBerryLinerUI();
-            ////将exampleUI初始化
-            //vertexUI.Activate();
-            ////将exampleUserInterface实例化
-            //vertexUserInterface = new UserInterface();
-            ////让exampleUserInterface代理exampleUI的事件触发
-            //vertexUserInterface.SetState(vertexUI);
-
-            //var modtrees = typeof(TileLoader).GetField("trees", BindingFlags.Static | BindingFlags.NonPublic);
-            //trees = modtrees.GetValue(null) as IDictionary<int, ModTree>;
             mod = this;
             Instance = this;
-            //grayEffect = GetEffect("Effects/GrayScale");
-            //GameShaders.Armor.BindShader(ModContent.ItemType<Items.Dyes.ContrastChangeDye>(), new ArmorShaderData(new Ref<Effect>(GetEffect("Effects/ContrastChangeGlassFA")), "ContrastChange"));
             var effect = GetEffect("Effects/IllusionBoundScreenGlass");
             foreach (var pass in effect.CurrentTechnique.Passes)
             {
                 Filters.Scene["VirtualDream:" + pass.Name] = new Filter(new IllusionScreenShaderData(new Ref<Effect>(effect), pass.Name), EffectPriority.Medium);
                 Filters.Scene["VirtualDream:" + pass.Name].Load();
             }
-            //Filters.Scene["IllusionBoundMod:MagnifyingGlass"] = new Filter(new TestScreenShaderData(new Ref<Effect>(GetEffect("Effects/MagnifyingGlass")), "Test"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:MagnifyingGlass"].Load();
-            //Filters.Scene["IllusionBoundMod:MagicalMagnifyingGlass"] = new Filter(new IllusionScreenShaderData(new Ref<Effect>(GetEffect("Effects/MagicalMagnifyingGlass")), "Magical"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:MagicalMagnifyingGlass"].Load();
-            //Filters.Scene["IllusionBoundMod:CleverGlass"] = new Filter(new ScreenShaderData(new Ref<Effect>(GetEffect("Effects/CleverGlass")), "Clever"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:CleverGlass"].Load();
-            //Filters.Scene["IllusionBoundMod:RainbowGlass"] = new Filter(new RainbowScreenShaderData(new Ref<Effect>(GetEffect("Effects/RainbowGlass")), "Rainbow"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:RainbowGlass"].Load();
-            //Filters.Scene["IllusionBoundMod:ContrastGlass"] = new Filter(new ScreenShaderData(new Ref<Effect>(GetEffect("Effects/ContrastGlass")), "Contrast"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:ContrastGlass"].Load();
-            //Filters.Scene["IllusionBoundMod:ContrastGlassV2"] = new Filter(new ScreenShaderData(new Ref<Effect>(GetEffect("Effects/ContrastUpGlassLevel2")), "ContrastDown"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:ContrastGlassV2"].Load();
-            //Filters.Scene["IllusionBoundMod:ShikieikiGlass"] = new Filter(new ShikieikiScreenShaderData(new Ref<Effect>(GetEffect("Effects/ShikieikiGlass")), "Shikieiki"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:ShikieikiGlass"].Load();
-            //Filters.Scene["IllusionBoundMod:InversPhaseGlass"] = new Filter(new InversPhaseScreenShaderData(new Ref<Effect>(GetEffect("Effects/InversPhaseGlass")), "InversPhase"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:InversPhaseGlass"].Load();
-            //Filters.Scene["IllusionBoundMod:ZenithGlass"] = new Filter(new ZenithScreenShaderData(new Ref<Effect>(GetEffect("Effects/ZenithGlass")), "Zenith"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:ZenithGlass"].Load();
-            //Filters.Scene["IllusionBoundMod:ContrastDownGlass"] = new Filter(new ScreenShaderData(new Ref<Effect>(GetEffect("Effects/ContrastDownGlass")), "ContrastDown"), EffectPriority.Medium);
-            //Filters.Scene["IllusionBoundMod:ContrastDownGlass"].Load();
-            //Filters.Scene["IllusionBoundMod:HeatDistortion"] = new Filter(new ScreenShaderData("FilterHeatDistortion").UseImage("Images/Misc/noise", 0, null).UseIntensity(4f), EffectPriority.Low);
-            //Filters.Scene["IllusionBoundMod:HeatDistortion"].Load();
-            //Filters.Scene["IllusionBoundMod:HeatDistortion_"] = new Filter(new ScreenShaderData(new Ref<Effect>(GetEffect("Effects/DesertEffect")), "Desert").UseImage("Images/Misc/noise", 0, null).UseIntensity(4f), EffectPriority.Low);
-            //Filters.Scene["IllusionBoundMod:HeatDistortion_"].Load();
-
-            //SkyManager.Instance["VirtualDream:Storm"] = new StormSky();
-            //SkyManager.Instance["VirtualDream:BigApe"] = new BigApeSky();
-            //SkyManager.Instance["VirtualDream:ErchiusHorror"] = new ErchiusHorrorSky();
-
-
-            //AddEquipTexture(null, EquipType.Legs, "JunkoRobe_Legs", "IllusionBoundMod/Items/TouhouProject/Junko/JunkoRobe_Legs");
-            ////On.Terraria.NPC.UpdateNPC += TimeStopUpdate;
-            //On.Terraria.Main.DrawTiles += DrawTilesS;
-            //On.Terraria.NPC.Collision_MoveNormal += CollisionMove;
-            ////On.Terraria.NPC.UpdateNPC += UPDNPC;
-            //IL.Terraria.Player.beeType += MyBeeType;
-            //On.Terraria.Utilities.UnifiedRandom.Next_int_int += UnifiedRandom_Next_int_int;
-            //IL.Terraria.Main.DrawTiles += _DrawTreeHook;
-            On.Terraria.Graphics.Effects.FilterManager.EndCapture += FilterManager_EndCapture_IllusionBound;
-            On.Terraria.Main.DrawProjectiles += Main_DrawProjectiles_VirtualDream;
-            Main.OnResolutionChanged += Main_OnResolutionChanged;
-            Main.RunOnMainThread(CreateRender);
             On.Terraria.UI.Chat.ChatManager.DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool += MoreMoreHeart;
-            //originSun = Main.sunTexture;
-            //Main.sunTexture = IllusionBoundMod.GetTexture("Sun");
-
-            //originTex = Main.inventoryBack10Texture;
-            //Main.inventoryBack10Texture = IllusionBoundMod.GetTexture("Inventory_Back10");
-
             for (int i = 0; i < icon.Length; i++)
             {
                 icon[i] = GetTexture($"icons/icon_ani_{i}");
             }
-            //On.Terraria.Main.DrawMenu += Main_DrawMenu;
-            //On.Terraria.Main.DrawPlayer += WeaponDisplayDrawPlayer;
-            //On.Terraria.Utilities.UnifiedRandom.Next_int_int += UnifiedRandom_Next_int_int;
-            //On.Terraria.Audio.MP3AudioTrack.ReadAheadPutAChunkIntoTheBuffer += MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer;
         }
-
+        /// <summary>
+        /// 烂活
+        /// </summary>
+        /// <param name="orig"></param>
+        /// <param name="spriteBatch"></param>
+        /// <param name="font"></param>
+        /// <param name="snippets"></param>
+        /// <param name="position"></param>
+        /// <param name="baseColor"></param>
+        /// <param name="rotation"></param>
+        /// <param name="origin"></param>
+        /// <param name="baseScale"></param>
+        /// <param name="hoveredSnippet"></param>
+        /// <param name="maxWidth"></param>
+        /// <param name="ignoreColors"></param>
+        /// <returns></returns>
         private Vector2 MoreMoreHeart(On.Terraria.UI.Chat.ChatManager.orig_DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool orig, SpriteBatch spriteBatch, ReLogic.Graphics.DynamicSpriteFont font, Terraria.UI.Chat.TextSnippet[] snippets, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth, bool ignoreColors)
         {
             string date = DateTime.Now.ToShortDateString();
@@ -303,7 +233,7 @@ namespace VirtualDream
             return orig.Invoke(spriteBatch, font, result, position, baseColor, rotation, origin, baseScale, out hoveredSnippet, maxWidth, ignoreColors);
 
         }
-
+        #region TestCodes
         public static byte[] musicBuffer;
         private void MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer(On.Terraria.Audio.MP3AudioTrack.orig_ReadAheadPutAChunkIntoTheBuffer orig, MP3AudioTrack self)
         {
@@ -452,863 +382,30 @@ namespace VirtualDream
             var value = orig.Invoke(self, maxValue);
             return value;// >= maxValue / 2 ? maxValue - 1 : 0
         }
+        #endregion
 
-        private void Main_DrawProjectiles_VirtualDream(On.Terraria.Main.orig_DrawProjectiles orig, Main self)
-        {
-            orig.Invoke(self);
-            if (UseRender) return;
-            List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
-            List<int> indexer = new List<int>();
-            //Player player = null;
-            List<Projectile> oculusTears = new List<Projectile>();
-            List<Projectile> astralTears = new List<Projectile>();
-            List<Projectile> solusKatanaFractal = new List<Projectile>();
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            #region 遍历查找
-            foreach (var proj in Main.projectile)
-            {
-                if (proj.active && proj.ModProjectile != null && proj.ModProjectile is SolusEnergyShard shard)
-                {
-                    var shardPlayer = Main.player[proj.owner];
-                    foreach (var swoosh in shard.swooshes)
-                    {
-                        if (swoosh != null && swoosh.Active)
-                        {
-                            for (int i = 0; i < 25; i++)
-                            {
-                                var f = i / 24f;
-                                var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
-                                float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
-                                if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
-                                var scaler = 50 * shardPlayer.GetAdjustedItemScale(shardPlayer.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;//* (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11
-                                Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
-                                var realColor = Color.Lerp(Color.White, Color.Orange, f);
-                                realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
-                                bars.Add(new CustomVertexInfo(swoosh.center + newVec, realColor, new Vector3(1 - f, 1, 0.6f)));
-                                realColor.A = 0;
-                                bars.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
-                            }
-                            indexer.Add(bars.Count - 2);
-                            //player = shard.Player;
-                        }
-                    }
-                }
-                if (proj.active && proj.type == ProjectileType<OculusReaverTear>()) oculusTears.Add(proj);
-                if (proj.active && (proj.type == ProjectileType<Contents.StarBound.NPCs.Bosses.AsraNox.SolusKatanaFractal>() || proj.type == ProjectileType<Contents.StarBound.NPCs.Bosses.AsraNox.SolusLevatine>())) solusKatanaFractal.Add(proj);
-
-            }
-            #endregion
-            #region 日炎刀合批
-            if (bars.Count > 2 || solusKatanaFractal.Count > 0)
-            {
-                var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
-                var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-                var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
-                if (solusKatanaFractal.Count > 0)
-                {
-                    foreach (var projectile in solusKatanaFractal)
-                    {
-                        if (projectile.ModProjectile is Contents.StarBound.NPCs.Bosses.AsraNox.SolusKatanaFractal solusKatana) solusKatana.DrawOthers();
-                        var max = projectile.oldPos.Length - 1;
-                        for (int n = 0; n < projectile.oldPos.Length; n++)
-                        {
-                            if (projectile.oldPos[n] == default) { max = n; break; }
-                        }
-                        var min = 0;
-                        var currentVec = projectile.oldPos[0];
-                        for (int n = 1; n < projectile.oldPos.Length; n++)
-                        {
-                            if (projectile.oldPos[n] != currentVec) { min = n - 1; break; }
-                            currentVec = projectile.oldPos[n];
-                        }
-                        if (max - min < 2) { /*Main.NewText("太短了太短了！！  " + max + "   " + projectile.localAI[0] + "   " + projectile.oldPos[0]);*/ continue; }
-                        bool isLevatine = projectile.type == ProjectileType<Contents.StarBound.NPCs.Bosses.AsraNox.SolusLevatine>();
-                        float _scaler = isLevatine ? 1600 : 98f;
-                        var multiValue = isLevatine ? MathHelper.Clamp((210f - projectile.timeLeft).HillFactor2(210) * 2, 0, 1) : 1;//1 - (projectile.localAI[0] - 60) / 90f
-                        bars.Add(new CustomVertexInfo(projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * _scaler, default(Color), new Vector3(1, 1, 0.6f)));
-                        bars.Add(new CustomVertexInfo(projectile.oldPos[0], default(Color), new Vector3(0, 0, 0.6f)));
-                        for (int i = min; i < max; i++)
-                        {
-                            var f = (i - min) / (max - min - 1f);
-                            f = 1 - f;
-                            var alphaLight = 0.6f;
-                            var realColor = Color.Lerp(Color.White, Color.Orange, f);
-                            //var _f = 6 * f / (3 * f + 1);//6 * f / (3 * f + 1) /(float)Math.Pow(f,instance.maxCount)
-                            //_f = MathHelper.Clamp(_f, 0, 1);
-                            realColor.A = (byte)((1 - f).HillFactor2(1) * 255);
-                            //realColor.A = 51;
-                            bars.Add(new CustomVertexInfo(projectile.oldPos[i] + projectile.oldRot[i].ToRotationVector2() * _scaler, realColor * multiValue, new Vector3(1 - f, 1, alphaLight)));
-
-                            realColor.A = isLevatine ? realColor.A : (byte)0;
-                            bars.Add(new CustomVertexInfo(projectile.oldPos[i], realColor * multiValue, new Vector3(0, 0, alphaLight)));
-
-                        }
-                        indexer.Add(bars.Count - 2);
-                    }
-                }
-                if (bars.Count > 2)
-                {
-                    SamplerState sampler = SamplerState.LinearClamp;
-                    CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];//
-                    for (int i = 0; i < bars.Count - 2; i += 2)
-                    {
-                        if (indexer.ToArray().Contains(i)) continue;
-                        var k = i / 2;
-                        if (6 * k < triangleList.Length)
-                        {
-                            triangleList[6 * k] = bars[i];
-                            triangleList[6 * k + 1] = bars[i + 2];
-                            triangleList[6 * k + 2] = bars[i + 1];
-                        }
-                        if (6 * k + 3 < triangleList.Length)
-                        {
-                            triangleList[6 * k + 3] = bars[i + 1];
-                            triangleList[6 * k + 4] = bars[i + 2];
-                            triangleList[6 * k + 5] = bars[i + 3];
-                        }
-                    }
-                    //GraphicsDevice gd = Main.instance.GraphicsDevice;
-                    //RenderTarget2D render = IllusionBoundMod.Instance.render;
-                    //SpriteBatch spriteBatch = Main.spriteBatch;
-                    //spriteBatch.End();
-                    //gd.SetRenderTarget(render);
-                    //gd.Clear(Color.Transparent);
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                    ShaderSwooshEX.Parameters["uTransform"].SetValue(model * projection * trans);
-                    ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
-                    ShaderSwooshEX.Parameters["uTime"].SetValue(-(float)IllusionBoundModSystem.ModTime * 0.03f);//-(float)Main.time * 0.06f
-                    ShaderSwooshEX.Parameters["checkAir"].SetValue(true);
-                    ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
-                    ShaderSwooshEX.Parameters["gather"].SetValue(true);
-                    ShaderSwooshEX.Parameters["lightShift"].SetValue(0);
-                    ShaderSwooshEX.Parameters["distortScaler"].SetValue(0);
-                    Main.graphics.GraphicsDevice.Textures[0] = GetTexture("Images/BaseTex_7");
-                    Main.graphics.GraphicsDevice.Textures[1] = GetTexture("Images/AniTex_3");
-                    Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[ItemType<SolusKatana>()].Value;
-                    Main.graphics.GraphicsDevice.Textures[3] = HeatMap[27];
-
-                    Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
-                    Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
-                    Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
-                    Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
-
-                    ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
-                    Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
-                    Main.graphics.GraphicsDevice.RasterizerState = originalState;
-
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
-                    if (solusKatanaFractal.Count > 0)
-                    {
-                        foreach (var projectile in solusKatanaFractal)
-                        {
-                            (projectile.ModProjectile as Contents.StarBound.NPCs.Bosses.AsraNox.SolusKatanaFractal)?.DrawSword();
-                            (projectile.ModProjectile as Contents.StarBound.NPCs.Bosses.AsraNox.SolusLevatine)?.DrawLaser();
-
-                        }
-                    }
-                    spriteBatch.End();
-
-                    //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                    //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-
-                    //IllusionBoundMod.Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-                    //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);
-
-                    //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
-                    //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.05f);
-                    //for (int n = 0; n < 1; n++)
-                    //{
-                    //    gd.SetRenderTarget(Main.screenTargetSwap);
-                    //    gd.Clear(Color.Transparent);
-                    //    IllusionBoundMod.Distort.CurrentTechnique.Passes[7].Apply();
-                    //    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-
-
-
-                    //    gd.SetRenderTarget(Main.screenTarget);
-                    //    gd.Clear(Color.Transparent);
-                    //    IllusionBoundMod.Distort.CurrentTechnique.Passes[6].Apply();
-                    //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                    //}
-                    //IllusionBoundMod.Distort.Parameters["position"].SetValue(new Vector2(0, 2.5f));
-                    //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(0.707f));//projectile.rotation.ToRotationVector2() * -0.006f
-                    //for (int n = 0; n < 1; n++)
-                    //{
-                    //    gd.SetRenderTarget(Main.screenTargetSwap);
-                    //    gd.Clear(Color.Transparent);
-                    //    IllusionBoundMod.Distort.CurrentTechnique.Passes[5].Apply();
-                    //    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-
-                    //    gd.SetRenderTarget(Main.screenTarget);
-                    //    gd.Clear(Color.Transparent);
-                    //    IllusionBoundMod.Distort.CurrentTechnique.Passes[4].Apply();
-                    //    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                    //}
-
-                    //spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                    //spriteBatch.Draw(render, Vector2.Zero, Color.White);
-                    //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans * 2);
-                }
-
-            }
-            #endregion
-
-            if (oculusTears.Count > 0 || astralTears.Count > 0)
-            {
-                var sb = Main.spriteBatch;
-                //先在自己的render上画这个弹幕
-                sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                foreach (var projectile in oculusTears)
-                {
-                    var fac = projectile.ai[0];
-                    fac = fac < 30 ? ((fac * fac * 0.02022f - fac * 0.606f + 5) * (1 - 0.03f * fac)) : ((-90 / (fac - 181f) * 1.25f) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f * (fac - 30).SymmetricalFactor(75, 15)));
-                    //var fac = projectile.ai[0].SymmetricalFactor(90, 10) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f);
-                    //var fac = projectile.ai[0].HillFactor2(180);
-                    TransformEffect.Parameters["factor1"].SetValue(fac);
-                    TransformEffect.Parameters["factor2"].SetValue((float)ModTime / 30f);
-                    TransformEffect.CurrentTechnique.Passes[1].Apply();
-                    sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, new Color(1, 0, 0.25f), projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512 * new Vector2(3, 1), 0, 0);//new Rectangle(240,240,92,92)
-                }
-                foreach (var projectile in astralTears)
-                {
-                    var fac = projectile.ai[0].SymmetricalFactor(90, 10) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f);
-                    //var fac = projectile.ai[0].HillFactor2(180);
-                    TransformEffect.Parameters["factor1"].SetValue(fac);
-                    TransformEffect.Parameters["factor2"].SetValue((float)ModTime / 30f);
-                    TransformEffect.CurrentTechnique.Passes[0].Apply();
-                    sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, new Color(0.25f, 1, 1f), projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512, 0, 0);//new Rectangle(240,240,92,92)
-                }
-                sb.End();
-
-            }
-        }
-        public static bool UseRender => (Lighting.Mode == Terraria.Graphics.Light.LightMode.White || Lighting.Mode == Terraria.Graphics.Light.LightMode.Color) && Main.WaveQuality != 0;
-        private void FilterManager_EndCapture_IllusionBound(On.Terraria.Graphics.Effects.FilterManager.orig_EndCapture orig, FilterManager self, RenderTarget2D finalTexture, RenderTarget2D screenTarget1, RenderTarget2D screenTarget2, Color clearColor)
-        {
-            GraphicsDevice gd = Main.instance.GraphicsDevice;
-            if (UseRender)
-            {
-                if (!Main.drawToScreen)
-                {
-                    List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
-                    List<CustomVertexInfo> bars_2 = new List<CustomVertexInfo>();
-
-                    List<int> indexer = new List<int>();
-                    Player player = null;
-                    List<Projectile> oculusTears = new List<Projectile>();
-                    List<Projectile> astralTears = new List<Projectile>();
-                    List<Projectile> solusKatanaFractal = new List<Projectile>();
-
-                    int timeLeft = -1919810;
-                    float? director = null;
-                    #region 遍历查找
-                    foreach (var proj in Main.projectile)
-                    {
-                        if (proj.active && proj.ModProjectile != null && proj.ModProjectile is SolusEnergyShard shard)
-                        {
-                            var shardPlayer = Main.player[proj.owner];
-                            foreach (var swoosh in shard.swooshes)
-                            {
-                                if (swoosh != null && swoosh.Active)
-                                {
-                                    for (int i = 0; i < 45; i++)
-                                    {
-                                        var f = i / 44f;
-                                        var lerp = f.Lerp(1 - swoosh.timeLeft / 30f, 1);
-                                        float theta2 = (1.8375f * lerp - 1.125f) * MathHelper.Pi + MathHelper.Pi;
-                                        if (swoosh.direction == 1) theta2 = MathHelper.TwoPi - theta2;
-                                        var scaler = 50 * shardPlayer.GetAdjustedItemScale(shardPlayer.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;// (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f
-                                        Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
-                                        var realColor = Color.Lerp(Color.White, Color.Orange, f);
-                                        realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
-                                        bars.Add(new CustomVertexInfo(swoosh.center + newVec, realColor, new Vector3(1 - f, 1, 0.6f)));
-                                        bars_2.Add(new CustomVertexInfo(swoosh.center + newVec * 1.5f, realColor, new Vector3(1 - f, 1, 0.6f)));
-
-                                        realColor.A = 0;
-                                        bars.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
-                                        bars_2.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
-
-                                    }
-                                    indexer.Add(bars.Count - 2);
-                                    player = shardPlayer;
-
-                                    if (swoosh.timeLeft > timeLeft)
-                                    {
-                                        timeLeft = swoosh.timeLeft;
-                                        director = swoosh.direction;
-                                    }
-                                }
-
-                            }
-                        }
-                        if (proj.active && proj.type == ProjectileType<OculusReaverTear>()) oculusTears.Add(proj);
-                        if (proj.active && proj.type == ProjectileType<AstralTear>() && (int)proj.ai[1] != 0) astralTears.Add(proj);
-                        if (proj.active && (proj.type == ProjectileType<SolusKatanaFractal>() || proj.type == ProjectileType<SolusLevatine>())) solusKatanaFractal.Add(proj);
-                    }
-                    #endregion
-                    if (bars.Count > 2 || oculusTears.Count > 0 || astralTears.Count > 0 || solusKatanaFractal.Count > 0)
-                    {
-                        SpriteBatch spriteBatch = Main.spriteBatch;
-                        var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
-                        var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                        var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
-                        var resultMatrix = model * trans * projection;
-                        #region 日炎刀合批
-                        if (bars.Count > 2 || solusKatanaFractal.Count > 0)
-                        {
-
-                            RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-
-                            SamplerState sampler = SamplerState.LinearWrap;
-                            //
-                            if (solusKatanaFractal.Count > 0)
-                            {
-                                foreach (var projectile in solusKatanaFractal)
-                                {
-                                    if (projectile.ModProjectile is Contents.StarBound.NPCs.Bosses.AsraNox.SolusKatanaFractal solusKatana) solusKatana.DrawOthers();
-                                    var max = projectile.oldPos.Length - 1;
-                                    for (int n = 0; n < projectile.oldPos.Length; n++)
-                                    {
-                                        if (projectile.oldPos[n] == default) { max = n; break; }
-                                    }
-                                    var min = 0;
-                                    var currentVec = projectile.oldPos[0];
-                                    for (int n = 1; n < projectile.oldPos.Length; n++)
-                                    {
-                                        if (projectile.oldPos[n] != currentVec) { min = n - 1; break; }
-                                        currentVec = projectile.oldPos[n];
-                                    }
-                                    if (max - min < 2) { /*Main.NewText("太短了太短了！！  " + max + "   " + projectile.localAI[0] + "   " + projectile.oldPos[0]);*/ continue; }
-                                    bool isLevatine = projectile.type == ProjectileType<SolusLevatine>();
-                                    float _scaler = isLevatine ? 1600 : 98f;
-                                    var multiValue = isLevatine ? MathHelper.Clamp((210f - projectile.timeLeft).HillFactor2(210) * 2, 0, 1) : 1;//1 - (projectile.localAI[0] - 60) / 90f
-                                    bars.Add(new CustomVertexInfo(projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * _scaler, default(Color), new Vector3(1, 1, 0.6f)));
-                                    bars_2.Add(bars[^1] with { Position = projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * _scaler * 1.5f });
-                                    bars.Add(new CustomVertexInfo(projectile.oldPos[0], default(Color), new Vector3(0, 0, 0.6f)));
-                                    bars_2.Add(bars[^1]);
-                                    for (int i = min; i < max; i++)
-                                    {
-                                        var f = (i - min) / (max - min - 1f);
-                                        f = 1 - f;
-                                        var alphaLight = 0.6f;
-                                        var realColor = Color.Lerp(Color.White, Color.Orange, f);
-                                        //var _f = 6 * f / (3 * f + 1);//6 * f / (3 * f + 1) /(float)Math.Pow(f,instance.maxCount)
-                                        //_f = MathHelper.Clamp(_f, 0, 1);
-                                        realColor.A = (byte)((1 - f).HillFactor2(1) * 255);
-                                        //realColor.A = 51;
-                                        bars.Add(new CustomVertexInfo(projectile.oldPos[i] + projectile.oldRot[i].ToRotationVector2() * _scaler, realColor * multiValue, new Vector3(1 - f, 1, alphaLight)));
-                                        bars_2.Add(bars[^1] with { Position = projectile.oldPos[i] + projectile.oldRot[i].ToRotationVector2() * _scaler * 1.5f });
-
-                                        realColor.A = isLevatine ? realColor.A : (byte)0;
-                                        bars.Add(new CustomVertexInfo(projectile.oldPos[i], realColor * multiValue, new Vector3(0, 0, alphaLight)));
-                                        bars_2.Add(bars[^1]);
-
-                                    }
-                                    indexer.Add(bars.Count - 2);
-                                }
-                            }
-                            if (bars.Count > 2)
-                            {
-
-                                CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];
-                                for (int i = 0; i < bars.Count - 2; i += 2)
-                                {
-                                    if (indexer.ToArray().Contains(i)) continue;
-                                    var k = i / 2;
-                                    if (6 * k < triangleList.Length)
-                                    {
-                                        triangleList[6 * k] = bars[i];
-                                        triangleList[6 * k + 1] = bars[i + 2];
-                                        triangleList[6 * k + 2] = bars[i + 1];
-                                    }
-                                    if (6 * k + 3 < triangleList.Length)
-                                    {
-                                        triangleList[6 * k + 3] = bars[i + 1];
-                                        triangleList[6 * k + 4] = bars[i + 2];
-                                        triangleList[6 * k + 5] = bars[i + 3];
-                                    }
-                                }
-                                //GraphicsDevice gd = Main.instance.GraphicsDevice;
-                                RenderTarget2D render = Instance.render;
-                                //SpriteBatch spriteBatch = Main.spriteBatch;
-                                //spriteBatch.End();
-                                gd.SetRenderTarget(render);
-                                gd.Clear(Color.Transparent);
-                                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                                ShaderSwooshEX.Parameters["uTransform"].SetValue(resultMatrix);
-                                ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
-                                ShaderSwooshEX.Parameters["uTime"].SetValue(-(float)IllusionBoundModSystem.ModTime * 0.03f);//-(float)Main.time * 0.06f
-                                ShaderSwooshEX.Parameters["checkAir"].SetValue(false);
-                                ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
-                                ShaderSwooshEX.Parameters["gather"].SetValue(true);
-                                ShaderSwooshEX.Parameters["distortScaler"].SetValue(0);
-                                ShaderSwooshEX.Parameters["lightShift"].SetValue(0f);
-
-                                Main.graphics.GraphicsDevice.Textures[0] = GetTexture("Images/BaseTex_7");
-                                Main.graphics.GraphicsDevice.Textures[1] = GetTexture("Images/AniTex_7");
-                                Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[ItemType<SolusKatana>()].Value;
-                                Main.graphics.GraphicsDevice.Textures[3] = HeatMap[27];
-
-                                Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
-                                Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
-                                Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
-                                Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.AnisotropicClamp;
-
-                                ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
-                                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
-                                Main.graphics.GraphicsDevice.RasterizerState = originalState;
-
-                                gd.SetRenderTarget(Instance.render_Distort);
-                                gd.Clear(Color.Transparent);
-                                ShaderSwooshEX.Parameters["distortScaler"].SetValue(1.5f);
-                                ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
-                                for (int i = 0; i < bars_2.Count - 2; i += 2)
-                                {
-                                    if (indexer.ToArray().Contains(i)) continue;
-                                    var k = i / 2;
-                                    if (6 * k < triangleList.Length)
-                                    {
-                                        triangleList[6 * k] = bars_2[i];
-                                        triangleList[6 * k + 1] = bars_2[i + 2];
-                                        triangleList[6 * k + 2] = bars_2[i + 1];
-                                    }
-                                    if (6 * k + 3 < triangleList.Length)
-                                    {
-                                        triangleList[6 * k + 3] = bars_2[i + 1];
-                                        triangleList[6 * k + 4] = bars_2[i + 2];
-                                        triangleList[6 * k + 5] = bars_2[i + 3];
-                                    }
-                                }
-                                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
-
-
-                                spriteBatch.End();
-                                gd.SetRenderTarget(Main.screenTargetSwap);//将画布设置为这个
-                                gd.Clear(Color.Transparent);//清空
-                                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                                //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-
-
-
-                                //Vector2 direct = (instance.swooshFactorStyle == SwooshFactorStyle.每次开始时决定系数 ? modPlayer.kValue : ((modPlayer.kValue + modPlayer.kValueNext) * .5f)).ToRotationVector2() * -0.1f * fac.SymmetricalFactor2(0.5f, 0.2f) * instance.distortFactor;//(u + v)
-                                IllusionBoundMod.Distort.Parameters["offset"].SetValue((director ?? MathHelper.PiOver4).ToRotationVector2() * -0.03f);//设置参数时间
-                                IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0);
-                                IllusionBoundMod.Distort.Parameters["tex0"].SetValue(Instance.render_Distort);
-                                IllusionBoundMod.Distort.CurrentTechnique.Passes[0].Apply();//ApplyPass
-                                spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//绘制原先屏幕内容
-                                gd.SetRenderTarget(Main.screenTarget);
-                                gd.Clear(Color.Transparent);
-                                spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-
-                                Distort.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-                                Distort.Parameters["tex0"].SetValue(render);
-
-                                Distort.Parameters["position"].SetValue(new Vector2(0, 3f));
-                                Distort.Parameters["tier2"].SetValue(0.2f);
-                                //for (int n = 0; n < 1; n++)
-                                //{
-                                gd.SetRenderTarget(Main.screenTargetSwap);
-                                gd.Clear(Color.Transparent);
-                                Distort.CurrentTechnique.Passes[7].Apply();
-                                spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-
-
-
-                                gd.SetRenderTarget(Main.screenTarget);
-                                gd.Clear(Color.Transparent);
-                                Distort.CurrentTechnique.Passes[6].Apply();
-                                spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                                //}
-                                //Distort.Parameters["position"].SetValue(new Vector2(0, 5f));
-                                //Distort.Parameters["ImageSize"].SetValue(new Vector2(0.707f) * -0.006f);//projectile.rotation.ToRotationVector2() * -0.006f
-
-
-                                //for (int n = 0; n < 1; n++)
-                                //{
-                                //gd.SetRenderTarget(Main.screenTargetSwap);
-                                //gd.Clear(Color.Transparent);
-                                //Distort.CurrentTechnique.Passes[5].Apply();
-                                //spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-
-                                //gd.SetRenderTarget(Main.screenTarget);
-                                //gd.Clear(Color.Transparent);
-                                //Distort.CurrentTechnique.Passes[4].Apply();
-                                //spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                                //}
-                                spriteBatch.End();
-                                spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-
-                                spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                                spriteBatch.Draw(render, Vector2.Zero, Color.White);
-                                spriteBatch.End();
-                                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
-                                if (solusKatanaFractal.Count > 0)
-                                {
-                                    foreach (var projectile in solusKatanaFractal)
-                                    {
-                                        (projectile.ModProjectile as Contents.StarBound.NPCs.Bosses.AsraNox.SolusKatanaFractal)?.DrawSword();
-                                        (projectile.ModProjectile as Contents.StarBound.NPCs.Bosses.AsraNox.SolusLevatine)?.DrawLaser();
-
-                                    }
-                                }
-                                spriteBatch.End();
-                            }
-
-                        }
-                        #endregion
-                        if (oculusTears.Count > 0)
-                        {
-
-
-                            var sb = Main.spriteBatch;
-                            #region Render
-                            var render = Instance.render;
-                            //var gd = Main.graphics.GraphicsDevice;
-                            //先在自己的render上画这个弹幕
-                            //sb.End();
-                            gd.SetRenderTarget(render);
-                            gd.Clear(Color.Transparent);
-                            #endregion
-                            //sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
-                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                            foreach (var projectile in oculusTears)
-                            {
-                                //var fac = projectile.ai[0].SymmetricalFactor(90, 10) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f);
-                                ////var fac = projectile.ai[0].HillFactor2(180);
-                                //IllusionBoundMod.TransformEffect.Parameters["factor1"].SetValue(fac);
-                                var fac = projectile.ai[0];
-                                fac = fac < 30 ? ((fac * fac * 0.02022f - fac * 0.606f + 5) * (1 - 0.03f * fac)) : ((-90 / (fac - 181f) * 1.25f) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f * (fac - 30).SymmetricalFactor(75, 15)));
-                                TransformEffect.Parameters["factor1"].SetValue(fac);
-                                TransformEffect.Parameters["factor2"].SetValue((float)ModTime / 30f);
-                                TransformEffect.CurrentTechnique.Passes[1].Apply();
-
-                                //Main.graphics.GraphicsDevice.Textures[0] = TextureAssets.Projectile[projectile.type].Value;
-                                //Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicWrap;
-                                //IllusionBoundMod.TransformEffect.CurrentTechnique.Passes[0].Apply();
-                                //CustomVertexInfo[] customVertexInfos = new CustomVertexInfo[6];
-                                //var baseVec = new Vector2((int)projectile.ai[0] == 3 ? 92f : 69f).RotatedBy(projectile.rotation);
-                                //var offsetTime = (float)ModTime / 60f;
-                                //customVertexInfos[0] = new CustomVertexInfo(projectile.Center + baseVec - Main.screenPosition, new Vector3(1, 1, 1));
-                                //customVertexInfos[1] = new CustomVertexInfo(projectile.Center + new Vector2(baseVec.Y, -baseVec.X) - Main.screenPosition, new Vector3(0, 1, 1));
-                                //customVertexInfos[2] = new CustomVertexInfo(projectile.Center + new Vector2(-baseVec.Y, baseVec.X) - Main.screenPosition, new Vector3(1, 0, 1));
-                                //customVertexInfos[3] = customVertexInfos[2];
-                                //customVertexInfos[4] = customVertexInfos[1];
-                                //customVertexInfos[5] = new CustomVertexInfo(projectile.Center - baseVec - Main.screenPosition, new Vector3(0, 0, 1));
-                                //Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, customVertexInfos, 0, 2);
-                                sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512 * new Vector2(3, 1), 0, 0);//new Rectangle(240,240,92,92)// * new Vector2(3, 1)
-                            }
-
-                            sb.End();
-                            #region render
-                            //然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
-                            //原版自带的screenTargetSwap就是一个可以使用的render，（原版用来连续上滤镜）
-                            gd.SetRenderTarget(Main.screenTargetSwap);
-                            gd.Clear(Color.Transparent);
-                            sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
-                            Main.graphics.GraphicsDevice.Textures[1] = GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
-                            Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
-                                                                        //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
-                            Distort.Parameters["invAlpha"].SetValue(0.35f);
-                            Distort.Parameters["lightAsAlpha"].SetValue(true);
-                            Distort.Parameters["tier2"].SetValue(0.30f);
-                            Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)ModTime * 8);
-                            Distort.Parameters["maskGlowColor"].SetValue(new Vector4(1, 0, 0.25f, 1));//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
-                                                                                                      //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
-                                                                                                      //Main.NewText("!!!");
-                            Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
-                            Distort.Parameters["inverse"].SetValue(false);
-
-                            Distort.CurrentTechnique.Passes[1].Apply();
-
-                            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
-
-                            sb.End();
-
-                            //最后在screenTarget上把刚刚的结果画上
-                            gd.SetRenderTarget(Main.screenTarget);
-                            gd.Clear(Color.Transparent);
-                            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-                            sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                            sb.End();
-                            #endregion
-
-                        }
-                        if (astralTears.Count > 0)
-                        {
-
-
-                            var sb = Main.spriteBatch;
-                            #region Render
-                            var render = Instance.render;
-                            //var gd = Main.graphics.GraphicsDevice;
-                            //先在自己的render上画这个弹幕
-                            //sb.End();
-                            gd.SetRenderTarget(render);
-                            gd.Clear(Color.Transparent);
-                            #endregion
-                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
-                            /*                    sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);*///Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                            foreach (var projectile in astralTears)
-                            {
-                                if ((int)projectile.ai[1] == 1)
-                                {
-                                    Vector2 scale = new Vector2(1, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
-                                    var _color = Main.hslToRgb(projectile.localAI[0] % 1, 1, 0.75f);
-                                    //_color.A = 0;
-                                    var tex = GetTexture(projectile.ModProjectile.Texture.Replace("AstralTear", "CrystalLight"), false);
-                                    spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, _color * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);
-                                    spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, Color.White * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale, 0, 0);
-                                }
-                            }
-                            sb.End();
-                            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
-                            /*                    sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);*///Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                            foreach (var projectile in astralTears)
-                            {
-                                if ((int)projectile.ai[1] != 1)
-                                {
-                                    var fac = projectile.ai[0].SymmetricalFactor(90, 10) * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f);
-                                    TransformEffect.Parameters["factor1"].SetValue(fac);
-                                    TransformEffect.Parameters["factor2"].SetValue((float)ModTime / 30f);
-
-                                    TransformEffect.CurrentTechnique.Passes[0].Apply();
-                                    sb.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512, 0, 0);//new Rectangle(240,240,92,92)// * new Vector2(3, 1)
-                                }
-                            }
-                            sb.End();
-                            #region render
-                            gd.SetRenderTarget(Main.screenTargetSwap);
-                            gd.Clear(Color.Transparent);
-                            sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                            Main.graphics.GraphicsDevice.Textures[1] = GetTexture("Backgrounds/StarSkyv3");
-                            Distort.Parameters["tex0"].SetValue(render);
-                            Distort.Parameters["invAlpha"].SetValue(0.35f);
-                            Distort.Parameters["lightAsAlpha"].SetValue(true);
-                            Distort.Parameters["tier2"].SetValue(0.30f);
-                            Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)ModTime * 8);
-                            Distort.Parameters["maskGlowColor"].SetValue(Color.Cyan.ToVector4());
-                            Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));
-                            Distort.Parameters["inverse"].SetValue(false);
-
-                            Distort.CurrentTechnique.Passes[1].Apply();
-                            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-                            sb.End();
-                            gd.SetRenderTarget(Main.screenTarget);
-                            gd.Clear(Color.Transparent);
-                            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-                            sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                            sb.End();
-                            #endregion
-
-                        }
-
-                    }
-                }
-
-                if (bloomValue > 0)
-                    UseBloom(gd);
-
-                //#region Render
-                ////var gd = Main.graphics.GraphicsDevice;
-                ////先在自己的render上画这个弹幕
-                ////sb.End();
-                //gd.SetRenderTarget(render);
-                //gd.Clear(Color.Transparent);
-                //#endregion
-                //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);
-                //Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-                //Main.spriteBatch.End();
-                //#region render
-                ////然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
-                ////原版自带的screenTargetSwap就是一个可以使用的render，（原版用来连续上滤镜）
-                //gd.SetRenderTarget(Main.screenTargetSwap);
-                //gd.Clear(Color.Transparent);
-                //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
-                //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
-                //IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
-                //IllusionBoundModSystem.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTaRGet的不是这个render，否则会报错）
-                //                                                             //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
-                //IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.35f);
-                //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
-                //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.30f);
-                //IllusionBoundMod.Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8);
-                //IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(Color.Red.ToVector4());//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
-                //                                                                                      //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
-                //                                                                                      //Main.NewText("!!!");
-                //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(960, 560));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
-
-                //Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
-                //Main.spriteBatch.End();
-
-                ////最后在screenTarget上把刚刚的结果画上
-                //gd.SetRenderTarget(Main.screenTarget);
-                //gd.Clear(Color.Transparent);
-                //Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-                //Main.spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                //Main.spriteBatch.End();
-                //#endregion
-            }
-            orig(self, finalTexture, screenTarget1, screenTarget2, clearColor);
-        }
         public override void Unload()
         {
-            //Main.inventoryBack10Texture = originTex;
-            //trees.Clear();
-            ////On.Terraria.NPC.UpdateNPC -= TimeStopUpdate;
-            //On.Terraria.Main.DrawTiles -= DrawTilesS;
-            ////On.Terraria.NPC.UpdateNPC -= UPDNPC;
-            //IL.Terraria.Main.DrawTiles -= _DrawTreeHook;
             Instance = null;
-            On.Terraria.Graphics.Effects.FilterManager.EndCapture -= FilterManager_EndCapture_IllusionBound;
-            Main.OnResolutionChanged -= Main_OnResolutionChanged;
-            //On.Terraria.Main.DrawMenu -= Main_DrawMenu;
-            //On.Terraria.Main.DrawPlayer -= WeaponDisplayDrawPlayer;
-        }
-        private void Main_OnResolutionChanged(Vector2 obj)//在分辨率更改时，重建render防止某些bug
-        {
-            Main.RunOnMainThread(CreateRender);
         }
         public static Effect Bloom;
         public static float bloomValue;
-        private void UseBloom(GraphicsDevice graphicsDevice)
-        {
-            graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
-            graphicsDevice.Clear(Color.Transparent);
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-            Main.spriteBatch.End();
-
-            //取样
-            graphicsDevice.SetRenderTarget(render);
-            graphicsDevice.Clear(Color.Transparent);
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            Bloom.CurrentTechnique.Passes[0].Apply();//取亮度超过m值的部分
-
-            Bloom.Parameters["m"].SetValue(0.6f);
-
-            Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-            Main.spriteBatch.End();
-
-            //处理
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            Bloom.Parameters["uScreenResolution"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-            Bloom.Parameters["uRange"].SetValue(2.5f);
-            Bloom.Parameters["uIntensity"].SetValue(bloomValue);
-            for (int i = 0; i < 3; i++)//交替使用两个RenderTarget2D，进行多次模糊
-            {
-                Bloom.CurrentTechnique.Passes["GlurV"].Apply();//横向
-                graphicsDevice.SetRenderTarget(Main.screenTarget);
-                graphicsDevice.Clear(Color.Transparent);
-                Main.spriteBatch.Draw(render, Vector2.Zero, Color.White);
-
-                Bloom.CurrentTechnique.Passes["GlurH"].Apply();//纵向
-                graphicsDevice.SetRenderTarget(render);
-                graphicsDevice.Clear(Color.Transparent);
-                Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-            }
-            Main.spriteBatch.End();
-
-            //叠加到原图上
-            graphicsDevice.SetRenderTarget(Main.screenTarget);
-            graphicsDevice.Clear(Color.Transparent);
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);//Additive把模糊后的部分加到Main.screenTarget里
-            Main.spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-            Main.spriteBatch.Draw(render, Vector2.Zero, Color.White);
-            Main.spriteBatch.End();
-            bloomValue = 0;
-        }
-        public void CreateRender()
-        {
-            if (render != null) render.Dispose();
-            if (render_Distort != null) render_Distort.Dispose();
-
-            render = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth == 0 ? 1920 : Main.screenWidth, Main.screenHeight == 0 ? 1120 : Main.screenHeight);
-            render_Distort = new RenderTarget2D(Main.graphics.GraphicsDevice, Main.screenWidth == 0 ? 1920 : Main.screenWidth, Main.screenHeight == 0 ? 1120 : Main.screenHeight);
-        }
-        public RenderTarget2D render;
-        public RenderTarget2D render_Distort;
-        public static Effect DefaultEffect;
         public static Effect ColorfulEffect;
-        public static Effect FinalFractalTailEffect;
-        public static Effect RainBowTailEffect;
-        public static Effect LaserEffect;
-        public static Effect ColorfulLaserEffect;
-        public static Effect TerraEffect;
-        public static Effect IMBellEffect;
-        public static Texture2D[] HeatMap = new Texture2D[29];
-        public static Texture2D[] BaseTexes = new Texture2D[4];
-        public static Texture2D[] AniTexes = new Texture2D[11];
-        public static Texture2D[] LaserTex = new Texture2D[4];
-        public static Texture2D[] MagicZone = new Texture2D[4];
         public static Effect CleverEffect;
         public static Effect ShaderSwoosh;
         public static Effect OriginEffect;
         public static Effect TextureEffect;
-        public static Effect ShaderSwooshEX;
-        public static Effect Distort;
-        public static Effect TransformEffect;
-
-        private void LoadTex(Texture2D[] texs, string name)
-        {
-            for (int n = 0; n < texs.Length; n++)
-            {
-                texs[n] = GetTexture("Images/" + name + n);
-            }
-        }
-        public static Texture2D MoriyaEyeTex;
-        public static Texture2D StormTreeTopGlow;
         public override void PostSetupContent()
         {
-            DefaultEffect = GetEffect("Effects/Trail");
+            //TODO 把这个移入
             ColorfulEffect = GetEffect("Effects/Trail2");
-            FinalFractalTailEffect = GetEffect("Effects/Trail3");
-            RainBowTailEffect = GetEffect("Effects/Trail4");
-            LaserEffect = GetEffect("Effects/Trail5");
-            ColorfulLaserEffect = GetEffect("Effects/Trail6");
-            TerraEffect = GetEffect("Effects/Trail7");
             CleverEffect = GetEffect("Effects/CleverGlass");
-            IMBellEffect = GetEffect("Effects/ItemGlowEffect");//InfiniteNightmareBell2
-            ShaderSwoosh = GetEffect("Effects/ShaderSwooshEffect");
             OriginEffect = GetEffect("Effects/PixelShader");
             TextureEffect = GetEffect("Effects/TextureEffect");
-            ShaderSwooshEX = GetEffect("Effects/ShaderSwooshEffectEX");
-            Distort = GetEffect("Effects/DistortEffect");
-            TransformEffect = GetEffect("Effects/TransformEffect");
             Bloom = GetEffect("Effects/Bloom1");
-            //MainColor_1 = GetTexture("Images/HeatMap_1");
-            //MainColor_2 = GetTexture("Images/HeatMap_2");
-            LoadTex(HeatMap, "HeatMap_");
-            LoadTex(AniTexes, "Style_");
-            LoadTex(BaseTexes, "Light_");
-            LoadTex(LaserTex, "LaserTex_");
-            LoadTex(MagicZone, "MagicZone/MagicZone_");
-            //for (int n = 0; n < rain.Length; n++)
-            //{
-            //    rain[n] = new StormRain();
-            //}
-
-            //TODO 临时注释
-            //StormTreeTopGlow = GetTexture("Tiles/StormZone/StormTree_Tops_Glow");
-            //MoriyaEyeTex = GetTexture("Items/TouhouProject/ZunHat/MoriyaSuwakoHatEye");
-
         }
-        //public static Effect grayEffect;
-
-
-
-
-        ////建立一个类型为ExampleUI的变量
-        //public Items.Others.StrawBerryLinerUI vertexUI;
-        ////建立一个类型为UserInterface的变量
-        //public UserInterface vertexUserInterface;
-
-
-
-
     }
-    public class IllusionBoundModSystem : ModSystem
+    public class VirtualDreamSystem : ModSystem
     {
         public const string CopperBarRG = "VirtualDream:CopperBar";
         public const string SilverBarRG = "VirtualDream:SilverBar";
@@ -1412,15 +509,7 @@ namespace VirtualDream
             });
             RecipeGroup.RegisterGroup(AdamantiteBarRG, group8);
         }
-        public IllusionBoundModSystem instance;
-        //public static ModKeybind SpectreModeO;
-        //public static ModKeybind OriginPoint;
-        //public static ModKeybind IHat;
-        //public static ModKeybind JHat;
-        //public static ModKeybind PlanetDestroyerMode;
-        //public static ModKeybind SeasonRelease;
-        //public static ModKeybind aegisaltAuto;
-
+        public VirtualDreamSystem instance;
         public static bool MagnifyingGlassActive;
         public static bool MagicalMagnifyingGlassActive;
         public static bool CleverGlassActive;
@@ -1433,70 +522,27 @@ namespace VirtualDream
         public static bool ZenithGlassActive;
         public override void Load()
         {
-            //SpectreModeO = KeybindLoader.RegisterKeybind(Mod, "灵界模式开启", "V");
-            //OriginPoint = KeybindLoader.RegisterKeybind(Mod, "设置原点模式", "O");
-            //IHat = KeybindLoader.RegisterKeybind(Mod, "设置I帽模式", "I");
-            //JHat = KeybindLoader.RegisterKeybind(Mod, "设置J帽模式", "J");
-            //PlanetDestroyerMode = KeybindLoader.RegisterKeybind(Mod, "行星毁灭者长戟模式切换", "F");
-            //SeasonRelease = KeybindLoader.RegisterKeybind(Mod, "季节解放", "C");
-            //aegisaltAuto = KeybindLoader.RegisterKeybind(Mod, "自动霓磷盐隐身", "N");
             instance = this;
         }
 
-        public static double ModTime;
-        public static double ModTime2;
+        public static double ModTime => LogSpiralLibrarySystem.ModTime;
+        public static double ModTime2 => LogSpiralLibrarySystem.ModTime2;
         public static int TimeStopCount;
         public static float glowLight;
         public override void UpdateUI(GameTime gameTime)
         {
-            //if (NPC.AnyNPCs(ModContent.NPCType<AsraNox>()) && Main.gamePaused && Main.audioSystem is LegacyAudioSystem audioSystem)
-            //{
-            //    audioSystem.PauseAll();
-            //    //var track = audioSystem.AudioTracks[Main.curMusic];
-
-            //    //track.Stop(AudioStopOptions.Immediate);
-            //}
-            //else 
-            //{
-
-            //}
-            //IllusionBoundExtensionMethods.ODEStarTimer += 1 / 120f;
-            //IllusionBoundExtensionMethods.ODEStarTimer %= 4;
             TimeStopCount -= (TimeStopCount > -300 && !Main.gamePaused) ? 1 : 0;
-            //GlassLightUpdate(ref IllusionBoundWorld.StormGlassGrowLightPink, 1);
-            //GlassLightUpdate(ref IllusionBoundWorld.StormGlassGrowLightPurple, 2);
-            //GlassLightUpdate(ref IllusionBoundWorld.StormGlassGrowLightBlue, 3);
-            //IllusionBoundWorld.StormGlassColor = (new Vector4(254, 200, 231, 255) * IllusionBoundWorld.StormGlassGrowLightPink + new Vector4(206, 153, 255, 255) * IllusionBoundWorld.StormGlassGrowLightPurple + new Vector4(149, 225, 233, 255) * IllusionBoundWorld.StormGlassGrowLightBlue).ToColor();
-            ModTime++;
-            ModTime2 += Main.gamePaused ? 0 : 1;
             if (!Main.gamePaused)
             {
-                foreach (var item in IllusionBoundMod.electricTriangle)
+                foreach (var item in VirtualDreamMod.electricTriangle)
                 {
                     item?.Update();
                 }
             }
-            //if (Main.LocalPlayer.GetModPlayer<IllusionBoundPlayer>().ZoneStorm)
-            //{
-            //    Tiles.StormZone.StormRain.MakeRain();
-            //}
-            //counter = 0;
             glowLight = ((float)Math.Sin(ModTime * MathHelper.TwoPi / 120) + 1) / 2;
         }
         public override void PreUpdateEntities()
         {
-
-
-            //ControlScreenShader("VirtualDream:MagnifyingGlass", MagnifyingGlassActive);
-            //ControlScreenShader("VirtualDream:MagicalMagnifyingGlass", MagicalMagnifyingGlassActive);
-            //ControlScreenShader("VirtualDream:CleverGlass", CleverGlassActive);
-            //ControlScreenShader("VirtualDream:RainbowGlass", RainBowGlassActive);
-            //ControlScreenShader("VirtualDream:ContrastGlass", ContrastGlassActive);
-            //ControlScreenShader("VirtualDream:ContrastGlassV2", ContrastUPGlassActiveV2);
-            //ControlScreenShader("VirtualDream:ShikieikiGlass", ShikieikiGlassActive);
-            //ControlScreenShader("VirtualDream:InversPhaseGlass", InversPhaseGlassActive);
-            //ControlScreenShader("VirtualDream:ZenithGlass", ZenithGlassActive);
-            //ControlScreenShader("VirtualDream:ContrastDownGlass", ContrastDownGlassActive);
             ControlScreenShader("VirtualDream:Magnifying", MagnifyingGlassActive);
             ControlScreenShader("VirtualDream:MagicalMagnifying", MagicalMagnifyingGlassActive);
             ControlScreenShader("VirtualDream:Clever", CleverGlassActive);
@@ -1507,19 +553,6 @@ namespace VirtualDream
             ControlScreenShader("VirtualDream:InversPhase", InversPhaseGlassActive);
             ControlScreenShader("VirtualDream:Zenith", ZenithGlassActive);
             ControlScreenShader("VirtualDream:ContrastDown", ContrastDownGlassActive);
-            //ControlScreenShader("Test", false);
-            //ControlScreenShader("Test2", false);
-            //ControlScreenShader("HeatDistortion", false);
-            //ControlScreenShader("IllusionBoundMod:HeatDistortion", false);
-            //var p = Filters.Scene["IllusionBoundMod:HeatDistortion_"].GetShader().Shader.Parameters;
-            ////p["uImageSize1"].SetValue(new Vector2(1/256f));
-            //p["uTime"].SetValue(Main.GlobalTime / 5f % 60);
-            ////p["uIntensity"].SetValue(0.007f);
-            ////Main.NewText(p["uTime"].GetValueSingle());
-            ////p["uScreenResolution"].SetValue(new Vector2(1920, 1120));
-            ////p[""]
-            //ControlScreenShader("IllusionBoundMod:HeatDistortion_",true);
-
         }
         private void ControlScreenShader(string name, bool state)
         {
@@ -1533,24 +566,6 @@ namespace VirtualDream
                 Filters.Scene.Deactivate(name);
             }
         }
-        //public override void UpdateMusic(ref int music, ref MusicPriority priority)
-        //{
-        //    Player player = Main.player[Main.myPlayer];
-        //    if (Main.myPlayer == -1 || Main.gameMenu || !Main.LocalPlayer.active)
-        //    {
-        //        return;
-        //    }
-        //    if (Main.LocalPlayer.GetModPlayer<IllusionBoundPlayer>().ZoneStorm)
-        //    {
-        //        music = ModLoader.GetMod("IllusionMusicMod") != null ? ModLoader.GetMod("IllusionMusicMod").GetSoundSlot(SoundType.Music, "Sounds/Music/EienNoMiko") : MusicID.Rain;
-        //        priority = MusicPriority.Environment;
-        //    }
-        //    if (player.GetModPlayer<IllusionBoundPlayer>().SpectreModeP)
-        //    {
-        //        music = ModLoader.GetMod("IllusionMusicMod") != null ? ModLoader.GetMod("IllusionMusicMod").GetSoundSlot(SoundType.Music, "Sounds/Music/SpectreMode") : MusicID.Dungeon;
-        //        priority = MusicPriority.BossHigh;
-        //    }
-        //}
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
             //var str = "";
@@ -1610,11 +625,11 @@ namespace VirtualDream
 
             if (Contents.InfiniteNightmare.InfiniteNightmarePlayer.TooDarkBuffActive)
             {
-                Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/InfiniteNightmare/Dark"), new Vector2(0, 0), null, new Color(153, 153, 153, 153), 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+                Main.spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/InfiniteNightmare/Dark"), new Vector2(0, 0), null, new Color(153, 153, 153, 153), 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
             }
             if (Contents.InfiniteNightmare.InfiniteNightmarePlayer.TooDazzlingBuffActive)
             {
-                Main.spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/InfiniteNightmare/Light"), new Vector2(0, 0), null, new Color(51, 51, 51, 51), 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+                Main.spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/InfiniteNightmare/Light"), new Vector2(0, 0), null, new Color(51, 51, 51, 51), 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
             }
 
             //Main.NewText(Filters.Scene["IllusionBoundMod:HeatDistortion"].GetShader().Shader.Parameters["uImageSize1"].GetValueVector2());
@@ -1659,12 +674,12 @@ namespace VirtualDream
         public static int NewElectricTriangle(Vector2 position, float rotation = 0, float size = 16, Vector2 velocity = default, int cycle = 15, int timeLeft = 30, float dustScaler = .5f, int? dustType = null)
         {
             int index = -1;
-            for (int n = 0; n < IllusionBoundMod.electricTriangle.Length; n++)
+            for (int n = 0; n < VirtualDreamMod.electricTriangle.Length; n++)
             {
-                var currentTri = IllusionBoundMod.electricTriangle[n];
+                var currentTri = VirtualDreamMod.electricTriangle[n];
                 if (currentTri == null)
                 {
-                    IllusionBoundMod.electricTriangle[n] = new ElectricTriangle()
+                    VirtualDreamMod.electricTriangle[n] = new ElectricTriangle()
                     {
                         position = position,
                         rotation = rotation,

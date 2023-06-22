@@ -63,20 +63,20 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
         {
             if (Projectile.ai[0] == 1 && Projectile.timeLeft > 15)
             {
-                Projectile.rotation = (float)IllusionBoundModSystem.ModTime;
+                Projectile.rotation = (float)VirtualDreamSystem.ModTime;
 
 
                 var player = Main.player[Projectile.owner];
                 int dust = Projectile.ai[1] == 1 ? MyDustId.GoldMaterial : MyDustId.ThinBrown;
-                Projectile.Center = player.Center + new Vector2(128, 0).RotatedBy(-(float)IllusionBoundModSystem.ModTime2 / 6);
+                Projectile.Center = player.Center + new Vector2(128, 0).RotatedBy(-(float)VirtualDreamSystem.ModTime2 / 6);
 
                 player.statDefense += Projectile.ai[1] == 1 ? 12 : 8;
-                Dust dust1 = Dust.NewDustPerfect(player.Center + new Vector2(64, 0).RotatedBy((float)IllusionBoundModSystem.ModTime2 / 4), dust, new Vector2(0, 0), 0, Color.White, 1f);
-                Dust dust2 = Dust.NewDustPerfect(player.Center + new Vector2(64, 0).RotatedBy((float)IllusionBoundModSystem.ModTime2 / 4 + MathHelper.Pi), dust, new Vector2(0, 0), 0, Color.White, 1f);
+                Dust dust1 = Dust.NewDustPerfect(player.Center + new Vector2(64, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4), dust, new Vector2(0, 0), 0, Color.White, 1f);
+                Dust dust2 = Dust.NewDustPerfect(player.Center + new Vector2(64, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4 + MathHelper.Pi), dust, new Vector2(0, 0), 0, Color.White, 1f);
                 dust1.noGravity = true;
                 dust2.noGravity = true;
-                Dust dust3 = Dust.NewDustPerfect(Projectile.Center + new Vector2(32, 0).RotatedBy((float)IllusionBoundModSystem.ModTime2 / 4), dust, new Vector2(0, 0), 0, Color.White, 1f);
-                Dust dust4 = Dust.NewDustPerfect(Projectile.Center + new Vector2(32, 0).RotatedBy((float)IllusionBoundModSystem.ModTime2 / 4 + MathHelper.Pi), dust, new Vector2(0, 0), 0, Color.White, 1f);
+                Dust dust3 = Dust.NewDustPerfect(Projectile.Center + new Vector2(32, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4), dust, new Vector2(0, 0), 0, Color.White, 1f);
+                Dust dust4 = Dust.NewDustPerfect(Projectile.Center + new Vector2(32, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4 + MathHelper.Pi), dust, new Vector2(0, 0), 0, Color.White, 1f);
                 dust3.noGravity = true;
                 dust4.noGravity = true;
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogSpiralLibrary;
+using System;
 using System.Collections.Generic;
 
 using Terraria.DataStructures;
@@ -61,11 +62,11 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            item.ShaderItemEffectInventory(spriteBatch, position, origin, IllusionBoundMod.GetTexture("Images/IMBellTex"), Main.hslToRgb(0.5f, 0.5f, 0.5f), scale);
+            item.ShaderItemEffectInventory(spriteBatch, position, origin, LogSpiralLibraryMod.Misc[0].Value, Main.hslToRgb(0.5f, 0.5f, 0.5f), scale);
         }
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         {
-            item.ShaderItemEffectInWorld(spriteBatch, IllusionBoundMod.GetTexture("Images/IMBellTex"), Main.hslToRgb(0.5f, 0.5f, 0.5f), rotation);
+            item.ShaderItemEffectInWorld(spriteBatch, LogSpiralLibraryMod.Misc[0].Value, Main.hslToRgb(0.5f, 0.5f, 0.5f), rotation);
         }
         //public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         //{
@@ -183,11 +184,11 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            item.ShaderItemEffectInventory(spriteBatch, position, origin, IllusionBoundMod.GetTexture("Images/IMBellTex"), Main.hslToRgb(0, 1, 0.75f), scale);
+            item.ShaderItemEffectInventory(spriteBatch, position, origin, LogSpiralLibraryMod.Misc[0].Value, Main.hslToRgb(0, 1, 0.75f), scale);
         }
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         {
-            item.ShaderItemEffectInWorld(spriteBatch, IllusionBoundMod.GetTexture("Images/IMBellTex"), Main.hslToRgb(0, 1, 0.75f), rotation);
+            item.ShaderItemEffectInWorld(spriteBatch, LogSpiralLibraryMod.Misc[0].Value, Main.hslToRgb(0, 1, 0.75f), rotation);
         }
         //public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         //{
@@ -359,7 +360,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             }
             if (TooDazzlingBuffActive)
             {
-                IllusionBoundModSystem.ContrastGlassActive = true;
+                VirtualDreamSystem.ContrastGlassActive = true;
                 player.statLifeMax2 -= player.statLifeMax2 / 20;
                 player.statManaMax2 -= player.statManaMax2 / 20;
             }
@@ -390,7 +391,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             {
                 VisuableBackPack[n] = false;
             }
-            IllusionBoundMod.UnderGroundActive = false;
+            VirtualDreamMod.UnderGroundActive = false;
             //IllusionBoundMod.HarderActive = InfiniteNightmareModeActive || ReallyInfiniteNightmareModeActive;
             //IllusionBoundMod.IHarderActive = InfiniteNightmareModeActive;
         }
@@ -522,7 +523,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             }
             if (player.Center.Y / 16 > Main.worldSurface)
             {
-                IllusionBoundMod.UnderGroundActive = true;
+                VirtualDreamMod.UnderGroundActive = true;
                 if (!ImmuneType[8])
                 {
                     player.AddBuff(BuffType<TooQuiet>(), 2);
@@ -778,7 +779,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
                         }
                     }
                     Color color12 = player.GetImmuneAlphaPure(Lighting.GetColor((int)(player.position.X + player.width * 0.5) / 16, (int)(player.position.Y + player.height * 0.5) / 16, Color.White), 0);
-                    var drawData = new DrawData(IllusionBoundMod.GetTexture("Contents/InfiniteNightmare/BackpackS"), new Vector2(0, player.gfxOffY) + new Vector2((int)(player.position.X - Main.screenPosition.X + player.width / 2 - 9 * player.direction) + -4 * (float)player.direction, (int)(player.position.Y - Main.screenPosition.Y + player.height / 2 + 2f * player.gravDir + -8 * player.gravDir)), new Rectangle(14 * n, 0, 14, 34), color12, player.bodyRotation, new Vector2(7, 17), 1f, spriteEffects, 0);
+                    var drawData = new DrawData(VirtualDreamMod.GetTexture("Contents/InfiniteNightmare/BackpackS"), new Vector2(0, player.gfxOffY) + new Vector2((int)(player.position.X - Main.screenPosition.X + player.width / 2 - 9 * player.direction) + -4 * (float)player.direction, (int)(player.position.Y - Main.screenPosition.Y + player.height / 2 + 2f * player.gravDir + -8 * player.gravDir)), new Rectangle(14 * n, 0, 14, 34), color12, player.bodyRotation, new Vector2(7, 17), 1f, spriteEffects, 0);
                     drawInfo.DrawDataCache.Add(drawData);
                     break;
                 }
@@ -887,9 +888,9 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetDefaults(NPC npc)
         {
-            if (IllusionBoundMod.HarderActive)
+            if (VirtualDreamMod.HarderActive)
             {
-                if (IllusionBoundMod.IHarderActive)
+                if (VirtualDreamMod.IHarderActive)
                 {
                     SetValue(npc, 0.3f);
                     return;
@@ -922,7 +923,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         {
             try
             {
-                if (!IllusionBoundMod.HarderActive)
+                if (!VirtualDreamMod.HarderActive)
                 {
                     return;
                 }
@@ -1310,7 +1311,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White * (MathHelper.Clamp(-2 * Math.Abs(projectile.timeLeft - 450) + 900, 0, 120) / 120f), MathHelper.PiOver2 * sign * (k - 1), new Vector2(41, 51), 1, SpriteEffects.None, 0);
             for (int n = 0; n < 8; n++)
             {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/InfiniteNightmare/SkeletronBulletEXS"), projectile.Center + new Vector2(64, 0).RotatedBy((float)Main.time / 60 * MathHelper.TwoPi + MathHelper.TwoPi / 8 * n) - Main.screenPosition, null, Color.White * (MathHelper.Clamp(-2 * Math.Abs(projectile.timeLeft - 450) + 900, 0, 120) / 120f), (float)Main.time / 60 * MathHelper.TwoPi + MathHelper.TwoPi / 8 * n, new Vector2(14, 8), 1, SpriteEffects.None, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/InfiniteNightmare/SkeletronBulletEXS"), projectile.Center + new Vector2(64, 0).RotatedBy((float)Main.time / 60 * MathHelper.TwoPi + MathHelper.TwoPi / 8 * n) - Main.screenPosition, null, Color.White * (MathHelper.Clamp(-2 * Math.Abs(projectile.timeLeft - 450) + 900, 0, 120) / 120f), (float)Main.time / 60 * MathHelper.TwoPi + MathHelper.TwoPi / 8 * n, new Vector2(14, 8), 1, SpriteEffects.None, 0);
             }
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -1531,16 +1532,16 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(5 / 6f, 1, 0.5f).ToVector4());
-                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
-                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/laser1");
-                Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.AniTexes[6];
+                VirtualDreamMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+                VirtualDreamMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
+                VirtualDreamMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(5 / 6f, 1, 0.5f).ToVector4());
+                Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.Misc[11].Value;
+                Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.Misc[11].Value;
+                Main.graphics.GraphicsDevice.Textures[2] = LogSpiralLibraryMod.BaseTex[8].Value;
                 Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-                IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+                VirtualDreamMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList1.ToArray(), 0, triangleList1.Count / 3);
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList2.ToArray(), 0, triangleList2.Count / 3);
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList3.ToArray(), 0, triangleList3.Count / 3);
@@ -1587,16 +1588,16 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(5 / 6f, 1, 0.5f).ToVector4());
-                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");//IllusionBoundMod.LaserTex[(int)(Time / 4) % 4]
-                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/laser1");
-                Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.AniTexes[6];
+                VirtualDreamMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+                VirtualDreamMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
+                VirtualDreamMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(5 / 6f, 1, 0.5f).ToVector4());
+                Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.Misc[11].Value;
+                Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.Misc[11].Value;
+                Main.graphics.GraphicsDevice.Textures[2] = LogSpiralLibraryMod.BaseTex[8].Value;
                 Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-                IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+                VirtualDreamMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleListh.ToArray(), 0, triangleListh.Count / 3);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
@@ -1952,16 +1953,16 @@ namespace VirtualDream.Contents.InfiniteNightmare
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(projectile.ai[1], 1, 0.5f).ToVector4());
-                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
-                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/laser1");
-                Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.AniTexes[6];
+                VirtualDreamMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+                VirtualDreamMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
+                VirtualDreamMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(projectile.ai[1], 1, 0.5f).ToVector4());
+                Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.Misc[11].Value;
+                Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.Misc[11].Value;
+                Main.graphics.GraphicsDevice.Textures[2] = LogSpiralLibraryMod.BaseTex[8].Value;
                 Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-                IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+                VirtualDreamMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
@@ -2498,8 +2499,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundModSystem.CopperBarRG, 10);
-            recipe1.AddRecipeGroup(IllusionBoundModSystem.TorchRG, 15);
+            recipe1.AddRecipeGroup(VirtualDreamSystem.CopperBarRG, 10);
+            recipe1.AddRecipeGroup(VirtualDreamSystem.TorchRG, 15);
             recipe1.AddRecipeGroup("Wood", 20);
             recipe1.AddIngredient(ItemID.Gel, 30);
             recipe1.AddTile(TileID.WorkBenches);
@@ -2550,7 +2551,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundModSystem.SilverBarRG, 10);
+            recipe1.AddRecipeGroup(VirtualDreamSystem.SilverBarRG, 10);
             recipe1.AddIngredient(ItemID.IceBlock, 20);
             recipe1.AddIngredient(ItemID.SnowBlock, 15);
             recipe1.AddIngredient(ItemID.Shiverthorn, 5);
@@ -2576,7 +2577,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundModSystem.SilverBarRG, 15);
+            recipe1.AddRecipeGroup(VirtualDreamSystem.SilverBarRG, 15);
             recipe1.AddIngredient(ItemID.Waterleaf, 5);
             recipe1.AddIngredient(ItemID.Blinkroot, 5);
             recipe1.AddTile(TileID.HeavyWorkBench);
@@ -2600,7 +2601,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundModSystem.GoldBarRG, 5);
+            recipe1.AddRecipeGroup(VirtualDreamSystem.GoldBarRG, 5);
             recipe1.AddIngredient(ItemID.BottledWater, 15);
             recipe1.AddIngredient(ItemID.WaterBucket, 3);
             recipe1.AddTile(TileID.Anvils);
@@ -2619,7 +2620,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundModSystem.GoldBarRG, 15);
+            recipe1.AddRecipeGroup(VirtualDreamSystem.GoldBarRG, 15);
             recipe1.AddIngredient(ItemID.Blinkroot, 10);
             recipe1.AddIngredient(ItemID.Daybloom, 10);
             recipe1.AddIngredient(ItemID.Moonglow, 10);
@@ -2672,7 +2673,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundModSystem.CopperBarRG, 5);
+            recipe1.AddRecipeGroup(VirtualDreamSystem.CopperBarRG, 5);
             recipe1.AddIngredient(ItemID.Blinkroot, 5);
             recipe1.AddIngredient(ItemID.BottledWater, 10);
             recipe1.AddIngredient(ItemID.PurificationPowder, 25);
@@ -2701,10 +2702,10 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
-            recipe1.AddRecipeGroup(IllusionBoundModSystem.CopperBarRG, 10);
+            recipe1.AddRecipeGroup(VirtualDreamSystem.CopperBarRG, 10);
             recipe1.AddRecipeGroup("IronBar", 5);
             recipe1.AddIngredient(ItemID.EmptyBucket);
-            recipe1.AddRecipeGroup(IllusionBoundModSystem.PaintRG, 25);
+            recipe1.AddRecipeGroup(VirtualDreamSystem.PaintRG, 25);
             recipe1.AddTile(TileID.Anvils);
             recipe1.SetResult(this);
             recipe1.AddRecipe();
@@ -2715,7 +2716,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            return IllusionBoundMod.UnderGroundActive ? 0.1f : 0;
+            return VirtualDreamMod.UnderGroundActive ? 0.1f : 0;
         }
 
         private NPC npc => NPC;
@@ -3091,11 +3092,11 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            item.ShaderItemEffectInventory(spriteBatch, position, origin, IllusionBoundMod.GetTexture("Images/IMBellTex"), Main.hslToRgb(0.5f, 0.5f, 0.5f), scale);
+            item.ShaderItemEffectInventory(spriteBatch, position, origin, LogSpiralLibraryMod.Misc[0].Value, Main.hslToRgb(0.5f, 0.5f, 0.5f), scale);
         }
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         {
-            item.ShaderItemEffectInWorld(spriteBatch, IllusionBoundMod.GetTexture("Images/IMBellTex"), Main.hslToRgb(0.5f, 0.5f, 0.5f), rotation);
+            item.ShaderItemEffectInWorld(spriteBatch, LogSpiralLibraryMod.Misc[0].Value, Main.hslToRgb(0.5f, 0.5f, 0.5f), rotation);
         }
 
         //Bug 1 正则"Terraria/(?!Image) -> "Terraria/Images/

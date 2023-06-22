@@ -186,7 +186,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             return false;
         }
         public const string GaunletsPath = "Contents/StarBound/Weapons/UniqueWeapon/Gauntlets/";
-        public virtual (Texture2D tex, int frames) SwooshTex => (IllusionBoundMod.GetTexture(GaunletsPath + "physicalswoosh"), 3);
+        public virtual (Texture2D tex, int frames) SwooshTex => (VirtualDreamMod.GetTexture(GaunletsPath + "physicalswoosh"), 3);
         public virtual float swooshSize => 3f;
         public virtual void DrawSwoosh(SpriteBatch spriteBatch, Vector2 projCen, float factor, int index)
         {
@@ -312,7 +312,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             target.immune[projectile.whoAmI] = 1;
         }
-        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (IllusionBoundMod.GetTexture(GaunletsPath + "powerpunchswoosh"), 4) : base.SwooshTex;
+        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "powerpunchswoosh"), 4) : base.SwooshTex;
         public override Vector2 hitBox => WhenSA ? new Vector2(64) : base.hitBox;
         public override void SetStaticDefaults()
         {
@@ -325,7 +325,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         {
             DisplayName.SetDefault("决斗拳套");
         }
-        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (IllusionBoundMod.GetTexture(GaunletsPath + "uppercutswoosh"), 4) : base.SwooshTex;
+        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "uppercutswoosh"), 4) : base.SwooshTex;
         public override Vector2 hitBox => WhenSA ? new Vector2(80) : base.hitBox;
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
@@ -343,7 +343,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         {
             DisplayName.SetDefault("电击拳套");
         }
-        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (IllusionBoundMod.GetTexture(GaunletsPath + "thunderpunchswoosh"), 4) : (IllusionBoundMod.GetTexture(GaunletsPath + "electricswoosh"), 4);
+        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "thunderpunchswoosh"), 4) : (VirtualDreamMod.GetTexture(GaunletsPath + "electricswoosh"), 4);
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (!WhenSA)
@@ -446,7 +446,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             if (Math.Abs(owner.velocity.X) < 32)
                 owner.velocity += new Vector2(owner.direction, 0);
         }
-        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (IllusionBoundMod.GetTexture(GaunletsPath + "dashswoosh"), 4) : (IllusionBoundMod.GetTexture(GaunletsPath + "clawswoosh"), 3);
+        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "dashswoosh"), 4) : (VirtualDreamMod.GetTexture(GaunletsPath + "clawswoosh"), 3);
     }
     public class SupernovaGauntletProj : GauntletsProj
     {
@@ -462,7 +462,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             if (Math.Abs(owner.velocity.X) < 48)
                 owner.velocity += new Vector2(owner.direction * 1.5f, 0);
         }
-        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (IllusionBoundMod.GetTexture(GaunletsPath + "novapunch"), 1) : (IllusionBoundMod.GetTexture(GaunletsPath + "bigphysicalswoosh"), 3);
+        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "novapunch"), 1) : (VirtualDreamMod.GetTexture(GaunletsPath + "bigphysicalswoosh"), 3);
 
     }
 }

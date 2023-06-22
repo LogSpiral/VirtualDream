@@ -112,7 +112,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
 			}
 			Vector2 vector4 = projectile.ai[0] == 0f ? projectile.velocity : (projectile.Center - Main.player[projectile.owner].Center);
 			vector4.Normalize();
-			projectile.rotation = (float)Math.Atan2(vector4.Y, vector4.X) + 1.57f + (float)IllusionBoundModSystem.ModTime2 * MathHelper.Pi / 15;
+			projectile.rotation = (float)Math.Atan2(vector4.Y, vector4.X) + 1.57f + (float)VirtualDreamSystem.ModTime2 * MathHelper.Pi / 15;
 			for (int n = projectile.oldPos.Length - 1; n > 0; n--) 
 			{
 				projectile.oldPos[n] = projectile.oldPos[n - 1];

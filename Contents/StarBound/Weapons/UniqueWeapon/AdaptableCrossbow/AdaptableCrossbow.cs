@@ -508,14 +508,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                 //Main.EntitySpriteDraw(TextureAssets.Projectile[612].Value, projectile.Center - Main.screenPosition, new Rectangle(0, 208 - projectile.timeLeft / 2 * 52, 52, 52), Color.White * .5f * fac, projectile.rotation, new Vector2(26), new Vector2(1, 2) * 2, 0, 0);//new Rectangle(0, projectile.timeLeft / 2, 52, 52)
                 //if(!TextureAssets.Projectile[687].IsLoaded)
                 //Main.instance.LoadProjectile(687);
-                Main.EntitySpriteDraw(IllusionBoundMod.GetTexture(Texture.Replace("CrossBowArrow", "ExplosionEffect"), false), projectile.Center - Main.screenPosition, new Rectangle(0, 588 - projectile.timeLeft / 3 * 98, 98, 98), new Color(255, 255, 255, 0) * fac.HillFactor2(1), projectile.rotation, new Vector2(49), 2f * fac, 0, 0);//new Rectangle(0, projectile.timeLeft / 2, 52, 52)
+                Main.EntitySpriteDraw(VirtualDreamMod.GetTexture(Texture.Replace("CrossBowArrow", "ExplosionEffect"), false), projectile.Center - Main.screenPosition, new Rectangle(0, 588 - projectile.timeLeft / 3 * 98, 98, 98), new Color(255, 255, 255, 0) * fac.HillFactor2(1), projectile.rotation, new Vector2(49), 2f * fac, 0, 0);//new Rectangle(0, projectile.timeLeft / 2, 52, 52)
 
                 //Main.NewText("yeeeeee");
             }
             else
             {
-                Texture2D texture2D = (int)projectile.ai[1] == 1 ? TextureAssets.Projectile[projectile.type].Value : IllusionBoundMod.GetTexture(Texture + "_Origin", false);
-                Main.EntitySpriteDraw(texture2D, projectile.Center - Main.screenPosition, texture2D.Frame((int)projectile.ai[1] == 1 ? 1 : 2, 7, (int)projectile.ai[1] == 1 ? 0 : ((int)IllusionBoundMod.ModTime / 2 % 2), (int)projectile.ai[0]), (int)projectile.ai[0] == 2 || (int)projectile.ai[0] == 3 ? Color.White : lightColor, projectile.rotation, texture2D.Size() * .5f / new Vector2((int)projectile.ai[1] == 1 ? 1 : 2, 7), 1f, 0, 0);
+                Texture2D texture2D = (int)projectile.ai[1] == 1 ? TextureAssets.Projectile[projectile.type].Value : VirtualDreamMod.GetTexture(Texture + "_Origin", false);
+                Main.EntitySpriteDraw(texture2D, projectile.Center - Main.screenPosition, texture2D.Frame((int)projectile.ai[1] == 1 ? 1 : 2, 7, (int)projectile.ai[1] == 1 ? 0 : ((int)VirtualDreamMod.ModTime / 2 % 2), (int)projectile.ai[0]), (int)projectile.ai[0] == 2 || (int)projectile.ai[0] == 3 ? Color.White : lightColor, projectile.rotation, texture2D.Size() * .5f / new Vector2((int)projectile.ai[1] == 1 ? 1 : 2, 7), 1f, 0, 0);
             }
             return false;
         }

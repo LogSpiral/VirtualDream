@@ -1344,8 +1344,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
         private void Draw_PreAttackAni(SpriteBatch spriteBatch)
         {
-            var tex = IllusionBoundMod.GetTexture(ApePath + "BigApe_BeginningFrames");
-            var scftex = IllusionBoundMod.GetTexture(ApePath + "BigApeScreenFrame_ANI");
+            var tex = VirtualDreamMod.GetTexture(ApePath + "BigApe_BeginningFrames");
+            var scftex = VirtualDreamMod.GetTexture(ApePath + "BigApeScreenFrame_ANI");
             if (FrameCounter > 13)
             {
                 var f = FrameCounter - 14;
@@ -1360,9 +1360,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
         private void Draw_Attack(SpriteBatch spriteBatch)
         {
-            var tex = IllusionBoundMod.GetTexture(ApePath + "BigApe_Stage" + stage + "Frames");
-            var scftex = IllusionBoundMod.GetTexture(ApePath + "BigApeScreenFrame");
-            var sctex = IllusionBoundMod.GetTexture(ApePath + "BigApeScreen");
+            var tex = VirtualDreamMod.GetTexture(ApePath + "BigApe_Stage" + stage + "Frames");
+            var scftex = VirtualDreamMod.GetTexture(ApePath + "BigApeScreenFrame");
+            var sctex = VirtualDreamMod.GetTexture(ApePath + "BigApeScreen");
 
             var v = new Vector2(480, 0) + (Main.GameUpdateCount / 300f * MathHelper.TwoPi).ToRotationVector2() * 64;
             var u = targetPlayer.velocity / (targetPlayer.velocity.Length() / 128f + 1);
@@ -1402,9 +1402,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 (
                     (r) => (r * MathHelper.TwoPi).ToRotationVector2() * fac * (attackMode == BigApeAttackMode.BulletHell && !Main.expertMode ? 1280 : 1024),
                     (f) => ((f + Main.GameUpdateCount / 600f) % 1).ArrayLerp(Color.Cyan, Color.White, Color.Blue, Color.Cyan),
-                    IllusionBoundMod.ShaderSwoosh,
-                    IllusionBoundMod.AniTexes[6],
-                    IllusionBoundMod.GetTexture("Images/line_1"),//IllusionBoundMod.LaserTex[(int)IllusionBoundMod.ModTime / 4 % 4]
+                    LogSpiralLibraryMod.ShaderSwooshEffect,
+                    LogSpiralLibraryMod.BaseTex[8].Value,
+                    LogSpiralLibraryMod.Misc[6].Value,
                     npc.Center,
                     200,
                     width: 32 * fac,
@@ -1420,9 +1420,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 (
                     (r) => r.ArrayLerp(new Vector2(960, 960), new Vector2(-960, 960), new Vector2(-960, -960), new Vector2(960, -960), new Vector2(960, 960)) + npc.Center * 0,
                     (f) => ((f + Main.GameUpdateCount / 600f) % 1).ArrayLerp(Color.Cyan, Color.White, Color.Blue, Color.Cyan),
-                    IllusionBoundMod.ShaderSwoosh,
-                    IllusionBoundMod.AniTexes[6],
-                    IllusionBoundMod.GetTexture("Images/line_1"),//IllusionBoundMod.LaserTex[(int)IllusionBoundMod.ModTime / 4 % 4]
+                    LogSpiralLibraryMod.ShaderSwooshEffect,
+                    LogSpiralLibraryMod.BaseTex[8].Value,
+                    LogSpiralLibraryMod.Misc[6].Value,
                     npc.Center,
                     100,
                     width: 32 * fac,
@@ -1435,11 +1435,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
         private void Draw_DeathAni(SpriteBatch spriteBatch)
         {
-            var tex = IllusionBoundMod.GetTexture(ApePath + "BigApe_EndFrames");
-            var scftexA = IllusionBoundMod.GetTexture(ApePath + "BigApeScreenFrame_ANI");
+            var tex = VirtualDreamMod.GetTexture(ApePath + "BigApe_EndFrames");
+            var scftexA = VirtualDreamMod.GetTexture(ApePath + "BigApeScreenFrame_ANI");
 
-            var scftex = IllusionBoundMod.GetTexture(ApePath + "BigApeScreenFrame");
-            var sctex = IllusionBoundMod.GetTexture(ApePath + "BigApeScreen");
+            var scftex = VirtualDreamMod.GetTexture(ApePath + "BigApeScreenFrame");
+            var sctex = VirtualDreamMod.GetTexture(ApePath + "BigApeScreen");
 
             var v = new Vector2(480, 0) + (Main.GameUpdateCount / 300f * MathHelper.TwoPi).ToRotationVector2() * 64;
             var u = targetPlayer.velocity / (targetPlayer.velocity.Length() / 128f + 1);
@@ -1553,8 +1553,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 rec = new Rectangle(32 * ((int)Main.GameUpdateCount / 3 % 2 + 1), 96, 32, 32);
             }
             spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.Center - Main.screenPosition, rec, npc.ai[0] > 0 ? Color.White : Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(16), 3f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(ApePath + "lamp"), npc.Center - Main.screenPosition - new Vector2(0, 12), new Rectangle(32, 32 * frame, 32, 32), Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), (npc.Center - Owner.Center).ToRotation(), new Vector2(30, 16), 3f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(ApePath + "booster"), npc.Center - Main.screenPosition, new Rectangle(32 + (int)Main.GameUpdateCount / 3 % 2 * 32, 0, 32, 32), Color.White, 0, new Vector2(16), 3f, 0, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "lamp"), npc.Center - Main.screenPosition - new Vector2(0, 12), new Rectangle(32, 32 * frame, 32, 32), Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), (npc.Center - Owner.Center).ToRotation(), new Vector2(30, 16), 3f, SpriteEffects.None, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "booster"), npc.Center - Main.screenPosition, new Rectangle(32 + (int)Main.GameUpdateCount / 3 % 2 * 32, 0, 32, 32), Color.White, 0, new Vector2(16), 3f, 0, 0);
             //spriteBatch.Draw(TextureAssets.MagicPixel.Value, npc.Center - Main.screenPosition - new Vector2(0, 12), new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(0.5f), 6, SpriteEffects.None, 0);
             //Main.NewText("草生");
             return false;
@@ -1813,11 +1813,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            Effect effect = IllusionBoundMod.ShaderSwoosh;
+            Effect effect = LogSpiralLibraryMod.ShaderSwooshEffect;
             effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-            effect.Parameters["uTime"].SetValue(-(float)IllusionBoundMod.ModTime * 0.03f);
-            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture(ApePath + "Style_10");
-            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture(ApePath + "Style_9");
+            effect.Parameters["uTime"].SetValue(-(float)VirtualDreamMod.ModTime * 0.03f);
+            Main.graphics.GraphicsDevice.Textures[0] = VirtualDreamMod.GetTexture(ApePath + "Style_10");
+            Main.graphics.GraphicsDevice.Textures[1] = VirtualDreamMod.GetTexture(ApePath + "Style_9");
 
             Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
@@ -1899,15 +1899,15 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                         var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                         var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                        IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-                        IllusionBoundMod.ShaderSwoosh.Parameters["uTime"].SetValue(-(float)Main.time * 0.06f);
+                        LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+                        LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.06f);
                         //Main.graphics.GraphicsDevice.Textures[0] = ModContent.GetTexture("IllusionBoundMod/Images/BaseTex");
                         //Main.graphics.GraphicsDevice.Textures[1] = ModContent.GetTexture("IllusionBoundMod/Images/AniTex");
-                        Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/BaseTex_0");//_7
-                        Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/AniTex");
+                        Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.BaseTex[0].Value;//_7
+                        Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.AniTex[11].Value;
                         Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                         Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-                        IllusionBoundMod.ShaderSwoosh.CurrentTechnique.Passes[1].Apply();
+                        LogSpiralLibraryMod.ShaderSwooshEffect.CurrentTechnique.Passes[1].Apply();
                         Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
                         Main.graphics.GraphicsDevice.RasterizerState = originalState;
                     }
@@ -2127,7 +2127,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
             if (projectile.frameCounter > 0)
             {
-                spriteBatch.Draw(IllusionBoundMod.MagicZone[3], targetPos - Main.screenPosition, null, Color.Cyan with { A = 0 }, -(float)IllusionBoundMod.ModTime / 60 * MathHelper.Pi, new Vector2(200), MathHelper.Clamp(projectile.frameCounter / 120f, 0, .25f), 0, 0);
+                spriteBatch.Draw(LogSpiralLibraryMod.MagicZone[3].Value, targetPos - Main.screenPosition, null, Color.Cyan with { A = 0 }, -(float)VirtualDreamMod.ModTime / 60 * MathHelper.Pi, new Vector2(200), MathHelper.Clamp(projectile.frameCounter / 120f, 0, .25f), 0, 0);
             }
             return false;
         }
@@ -2172,7 +2172,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Items.Weapons.UniqueWeapon.ElectronHugeJadeBullet>()].Value, projectile.Center - Main.screenPosition, null, Color.White * Alpha, 0, new Vector2(128, 128), Size * .5f, SpriteEffects.None, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(ApePath + "ElectronHugeJadeBullet"), projectile.Center - Main.screenPosition, null, Color.White with { A = 0 } * Alpha, 0, new Vector2(128, 128), Size * .5f, SpriteEffects.None, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "ElectronHugeJadeBullet"), projectile.Center - Main.screenPosition, null, Color.White with { A = 0 } * Alpha, 0, new Vector2(128, 128), Size * .5f, SpriteEffects.None, 0);
 
             return false;
         }
@@ -2362,7 +2362,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            Texture2D hugeTex = IllusionBoundMod.GetTexture(ApePath + "EnergyFistHuge");
+            Texture2D hugeTex = VirtualDreamMod.GetTexture(ApePath + "EnergyFistHuge");
             switch ((int)projectile.ai[0])
             {
                 case 0:
@@ -2677,9 +2677,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     (
                         t => pos[(int)(119 * t)],
                         t => t.ArrayLerp(Color.Blue, Color.Cyan, Color.White),
-                        IllusionBoundMod.GetEffect("Effects/EightTrigramsFurnaceEffect"),
-                        IllusionBoundMod.AniTexes[6],
-                        IllusionBoundMod.AniTexes[10],
+                        LogSpiralLibraryMod.EightTrigramsFurnaceEffect,
+                        LogSpiralLibraryMod.BaseTex[8].Value,
+                        LogSpiralLibraryMod.AniTex[10].Value,
                         counts: count,
                         doSth: (v, t) =>
                         {
@@ -2699,9 +2699,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     (
                         t => pos1[(int)(29 * t)],
                         t => t.ArrayLerp(Color.Blue, Color.Cyan, Color.White),
-                        IllusionBoundMod.GetEffect("Effects/EightTrigramsFurnaceEffect"),
-                        IllusionBoundMod.AniTexes[6],
-                        IllusionBoundMod.AniTexes[10],
+                        LogSpiralLibraryMod.EightTrigramsFurnaceEffect,
+                        LogSpiralLibraryMod.BaseTex[8].Value,
+                        LogSpiralLibraryMod.AniTex[10].Value,
                         doSth: (v, t) => spriteBatch.Draw(projTex, projectile.oldPos[(int)(29 * t)] - projectile.oldRot[(int)(29 * t)].ToRotationVector2() * 32 - Main.screenPosition, null, (t == 0 ? Color.White : (Color.Cyan * 0.8f)) * (1 - t), projectile.oldRot[(int)(29 * t)], new Vector2(18, 11.5f), 2 * (t == 0 ? 1 : 0.8f * (1 - t)), 0, 0),
                         alwaysDoSth: true
                     );
@@ -2805,7 +2805,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         {
                             for (int i = 0; i < 3; i++)
                             {
-                                var v = (MathHelper.TwoPi / 3f * (i + (float)IllusionBoundMod.ModTime2 / 60f)).ToRotationVector2();
+                                var v = (MathHelper.TwoPi / 3f * (i + (float)VirtualDreamMod.ModTime2 / 60f)).ToRotationVector2();
                                 Projectile.NewProjectile(projectile.GetSource_FromThis(), target.Center + (MathHelper.PiOver4 * n).ToRotationVector2() * 256 + new Vector2(-v.Y, v.X) * 64, v * 32, ModContent.ProjectileType<LightDagger>(), 35, 0, Main.myPlayer, 1);
                             }
                         }
@@ -2816,7 +2816,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         projectile.ai[1] -= 200;
                         for (int i = 0; i < 3; i++)
                         {
-                            var v = (MathHelper.TwoPi / 3f * (i + (float)IllusionBoundMod.ModTime2 / 60f)).ToRotationVector2();
+                            var v = (MathHelper.TwoPi / 3f * (i + (float)VirtualDreamMod.ModTime2 / 60f)).ToRotationVector2();
                             Projectile.NewProjectile(projectile.GetSource_FromThis(), target.Center + new Vector2(-v.Y, v.X) * 256, v * 32, ModContent.ProjectileType<LightDagger>(), 35, 0, Main.myPlayer, 1);
                         }
                         target.velocity += Vector2.Normalize(vec) * 8;
@@ -2835,9 +2835,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     (
                         t => GetVec(projectile.timeLeft + (int)(t * 5 * projectile.localAI[0]), n, i),
                         t => (1 - t).ArrayLerp(Color.White, Color.Cyan, Color.Blue, Color.Purple) * attackFac,
-                        IllusionBoundMod.GetEffect("Effects/EightTrigramsFurnaceEffect"),
-                        IllusionBoundMod.AniTexes[6],
-                        IllusionBoundMod.AniTexes[10],
+                        LogSpiralLibraryMod.EightTrigramsFurnaceEffect,
+                        LogSpiralLibraryMod.BaseTex[8].Value,
+                        LogSpiralLibraryMod.AniTex[10].Value,
                         counts: (int)(5 * projectile.localAI[0]),
                         //widthFunc: t => (i == 4 ? 256 : 128) * (1 - (float)Math.Sqrt(t)),
                         width: i == 4 ? 32 : 16
@@ -3458,7 +3458,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //spriteBatch.Draw3DPlane(IllusionBoundMod.ShaderSwoosh, IllusionBoundMod.GetTexture(Path + "StrawBerryArea"), IllusionBoundMod.MaskColor[6], vt3rl);
 
 
-            var rotation = (float)IllusionBoundMod.ModTime / 60 * MathHelper.Pi;
+            var rotation = (float)VirtualDreamMod.ModTime / 60 * MathHelper.Pi;
             var sin = (float)Math.Sin(rotation);
             var cos = (float)Math.Cos(rotation);
             //var (cos, sin) = MathF.SinCos();
@@ -3494,13 +3494,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-            IllusionBoundMod.ShaderSwoosh.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
-            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea");
-            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[6];
+            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
+            Main.graphics.GraphicsDevice.Textures[0] = VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea");
+            Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.BaseTex[8].Value;
             Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-            IllusionBoundMod.ShaderSwoosh.CurrentTechnique.Passes[0].Apply();
+            LogSpiralLibraryMod.ShaderSwooshEffect.CurrentTechnique.Passes[0].Apply();
             //var css = new VertexTriangleList(Main.MouseWorld, vtr, vtr2).ToVertexInfo();
             //Main.NewText(css[0].Position);
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, cs, 0, 2);
@@ -3758,8 +3758,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(factor + .5f, 0, 1), projectile.timeLeft / 60f * MathHelper.TwoPi, IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.75f, 0.25f) * projectile.ai[0], 0, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(1 - factor, 0, 1), -projectile.timeLeft / 60f * MathHelper.TwoPi, IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.4f, 0.6f) * projectile.ai[0], 0, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(factor + .5f, 0, 1), projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.75f, 0.25f) * projectile.ai[0], 0, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(1 - factor, 0, 1), -projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.4f, 0.6f) * projectile.ai[0], 0, 0);
             if (projectile.timeLeft > 270 && projectile.frameCounter == 0)
             {
                 (Vector2, Vector2)[] lines = new (Vector2, Vector2)[2];
@@ -3801,13 +3801,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-            IllusionBoundMod.ShaderSwoosh.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
-            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
-            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[10];
+            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
+            Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.BaseTex[8].Value;
+            Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.AniTex[10].Value;
             Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-            IllusionBoundMod.ShaderSwoosh.CurrentTechnique.Passes[0].Apply();
+            LogSpiralLibraryMod.ShaderSwooshEffect.CurrentTechnique.Passes[0].Apply();
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, tris, 0, 16);
             //Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, new CustomVertexInfo[]
             //{
@@ -3870,7 +3870,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)IllusionBoundMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             var size = new Vector3(20, 48 * factor, 48 * factor);
@@ -3921,7 +3921,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             var u = projectile.ai[0].ToRotationVector2();
             spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center, u, Color.Red, LogSpiralLibraryMod.AniTex[10].Value, 3200, width);//Main.hslToRgb(0.8f, 1, 0.75f)
             UpdateTris(factor);
-            spriteBatch.Draw3DPlane(IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect"), IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea"), IllusionBoundMod.AniTexes[6], loti);//IllusionBoundMod.GetTexture("NPCs/BigApe/StrawBerryArea")//IllusionBoundMod.MagicZone[2]
+            spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);//IllusionBoundMod.GetTexture("NPCs/BigApe/StrawBerryArea")//IllusionBoundMod.MagicZone[2]
             return false;
         }
 
@@ -4115,8 +4115,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * factor, projectile.timeLeft / 60f * MathHelper.TwoPi, IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.75f, 0.25f), 0, 0);
-            spriteBatch.Draw(IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(factor * 2, 0, 1), -projectile.timeLeft / 60f * MathHelper.TwoPi, IllusionBoundMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.4f, 0.6f), 0, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * factor, projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.75f, 0.25f), 0, 0);
+            spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(factor * 2, 0, 1), -projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.4f, 0.6f), 0, 0);
             //if (projectile.timeLeft > 60) 
             //{
             //    (Vector2, Vector2)[] lines = new (Vector2, Vector2)[2];
@@ -4174,13 +4174,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            IllusionBoundMod.ShaderSwoosh.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-            IllusionBoundMod.ShaderSwoosh.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
-            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.AniTexes[6];
-            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.AniTexes[10];
+            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
+            Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.BaseTex[8].Value;
+            Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.AniTex[10].Value;
             Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-            IllusionBoundMod.ShaderSwoosh.CurrentTechnique.Passes[0].Apply();
+            LogSpiralLibraryMod.ShaderSwooshEffect.CurrentTechnique.Passes[0].Apply();
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, tris, 0, 16);
             //Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, new CustomVertexInfo[]
             //{
@@ -4379,7 +4379,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         private BigApeVectorField tap => owner.ModProjectile as BigApeVectorField;
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
-            var effect = IllusionBoundMod.ShaderSwoosh;
+            var effect = LogSpiralLibraryMod.ShaderSwooshEffect;
             if (effect == null)
             {
                 return false;
@@ -4449,8 +4449,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     effect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
                     effect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
                     //InfiniteNightmare.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(drawColor, 1f, 0.5f).ToVector4());
-                    Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture(ApePath + "Style_15");
-                    Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture(ApePath + "Style_9");
+                    Main.graphics.GraphicsDevice.Textures[0] = VirtualDreamMod.GetTexture(ApePath + "Style_15");
+                    Main.graphics.GraphicsDevice.Textures[1] = VirtualDreamMod.GetTexture(ApePath + "Style_9");
                     Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                     Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
                     //Main.graphics.GraphicsDevice.Textures[0] = TextureAssets.MagicPixel.Value;

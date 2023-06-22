@@ -997,17 +997,17 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
             //IllusionBoundMod.LaserEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
             //IllusionBoundMod.LaserEffect.Parameters["MainColor"].SetValue(new Vector4(1, 0, 0, 1));
-            IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-            IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-            IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Color.Red.ToVector4());
-            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.LaserTex[(projectile.timeLeft / 2) % 4];
-            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.LaserTex[(projectile.timeLeft / 2) % 4];
-            Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.AniTexes[6];
+            VirtualDreamMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+            VirtualDreamMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
+            VirtualDreamMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Color.Red.ToVector4());
+            Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.Misc[(projectile.timeLeft / 2) % 4 + 7].Value;
+            Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.Misc[(projectile.timeLeft / 2) % 4 + 7].Value;
+            Main.graphics.GraphicsDevice.Textures[2] = LogSpiralLibraryMod.BaseTex[8].Value;
             Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
             Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
             Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
             //IllusionBoundMod.LaserEffect.CurrentTechnique.Passes[0].Apply();
-            IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+            VirtualDreamMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, Points, 0, 2);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
@@ -1302,7 +1302,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
             spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, 32, 32), Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
             if ((int)projectile.ai[1] == 2)
             {
-                Main.spriteBatch.DrawShaderTail(projectile, IllusionBoundMod.HeatMap[5], IllusionBoundMod.AniTexes[10], IllusionBoundMod.AniTexes[6]);
+                Main.spriteBatch.DrawShaderTail(projectile, LogSpiralLibraryMod.HeatMap[5].Value, LogSpiralLibraryMod.AniTex[10].Value, LogSpiralLibraryMod.BaseTex[8].Value);
                 //DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.Nebula, ShaderTailStyle.Dust);
             }
             spriteBatch.End();
@@ -1565,16 +1565,16 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
                 {
                     hue--;
                 }
-                IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-                IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-                IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(hue, 1, 0.5f).ToVector4());
-                Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.LaserTex[projectile.frame];
-                Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.LaserTex[projectile.frame];
-                Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.AniTexes[6];
+                VirtualDreamMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+                VirtualDreamMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
+                VirtualDreamMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(hue, 1, 0.5f).ToVector4());
+                Main.graphics.GraphicsDevice.Textures[0] = LogSpiralLibraryMod.Misc[projectile.frame + 7].Value;
+                Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.Misc[projectile.frame + 7].Value;
+                Main.graphics.GraphicsDevice.Textures[2] = LogSpiralLibraryMod.BaseTex[8].Value;
                 Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
                 Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-                IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+                VirtualDreamMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 spriteBatch.End();
@@ -1806,7 +1806,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
         {
             if ((int)projectile.ai[1] == 1)
             {
-                spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/TouhouProject/NPCs/Fairy/RingBulletD"), projectile.Center - Main.screenPosition, null, Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
+                spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/TouhouProject/NPCs/Fairy/RingBulletD"), projectile.Center - Main.screenPosition, null, Color.White * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);
                 return false;
             }
             spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, new Rectangle(scale * (int)projectile.ai[0], 0, projectile.width, projectile.height), Color.White with { A = 0 } * Alpha, projectile.velocity.ToRotation() + rotation, new Vector2(projectile.width / 2, projectile.height / 2), Size, SpriteEffects.None, 0);

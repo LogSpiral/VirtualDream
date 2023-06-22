@@ -25,7 +25,7 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons
 
         public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            item.ShaderItemEffectInventory(spriteBatch, position, origin, IllusionBoundMod.GetTexture("Images/IMBellTex"), Main.hslToRgb((float)IllusionBoundMod.ModTime / 300f % 1, 1, 0.75f), scale);
+            item.ShaderItemEffectInventory(spriteBatch, position, origin, LogSpiralLibraryMod.Misc[0].Value, Main.hslToRgb((float)VirtualDreamMod.ModTime / 300f % 1, 1, 0.75f), scale);
             //SpriteBatchDraw.Draw(spriteBatch, IllusionBoundMod.GetTexture("Images/IMBellTex"),
             //    new SpriteBatchDraw.CustomVertexInfo4(
             //        new CustomVertexInfo(new Vector2(960, 540), Color.White, new Vector3(0, 0, 0)),
@@ -36,7 +36,7 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons
         }
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         {
-            item.ShaderItemEffectInWorld(spriteBatch, IllusionBoundMod.GetTexture("Images/IMBellTex"), Main.hslToRgb((float)IllusionBoundMod.ModTime / 300f % 1, 1, 0.75f), rotation);
+            item.ShaderItemEffectInWorld(spriteBatch, LogSpiralLibraryMod.Misc[0].Value, Main.hslToRgb((float)VirtualDreamMod.ModTime / 300f % 1, 1, 0.75f), rotation);
         }
         public override void SetDefaults()
         {

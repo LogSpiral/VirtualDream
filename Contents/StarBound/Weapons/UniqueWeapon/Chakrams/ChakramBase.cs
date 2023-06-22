@@ -66,7 +66,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
         public bool SpecialAttack => projectile.ai[0] == 1;
         public override void AI()
         {
-            projectile.rotation = (float)IllusionBoundModSystem.ModTime;
+            projectile.rotation = (float)VirtualDreamSystem.ModTime;
             if (hit)
             {
                 Player player = Main.player[projectile.owner];

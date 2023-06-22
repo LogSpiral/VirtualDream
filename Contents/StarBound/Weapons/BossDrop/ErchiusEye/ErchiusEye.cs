@@ -159,7 +159,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         }
         public override void HoldItem(Player player)
         {
-            var Time = IllusionBoundModSystem.ModTime2 / 60f * MathHelper.Pi;
+            var Time = VirtualDreamSystem.ModTime2 / 60f * MathHelper.Pi;
             Dust dust = Dust.NewDustPerfect(player.Center + new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 256), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White, 1f);
             Dust dust1 = Dust.NewDustPerfect(player.Center - new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 256), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White, 1f);
             Dust dust2 = Dust.NewDustPerfect(player.Center + new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 64), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White, 1f);
@@ -325,7 +325,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
                 }
                 projectile.oldPos[0] = projectile.Center;
             }
-            Main.spriteBatch.DrawShaderTail(projectile, IllusionBoundMod.HeatMap[5], IllusionBoundMod.AniTexes[10], IllusionBoundMod.AniTexes[6]);
+            Main.spriteBatch.DrawShaderTail(projectile, LogSpiralLibraryMod.HeatMap[5].Value, LogSpiralLibraryMod.AniTex[10].Value, LogSpiralLibraryMod.BaseTex[8].Value);
             return false;
         }
         public override void AI()
@@ -371,7 +371,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
                 }
                 projectile.oldPos[0] = projectile.Center;
             }
-            Main.spriteBatch.DrawShaderTail(projectile, IllusionBoundMod.HeatMap[5], IllusionBoundMod.AniTexes[10], IllusionBoundMod.AniTexes[6]);
+            Main.spriteBatch.DrawShaderTail(projectile, LogSpiralLibraryMod.HeatMap[5].Value, LogSpiralLibraryMod.AniTex[10].Value, LogSpiralLibraryMod.BaseTex[8].Value);
+
             return false;
         }
         public override void AI()
