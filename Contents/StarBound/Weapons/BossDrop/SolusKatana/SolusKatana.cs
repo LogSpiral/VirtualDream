@@ -579,6 +579,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             public float Scaler(SolusKatanaProj instance) => (instance.CollidingCenter - instance.DrawOrigin).Length() * instance.Player.GetAdjustedItemScale(instance.Player.HeldItem) / (float)Math.Sqrt(xScaler) * .5f;// * 3f//* (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11
             //public int whoAmI;
         }
+        UltraSwoosh ultra;
         int currentSwoosh;
         int counter;
         //int Projectile.ai[1];

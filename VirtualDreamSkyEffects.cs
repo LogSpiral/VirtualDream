@@ -152,12 +152,12 @@ namespace VirtualDream
                 SkyManager.Instance.Deactivate("VirtualDream:ErchiusHorrorSky");
                 ErchiusHorrorSky.SkyActive = false;
             }
-            if (!AsraNoxSky.SkyActive && NPC.AnyNPCs(NPCType<Contents.StarBound.NPCs.Bosses.AsraNox.AsraNox>()))
+            if (!AsraNoxSky.SkyActive && NPC.AnyNPCs(NPCType<AsraNox>()))
             {
                 SkyManager.Instance.Activate("VirtualDream:AsraNoxSky");
                 AsraNoxSky.SkyActive = true;
             }
-            if (AsraNoxSky.SkyActive && !NPC.AnyNPCs(NPCType<Contents.StarBound.NPCs.Bosses.AsraNox.AsraNox>()))
+            if (AsraNoxSky.SkyActive && !NPC.AnyNPCs(NPCType<AsraNox>()))
             {
                 SkyManager.Instance.Deactivate("VirtualDream:AsraNoxSky");
                 AsraNoxSky.SkyActive = false;

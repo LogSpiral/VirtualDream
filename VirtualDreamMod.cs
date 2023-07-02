@@ -184,6 +184,7 @@ namespace VirtualDream
         {
             mod = this;
             Instance = this;
+            if (Main.netMode == NetmodeID.Server) return;
             var effect = GetEffect("Effects/IllusionBoundScreenGlass");
             foreach (var pass in effect.CurrentTechnique.Passes)
             {
@@ -212,7 +213,7 @@ namespace VirtualDream
         /// <param name="maxWidth"></param>
         /// <param name="ignoreColors"></param>
         /// <returns></returns>
-        private Vector2 MoreMoreHeart(On.Terraria.UI.Chat.ChatManager.orig_DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool orig, SpriteBatch spriteBatch, ReLogic.Graphics.DynamicSpriteFont font, Terraria.UI.Chat.TextSnippet[] snippets, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth, bool ignoreColors)
+        private Vector2 MoreMoreHeart(On.Terraria.UI.Chat.ChatManager.orig_DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool orig, SpriteBatch spriteBatch, ReLogic.Graphics.DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth, bool ignoreColors)
         {
             string date = DateTime.Now.ToShortDateString();
             var data = date.Split('/');

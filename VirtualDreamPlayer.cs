@@ -1,4 +1,5 @@
-﻿using ReLogic.Graphics;
+﻿using LogSpiralLibrary;
+using ReLogic.Graphics;
 using System;
 using Terraria.DataStructures;
 using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;
@@ -49,6 +50,12 @@ namespace VirtualDream
         }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
+            //int height = 0;
+            //foreach (var item in LogSpiralLibraryMod.TransformEffectEX.Techniques)
+            //{
+            //    Main.spriteBatch.DrawString(FontAssets.MouseText.Value, $"{item.Name},{height / 40}", new Vector2(200, 200 + height), Color.White);
+            //    height += 40;
+            //}
             //Main.spriteBatch.DrawString(FontAssets.MouseText.Value, (Player.skinColor, Player.eyeColor, Player.hairColor, Player.hair).ToString(), Player.Center + new Vector2(-128, -50) - Main.screenPosition, Color.White);
         }
     }

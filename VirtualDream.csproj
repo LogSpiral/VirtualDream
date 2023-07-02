@@ -22,7 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SubworldLibrary">
-      <HintPath>SubworldLibrary.dll</HintPath>
+      <HintPath>..\SubworldLibrary\SubworldLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 

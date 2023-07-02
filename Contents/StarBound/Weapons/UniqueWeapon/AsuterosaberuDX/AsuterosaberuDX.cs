@@ -927,6 +927,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     }
     public class AsuterosaberuDXProj : BossDrop.SolusKatana.SolusKatanaProj
     {
+        public override Texture2D HeatMap => LogSpiralLibraryMod.HeatMap[1].Value;
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             target.immune[Projectile.owner] = (controlState == 2 || Projectile.ai[1] > 0) ? this.UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
@@ -1120,11 +1121,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
                 case 0:
                 case 1:
                     {
-                        //var oldpos = projectile.Center;
-                        //projectile.Center = target.position + new Vector2(projectile.localAI[0], projectile.localAI[1]) + projectile.rotation.ToRotationVector2() * (state == 1 ? 384 : 256) * (2 / 15f * projectile.ai[0] - 1);
-                        //projectile.velocity = projectile.Center - oldpos;
-                        //if (projectile.ai[0] > 15) projectile.Kill();
-                        Main.NewText("???");
+                        var oldpos = projectile.Center;
+                        projectile.Center = target.position + new Vector2(projectile.localAI[0], projectile.localAI[1]) + projectile.rotation.ToRotationVector2() * (state == 1 ? 384 : 256) * (2 / 15f * projectile.ai[0] - 1);
+                        projectile.velocity = projectile.Center - oldpos;
+                        if (projectile.ai[0] > 15) projectile.Kill();
+                        //Main.NewText("???");
                         break;
                     }
                 case 2:
