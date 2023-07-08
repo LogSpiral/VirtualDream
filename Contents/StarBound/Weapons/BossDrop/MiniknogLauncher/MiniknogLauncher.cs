@@ -365,7 +365,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         {
         }
     }
-    public class MiniknogLauncherProj : RangedHeldProjectile,IStarboundWeaponProjectile
+    public class MiniknogLauncherProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {
         //BossDropWeaponProj<ErchiusEye, ErchiusEyeEX, ErchiusEyeDL>
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * 6;//Main.MouseWorld - Player.Center
@@ -527,7 +527,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         public override (int X, int Y) FrameMax => (4, 3);
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
-            frame = texture.Frame(FrameMax.X, FrameMax.Y, (int)Projectile.ai[0] / 2 % 4, this.UpgradeValue(0, 1, 2));
+            frame = texture.Frame(FrameMax.X, FrameMax.Y, (int)MathHelper.Clamp(Projectile.ai[0], 0, controlState == 1 ? this.UpgradeValue(80, 64, 48) : int.MaxValue) / this.UpgradeValue(5, 4, 3) % 4, this.UpgradeValue(0, 1, 2));
             origin = new Vector2(5, 10);
             scale = 2f;
         }
