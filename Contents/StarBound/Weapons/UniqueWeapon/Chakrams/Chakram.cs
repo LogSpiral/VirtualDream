@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
@@ -7,8 +8,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("环刃");
-            Tooltip.SetDefault("环刃大师能抓住它而不伤及手指。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("环刃");
+            // Tooltip.SetDefault("环刃大师能抓住它而不伤及手指。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -38,8 +39,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("环刃EX");
-            Tooltip.SetDefault("环刃大师能抓住它而不伤及手指。\n更加猛烈地切割万物吧，包括使用者自身。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("环刃EX");
+            // Tooltip.SetDefault("环刃大师能抓住它而不伤及手指。\n更加猛烈地切割万物吧，包括使用者自身。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -62,7 +63,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
         {
             base.AI();
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
         }

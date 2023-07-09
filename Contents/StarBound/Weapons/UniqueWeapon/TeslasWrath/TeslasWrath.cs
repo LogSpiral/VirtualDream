@@ -7,8 +7,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("感受交流电狙击枪的怒火吧！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("特斯拉之怒");
+            // Tooltip.SetDefault("感受交流电狙击枪的怒火吧！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("特斯拉之怒");
         }
         public Item item => Item;
         public override void SetDefaults()
@@ -57,8 +57,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("感受交流电狙击枪的怒火吧！\n杨永信之力！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("特斯拉之怒EX");
+            // Tooltip.SetDefault("感受交流电狙击枪的怒火吧！\n杨永信之力！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("特斯拉之怒EX");
         }
         public override WeaponState State => WeaponState.False_EX;
         public override void SetDefaults()
@@ -184,7 +184,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("特斯拉之怒子弹");
+            // DisplayName.SetDefault("特斯拉之怒子弹");
         }
         public override void SetDefaults()
         {

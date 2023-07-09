@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 
@@ -9,8 +10,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("克鲁西斯法杖");
-            Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("克鲁西斯法杖");
+            // Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             //Item.staff[item.type] = true;
         }
         //public int Time;
@@ -124,8 +125,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("克鲁西斯法杖EX");
+            // Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("克鲁西斯法杖EX");
         }
         //private static float Time = 0;
         //private static float X = 0;
@@ -197,8 +198,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         public override WeaponState State => WeaponState.False_UL;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯粹幻象赤色水晶凝聚跃动着的能量，充斥着整根法杖，又聚焦于一点\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//你知道......什么叫自机狙吗？！(已经被万恶的阿汪削弱(?)了)
-            DisplayName.SetDefault("克鲁西斯法杖PH");
+            // Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯粹幻象赤色水晶凝聚跃动着的能量，充斥着整根法杖，又聚焦于一点\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//你知道......什么叫自机狙吗？！(已经被万恶的阿汪削弱(?)了)
+            // DisplayName.SetDefault("克鲁西斯法杖PH");
             //Item.staff[item.type] = true;
         }
         //public int Time2;
@@ -432,7 +433,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("克鲁西斯等离子体球");
+            // DisplayName.SetDefault("克鲁西斯等离子体球");
         }
         Projectile projectile => Projectile;
         public override void SetDefaults()
@@ -472,7 +473,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailingMode[projectile.type] = 0;
-            DisplayName.SetDefault("克鲁西斯能量水晶");
+            // DisplayName.SetDefault("克鲁西斯能量水晶");
         }
 
         public override void SetDefaults()
@@ -522,7 +523,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         }
 
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(24, 3600);
         }
@@ -536,7 +537,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("克鲁西斯与狂暴的境界");
+            // DisplayName.SetDefault("克鲁西斯与狂暴的境界");
         }
         Projectile projectile => Projectile;
 
@@ -596,45 +597,45 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("克鲁西斯狂暴Ⅰ");
-            Description.SetDefault("野蛮。");
+            // DisplayName.SetDefault("克鲁西斯狂暴Ⅰ");
+            // Description.SetDefault("野蛮。");
         }
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetDamage(DamageClass.Generic) += 0.5f;
             player.arrowDamage += 0.5f;
             player.bulletDamage += 0.5f;
-            player.rocketDamage += 0.5f;
+            player.specialistDamage += 0.5f;
         }
     }
     public class KluexRage2 : ModBuff
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("克鲁西斯狂暴Ⅱ");
-            Description.SetDefault("太野蛮了。");
+            // DisplayName.SetDefault("克鲁西斯狂暴Ⅱ");
+            // Description.SetDefault("太野蛮了。");
         }
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetDamage(DamageClass.Generic) += 1f;
             player.arrowDamage += 1f;
             player.bulletDamage += 1f;
-            player.rocketDamage += 1f;
+            player.specialistDamage += 1f;
         }
     }
     public class KluexRage3 : ModBuff
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("克鲁西斯狂暴Ⅲ");
-            Description.SetDefault("野蛮至极！");
+            // DisplayName.SetDefault("克鲁西斯狂暴Ⅲ");
+            // Description.SetDefault("野蛮至极！");
         }
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetDamage(DamageClass.Generic) += 1.5f;
             player.arrowDamage += 1.5f;
             player.bulletDamage += 1.5f;
-            player.rocketDamage += 1.5f;
+            player.specialistDamage += 1.5f;
         }
     }
 }

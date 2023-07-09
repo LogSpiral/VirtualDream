@@ -102,7 +102,7 @@ namespace VirtualDream
         private int iconFrame = 0;
         private byte iconFrameCounter = 0;
         private Texture2D[] icon = new Texture2D[22];
-        private void Main_DrawMenu(On.Terraria.Main.orig_DrawMenu orig, Main self, GameTime gameTime)
+        private void Main_DrawMenu(Terraria.On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
         {
             //以下两行为获取Main.MenuUI的UIState集
             FieldInfo uiStateField = Main.MenuUI.GetType().GetField("_history", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -191,7 +191,7 @@ namespace VirtualDream
                 Filters.Scene["VirtualDream:" + pass.Name] = new Filter(new IllusionScreenShaderData(new Ref<Effect>(effect), pass.Name), EffectPriority.Medium);
                 Filters.Scene["VirtualDream:" + pass.Name].Load();
             }
-            On.Terraria.UI.Chat.ChatManager.DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool += MoreMoreHeart;
+            Terraria.UI.Chat.On_ChatManager.DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool += MoreMoreHeart;
             for (int i = 0; i < icon.Length; i++)
             {
                 icon[i] = GetTexture($"icons/icon_ani_{i}");
@@ -213,7 +213,7 @@ namespace VirtualDream
         /// <param name="maxWidth"></param>
         /// <param name="ignoreColors"></param>
         /// <returns></returns>
-        private Vector2 MoreMoreHeart(On.Terraria.UI.Chat.ChatManager.orig_DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool orig, SpriteBatch spriteBatch, ReLogic.Graphics.DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth, bool ignoreColors)
+        private Vector2 MoreMoreHeart(Terraria.UI.Chat.On_ChatManager.orig_DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool orig, SpriteBatch spriteBatch, ReLogic.Graphics.DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth, bool ignoreColors)
         {
             string date = DateTime.Now.ToShortDateString();
             var data = date.Split('/');
@@ -236,7 +236,7 @@ namespace VirtualDream
         }
         #region TestCodes
         public static byte[] musicBuffer;
-        private void MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer(On.Terraria.Audio.MP3AudioTrack.orig_ReadAheadPutAChunkIntoTheBuffer orig, MP3AudioTrack self)
+        private void MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer(Terraria.Audio.On_MP3AudioTrack.orig_ReadAheadPutAChunkIntoTheBuffer orig, MP3AudioTrack self)
         {
             //if (NPC.AnyNPCs(ModContent.NPCType<AsraNox>()) && Main.gamePaused && Main.audioSystem is LegacyAudioSystem audioSystem)
             //{
@@ -341,7 +341,7 @@ namespace VirtualDream
         //    //}
         //}
 
-        private int UnifiedRandom_Next_int_int(On.Terraria.Utilities.UnifiedRandom.orig_Next_int_int orig, Terraria.Utilities.UnifiedRandom self, int minValue, int maxValue)
+        private int UnifiedRandom_Next_int_int(Terraria.Utilities.On_UnifiedRandom.orig_Next_int_int orig, Terraria.Utilities.UnifiedRandom self, int minValue, int maxValue)
         {
             //var value = orig.Invoke(self, minValue, maxValue);
             ////List<int> myList = new List<int>();
@@ -378,7 +378,7 @@ namespace VirtualDream
             return orig.Invoke(self, minValue, maxValue);
         }
 
-        private int UnifiedRandom_Next_int(On.Terraria.Utilities.UnifiedRandom.orig_Next_int orig, Terraria.Utilities.UnifiedRandom self, int maxValue)
+        private int UnifiedRandom_Next_int(Terraria.Utilities.On_UnifiedRandom.orig_Next_int orig, Terraria.Utilities.UnifiedRandom self, int maxValue)
         {
             var value = orig.Invoke(self, maxValue);
             return value;// >= maxValue / 2 ? maxValue - 1 : 0

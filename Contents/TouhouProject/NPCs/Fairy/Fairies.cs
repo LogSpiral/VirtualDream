@@ -1,6 +1,7 @@
 ﻿using LogSpiralLibrary;
 using System;
 using System.Collections.Generic;
+using Terraria;
 
 using Terraria.ID;
 
@@ -276,7 +277,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy //基类
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault(projName);
+            // DisplayName.SetDefault(projName);
         }
         public override void SetDefaults()
         {
@@ -1365,7 +1366,7 @@ namespace VirtualDream.Contents.TouhouProject.NPCs.Fairy//弹幕类
             }
             Alpha = value;
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             if ((int)projectile.ai[1] == 2)
             {

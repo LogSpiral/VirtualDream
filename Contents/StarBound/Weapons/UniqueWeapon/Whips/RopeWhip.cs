@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
 {
@@ -12,8 +13,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         }
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("比皮革更强，没有理由。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("绳鞭");
+            // Tooltip.SetDefault("比皮革更强，没有理由。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("绳鞭");
         }
         public Item item => Item;
         public override bool AltFunctionUse(Player player)
@@ -56,8 +57,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("比皮革更强，没有理由。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("绳鞭EX");
+            // Tooltip.SetDefault("比皮革更强，没有理由。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("绳鞭EX");
         }
         public override void AddRecipes()
         {
@@ -85,7 +86,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             rangeMultiplier *= this.UpgradeValue(1.25f, 1.5f, 1f);
         }
         public override int DustType => MyDustId.Brown;
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
         }

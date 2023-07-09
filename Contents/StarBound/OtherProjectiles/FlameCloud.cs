@@ -1,4 +1,5 @@
-﻿using VirtualDream.Contents.StarBound.Weapons;
+﻿using Terraria;
+using VirtualDream.Contents.StarBound.Weapons;
 
 namespace VirtualDream.Contents.StarBound.OtherProjectiles
 {
@@ -6,7 +7,7 @@ namespace VirtualDream.Contents.StarBound.OtherProjectiles
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("烈焰");
+            // DisplayName.SetDefault("烈焰");
         }
 
         private Projectile projectile => Projectile;
@@ -48,7 +49,7 @@ namespace VirtualDream.Contents.StarBound.OtherProjectiles
             Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 12, 0, projectile.frame), Color.White with { A = 0 } * (60f - projectile.timeLeft).HillFactor2(1), projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f / new Vector2(1f, 12f), 2f, 0, 0);
             return false;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 5;
             target.AddBuff(Terraria.ID.BuffID.OnFire, 600);

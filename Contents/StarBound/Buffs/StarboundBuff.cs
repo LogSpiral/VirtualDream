@@ -6,8 +6,8 @@ namespace VirtualDream.Contents.StarBound.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("剧毒Ⅰ");
-            Description.SetDefault("你的生命正在以百分比的形式下降。这意味着你的血量和防御再怎么高也没有意义。幸运的是，怪物和boss也是这样。祝你好运。HELL TO YOU");
+            // DisplayName.SetDefault("剧毒Ⅰ");
+            // Description.SetDefault("你的生命正在以百分比的形式下降。这意味着你的血量和防御再怎么高也没有意义。幸运的是，怪物和boss也是这样。祝你好运。HELL TO YOU");
         }
 
         // 注意这里我们选择的是对Player生效的Update，另一个是对NPC生效的Update
@@ -36,8 +36,8 @@ namespace VirtualDream.Contents.StarBound.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("剧毒Ⅱ");
-            Description.SetDefault("你的生命正在以百分比的形式下降。这意味着你的血量和防御再怎么高也没有意义。幸运的是，怪物和boss也是这样。祝你好运。HELL TO YOU");
+            // DisplayName.SetDefault("剧毒Ⅱ");
+            // Description.SetDefault("你的生命正在以百分比的形式下降。这意味着你的血量和防御再怎么高也没有意义。幸运的是，怪物和boss也是这样。祝你好运。HELL TO YOU");
         }
 
         // 注意这里我们选择的是对Player生效的Update，另一个是对NPC生效的Update
@@ -67,8 +67,8 @@ namespace VirtualDream.Contents.StarBound.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("剧毒Ⅲ");
-            Description.SetDefault("你的生命正在以百分比的形式下降。这意味着你的血量和防御再怎么高也没有意义。幸运的是，怪物和boss也是这样。祝你好运。HELL TO YOU");
+            // DisplayName.SetDefault("剧毒Ⅲ");
+            // Description.SetDefault("你的生命正在以百分比的形式下降。这意味着你的血量和防御再怎么高也没有意义。幸运的是，怪物和boss也是这样。祝你好运。HELL TO YOU");
         }
 
         // 注意这里我们选择的是对Player生效的Update，另一个是对NPC生效的Update
@@ -98,8 +98,8 @@ namespace VirtualDream.Contents.StarBound.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("霜冻之矢");
-            Description.SetDefault("刺骨凌冽的寒风");
+            // DisplayName.SetDefault("霜冻之矢");
+            // Description.SetDefault("刺骨凌冽的寒风");
         }
 
         // 注意这里我们选择的是对Player生效的Update，另一个是对NPC生效的Update
@@ -130,8 +130,8 @@ namespace VirtualDream.Contents.StarBound.Buffs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("青电之矢");
-            Description.SetDefault("这是触电一般的感觉...别和其他人挨得太近了。");
+            // DisplayName.SetDefault("青电之矢");
+            // Description.SetDefault("这是触电一般的感觉...别和其他人挨得太近了。");
         }
 
         // 注意这里我们选择的是对Player生效的Update，另一个是对NPC生效的Update

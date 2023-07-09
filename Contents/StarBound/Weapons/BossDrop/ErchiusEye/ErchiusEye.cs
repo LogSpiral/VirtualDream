@@ -1,5 +1,6 @@
 ﻿using LogSpiralLibrary;
 using System;
+using Terraria;
 
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,8 +12,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源之眼");
-            Tooltip.SetDefault("能源恐怖的眼睛，专注于你的敌人。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("能源之眼");
+            // Tooltip.SetDefault("能源恐怖的眼睛，专注于你的敌人。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         //{
@@ -108,8 +109,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         //public override int crystalCount => base.crystalCount + 3;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源之眼EX");
-            Tooltip.SetDefault("能源恐怖的眼睛，专注于你的敌人。\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("能源之眼EX");
+            // Tooltip.SetDefault("能源恐怖的眼睛，专注于你的敌人。\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
 
         public override void SetDefaults()
@@ -147,8 +148,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override WeaponState State => WeaponState.False_UL;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源之眼DL");
-            Tooltip.SetDefault("能源恐怖的眼睛，专注于你的敌人。\n死亡激光(DeathLaser)\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("能源之眼DL");
+            // Tooltip.SetDefault("能源恐怖的眼睛，专注于你的敌人。\n死亡激光(DeathLaser)\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -297,7 +298,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             var factor = 2 * (Factor - 0.5f);
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), ShootCenter, ShootCenter + Projectile.velocity * factor * 1024f, 18 * factor, ref point);
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
             target.immune[Projectile.owner] = this.UpgradeValue(5, 3, 1);
@@ -307,7 +308,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源水晶块");
+            // DisplayName.SetDefault("能源水晶块");
         }
         public override void SetDefaults()
         {

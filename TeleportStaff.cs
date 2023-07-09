@@ -6,8 +6,8 @@ namespace VirtualDream
         public override string Texture => "Terraria/Images/Item_" + ItemID.RubyStaff;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("传送法杖");
-            Tooltip.SetDefault("走你\n右键进入子世界_时之风");
+            // DisplayName.SetDefault("传送法杖");
+            // Tooltip.SetDefault("走你\n右键进入子世界_时之风");
         }
         Item item => Item;
         public override void SetDefaults()

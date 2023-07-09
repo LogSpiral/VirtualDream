@@ -1,4 +1,5 @@
 ﻿using LogSpiralLibrary;
+using Terraria;
 using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
@@ -847,8 +848,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("彩虹色的剑刃锋利到能够劈开空间\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("天文军刀豪华版");
+            // Tooltip.SetDefault("彩虹色的剑刃锋利到能够劈开空间\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("天文军刀豪华版");
         }
         public Item item => Item;
         public override void SetDefaults()
@@ -894,8 +895,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("彩虹色的剑刃锋利到能够劈开空间\n破碎吧，属于空间的秩序\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//\n[c / 9933cc: X:cos(3T) * sin((5T) + 5) Y: sin(3T) * sin((5T) + 5)]
-            DisplayName.SetDefault("天文军刀豪华版EX");
+            // Tooltip.SetDefault("彩虹色的剑刃锋利到能够劈开空间\n破碎吧，属于空间的秩序\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//\n[c / 9933cc: X:cos(3T) * sin((5T) + 5) Y: sin(3T) * sin((5T) + 5)]
+            // DisplayName.SetDefault("天文军刀豪华版EX");
         }
         public override void SetDefaults()
         {
@@ -915,8 +916,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override WeaponState State => WeaponState.True;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("源生纯粹七元霓辉空间水晶所铸造的利刃，也许它是斩断了空间逃离了原本的世界来到这里？\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//\n[c / 9933cc: X:cos(3T) * sin((5T) + 5) Y: sin(3T) * sin((5T) + 5)]
-            DisplayName.SetDefault("天文军刀CSM");
+            // Tooltip.SetDefault("源生纯粹七元霓辉空间水晶所铸造的利刃，也许它是斩断了空间逃离了原本的世界来到这里？\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//\n[c / 9933cc: X:cos(3T) * sin((5T) + 5) Y: sin(3T) * sin((5T) + 5)]
+            // DisplayName.SetDefault("天文军刀CSM");
         }
         public override void SetDefaults()
         {
@@ -928,7 +929,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     public class AsuterosaberuDXProj : BossDrop.SolusKatana.SolusKatanaProj
     {
         public override Texture2D HeatMap => LogSpiralLibraryMod.HeatMap[1].Value;
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = (controlState == 2 || Projectile.ai[1] > 0) ? this.UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
             base.OnHitNPC(target, damage, knockback, crit);
@@ -950,7 +951,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("天文军刀豪华版");
+            // DisplayName.SetDefault("天文军刀豪华版");
         }
         public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap)
         {
@@ -969,7 +970,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("星辉裂空");
+            // DisplayName.SetDefault("星辉裂空");
         }
         Projectile projectile => Projectile;
         public override bool PreDraw(ref Color lightColor)
@@ -1107,7 +1108,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override bool ShouldUpdatePosition() => false;
         int state => (int)projectile.ai[1];
         NPC target => projectile.frame == 0 ? null : Main.npc[projectile.frame - 1];
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 3;
             base.OnHitNPC(target, damage, knockback, crit);

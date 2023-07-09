@@ -1,4 +1,5 @@
 ﻿using System;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.Buffs;
@@ -10,8 +11,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("强大的死亡主宰的断腿。这可以作为一个强大的武器。\n[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("死亡主宰爪");
+            // Tooltip.SetDefault("强大的死亡主宰的断腿。这可以作为一个强大的武器。\n[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("死亡主宰爪");
         }
         public Item item => Item;
 
@@ -57,8 +58,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("强大的死亡主宰的断腿。这可以作为一个强大的武器。\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("死亡主宰爪EX");
+            // Tooltip.SetDefault("强大的死亡主宰的断腿。这可以作为一个强大的武器。\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("死亡主宰爪EX");
         }
         public override void SetDefaults()
         {
@@ -73,8 +74,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         public override WeaponState State => WeaponState.False_UL;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("强大的死亡主宰的断腿。这可以作为一个强大的武器。\n它的刀刃上附着着高度的剧毒\n[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("死亡主宰爪HT");
+            // Tooltip.SetDefault("强大的死亡主宰的断腿。这可以作为一个强大的武器。\n它的刀刃上附着着高度的剧毒\n[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("死亡主宰爪HT");
         }
 
         public override void SetDefaults()
@@ -178,7 +179,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             //}
             base.Kill(timeLeft);
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
             if (controlState == 2 && Player.CheckMana(this.UpgradeValue(20, 30, 50), true))

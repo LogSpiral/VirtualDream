@@ -1,4 +1,4 @@
-using Terraria.ID;
+﻿using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream.Contents.StarBound.Materials
@@ -18,16 +18,18 @@ namespace VirtualDream.Contents.StarBound.Materials
             Main.tileMergeDirt[Type] = true;
             Main.tileSolid[Type] = true;
             Main.tileBlockLight[Type] = true;
-            ModTranslation name = CreateMapEntryName();
+            var name = CreateMapEntryName();
 
             int type = 0;
             string typeName = "着真逝个好物块冥";
             Color color = Color.White;
             GetInfo(ref type, ref typeName, ref color);
-            name.SetDefault(typeName);
+            //name.SetDefault(typeName);
+            //name = new Terraria.Localization.LocalizedText(typeName);
             AddMapEntry(color, name);
             DustType = 84;
-            ItemDrop = type;
+            //TODO 矿石名字
+            //ItemDrop/* tModPorter Note: Removed. Tiles and walls will drop the item which places them automatically. Use RegisterItemDrop to alter the automatic drop if necessary. */ = type;
             HitSound = SoundID.Tink;
             //SoundStyle = 1;
             MineResist = 6f;

@@ -217,8 +217,8 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons.PhilosopherStone
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("月之石");
-            Tooltip.SetDefault("使用月元素魔法程度的能力\n\"明明如月，何时可掇？\"\n月符「沉静的月神」");
+            // DisplayName.SetDefault("月之石");
+            // Tooltip.SetDefault("使用月元素魔法程度的能力\n\"明明如月，何时可掇？\"\n月符「沉静的月神」");
         }
         public override bool CanUseItem(Player player)
         {
@@ -260,7 +260,7 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons.PhilosopherStone
     public class Gem_0Proj : ModProjectile
     {
         Projectile projectile => Projectile;
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             projectile.localNPCImmunity[target.whoAmI] = -1;
             target.immune[projectile.owner] = 5;
@@ -413,8 +413,8 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons.PhilosopherStone
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("金之石");
-            Tooltip.SetDefault("控制金元素魔法程度的能力\n\"精诚所至,金石为开。\"\n金符「金属疲劳」");
+            // DisplayName.SetDefault("金之石");
+            // Tooltip.SetDefault("控制金元素魔法程度的能力\n\"精诚所至,金石为开。\"\n金符「金属疲劳」");
         }
         Item item => Item;
 

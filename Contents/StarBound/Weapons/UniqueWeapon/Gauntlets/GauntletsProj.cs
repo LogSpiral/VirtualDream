@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 using static Terraria.Utils;
 
@@ -106,7 +107,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             return owner.Center + Offset * new Vector2(owner.direction, 1);
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.whoAmI] = owner.itemAnimationMax / 4;//3
             if (target.CanBeChasedBy())
@@ -161,7 +162,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("打拳辣");
+            // DisplayName.SetDefault("打拳辣");
         }
         public virtual Vector2 hitBox => new Vector2(32);
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -212,8 +213,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("拳击手套");
-            Tooltip.SetDefault("现在你可以成为一个竞争者\n终结技：崩拳");
+            // DisplayName.SetDefault("拳击手套");
+            // Tooltip.SetDefault("现在你可以成为一个竞争者\n终结技：崩拳");
         }
     }
     public class Gauntlet : Gauntlets
@@ -226,8 +227,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("决斗拳套");
-            Tooltip.SetDefault("按Q发起一场决斗\n终结技：升龙拳");
+            // DisplayName.SetDefault("决斗拳套");
+            // Tooltip.SetDefault("按Q发起一场决斗\n终结技：升龙拳");
         }
     }
     public class StunGlove : Gauntlets
@@ -238,8 +239,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("电击拳套");
-            Tooltip.SetDefault("非常有效。\n终结技：雷光爪");
+            // DisplayName.SetDefault("电击拳套");
+            // Tooltip.SetDefault("非常有效。\n终结技：雷光爪");
         }
     }
     public class VineFist : Gauntlets
@@ -250,8 +251,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("藤蔓拳套");
-            Tooltip.SetDefault("释放自然的力量。\n终结技：鞭藤");
+            // DisplayName.SetDefault("藤蔓拳套");
+            // Tooltip.SetDefault("释放自然的力量。\n终结技：鞭藤");
         }
     }
     public class ClawGlove : Gauntlets
@@ -264,8 +265,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("狼爪");
-            Tooltip.SetDefault("不够坚硬，但依然很酷。\n终结技：疾冲裂伤");
+            // DisplayName.SetDefault("狼爪");
+            // Tooltip.SetDefault("不够坚硬，但依然很酷。\n终结技：疾冲裂伤");
         }
     }
     public class SupernovaGauntlet : Gauntlets
@@ -279,13 +280,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("超新星护手");
-            Tooltip.SetDefault("具有一颗超新星力量的手套。\n终结技：突进");
+            // DisplayName.SetDefault("超新星护手");
+            // Tooltip.SetDefault("具有一颗超新星力量的手套。\n终结技：突进");
         }
     }
     public class BoxingGloveProj : GauntletsProj
     {
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             CombatText.NewText(target.Hitbox, Color.Lerp(Color.Red, Color.Yellow, Main.rand.NextFloat(0, 1)), "欧拉！", true, true);
             //base.OnHitNPC(target, damage, knockback, crit);
@@ -316,18 +317,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         public override Vector2 hitBox => WhenSA ? new Vector2(64) : base.hitBox;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("拳击手套");
+            // DisplayName.SetDefault("拳击手套");
         }
     }
     public class GauntletProj : GauntletsProj
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("决斗拳套");
+            // DisplayName.SetDefault("决斗拳套");
         }
         public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "uppercutswoosh"), 4) : base.SwooshTex;
         public override Vector2 hitBox => WhenSA ? new Vector2(80) : base.hitBox;
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
             if (WhenSA && target.CanBeChasedBy()) target.velocity.Y -= 16;
@@ -341,7 +342,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("电击拳套");
+            // DisplayName.SetDefault("电击拳套");
         }
         public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "thunderpunchswoosh"), 4) : (VirtualDreamMod.GetTexture(GaunletsPath + "electricswoosh"), 4);
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -369,7 +370,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("藤蔓拳套");
+            // DisplayName.SetDefault("藤蔓拳套");
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -424,7 +425,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             return false;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<Buffs.ToxicⅠ>(), 30);
             target.AddBuff(BuffID.Poisoned, 30);
@@ -438,7 +439,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         public override float swooshSize => 2.5f;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("狼爪");
+            // DisplayName.SetDefault("狼爪");
         }
         public override void SpecialAttack()
         {
@@ -454,7 +455,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         //public override float swooshSize => base.swooshSize;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("超新星护手");
+            // DisplayName.SetDefault("超新星护手");
         }
         public override void SpecialAttack()
         {

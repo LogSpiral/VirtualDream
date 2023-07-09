@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using System;
@@ -13,8 +14,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("日炎刀");
-            Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//由阿斯拉诺克斯造的是初版，后来她开源了......我的意思是，她公布了制作方法，方法很简单:搜集好材料然后怼到秘银砧上面(
+            // DisplayName.SetDefault("日炎刀");
+            // Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//由阿斯拉诺克斯造的是初版，后来她开源了......我的意思是，她公布了制作方法，方法很简单:搜集好材料然后怼到秘银砧上面(
 
         }
         //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
@@ -88,7 +89,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         //    return true;
         //}
         public override bool AltFunctionUse(Player player) => true;
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
 
             target.AddBuff(BuffID.OnFire, 150);
@@ -114,8 +115,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("日炎刀EX");
+            // Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("日炎刀EX");
         }
         //public override void UseStyle(Player player)
         //{
@@ -186,8 +187,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯化日炎刀与绝唱机甲日炎刀交汇的辉光，请确保你能驾驭它的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//二次强化的日炎刀，是由阿斯拉诺克斯制造的吗？\n
-            DisplayName.SetDefault("日炎刀NEO");
+            // Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯化日炎刀与绝唱机甲日炎刀交汇的辉光，请确保你能驾驭它的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//二次强化的日炎刀，是由阿斯拉诺克斯制造的吗？\n
+            // DisplayName.SetDefault("日炎刀NEO");
         }
         public override void SetDefaults()
         {
@@ -250,7 +251,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             //}
             return true;
         }
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire, 450);
             target.AddBuff(BuffID.Daybreak, 450);
@@ -706,9 +707,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         }
         public virtual bool DrawLaserFire => this.UpgradeValue(false, true, true);
         public float swooshTimeLeft => 30;
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
             target.AddBuff(BuffID.OnFire, controlState == 2 ? 750 : 450);
             target.AddBuff(BuffID.Daybreak, controlState == 2 ? 750 : 450);
             target.immune[Projectile.owner] = (controlState == 2 || Projectile.ai[1] > 0) ? this.UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
@@ -733,7 +734,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailingMode[projectile.type] = 0;
-            DisplayName.SetDefault("日炎能量飞刀");
+            // DisplayName.SetDefault("日炎能量飞刀");
         }
 
         public override void SetDefaults()
@@ -1059,7 +1060,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             return false;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire, 150);
             target.AddBuff(BuffID.Daybreak, 150);
@@ -1069,7 +1070,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 projectile.timeLeft = 31;
                 //projectile.damage = 0;
             }
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
             //else 
             //{
             //    Main.NewText(projectile.penetrate);

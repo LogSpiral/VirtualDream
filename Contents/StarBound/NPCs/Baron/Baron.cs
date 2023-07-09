@@ -1,4 +1,5 @@
-using System.Linq;
+﻿using System.Linq;
+using Terraria;
 using Terraria.ID;
 using Terraria.GameContent.Bestiary;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
             };
 
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-            DisplayName.SetDefault("拜隆先生");
+            // DisplayName.SetDefault("拜隆先生");
             //// Set Example Person's biome and neighbor preferences with the NPCHappiness hook. You can add happiness text and remarks with localization (See an example in ExampleMod/Localization/en-US.lang).
             //// NOTE: The following code uses chaining - a style that works due to the fact that the SetXAffection methods return the same NPCHappiness instance they're called on.
             //NPC.Happiness
@@ -95,7 +96,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
         //    return true;
         //}
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             //int num = NPC.life > 0 ? 1 : 5;
 
@@ -105,7 +106,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
             //}
         }
 
-        public override bool CanTownNPCSpawn(int numTownNPCs, int money)
+        public override bool CanTownNPCSpawn(int numTownNPCs)/* tModPorter Suggestion: Copy the implementation of NPC.SpawnAllowed_Merchant in vanilla if you to count money, and be sure to set a flag when unlocked, so you don't count every tick. */
         { // Requirements for the town NPC to spawn.
             for (int k = 0; k < 255; k++)
             {
@@ -320,7 +321,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
             button2 = "你想听点别的东西？";
         }
 
-        public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+        public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
             var str = "yee";
             if (firstButton)

@@ -22,8 +22,8 @@ namespace VirtualDream.Contents.StarBound.Materials
             string ItemName = "我抄居然被你发现材料的默认名了";
             string Description = "我抄居然被你发现材料的默认描述了";
             GetName(ref ItemName, ref Description);
-            DisplayName.SetDefault(ItemName);
-            Tooltip.SetDefault(Description);
+            // DisplayName.SetDefault(ItemName);
+            // Tooltip.SetDefault(Description);
         }
         public virtual void GetName(ref string ItemName, ref string Description)
         {
@@ -266,8 +266,8 @@ namespace VirtualDream.Contents.StarBound.Materials
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("远古精华");
-            Tooltip.SetDefault("有着极为强大的能量。");
+            // DisplayName.SetDefault("远古精华");
+            // Tooltip.SetDefault("有着极为强大的能量。");
         }
     }
 }

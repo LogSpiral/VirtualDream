@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
@@ -7,8 +8,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("冷冻飞镖");
-            Tooltip.SetDefault("一个寒冷的飞镖与冰冻核心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("冷冻飞镖");
+            // Tooltip.SetDefault("一个寒冷的飞镖与冰冻核心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -33,8 +34,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("冷冻飞镖EX");
-            Tooltip.SetDefault("一个寒冷的飞镖与冰冻核心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("冷冻飞镖EX");
+            // Tooltip.SetDefault("一个寒冷的飞镖与冰冻核心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override WeaponState State => WeaponState.False_EX;
 
@@ -54,7 +55,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
     }
     public class FrozenBoomerangProj : BoomerangBaseProj 
     {
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
         }

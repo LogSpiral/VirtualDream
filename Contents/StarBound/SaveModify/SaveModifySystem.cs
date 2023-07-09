@@ -117,7 +117,9 @@ namespace VirtualDream.Contents.StarBound.SaveModify
         public static TagCompound NPCData(NPC npc)
         {
             var result = new TagCompound();
-            if (npc.type <= Main.maxNPCTypes)
+            //TODO 用了新的检测原版npc的方式
+            //原先是判定type
+            if (npc.ModNPC == null)
                 result.Add("type", npc.type);
             else
             {
@@ -146,7 +148,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
         public static TagCompound ProjectileData(Projectile projectile)
         {
             var result = new TagCompound();
-            if (projectile.type <= Main.maxProjectileTypes)
+            if (projectile.ModProjectile == null)
                 result.Add("type", projectile.type);
             else
             {
@@ -372,7 +374,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
 
 
         }
-        public override void OnEnterWorld(Player player)
+        public override void OnEnterWorld()
         {
 
         }

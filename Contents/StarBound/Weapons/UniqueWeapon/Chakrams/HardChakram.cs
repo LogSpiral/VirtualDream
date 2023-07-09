@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
@@ -7,8 +8,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("硬环刃");
-            Tooltip.SetDefault("坚固，沉重，而残忍地有效。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("硬环刃");
+            // Tooltip.SetDefault("坚固，沉重，而残忍地有效。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -39,8 +40,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("硬环刃EX");
-            Tooltip.SetDefault("坚固，沉重，而残忍地有效。\n沉重到能够轻易地击飞对方。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("硬环刃EX");
+            // Tooltip.SetDefault("坚固，沉重，而残忍地有效。\n沉重到能够轻易地击飞对方。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -91,7 +92,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             else
                 base.AI();
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
             if (target.CanBeChasedBy()) 

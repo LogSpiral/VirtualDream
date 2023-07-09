@@ -27,7 +27,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         public int[] indexOfProjector = new int[] { -1, -1, -1, -1 };
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("大猿人");
+            // DisplayName.SetDefault("大猿人");
             NPCID.Sets.MustAlwaysDraw[npc.type] = true;
         }
         public override void SetDefaults()
@@ -1567,7 +1567,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         //}
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("大猿人投影仪");
+            // DisplayName.SetDefault("大猿人投影仪");
         }
         public override void SetDefaults()
         {
@@ -1586,7 +1586,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 npc.buffImmune[i] = true;
             }
         }
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             if (npc.life <= 0)
             {
@@ -1688,7 +1688,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             return PreDraw(Main.spriteBatch, lightColor);
         }
         public Texture2D projTex => TextureAssets.Projectile[projectile.type].Value;
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immuneTime = 10;
         }
@@ -1712,7 +1712,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("激光匕首");
+            // DisplayName.SetDefault("激光匕首");
         }
         public override void Kill(int timeLeft)
         {
@@ -1995,7 +1995,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("大猿人导弹");
+            // DisplayName.SetDefault("大猿人导弹");
         }
         public override bool PreKill(int timeLeft)
         {
@@ -2144,7 +2144,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("大猿人导弹");
+            // DisplayName.SetDefault("大猿人导弹");
         }
         public override void SetDefaults()
         {
@@ -2157,7 +2157,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.tileCollide = false;
             projectile.ignoreWater = true;
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immuneTime = 8;
         }
@@ -2199,7 +2199,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         private Vector2 spawnPos;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能量拳");
+            // DisplayName.SetDefault("能量拳");
         }
         public override void Kill(int timeLeft)
         {
@@ -2473,7 +2473,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能量光团");
+            // DisplayName.SetDefault("能量光团");
         }
         public override void SetDefaults()
         {
@@ -2557,7 +2557,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("光之匕首");
+            // DisplayName.SetDefault("光之匕首");
         }
         public override void SetDefaults()
         {
@@ -2722,7 +2722,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         public override string Texture => "VirtualDream/" + ApePath + "LightDagger";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("光之匕首");
+            // DisplayName.SetDefault("光之匕首");
         }
         public float attackFac => MathHelper.Clamp(300 - Math.Abs(300 - projectile.timeLeft), 0, 120) / 120f;
         public bool attackAble => projectile.timeLeft >= 120 && projectile.timeLeft <= 480;
@@ -2854,7 +2854,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("超立方体");
+            // DisplayName.SetDefault("超立方体");
         }
         public override void SetDefaults()
         {
@@ -3316,8 +3316,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         //public VertexTriangle3_RigidList vt3rl;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("召唤 大猿人");//测试物品\n消灭鼠标附近4格以内的NPC
-            DisplayName.SetDefault("草莓水晶");
+            // Tooltip.SetDefault("召唤 大猿人");//测试物品\n消灭鼠标附近4格以内的NPC
+            // DisplayName.SetDefault("草莓水晶");
         }
         //public readonly static Vector4[] vertexs = new Vector4[16];
         public StrawberryCrystal()
@@ -3856,7 +3856,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("十字激光");
+            // DisplayName.SetDefault("十字激光");
         }
     }
     public class StrawberryLaser : BigApeProj
@@ -3931,7 +3931,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("四次元阳离子激光");
+            // DisplayName.SetDefault("四次元阳离子激光");
         }
         public override void SetDefaults()
         {
@@ -4216,7 +4216,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("十字激光");
+            // DisplayName.SetDefault("十字激光");
         }
     }
     public enum BigApeEyeMode
@@ -4300,7 +4300,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         public Texture2D VectorTex => TextureAssets.Projectile[projectile.type].Value;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("大猿人向量场");
+            // DisplayName.SetDefault("大猿人向量场");
         }
         public override void SetDefaults()
         {
@@ -4499,7 +4499,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("向量场锥刺");
+            // DisplayName.SetDefault("向量场锥刺");
         }
         public override void SetDefaults()
         {

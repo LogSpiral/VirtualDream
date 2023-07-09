@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
@@ -7,8 +8,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("月镖");
-            Tooltip.SetDefault("那不是月亮。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("月镖");
+            // Tooltip.SetDefault("那不是月亮。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
 
         public override void SetDefaults()
@@ -34,8 +35,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("月镖EX");
-            Tooltip.SetDefault("那不是月亮。\n碎月\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("月镖EX");
+            // Tooltip.SetDefault("那不是月亮。\n碎月\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override WeaponState State => WeaponState.False_EX;
 
@@ -53,7 +54,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
     }
     public class LunarangProj : BoomerangBaseProj 
     {
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
         }

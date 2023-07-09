@@ -34,7 +34,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.IsAWhip[Type] = true;
-            DisplayName.SetDefault("鞭");
+            // DisplayName.SetDefault("鞭");
         }
         public virtual void WhipSettings(ref int segments, ref float rangeMultiplier) { }
         public override void SetDefaults()

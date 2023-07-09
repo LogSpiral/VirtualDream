@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using System;
 using Terraria.DataStructures;
 
@@ -13,8 +14,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
         public Item item => Item;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("着蒸逝铬好冥自");
-            Tooltip.SetDefault("着蒸逝铬好苗竖");
+            // DisplayName.SetDefault("着蒸逝铬好冥自");
+            // Tooltip.SetDefault("着蒸逝铬好苗竖");
         }
         public override void SetDefaults()
         {
@@ -48,7 +49,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
         public Projectile projectile => Projectile;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("着蒸逝铬好冥自");
+            // DisplayName.SetDefault("着蒸逝铬好冥自");
         }
 
         public override void SetDefaults()
@@ -97,7 +98,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             projectile.timeLeft = 150;
             return false;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 3;
             projectile.timeLeft = 150;

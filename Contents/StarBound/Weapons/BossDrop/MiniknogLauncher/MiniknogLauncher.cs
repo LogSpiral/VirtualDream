@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.DataStructures;
 using System;
 using LogSpiralLibrary;
@@ -10,8 +11,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("科技发展部发射器");
-            Tooltip.SetDefault("微型导弹发射器，由科技发展部的顶级科学家开发。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("科技发展部发射器");
+            // Tooltip.SetDefault("微型导弹发射器，由科技发展部的顶级科学家开发。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         //{
@@ -140,8 +141,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("科技发展部发射器EX");
-            Tooltip.SetDefault("微型导弹发射器，由科技发展部的顶级科学家开发。\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("科技发展部发射器EX");
+            // Tooltip.SetDefault("微型导弹发射器，由科技发展部的顶级科学家开发。\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -239,8 +240,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         public override WeaponState State => WeaponState.False_UL;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("科技发展部发射器LT");
-            Tooltip.SetDefault("微型导弹发射器，由科技发展部的顶级科学家开发。\n极限科技(LimitTechnology)\n你以为是大猿人用tr的奇妙科技造的？其实是由河童工程师改造的(\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("科技发展部发射器LT");
+            // Tooltip.SetDefault("微型导弹发射器，由科技发展部的顶级科学家开发。\n极限科技(LimitTechnology)\n你以为是大猿人用tr的奇妙科技造的？其实是由河童工程师改造的(\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -552,7 +553,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("科技发展部导弹");
+            // DisplayName.SetDefault("科技发展部导弹");
         }
         public override bool PreKill(int timeLeft)
         {
@@ -563,7 +564,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         {
             Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), projectile.Center, Main.rand.NextVector2Unit() * 16, projectile.type, projectile.damage / 2, 5f, projectile.owner, 4);
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 0;
             if ((int)projectile.ai[0] == 3 || (int)projectile.ai[0] == 8)
@@ -571,9 +572,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                 target.AddBuff(44, 300);
                 target.AddBuff(189, 300);
             }
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immuneTime = 0;
             if ((int)projectile.ai[0] == 3 || (int)projectile.ai[0] == 8)

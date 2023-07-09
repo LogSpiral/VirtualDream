@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.DataStructures;
 using VirtualDream.Contents.StarBound.Buffs;
 
@@ -8,8 +9,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("一根由纯能量制成的鞭子，裂开吧！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("鲁卡恩的能量鞭");
+            // Tooltip.SetDefault("一根由纯能量制成的鞭子，裂开吧！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("鲁卡恩的能量鞭");
         }
         public override void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime)
         {
@@ -60,8 +61,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("一根由纯能量制成的鞭子，裂开吧！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("鲁卡恩的能量鞭");
+            // Tooltip.SetDefault("一根由纯能量制成的鞭子，裂开吧！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("鲁卡恩的能量鞭");
         }
         public override void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime)
         {
@@ -95,7 +96,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             if (Player.altFunctionUse == 2) rangeMultiplier *= 1.5f;
             rangeMultiplier *= this.UpgradeValue(1.25f, 1.5f, 1f);
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<Electrified>(), 180);
         }
@@ -127,7 +128,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("鲁卡恩能量珠");
+            // DisplayName.SetDefault("鲁卡恩能量珠");
             Main.projFrames[projectile.type] = 11;
         }
         Projectile projectile => Projectile;
@@ -155,7 +156,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             projectile.velocity *= 0.925f;
             projectile.alpha = 255 - (int)((1 - projectile.timeLeft / 60f).HillFactor2() * 255);
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 5;
             base.OnHitNPC(target, damage, knockback, crit);

@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 using Terraria.DataStructures;
 
@@ -8,8 +9,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("锯环刃");
-            Tooltip.SetDefault("遵循圣律的伐木僧们最喜欢的武器。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("锯环刃");
+            // Tooltip.SetDefault("遵循圣律的伐木僧们最喜欢的武器。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -42,8 +43,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("锯环刃EX");
-            Tooltip.SetDefault("遵循圣律的伐木僧们最喜欢的武器。\n就用这个锯下那最没用的珍珠木吧。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("锯环刃EX");
+            // Tooltip.SetDefault("遵循圣律的伐木僧们最喜欢的武器。\n就用这个锯下那最没用的珍珠木吧。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -79,7 +80,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
                 }
             }
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             var unit = projectile.rotation.ToRotationVector2();
             for (int n = 0; n < 4; n++)

@@ -1,4 +1,5 @@
 ﻿using System;
+using Terraria;
 
 using Terraria.ID;
 
@@ -11,7 +12,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("雷羽鸟妖");
+            // DisplayName.SetDefault("雷羽鸟妖");
             Main.npcFrameCount[npc.type] = 6;
         }
 
@@ -320,7 +321,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
                 npc.frame.Y = 0;
             }
         }
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             int num5;
             for (int i = 0; i < 10; i++)
@@ -330,9 +331,9 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             if (npc.life > 0)
             {
                 int num725 = 0;
-                while (num725 < damage / npc.lifeMax * 100.0)
+                while (num725 < hit.Damage / npc.lifeMax * 100.0)
                 {
-                    Dust.NewDust(npc.position, npc.width, npc.height, 5, hitDirection, -1f, 0, default, 1f);
+                    Dust.NewDust(npc.position, npc.width, npc.height, 5, hit.HitDirection, -1f, 0, default, 1f);
                     num5 = num725;
                     num725 = num5 + 1;
                 }
@@ -340,7 +341,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             }
             for (int num726 = 0; num726 < 50; num726 = num5 + 1)
             {
-                Dust.NewDust(npc.position, npc.width, npc.height, 5, 2 * hitDirection, -2f, 0, default, 1f);
+                Dust.NewDust(npc.position, npc.width, npc.height, 5, 2 * hit.HitDirection, -2f, 0, default, 1f);
                 num5 = num726;
             }
             //Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/ElectricalHarpyWing"), 1f);
@@ -353,7 +354,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
         private Projectile projectile => Projectile;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("雷霆羽刃");
+            // DisplayName.SetDefault("雷霆羽刃");
         }
         public override void SetDefaults()
         {
@@ -367,7 +368,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             projectile.tileCollide = false;
             projectile.ignoreWater = true;
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immuneTime = 15;
             target.immune = true;

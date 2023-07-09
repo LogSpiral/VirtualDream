@@ -1,4 +1,5 @@
 ﻿using System;
+using Terraria;
 using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
@@ -8,8 +9,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("新型环刃");
-            Tooltip.SetDefault("毁灭性的能量正发出噼啪声。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("新型环刃");
+            // Tooltip.SetDefault("毁灭性的能量正发出噼啪声。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -43,8 +44,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("环刃EX");
-            Tooltip.SetDefault("毁灭性的能量正发出噼啪声。\n锁定目标，光束打击！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("环刃EX");
+            // Tooltip.SetDefault("毁灭性的能量正发出噼啪声。\n锁定目标，光束打击！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override WeaponState State => WeaponState.False_EX;
 
@@ -129,7 +130,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             }
             base.AI();
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 3;
             base.OnHitNPC(target, damage, knockback, crit);

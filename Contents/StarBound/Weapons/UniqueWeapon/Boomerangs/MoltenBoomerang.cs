@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
@@ -7,8 +8,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("火焰飞镖");
-            Tooltip.SetDefault("一个炎热的飞镖与熔火之心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("火焰飞镖");
+            // Tooltip.SetDefault("一个炎热的飞镖与熔火之心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -33,8 +34,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("火焰飞镖EX");
-            Tooltip.SetDefault("一个炎热的飞镖与熔火之心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("火焰飞镖EX");
+            // Tooltip.SetDefault("一个炎热的飞镖与熔火之心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void SetDefaults()
         {
@@ -56,7 +57,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
         {
             base.AI();
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
         }

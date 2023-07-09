@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 
@@ -16,8 +17,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("当你凝视着它的时候，它也许也凝视着你。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("目珠掠夺者");
+            // Tooltip.SetDefault("当你凝视着它的时候，它也许也凝视着你。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("目珠掠夺者");
         }
         public Item item => Item;
 
@@ -63,8 +64,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("当你凝视着它的时候，它也许也凝视着你。\n当你一脸嫌弃看向你的敌人的时候，它也会一脸嫌弃地看着你的猎物。(x\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("目珠掠夺者EX");
+            // Tooltip.SetDefault("当你凝视着它的时候，它也许也凝视着你。\n当你一脸嫌弃看向你的敌人的时候，它也会一脸嫌弃地看着你的猎物。(x\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("目珠掠夺者EX");
         }
         public override void SetDefaults()
         {
@@ -120,7 +121,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             //}
             base.Kill(timeLeft);
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
         }
@@ -187,7 +188,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("裂空之眼");
+            // DisplayName.SetDefault("裂空之眼");
         }
         Projectile projectile => Projectile;
         public override bool PreDraw(ref Color lightColor)
@@ -248,7 +249,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
         }
         public override bool ShouldUpdatePosition() => false;
         int state => (int)projectile.ai[1];
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 10;
             base.OnHitNPC(target, damage, knockback, crit);

@@ -1,6 +1,7 @@
 ﻿using LogSpiralLibrary;
 using System;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
@@ -18,17 +19,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
     public class ErchiusHorror : ModNPC
     {
         private NPC npc => NPC;
-        public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+        public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.Item27, npc.Center);
         }
-        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.Item27, npc.Center);
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源煞魔");
+            // DisplayName.SetDefault("能源煞魔");
             Main.npcFrameCount[npc.type] = 7;
         }
 
@@ -87,26 +88,15 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         private int[] indexOfTinyCrystal = new int[] { -1, -1, -1, -1 };
         private int oldLife;
         private int tinyCrystalTimer;
-        public override void ModifyHitByItem(Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+        public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
         {
             if (Stage == 1 && npc.ai[2] > 0)
             {
-                damage /= 2;
+                modifiers.FinalDamage /= 2;
             }
             else if (Stage == 1 && npc.ai[2] > 0)
             {
-                damage = 0;
-            }
-        }
-        public override void ModifyHitByProjectile(Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
-        {
-            if (Stage == 1 && npc.ai[2] > 0)
-            {
-                damage /= 2;
-            }
-            else if (Stage == 2 && npc.ai[2] > 0)
-            {
-                damage = 0;
+                modifiers.FinalDamage *= 0;
             }
         }
 
@@ -633,7 +623,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源煞魔小型水晶");
+            // DisplayName.SetDefault("能源煞魔小型水晶");
         }
         private NPC ownerNPC => Main.npc[(int)npc.ai[1]];
         //private ErchiusHorror ownerModNPC => (ErchiusHorror)ownerNPC.modNPC;
@@ -651,11 +641,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             npc.lifeMax = 10000; //00
             npc.friendly = false;
         }
-        public override void OnHitByItem(Player player, Item item, int damage, float knockback, bool crit)
+        public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.Item27, npc.Center);
         }
-        public override void OnHitByProjectile(Projectile projectile, int damage, float knockback, bool crit)
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.Item27, npc.Center);
         }
@@ -1006,7 +996,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源煞魔旋转激光");
+            // DisplayName.SetDefault("能源煞魔旋转激光");
         }
         public override void SetDefaults()
         {
@@ -1187,7 +1177,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源煞魔聚合激光");
+            // DisplayName.SetDefault("能源煞魔聚合激光");
         }
         public override void SetDefaults()
         {
@@ -1457,7 +1447,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源煞魔旋转激光");
+            // DisplayName.SetDefault("能源煞魔旋转激光");
         }
         public override void SetDefaults()
         {
@@ -1489,7 +1479,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         private Vector2 baseOfY;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源煞魔平行四边形激光");
+            // DisplayName.SetDefault("能源煞魔平行四边形激光");
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -1849,7 +1839,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源煞魔极限火花");
+            // DisplayName.SetDefault("能源煞魔极限火花");
         }
         public override void SetDefaults()
         {
@@ -2035,7 +2025,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源煞魔小型火花");
+            // DisplayName.SetDefault("能源煞魔小型火花");
         }
         public override void SetDefaults()
         {
@@ -2179,7 +2169,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("能源煞魔激光");
+            // DisplayName.SetDefault("能源煞魔激光");
         }
         public override void SetDefaults()
         {

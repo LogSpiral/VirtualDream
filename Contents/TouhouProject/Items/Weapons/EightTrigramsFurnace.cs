@@ -18,8 +18,8 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("极限状态下甚至能夷平一座山。");//“发射生命解离彩虹”
-            DisplayName.SetDefault("八卦炉");//终极棱镜
+            // Tooltip.SetDefault("极限状态下甚至能夷平一座山。");//“发射生命解离彩虹”
+            // DisplayName.SetDefault("八卦炉");//终极棱镜
         }
         Item item => Item;
 
@@ -338,7 +338,7 @@ namespace VirtualDream.Contents.TouhouProject.Items.Weapons
             Vector2 cen = (vertexInfos[0].Position + vertexInfos[2].Position) * 0.5f;
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), cen, Beta.ToRotationVector2() * 3200f + cen, 96 * (float)Math.Sqrt(MathHelper.Clamp(projectile.ai[0] - 180, 0, 60) / 60f), ref point);
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 0;
         }

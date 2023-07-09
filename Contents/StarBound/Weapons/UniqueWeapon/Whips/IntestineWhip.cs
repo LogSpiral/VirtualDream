@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
 {
@@ -16,8 +17,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
 
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("如果真的以肠子作为鞭子，那可真够恶心的，还好这只是个高仿，攻击怪物时有类似于消化它们的能力(指吸血)。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("肠鞭");
+            // Tooltip.SetDefault("如果真的以肠子作为鞭子，那可真够恶心的，还好这只是个高仿，攻击怪物时有类似于消化它们的能力(指吸血)。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("肠鞭");
         }
         public override bool AltFunctionUse(Player player)
         {
@@ -57,8 +58,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("如果真的以肠子作为鞭子，那可真够恶心的，还好这只是个高仿，攻击怪物时有类似于消化它们的能力(指吸血)。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("肠鞭EX");
+            // Tooltip.SetDefault("如果真的以肠子作为鞭子，那可真够恶心的，还好这只是个高仿，攻击怪物时有类似于消化它们的能力(指吸血)。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("肠鞭EX");
         }
         public override void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime)
         {
@@ -88,7 +89,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             if (Player.altFunctionUse == 2) rangeMultiplier *= 1.5f;
             rangeMultiplier *= this.UpgradeValue(1.25f, 1.5f, 1f);
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             var heal = (int)(damage / 20 * Main.rand.NextFloat(0.85f, 1.15f));
             var realValue = Player.statLife;

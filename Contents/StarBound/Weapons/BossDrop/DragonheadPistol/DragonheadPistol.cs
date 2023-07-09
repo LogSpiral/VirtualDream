@@ -1,5 +1,6 @@
 ﻿using LogSpiralLibrary;
 using System;
+using Terraria;
 //using static VirtualDream.Contents.StarBound.Weapons.BossDrop.UpgradeWeaponExtension;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -16,10 +17,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             base.SetStaticDefaults();
 
             // 这里可以写中文了ヾ(@^▽^@)ノ
-            DisplayName.SetDefault("龙头手枪");
+            // DisplayName.SetDefault("龙头手枪");
 
             // 物品的描述，加入换行符 '\n' 可以多行显示哦
-            Tooltip.SetDefault("一个有急躁脾气的手枪，这里是龙。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // Tooltip.SetDefault("一个有急躁脾气的手枪，这里是龙。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         //private int Time;
         //private int Time1;
@@ -157,10 +158,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             //base.SetStaticDefaults();
 
             // 这里可以写中文了ヾ(@^▽^@)ノ
-            DisplayName.SetDefault("龙头手枪EX");
+            // DisplayName.SetDefault("龙头手枪EX");
 
             // 物品的描述，加入换行符 '\n' 可以多行显示哦
-            Tooltip.SetDefault("一个有急躁脾气的手枪，这里是龙。\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // Tooltip.SetDefault("一个有急躁脾气的手枪，这里是龙。\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void AddRecipes()
         {
@@ -237,10 +238,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             //base.SetStaticDefaults();
 
             // 这里可以写中文了ヾ(@^▽^@)ノ
-            DisplayName.SetDefault("龙头手枪OD");
+            // DisplayName.SetDefault("龙头手枪OD");
 
             // 物品的描述，加入换行符 '\n' 可以多行显示哦
-            Tooltip.SetDefault("一个有急躁脾气的手枪，这里是龙。\n看上去，这头龙开始暴走(OverDrive)了    [c/333333:龙和龙的体质不能一概而论(]\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // Tooltip.SetDefault("一个有急躁脾气的手枪，这里是龙。\n看上去，这头龙开始暴走(OverDrive)了    [c/333333:龙和龙的体质不能一概而论(]\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
         public override void AddRecipes()
         {
@@ -434,21 +435,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             base.SetDefaults();
             Projectile.DamageType = DamageClass.Ranged;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
             target.AddBuff(BuffID.Daybreak, 60);
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("龙息");
+            // DisplayName.SetDefault("龙息");
         }
     }
     public class DragonFireBullet : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("龙火子弹");//
+            // DisplayName.SetDefault("龙火子弹");//
         }
         public Projectile projectile => Projectile;
         public override bool PreDraw(ref Color lightColor)
@@ -487,7 +488,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
                 Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
             }
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire, 150);
             base.OnHitNPC(target, damage, knockback, crit);
@@ -497,9 +498,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("龙炎灭却弹");//龙火子弹
+            // DisplayName.SetDefault("龙炎灭却弹");//龙火子弹
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, damage, knockback, crit);
             target.AddBuff(BuffID.Daybreak, 60);

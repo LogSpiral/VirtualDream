@@ -1,5 +1,6 @@
 ﻿using LogSpiralLibrary;
 using System;
+using Terraria;
 
 using Terraria.ID;
 
@@ -12,7 +13,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("正电史莱姆");
+            // DisplayName.SetDefault("正电史莱姆");
             Main.npcFrameCount[npc.type] = 10;
         }
 
@@ -709,7 +710,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             startFrame += (int)Main.time % 2 == 0 ? 1 : 0;
             startFrame %= 6;
         }
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             int num5;
             if (npc.life > 0)
@@ -760,7 +761,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("负电史莱姆");
+            // DisplayName.SetDefault("负电史莱姆");
             Main.npcFrameCount[npc.type] = 10;
         }
         public override void SetDefaults()
@@ -1772,14 +1773,14 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             projectile.timeLeft = 31;
             projectile.penetrate = -1;
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immune = true;
             target.immuneTime = 15;
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("闪电链");
+            // DisplayName.SetDefault("闪电链");
         }
         public override void PostDraw(Color lightColor)
         {
@@ -1850,7 +1851,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("中性史莱姆");
+            // DisplayName.SetDefault("中性史莱姆");
             Main.npcFrameCount[npc.type] = 10;
         }
         private float startHeight;

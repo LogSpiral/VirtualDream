@@ -22,7 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SubworldLibrary">
-      <HintPath>..\SubworldLibrary\SubworldLibrary.dll</HintPath>
+      <HintPath>E:\Users\Administrator\Source\Repos\TmodSources\ModSources\SubworldLibrary\SubworldLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 

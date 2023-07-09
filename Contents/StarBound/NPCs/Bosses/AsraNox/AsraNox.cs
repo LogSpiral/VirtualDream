@@ -3,6 +3,7 @@ using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
@@ -69,7 +70,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("阿斯拉诺克斯");
+            // DisplayName.SetDefault("阿斯拉诺克斯");
         }
         void SetAI(float ai_0 = 0, float ai_1 = 0, float ai_2 = 0, float ai_3 = 0, float ai_4 = 0, float ai_5 = 0, float ai_6 = 0, float ai_7 = 0, float ai_8 = 0)
         {
@@ -4536,7 +4537,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("日炎「破晓之光」");
+            // DisplayName.SetDefault("日炎「破晓之光」");
             ProjectileID.Sets.TrailCacheLength[Type] = 60;
         }
         public override void SetDefaults()
@@ -4700,7 +4701,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             return false;
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immuneTime = 10;
             target.immune = true;
@@ -4778,7 +4779,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("日炎「杀意的百合」");
+            // DisplayName.SetDefault("日炎「杀意的百合」");
         }
     }
 }

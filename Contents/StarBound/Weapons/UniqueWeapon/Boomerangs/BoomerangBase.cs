@@ -1,4 +1,5 @@
 ﻿using System;
+using Terraria;
 using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
@@ -8,7 +9,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
 		public Projectile projectile => Projectile;
 		public override void SetStaticDefaults()
 		{
-			DisplayName.SetDefault("飞镖");
+			// DisplayName.SetDefault("飞镖");
 			//ProjectileID.Sets.TrailingMode[projectile.type] = 0;
 		}
 		public override void SetDefaults()
@@ -127,7 +128,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
 			projectile.velocity.Y = -projectile.velocity.Y;
 			return false;
 		}
-		public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.immune[projectile.owner] = 3;
 			base.OnHitNPC(target, damage, knockback, crit);

@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.DataStructures;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
@@ -7,8 +8,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("无穷的烈焰自它的剑锋中喷涌而出。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("炎岚之怒");
+            // Tooltip.SetDefault("无穷的烈焰自它的剑锋中喷涌而出。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("炎岚之怒");
         }
         public Item item => Item;
 
@@ -57,7 +58,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
             }
             return player.ownedProjectileCounts[ModContent.ProjectileType<FlamingDemonSwordProj>()] < 1;
         }
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire, 300);
         }
@@ -82,8 +83,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
 
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("无穷的烈焰自它的剑锋中喷涌而出。\n火焰更加猛烈，一切都将化为灰烬吧。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("炎岚之怒EX");
+            // Tooltip.SetDefault("无穷的烈焰自它的剑锋中喷涌而出。\n火焰更加猛烈，一切都将化为灰烬吧。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("炎岚之怒EX");
         }
         public override void SetDefaults()
         {

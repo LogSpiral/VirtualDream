@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using Terraria.DataStructures;
 using VirtualDream.Contents.StarBound.Materials;
 using System;
@@ -10,8 +11,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("右键切换弹药类型。共七种弹药：普通箭、爆炸箭、寒霜箭、带电箭、剧毒箭、引力箭以及斥力箭。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("万用型十字弩");
+            // Tooltip.SetDefault("右键切换弹药类型。共七种弹药：普通箭、爆炸箭、寒霜箭、带电箭、剧毒箭、引力箭以及斥力箭。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("万用型十字弩");
         }
         public Item item => Item;
         public override void SetDefaults()
@@ -183,8 +184,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("右键切换弹药类型。共七种弹药：普通箭、爆炸箭、寒霜箭、带电箭、剧毒箭、引力箭以及斥力箭。\n所有尝试过最后两种特殊箭矢的人都表示那会是他们最喜欢的箭矢......除了有点反胃，以及会影响其他人。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("万用型十字弩EX");
+            // Tooltip.SetDefault("右键切换弹药类型。共七种弹药：普通箭、爆炸箭、寒霜箭、带电箭、剧毒箭、引力箭以及斥力箭。\n所有尝试过最后两种特殊箭矢的人都表示那会是他们最喜欢的箭矢......除了有点反胃，以及会影响其他人。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("万用型十字弩EX");
         }
         public override void AddRecipes()
         {
@@ -313,7 +314,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("万用十字弩之矢");
+            // DisplayName.SetDefault("万用十字弩之矢");
         }
         Projectile projectile => Projectile;
         public override void SetDefaults()
@@ -520,7 +521,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             return false;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             var type = (int)projectile.ai[0];
             if (type == 5 || type == 6)

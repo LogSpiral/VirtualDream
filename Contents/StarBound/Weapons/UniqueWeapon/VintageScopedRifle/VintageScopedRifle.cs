@@ -1,4 +1,5 @@
 ﻿using LogSpiralLibrary;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 
@@ -8,8 +9,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("老当益壮，这把枪所打出的子弹能轻易击穿钢板。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("老式狙击步枪");
+            // Tooltip.SetDefault("老当益壮，这把枪所打出的子弹能轻易击穿钢板。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("老式狙击步枪");
         }
         public Item item => Item;
         public override void SetDefaults()
@@ -64,8 +65,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("老当益壮，这把枪所打出的子弹能轻易击穿钢板。\n不对，不只是钢板，就是一米厚的夜明板也能轻易击穿。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("老式狙击步枪EX");
+            // Tooltip.SetDefault("老当益壮，这把枪所打出的子弹能轻易击穿钢板。\n不对，不只是钢板，就是一米厚的夜明板也能轻易击穿。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("老式狙击步枪EX");
         }
         public override void SetDefaults()
         {
@@ -166,7 +167,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("穿甲弹");
+            // DisplayName.SetDefault("穿甲弹");
         }
         public Projectile projectile => Projectile;
         public override void SetDefaults()
@@ -184,7 +185,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             projectile.aiStyle = -1;
             projectile.light = .5f;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 0;
             for (int n = 0; n < 30; n++)

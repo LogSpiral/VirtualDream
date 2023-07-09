@@ -1,6 +1,7 @@
 ﻿using LogSpiralLibrary;
 using System;
 using System.Collections.Generic;
+using Terraria;
 
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
@@ -150,8 +151,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("无间之钟");
-            Tooltip.SetDefault("\"很眼熟，对吧？想必你的前世为了一时麻痹自己获得快乐而敲响了它，落入泰拉瑞亚这无间地狱之中。再度死亡也不会让你逃脱这幻世。\"\n\"......\"\n\"要再度敲响吗？虽然不会让你回到前世的世界，但至少在这里，你会好过很多。\"\n敲响之后各方面属性获得提升，但是死亡一次之后就会进入无间地狱模式。");
+            // DisplayName.SetDefault("无间之钟");
+            // Tooltip.SetDefault("\"很眼熟，对吧？想必你的前世为了一时麻痹自己获得快乐而敲响了它，落入泰拉瑞亚这无间地狱之中。再度死亡也不会让你逃脱这幻世。\"\n\"......\"\n\"要再度敲响吗？虽然不会让你回到前世的世界，但至少在这里，你会好过很多。\"\n敲响之后各方面属性获得提升，但是死亡一次之后就会进入无间地狱模式。");
         }
     }
     public class InfiniteNightmareEX : InfiniteNightmareItem
@@ -223,8 +224,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("无间之钟EX");
-            Tooltip.SetDefault("\"一时敲钟一时爽，一直敲钟一直爽，对吗？看来你还是没有得到教训。\"\n\"在无间地狱中的世界过得如何？如果后悔了，敲响眼前这个不一样的吧。\"\n\"这一次，它会带你回到非无间地狱模式。\"\n\"但是，答应我，这一次，你不许死。\"\n解除无间地狱模式，如果再度死亡，会进入真·无间地狱。\n\"不过人本身就是为了眼前一时利益而牺牲长远利益的生物，你一定会再次敲响的吧。\"");
+            // DisplayName.SetDefault("无间之钟EX");
+            // Tooltip.SetDefault("\"一时敲钟一时爽，一直敲钟一直爽，对吗？看来你还是没有得到教训。\"\n\"在无间地狱中的世界过得如何？如果后悔了，敲响眼前这个不一样的吧。\"\n\"这一次，它会带你回到非无间地狱模式。\"\n\"但是，答应我，这一次，你不许死。\"\n解除无间地狱模式，如果再度死亡，会进入真·无间地狱。\n\"不过人本身就是为了眼前一时利益而牺牲长远利益的生物，你一定会再次敲响的吧。\"");
         }
     }
     public class InfiniteNightmareHugeJadeBullet : InfiniteNightmareProjectile
@@ -237,7 +238,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("光团");
+            // DisplayName.SetDefault("光团");
         }
         public override void SetDefaults()
         {
@@ -250,7 +251,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             projectile.tileCollide = false;
             projectile.ignoreWater = true;
         }
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 5;
         }
@@ -304,8 +305,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("神圣之物");
-            Tooltip.SetDefault("能让你逃出无间地狱的真正神器\n获得真正的幸福吧（\n屑⑨厨阿汪又拿⑨整活（");
+            // DisplayName.SetDefault("神圣之物");
+            // Tooltip.SetDefault("能让你逃出无间地狱的真正神器\n获得真正的幸福吧（\n屑⑨厨阿汪又拿⑨整活（");
         }
     }
     public class InfiniteNightmarePlayer : ModPlayer
@@ -830,22 +831,23 @@ namespace VirtualDream.Contents.InfiniteNightmare
             tag.Set("hasGivenBell", hasGivenBell);
             tag.Set("hasGivenBellEX", hasGivenBellEX);
         }
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers)/* tModPorter Override ImmuneTo, FreeDodge or ConsumableDodge instead to prevent taking damage */
         {
-            double d = damage + player.statDefense * (Main.expertMode ? 0.75 : 0.5);
-            if (PreInfiniteNightmareModeActive)
-            {
-                damage = (int)(d - player.statDefense);
-            }
-            if (InfiniteNightmareModeActive)
-            {
-                damage = (int)(d - (double)player.statDefense / 3);
-            }
-            if (ReallyInfiniteNightmareModeActive)
-            {
-                damage = (int)(d - (double)player.statDefense / 4);
-            }
-            return true;
+            //double d = damage + player.statDefense * (Main.expertMode ? 0.75 : 0.5);
+            //if (PreInfiniteNightmareModeActive)
+            //{
+            //    damage = (int)(d - player.statDefense);
+            //}
+            //if (InfiniteNightmareModeActive)
+            //{
+            //    damage = (int)(d - (double)player.statDefense / 3);
+            //}
+            //if (ReallyInfiniteNightmareModeActive)
+            //{
+            //    damage = (int)(d - (double)player.statDefense / 4);
+            //}
+            //return true;
+            //TODO 无间地狱伤害修改
         }
     }
     public class InfiniteNightmareNPC : GlobalNPC
@@ -1182,7 +1184,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("骷髅王之首虚影");
+            // DisplayName.SetDefault("骷髅王之首虚影");
         }
         public override void SetDefaults()
         {
@@ -1255,7 +1257,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("骷髅王之首虚影机械版");
+            // DisplayName.SetDefault("骷髅王之首虚影机械版");
         }
         public override void SetDefaults()
         {
@@ -1338,7 +1340,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("星云光团");
+            // DisplayName.SetDefault("星云光团");
         }
         public override void SetDefaults()
         {
@@ -1606,7 +1608,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
-        public override void OnHitPlayer(Player target, int damage, bool crit)
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immuneTime = 15;
             target.immune = true;
@@ -1640,9 +1642,10 @@ namespace VirtualDream.Contents.InfiniteNightmare
             }
             return hiting;
         }
-        public override void ModifyHitNPC(NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
+        public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
         {
-            damage += target.defense < 20 ? target.defense / 2 : 10;
+            modifiers.SourceDamage += target.statDefense < 20 ? target.statDefense / 2 : 10;
+
         }
         public override void AI()
         {
@@ -1677,14 +1680,14 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("星云「杀意的百合」");
+            // DisplayName.SetDefault("星云「杀意的百合」");
         }
     }
     public class VortexLightningIN : InfiniteNightmareProjectile
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("星旋闪电");
+            // DisplayName.SetDefault("星旋闪电");
         }
         public override void SetDefaults()
         {
@@ -1900,7 +1903,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         }
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("星尘光束");
+            // DisplayName.SetDefault("星尘光束");
         }
         public override void SetDefaults()
         {
@@ -1986,8 +1989,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("拖泥带水");
-            Description.SetDefault("字面意思。\n移动速度降低，淋雨淋湿了做事效率会变低呢，小心感冒（");
+            // DisplayName.SetDefault("拖泥带水");
+            // Description.SetDefault("字面意思。\n移动速度降低，淋雨淋湿了做事效率会变低呢，小心感冒（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2004,8 +2007,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("拖泥带水Ⅱ");
-            Description.SetDefault("字面意思。\n移动速度明显降低，这次是真的\"落汤\"鸡了，我欣赏你掉到水坑里挣扎的样子（");
+            // DisplayName.SetDefault("拖泥带水Ⅱ");
+            // Description.SetDefault("字面意思。\n移动速度明显降低，这次是真的\"落汤\"鸡了，我欣赏你掉到水坑里挣扎的样子（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2025,8 +2028,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("缺氧");
-            Description.SetDefault("不及时补充氧气的话，不用多久就会暴毙哦。（坏笑");
+            // DisplayName.SetDefault("缺氧");
+            // Description.SetDefault("不及时补充氧气的话，不用多久就会暴毙哦。（坏笑");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2047,8 +2050,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("辐射");//雷云浮岛
-            Description.SetDefault("生命和魔力降低\n为什么风暴之地的环境debuff是这个？感谢你的提问，我也想知道（");
+            // DisplayName.SetDefault("辐射");//雷云浮岛
+            // Description.SetDefault("生命和魔力降低\n为什么风暴之地的环境debuff是这个？感谢你的提问，我也想知道（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2083,8 +2086,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("低温");
-            Description.SetDefault("你只能通过消耗魔力来维持体温了，当你魔力耗尽，你也就会感到一种霜冻般的绝望吧。（");
+            // DisplayName.SetDefault("低温");
+            // Description.SetDefault("你只能通过消耗魔力来维持体温了，当你魔力耗尽，你也就会感到一种霜冻般的绝望吧。（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2122,8 +2125,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("高温");
-            Description.SetDefault("并没有用魔力直接降温的手段哦，这样的温度能还原氧化铁了吧，钢铁就是这么炼成的。（");
+            // DisplayName.SetDefault("高温");
+            // Description.SetDefault("并没有用魔力直接降温的手段哦，这样的温度能还原氧化铁了吧，钢铁就是这么炼成的。（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2146,8 +2149,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("干旱");
-            Description.SetDefault("口渴的你，手也软了吧。然而喝那么几壶水并不足以让整个沙漠解渴呢。（");
+            // DisplayName.SetDefault("干旱");
+            // Description.SetDefault("口渴的你，手也软了吧。然而喝那么几壶水并不足以让整个沙漠解渴呢。（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2164,8 +2167,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("湿热");
-            Description.SetDefault("潮湿与温热并存，你为此而焦躁不安，越是心急越是走不快呢，也没能集中注意力防备或回击怪物了。（");
+            // DisplayName.SetDefault("湿热");
+            // Description.SetDefault("潮湿与温热并存，你为此而焦躁不安，越是心急越是走不快呢，也没能集中注意力防备或回击怪物了。（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2182,8 +2185,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("黑暗");
-            Description.SetDefault("那些阴险的家伙隐匿在黑暗中，你看不见你前程的光明。（");
+            // DisplayName.SetDefault("黑暗");
+            // Description.SetDefault("那些阴险的家伙隐匿在黑暗中，你看不见你前程的光明。（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2222,8 +2225,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("寂静");
-            Description.SetDefault("周围静的可怕，你有一种孤独的恐惧，甚至对于周围放下了防备。（");
+            // DisplayName.SetDefault("寂静");
+            // Description.SetDefault("周围静的可怕，你有一种孤独的恐惧，甚至对于周围放下了防备。（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2239,8 +2242,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("引力");
-            Description.SetDefault("你开始好奇眼前那天界塔的密度了，为什么它会有这么大引力。而且离得太远或太近引力都不大\n我知道了，那其实是天界塔碎片对你的吸引力（");
+            // DisplayName.SetDefault("引力");
+            // Description.SetDefault("你开始好奇眼前那天界塔的密度了，为什么它会有这么大引力。而且离得太远或太近引力都不大\n我知道了，那其实是天界塔碎片对你的吸引力（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2296,8 +2299,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("在岩浆中游泳");
-            Description.SetDefault("淦哦老兄，为什么要做这种奇怪的尝试？你的皮肤又不是黑曜石做的，但岩浆里那些鱼是啊。子非鱼，安知鱼之热（");
+            // DisplayName.SetDefault("在岩浆中游泳");
+            // Description.SetDefault("淦哦老兄，为什么要做这种奇怪的尝试？你的皮肤又不是黑曜石做的，但岩浆里那些鱼是啊。子非鱼，安知鱼之热（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2320,8 +2323,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("过分甜蜜");
-            Description.SetDefault("比秘封组还甜的蜂蜜令你不由得扭得像条蛆一样，就连敌对的弹幕也被蜂蜜吸引了！（");
+            // DisplayName.SetDefault("过分甜蜜");
+            // Description.SetDefault("比秘封组还甜的蜂蜜令你不由得扭得像条蛆一样，就连敌对的弹幕也被蜂蜜吸引了！（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2369,8 +2372,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("最后一片净土");
-            Description.SetDefault("纯粹地想占用你一个buff槽，气不气（");
+            // DisplayName.SetDefault("最后一片净土");
+            // Description.SetDefault("纯粹地想占用你一个buff槽，气不气（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2384,8 +2387,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("刺眼");
-            Description.SetDefault("那一刻，这片神圣的土地化为了光（\n暴击、生命上限、魔力上限降低了！");
+            // DisplayName.SetDefault("刺眼");
+            // Description.SetDefault("那一刻，这片神圣的土地化为了光（\n暴击、生命上限、魔力上限降低了！");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2403,8 +2406,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("易生锈");
-            Description.SetDefault("海边的金属是容易生锈的...保护好你身边的金属制品（");
+            // DisplayName.SetDefault("易生锈");
+            // Description.SetDefault("海边的金属是容易生锈的...保护好你身边的金属制品（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2419,8 +2422,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("过于温暖");
-            Description.SetDefault("有时候沉溺于温暖之中也不见得是好事（");
+            // DisplayName.SetDefault("过于温暖");
+            // Description.SetDefault("有时候沉溺于温暖之中也不见得是好事（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2435,8 +2438,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("感染");
-            Description.SetDefault("伤口不及时处理会恶化哦（");
+            // DisplayName.SetDefault("感染");
+            // Description.SetDefault("伤口不及时处理会恶化哦（");
         }
         public override void Update(Player player, ref int buffIndex)
         {
@@ -2462,8 +2465,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
         protected int index;
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault(tooltip);
-            DisplayName.SetDefault(name);
+            // Tooltip.SetDefault(tooltip);
+            // DisplayName.SetDefault(name);
         }
         public override void SetDefaults()
         {
@@ -2740,7 +2743,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
         private float startHeight;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("噪音史莱姆");
+            // DisplayName.SetDefault("噪音史莱姆");
             Main.npcFrameCount[npc.type] = 2;
         }
         public override void AI()
@@ -2751,15 +2754,15 @@ namespace VirtualDream.Contents.InfiniteNightmare
         {
             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + vector, vector, ProjectileType<SlimeNoise>(), npc.damage + dmg, 1, Main.myPlayer, scale);
         }
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             int num5;
             if (npc.life > 0)
             {
                 int num259 = 0;
-                while (num259 < damage / npc.lifeMax * 100.0)
+                while (num259 < hit.Damage / npc.lifeMax * 100.0)
                 {
-                    Dust.NewDust(npc.position, npc.width, npc.height, 4, hitDirection, -1f, npc.alpha, npc.color, 1f);
+                    Dust.NewDust(npc.position, npc.width, npc.height, 4, hit.HitDirection, -1f, npc.alpha, npc.color, 1f);
                     num5 = num259;
                     num259 = num5 + 1;
                 }
@@ -2769,7 +2772,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
             {
                 for (int num260 = 0; num260 < 50; num260 = num5 + 1)
                 {
-                    Dust.NewDust(npc.position, npc.width, npc.height, 4, 2 * hitDirection, -2f, npc.alpha, npc.color, 1f);
+                    Dust.NewDust(npc.position, npc.width, npc.height, 4, 2 * hit.HitDirection, -2f, npc.alpha, npc.color, 1f);
                     num5 = num260;
                 }
                 for (int n = 0; n < 5; n++)
@@ -2997,7 +3000,7 @@ namespace VirtualDream.Contents.InfiniteNightmare
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("史莱姆噪音");
+            // DisplayName.SetDefault("史莱姆噪音");
         }
 
         public override void SetDefaults()
@@ -3103,8 +3106,8 @@ namespace VirtualDream.Contents.InfiniteNightmare
         public override string Texture => "Terraria/Images/Item_2293";
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("无间「灵魂钓手」");
-            Tooltip.SetDefault("用无间之钟的力量来捕获不止是鱼的灵魂罢！");
+            // DisplayName.SetDefault("无间「灵魂钓手」");
+            // Tooltip.SetDefault("用无间之钟的力量来捕获不止是鱼的灵魂罢！");
             //ItemID.Sets.CanFishInLava[Item.type] = true;
             CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
         }

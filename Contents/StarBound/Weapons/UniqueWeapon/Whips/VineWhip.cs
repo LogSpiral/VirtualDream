@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using VirtualDream.Contents.StarBound.Buffs;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
@@ -7,8 +8,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("以附有巨毒的长藤作为鞭子。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("藤鞭");
+            // Tooltip.SetDefault("以附有巨毒的长藤作为鞭子。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("藤鞭");
         }
         public Item item => Item;
         public override void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime)
@@ -51,8 +52,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
 
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("以附有巨毒的长藤作为鞭子。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("藤鞭EX");
+            // Tooltip.SetDefault("以附有巨毒的长藤作为鞭子。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("藤鞭EX");
         }
         public override void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime)
         {
@@ -80,7 +81,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             return true;
         }
     }
-    public class VineWhipProj : WhipBase_Projectile 
+    public class VineWhipProj : WhipBase_Projectile
     {
         public override void WhipSettings(ref int segments, ref float rangeMultiplier)
         {
@@ -88,10 +89,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             rangeMultiplier *= this.UpgradeValue(1.25f, 1.5f, 1f);
         }
         public override int DustType => MyDustId.GreenGrass;
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<ToxicⅠ>(), 180);
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         //public T UpgradeValue<T>(T normal, T extra, T defaultValue = default)
         //{

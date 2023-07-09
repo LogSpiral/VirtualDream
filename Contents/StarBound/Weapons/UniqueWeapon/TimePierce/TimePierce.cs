@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using Terraria;
+using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 using Terraria.DataStructures;
 using LogSpiralLibrary;
@@ -9,8 +10,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("斩断那呼啸的时之风。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("刺穿时间(未完成)");
+            // Tooltip.SetDefault("斩断那呼啸的时之风。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("刺穿时间(未完成)");
         }
         public Item item => Item;
         public override void SetDefaults()
@@ -27,7 +28,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
             item.autoReuse = true;
             item.value = Item.sellPrice(0, 10);
         }
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.GetGlobalNPC<TimePierceStopNPC>().stopCount = (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
             if (player.altFunctionUse == 2)
@@ -50,8 +51,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
     {
         public override void SetStaticDefaults()
         {
-            Tooltip.SetDefault("斩断那呼啸的时之风。\n但朝花也只能于夕拾。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            DisplayName.SetDefault("刺穿时间EX");
+            // Tooltip.SetDefault("斩断那呼啸的时之风。\n但朝花也只能于夕拾。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            // DisplayName.SetDefault("刺穿时间EX");
         }
 
         public override void SetDefaults()
@@ -97,7 +98,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
             }
         }
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) => NotStop;
-        public override bool? CanHitNPC(NPC npc, NPC target) => NotStop;
+        public override bool CanHitNPC(NPC npc, NPC target)/* tModPorter Suggestion: Return true instead of null */ => NotStop;
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (NotStop) return;
