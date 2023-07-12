@@ -95,7 +95,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             }
             target.immune[projectile.owner] = 3;
             if (projectile.velocity != default) projectile.timeLeft = 150;
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         public override bool hit => Projectile.velocity == default ? Projectile.timeLeft <= 30 : base.hit;
         public override bool OnTileCollide(Vector2 oldVelocity)

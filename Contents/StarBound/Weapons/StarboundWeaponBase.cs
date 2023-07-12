@@ -7,6 +7,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
 
 namespace VirtualDream.Contents.StarBound.Weapons
 {
@@ -29,6 +30,16 @@ namespace VirtualDream.Contents.StarBound.Weapons
     /// </summary>
     public abstract class StarboundWeaponBase : ModItem
     {
+        public WeaponRepairRecipe GetEmptyRecipe() => new WeaponRepairRecipe(this);
+        public virtual WeaponRepairRecipe RepairRecipe() 
+        {
+            return GetEmptyRecipe();
+        }
+        public override void AddRecipes()
+        {
+            RepairRecipe().Register();
+            base.AddRecipes();
+        }
         public Player owner
         {
             get
@@ -57,8 +68,6 @@ namespace VirtualDream.Contents.StarBound.Weapons
         public static (float, int) DefaultNormal => (defaultNormalHurt, defaultNormalKill);
         public static (float, int) DefaultExtra => (defaultExtraHurt, defaultExtraKill);
         public static (float, int) DefaultUltra => (defaultUltraHurt, defaultUltraKill);
-
-
         public float hurtCount;
         public int killCount;
         public virtual WeaponState State => WeaponState.False;
@@ -110,6 +119,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
         public virtual float UnitHealth => OtherMethods.HardmodeValue(1, 1.5f, 2f) * 50 * PeriodMultiplyer;
         public virtual float RealHurtCount => Math.Min(MaxLevel ? hurtCount : MathHelper.Clamp(hurtCount, 0, UpgradeNeed.hurt), (MaxLevel ? killCount : MathHelper.Clamp(killCount, 0, UpgradeNeed.kill)) * UnitHealth);
         public virtual bool MaxLevel => (byte)State % 3 == (BossDrop ? 2 : 1);
+        public virtual bool UpgradeAvailable => hurtCount >= UpgradeNeed.hurt && killCount >= UpgradeNeed.kill;
         public override void LoadData(TagCompound tag)
         {
             hurtCount = tag.GetFloat("hurtCount");
@@ -152,7 +162,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
             tooltips.Add(killTip);
             if (!MaxLevel)
             {
-                bool canUpg = hurtCount >= UpgradeNeed.hurt && killCount >= UpgradeNeed.kill;
+                bool canUpg = UpgradeAvailable;
                 var upgradeTip = new TooltipLine(Mod, "upgrade!", canUpg ? "已达成修复/升级条件" : $"还需造成{MathHelper.Clamp(UpgradeNeed.hurt - hurtCount, 0, float.MaxValue)}点伤害与{MathHelper.Clamp(UpgradeNeed.kill - killCount, 0, float.MaxValue)}击杀以达到修复/升级条件");
                 upgradeTip.OverrideColor = canUpg ? (Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f)) : Color.Gray;
                 tooltips.Add(upgradeTip);
@@ -217,13 +227,13 @@ namespace VirtualDream.Contents.StarBound.Weapons
             if (weapon != null)
             {
                 if (target.type == NPCID.TargetDummy) return;
-                if (target.life - damage <= 0)
+                if (target.life - hit.Damage <= 0)
                 {
                     weapon.killCount++;
                 }
-                weapon.hurtCount += damage;
+                weapon.hurtCount += hit.Damage;
             }
-            base.OnHitNPC(projectile, target, damage, knockback, crit);
+            base.OnHitNPC(projectile, target, hit,damageDone);
         }
         private Item _sourceItem;
         public Item sourceItem => _sourceItem ?? weapon.Item;
@@ -339,7 +349,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
             set => weapon = value;
         }
         StarboundWeaponBase weapon;
-        public EntitySource_StarboundWeapon(Entity entity, Item item, int ammoItemIdUsed, string context = null) : base(entity, item, ammoItemIdUsed, context)
+        public EntitySource_StarboundWeapon(Player plr, Item item, int ammoItemIdUsed, string context = null) : base(plr, item, ammoItemIdUsed, context)
         {
 
         }

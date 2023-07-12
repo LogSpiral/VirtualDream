@@ -30,12 +30,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
         }
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.GetGlobalNPC<TimePierceStopNPC>().stopCount = (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
+            target.GetGlobalNPC<TimePierceStopNPC>().stopCount = (int)(hit.Damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
             if (player.altFunctionUse == 2)
             {
                 foreach (var npc in Main.npc)
                 {
-                    if (npc.active) npc.GetGlobalNPC<TimePierceStopNPC>().stopCount = (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
+                    if (npc.active) npc.GetGlobalNPC<TimePierceStopNPC>().stopCount = (int)(hit.Damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
                 }
             }
             //player.GetModPlayer<TimePierceStopPlayer>().stopCount += (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);

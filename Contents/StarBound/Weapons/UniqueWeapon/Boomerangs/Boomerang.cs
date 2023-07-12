@@ -59,7 +59,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
     }
 }

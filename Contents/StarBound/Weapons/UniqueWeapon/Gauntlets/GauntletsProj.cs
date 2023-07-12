@@ -112,7 +112,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             target.immune[projectile.whoAmI] = owner.itemAnimationMax / 4;//3
             if (target.CanBeChasedBy())
                 target.velocity += (target.Center - owner.Center).SafeNormalize(default) * (float)Math.Sqrt(KnockBackValue / 4f) * 4f;//4f
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         public virtual float KnockBackValue => owner.GetWeaponKnockback(owner.HeldItem, owner.HeldItem.knockBack);
         public override void AI()
@@ -309,7 +309,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             else
             {
-                base.OnHitNPC(target, damage, knockback, crit);
+                base.OnHitNPC(target, hit, damageDone);
             }
             target.immune[projectile.whoAmI] = 1;
         }
@@ -330,7 +330,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         public override Vector2 hitBox => WhenSA ? new Vector2(80) : base.hitBox;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
             if (WhenSA && target.CanBeChasedBy()) target.velocity.Y -= 16;
         }
         public override void DrawSwoosh(SpriteBatch spriteBatch, Vector2 projCen, float factor, int index)
@@ -430,7 +430,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             target.AddBuff(ModContent.BuffType<Buffs.ToxicⅠ>(), 30);
             target.AddBuff(BuffID.Poisoned, 30);
 
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
     }
     public class ClawGloveProj : GauntletsProj

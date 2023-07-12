@@ -437,7 +437,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
             target.AddBuff(BuffID.Daybreak, 60);
         }
         public override void SetStaticDefaults()
@@ -491,7 +491,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire, 150);
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
     }
     public class DragonFireBall : DragonFireBullet
@@ -502,7 +502,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
             target.AddBuff(BuffID.Daybreak, 60);
 
         }

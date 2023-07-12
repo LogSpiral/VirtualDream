@@ -300,7 +300,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
             target.immune[Projectile.owner] = this.UpgradeValue(5, 3, 1);
         }
     }

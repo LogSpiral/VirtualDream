@@ -131,7 +131,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.immune[projectile.owner] = 3;
-			base.OnHitNPC(target, damage, knockback, crit);
+			base.OnHitNPC(target, hit, damageDone);
 		}
 	}
 }

@@ -212,7 +212,7 @@ namespace VirtualDream
         /// <param name="hoveredSnippet"></param>
         /// <param name="maxWidth"></param>
         /// <param name="ignoreColors"></param>
-        /// <returns></returns>
+        /// <returns></returns> 
         private Vector2 MoreMoreHeart(Terraria.UI.Chat.On_ChatManager.orig_DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool orig, SpriteBatch spriteBatch, ReLogic.Graphics.DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth, bool ignoreColors)
         {
             string date = DateTime.Now.ToShortDateString();

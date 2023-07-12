@@ -1,0 +1,1174 @@
+
+Mods: {
+	VirtualDream: {
+		Items: {
+			CoolBackpack: {
+				DisplayName: 降温背包升级模块
+				Tooltip: 你需要冷静冷静。
+			}
+
+			DryBackpack: {
+				DisplayName: 干燥背包升级模块
+				Tooltip: 在雨林也能保持干爽什么的真是太好了。
+			}
+
+			FisherofSouls_EX: {
+				DisplayName: 无间「灵魂钓手」
+				Tooltip: 用无间之钟的力量来捕获不止是鱼的灵魂罢！
+			}
+
+			HolyThing: {
+				DisplayName: 神圣之物
+				Tooltip:
+					'''
+					能让你逃出无间地狱的真正神器
+					获得真正的幸福吧（
+					屑⑨厨阿汪又拿⑨整活（
+					'''
+			}
+
+			InfiniteNightmare: {
+				DisplayName: 无间之钟
+				Tooltip:
+					'''
+					"很眼熟，对吧？想必你的前世为了一时麻痹自己获得快乐而敲响了它，落入泰拉瑞亚这无间地狱之中。再度死亡也不会让你逃脱这幻世。"
+					"......"
+					"要再度敲响吗？虽然不会让你回到前世的世界，但至少在这里，你会好过很多。"
+					敲响之后各方面属性获得提升，但是死亡一次之后就会进入无间地狱模式。
+					'''
+			}
+
+			InfiniteNightmareEX: {
+				DisplayName: 无间之钟EX
+				Tooltip:
+					'''
+					"一时敲钟一时爽，一直敲钟一直爽，对吗？看来你还是没有得到教训。"
+					"在无间地狱中的世界过得如何？如果后悔了，敲响眼前这个不一样的吧。"
+					"这一次，它会带你回到非无间地狱模式。"
+					"但是，答应我，这一次，你不许死。"
+					解除无间地狱模式，如果再度死亡，会进入真·无间地狱。
+					"不过人本身就是为了眼前一时利益而牺牲长远利益的生物，你一定会再次敲响的吧。"
+					'''
+			}
+
+			LeadShield: {
+				DisplayName: 铅盾
+				Tooltip: 这样的一面盾，竟然能有挡下辐射的神力！可谓中用不中看。
+			}
+
+			LightBackpack: {
+				DisplayName: 光明背包升级模块
+				Tooltip: 你逐渐看清一切。
+			}
+
+			MetalPaint: {
+				DisplayName: 防锈涂层
+				Tooltip: 它附在你的盔甲上，光明之下显出金色辉光。
+			}
+
+			NoisySlimeBox: {
+				DisplayName: 噪音盒子
+				Tooltip:
+					'''
+					听上去噪音史莱姆缩到这个盒子里面去了
+					在这个盒子的约束之下，它发出的声音也没有噪音那么烦人了，至少你不会在如底下般死寂的地方因没有什么声音而不安了。
+					'''
+			}
+
+			OxygenBackpack: {
+				DisplayName: 氧气背包升级模块
+				Tooltip: 一株仙人掌足以产生临时需要的氧气吗？
+			}
+
+			PureBottle: {
+				DisplayName: 纯净水
+				Tooltip: 洗涤并净化你的灵魂
+			}
+
+			WarmBackpack: {
+				DisplayName: 暖心背包升级模块
+				Tooltip: 背后的原因令你暖心。
+			}
+
+			WetBackpack: {
+				DisplayName: 加湿背包升级模块
+				Tooltip: 滋润你自己和你身边。
+			}
+
+			AegisaltOre: {
+				DisplayName: 霓磷盐矿
+				Tooltip: 这是霓磷盐。可用于冶炼。
+			}
+
+			AncientEssence: {
+				DisplayName: 远古精华
+				Tooltip: 有着极为强大的能量。
+			}
+
+			CryonicExtract: {
+				DisplayName: 低温提取物
+				Tooltip: 冰冷的有机化学品。可以用于制作。
+			}
+
+			ErchiusCrystal: {
+				DisplayName: 能源水晶
+				Tooltip:
+					'''
+					一种用于给FTL引擎供能的水晶，至今还未完全理解它的原理。
+					在星界边境中连物质枪都对它无可奈何纯粹是因为呵呵鱼开了副本保护（
+					'''
+			}
+
+			FeroziumOre: {
+				DisplayName: 菲洛合金矿
+				Tooltip: 菲洛合金矿。可用于冶炼。
+			}
+
+			HardenedCarapace: {
+				DisplayName: 硬化甲壳
+				Tooltip: 坚硬有机外壳的碎片。可以用于制作。
+			}
+
+			Leather: {
+				DisplayName: 皮革
+				Tooltip: 一块皮革。
+			}
+
+			LivingRoot: {
+				DisplayName: 活根
+				Tooltip: 一片被割断的进化植物物质。可以用于制作。
+			}
+
+			PhaseMatter: {
+				DisplayName: 月相物质
+				Tooltip: 看起来几乎没有确定形态的物质。可以用于制作。
+			}
+
+			RefinedAegisalt: {
+				DisplayName: 精炼霓磷盐
+				Tooltip:
+					'''
+					精炼霓磷盐矿可以在冰冻星系的行星上发现。
+					在击败月球领主后也会无端地出现在泰拉瑞亚的地下......
+					'''
+			}
+
+			RefinedFerozium: {
+				DisplayName: 精炼菲洛合金
+				Tooltip:
+					'''
+					精炼菲洛合金矿石可以在冰冻星系的行星上发现。
+					在击败月球领主后也会无端地出现在泰拉瑞亚的地下......
+					'''
+			}
+
+			RefinedViolium: {
+				DisplayName: 精炼维奥合金
+				Tooltip:
+					'''
+					精炼维奥合金矿石可以在冰冻星系的行星上发现。
+					在击败月球领主后也会无端地出现在泰拉瑞亚的地下......
+					'''
+			}
+
+			ScorchedCore: {
+				DisplayName: 焦火之心
+				Tooltip: 生物火系能力的源泉。可以用于制作。
+			}
+
+			SharpenedClaw: {
+				DisplayName: 锋利的爪
+				Tooltip: 锋利的怪物爪。可以用于制作。
+			}
+
+			SolariumOre: {
+				DisplayName: 日耀石矿
+				Tooltip: 这就是日耀石。摸起来暖暖的。
+			}
+
+			SolariumStar: {
+				DisplayName: 精炼日耀石
+				Tooltip:
+					'''
+					精炼日耀石矿可以在灼热星系的行星上发现。
+					在击败月球领主后也会无端地出现在泰拉瑞亚的地下......
+					'''
+			}
+
+			StaticCell: {
+				DisplayName: 静电细胞
+				Tooltip: 一块充斥着电荷的细胞物质。可以用于制作。
+			}
+
+			StickOfRAM: {
+				DisplayName: 内存条
+				Tooltip: 一个典型的通用计算机芯片。可以用于制作。
+			}
+
+			VenomSample: {
+				DisplayName: 毒液样本
+				Tooltip: 挥发性有毒液体的样品。可以用于制作。
+			}
+
+			VioliumOre: {
+				DisplayName: 维奥合金矿
+				Tooltip: 维奥合金矿,可用于冶炼。
+			}
+
+			StrawberryCrystal: {
+				DisplayName: 草莓水晶
+				Tooltip: 召唤 大猿人
+			}
+
+			WindOfTime: {
+				DisplayName: 时之风
+				Tooltip:
+					'''
+					它能带你找回一些被时间抹杀的东西
+					真的吗
+					它还需要时间进行充能欸
+					'''
+			}
+
+			WindOfTimeStand: {
+				DisplayName: 怀表基座
+				Tooltip:
+					'''
+					为什么一块怀表会需要一个这么庞大的基座？
+					总算将这一抹风暂且地留住了吗？
+					'''
+			}
+
+			DragonheadPistol: {
+				DisplayName: 龙头手枪
+				Tooltip:
+					'''
+					一个有急躁脾气的手枪，这里是龙。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			DragonheadPistolEX: {
+				DisplayName: 龙头手枪EX
+				Tooltip:
+					'''
+					一个有急躁脾气的手枪，这里是龙。
+					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			DragonheadPistolOD: {
+				DisplayName: 龙头手枪OD
+				Tooltip:
+					'''
+					一个有急躁脾气的手枪，这里是龙。
+					看上去，这头龙开始暴走(OverDrive)了    [c/333333:龙和龙的体质不能一概而论(]
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			ErchiusEye: {
+				DisplayName: 能源之眼
+				Tooltip:
+					'''
+					能源恐怖的眼睛，专注于你的敌人。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			ErchiusEyeDL: {
+				DisplayName: 能源之眼DL
+				Tooltip:
+					'''
+					能源恐怖的眼睛，专注于你的敌人。
+					死亡激光(DeathLaser)
+					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			ErchiusEyeEX: {
+				DisplayName: 能源之眼EX
+				Tooltip:
+					'''
+					能源恐怖的眼睛，专注于你的敌人。
+					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			IxodoomClaw: {
+				DisplayName: 死亡主宰爪
+				Tooltip:
+					'''
+					强大的死亡主宰的断腿。这可以作为一个强大的武器。
+					[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			IxodoomClawEX: {
+				DisplayName: 死亡主宰爪EX
+				Tooltip:
+					'''
+					强大的死亡主宰的断腿。这可以作为一个强大的武器。
+					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
+					[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			IxodoomClawHT: {
+				DisplayName: 死亡主宰爪HT
+				Tooltip:
+					'''
+					强大的死亡主宰的断腿。这可以作为一个强大的武器。
+					它的刀刃上附着着高度的剧毒
+					[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]
+					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			KluexStaff: {
+				DisplayName: 克鲁西斯法杖
+				Tooltip:
+					'''
+					这根强大的法杖可以支持挥动着它的战士
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			KluexStaffEX: {
+				DisplayName: 克鲁西斯法杖EX
+				Tooltip:
+					'''
+					这根强大的法杖可以支持挥动着它的战士
+					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			KluexStaffPH: {
+				DisplayName: 克鲁西斯法杖PH
+				Tooltip:
+					'''
+					这根强大的法杖可以支持挥动着它的战士
+					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
+					纯粹幻象赤色水晶凝聚跃动着的能量，充斥着整根法杖，又聚焦于一点
+					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			MiniknogLauncher: {
+				DisplayName: 科技发展部发射器
+				Tooltip:
+					'''
+					微型导弹发射器，由科技发展部的顶级科学家开发。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			MiniknogLauncherEX: {
+				DisplayName: 科技发展部发射器EX
+				Tooltip:
+					'''
+					微型导弹发射器，由科技发展部的顶级科学家开发。
+					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
+					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			MiniknogLauncherLT: {
+				DisplayName: 科技发展部发射器LT
+				Tooltip:
+					'''
+					微型导弹发射器，由科技发展部的顶级科学家开发。
+					极限科技(LimitTechnology)
+					你以为是大猿人用tr的奇妙科技造的？其实是由河童工程师改造的(
+					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			SolusKatana_Broken: {
+				DisplayName: 破碎日炎刀
+				Tooltip:
+					'''
+					我觉得你找不到它的原作者了，也许需要用些别的力量修复
+					'''
+			}
+
+			SolusKatana: {
+				DisplayName: 日炎刀
+				Tooltip:
+					'''
+					日光注入剑中，由阿斯拉诺克斯制造
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			SolusKatanaEX: {
+				DisplayName: 日炎刀EX
+				Tooltip:
+					'''
+					日光注入剑中，由阿斯拉诺克斯制造
+					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			SolusKatanaNEO: {
+				DisplayName: 日炎刀NEO
+				Tooltip:
+					'''
+					日光注入剑中，由阿斯拉诺克斯制造
+					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
+					纯化日炎刀与绝唱机甲日炎刀交汇的辉光，请确保你能驾驭它的力量。
+					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			AdaptableCrossbow: {
+				DisplayName: 万用型十字弩
+				Tooltip:
+					'''
+					右键切换弹药类型。共七种弹药：普通箭、爆炸箭、寒霜箭、带电箭、剧毒箭、引力箭以及斥力箭。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			AdaptableCrossbowEX: {
+				DisplayName: 万用型十字弩EX
+				Tooltip:
+					'''
+					右键切换弹药类型。共七种弹药：普通箭、爆炸箭、寒霜箭、带电箭、剧毒箭、引力箭以及斥力箭。
+					所有尝试过最后两种特殊箭矢的人都表示那会是他们最喜欢的箭矢......除了有点反胃，以及会影响其他人。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			AsuterosaberuCSM: {
+				DisplayName: 天文军刀CSM
+				Tooltip:
+					'''
+					源生纯粹七元霓辉空间水晶所铸造的利刃，也许它是斩断了空间逃离了原本的世界来到这里？
+					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			AsuterosaberuDX: {
+				DisplayName: 天文军刀豪华版
+				Tooltip:
+					'''
+					彩虹色的剑刃锋利到能够劈开空间
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			AsuterosaberuDX_Broken: {
+				DisplayName: 破损的天文军刀
+				Tooltip:
+					'''
+					现在，它不过是一把大玻璃碴子
+					'''
+			}
+
+			AsuterosaberuDXEX: {
+				DisplayName: 天文军刀豪华版EX
+				Tooltip:
+					'''
+					彩虹色的剑刃锋利到能够劈开空间
+					破碎吧，属于空间的秩序
+					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
+					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			Boomerang: {
+				DisplayName: 飞镖
+				Tooltip:
+					'''
+					最先进的微推进器保证它总是能够返回。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			BoomerangEX: {
+				DisplayName: 飞镖EX
+				Tooltip:
+					'''
+					最先进的微推进器保证它总是能够返回。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			FrozenBoomerang: {
+				DisplayName: 冷冻飞镖
+				Tooltip:
+					'''
+					一个寒冷的飞镖与冰冻核心。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			FrozenBoomerangEX: {
+				DisplayName: 冷冻飞镖EX
+				Tooltip:
+					'''
+					一个寒冷的飞镖与冰冻核心。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			Lunarang: {
+				DisplayName: 月镖
+				Tooltip:
+					'''
+					那不是月亮。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			LunarangEX: {
+				DisplayName: 月镖EX
+				Tooltip:
+					'''
+					那不是月亮。
+					碎月
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			MoltenBoomerang: {
+				DisplayName: 火焰飞镖
+				Tooltip:
+					'''
+					一个炎热的飞镖与熔火之心。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			MoltenBoomerangEX: {
+				DisplayName: 火焰飞镖EX
+				Tooltip:
+					'''
+					一个炎热的飞镖与熔火之心。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			Chakram: {
+				DisplayName: 环刃
+				Tooltip:
+					'''
+					环刃大师能抓住它而不伤及手指。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			ChakramEX: {
+				DisplayName: 环刃EX
+				Tooltip:
+					'''
+					环刃大师能抓住它而不伤及手指。
+					更加猛烈地切割万物吧，包括使用者自身。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			HardChakram: {
+				DisplayName: 硬环刃
+				Tooltip:
+					'''
+					坚固，沉重，而残忍地有效。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			HardChakramEX: {
+				DisplayName: 硬环刃EX
+				Tooltip:
+					'''
+					坚固，沉重，而残忍地有效。
+					沉重到能够轻易地击飞对方。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			NeoChakram: {
+				DisplayName: 新型环刃
+				Tooltip:
+					'''
+					毁灭性的能量正发出噼啪声。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			NeoChakramEX: {
+				DisplayName: 环刃EX
+				Tooltip:
+					'''
+					毁灭性的能量正发出噼啪声。
+					锁定目标，光束打击！
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			SawChakram: {
+				DisplayName: 锯环刃
+				Tooltip:
+					'''
+					遵循圣律的伐木僧们最喜欢的武器。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			SawChakramEX: {
+				DisplayName: 锯环刃EX
+				Tooltip:
+					'''
+					遵循圣律的伐木僧们最喜欢的武器。
+					就用这个锯下那最没用的珍珠木吧。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			FlamingDemonSword: {
+				DisplayName: 炎岚之怒
+				Tooltip:
+					'''
+					无穷的烈焰自它的剑锋中喷涌而出。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			FlamingDemonSwordEX: {
+				DisplayName: 炎岚之怒EX
+				Tooltip:
+					'''
+					无穷的烈焰自它的剑锋中喷涌而出。
+					火焰更加猛烈，一切都将化为灰烬吧。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			BoxingGlove: {
+				DisplayName: 拳击手套
+				Tooltip:
+					'''
+					现在你可以成为一个竞争者
+					终结技：崩拳
+					'''
+			}
+
+			ClawGlove: {
+				DisplayName: 狼爪
+				Tooltip:
+					'''
+					不够坚硬，但依然很酷。
+					终结技：疾冲裂伤
+					'''
+			}
+
+			Gauntlet: {
+				DisplayName: 决斗拳套
+				Tooltip:
+					'''
+					按Q发起一场决斗
+					终结技：升龙拳
+					'''
+			}
+
+			StunGlove: {
+				DisplayName: 电击拳套
+				Tooltip:
+					'''
+					非常有效。
+					终结技：雷光爪
+					'''
+			}
+
+			SupernovaGauntlet: {
+				DisplayName: 超新星护手
+				Tooltip:
+					'''
+					具有一颗超新星力量的手套。
+					终结技：突进
+					'''
+			}
+
+			VineFist: {
+				DisplayName: 藤蔓拳套
+				Tooltip:
+					'''
+					释放自然的力量。
+					终结技：鞭藤
+					'''
+			}
+
+			OculusReaver: {
+				DisplayName: 目珠掠夺者
+				Tooltip:
+					'''
+					当你凝视着它的时候，它也许也凝视着你。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			OculusReaverEX: {
+				DisplayName: 目珠掠夺者EX
+				Tooltip:
+					'''
+					当你凝视着它的时候，它也许也凝视着你。
+					当你一脸嫌弃看向你的敌人的时候，它也会一脸嫌弃地看着你的猎物。(x
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			TeslasWrath: {
+				DisplayName: 特斯拉之怒
+				Tooltip:
+					'''
+					感受交流电狙击枪的怒火吧！
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			TeslasWrathEX: {
+				DisplayName: 特斯拉之怒EX
+				Tooltip:
+					'''
+					感受交流电狙击枪的怒火吧！
+					杨永信之力！
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			TimePierce: {
+				DisplayName: 刺穿时间(未完成)
+				Tooltip:
+					'''
+					斩断那呼啸的时之风。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			TimePierceEX: {
+				DisplayName: 刺穿时间EX
+				Tooltip:
+					'''
+					斩断那呼啸的时之风。
+					但朝花也只能于夕拾。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			VintageScopedRifle: {
+				DisplayName: 老式狙击步枪
+				Tooltip:
+					'''
+					老当益壮，这把枪所打出的子弹能轻易击穿钢板。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			VintageScopedRifleEX: {
+				DisplayName: 老式狙击步枪EX
+				Tooltip:
+					'''
+					老当益壮，这把枪所打出的子弹能轻易击穿钢板。
+					不对，不只是钢板，就是一米厚的夜明板也能轻易击穿。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			IntestineWhip: {
+				DisplayName: 肠鞭
+				Tooltip:
+					'''
+					如果真的以肠子作为鞭子，那可真够恶心的，还好这只是个高仿，攻击怪物时有类似于消化它们的能力(指吸血)。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			IntestineWhipEX: {
+				DisplayName: 肠鞭EX
+				Tooltip:
+					'''
+					如果真的以肠子作为鞭子，那可真够恶心的，还好这只是个高仿，攻击怪物时有类似于消化它们的能力(指吸血)。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			LucainesEnergyWhip: {
+				DisplayName: 鲁卡恩的能量鞭
+				Tooltip:
+					'''
+					一根由纯能量制成的鞭子，裂开吧！
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			LucainesEnergyWhipEX: {
+				DisplayName: 鲁卡恩的能量鞭
+				Tooltip:
+					'''
+					一根由纯能量制成的鞭子，裂开吧！
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			RopeWhip: {
+				DisplayName: 绳鞭
+				Tooltip:
+					'''
+					比皮革更强，没有理由。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			RopeWhipEX: {
+				DisplayName: 绳鞭EX
+				Tooltip:
+					'''
+					比皮革更强，没有理由。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			VineWhip: {
+				DisplayName: 藤鞭
+				Tooltip:
+					'''
+					以附有巨毒的长藤作为鞭子。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			VineWhipEX: {
+				DisplayName: 藤鞭EX
+				Tooltip:
+					'''
+					以附有巨毒的长藤作为鞭子。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			EightTrigramsFurnace: {
+				DisplayName: 八卦炉
+				Tooltip: 极限状态下甚至能夷平一座山。
+			}
+
+			Gem_0: {
+				DisplayName: 月之石
+				Tooltip:
+					'''
+					使用月元素魔法程度的能力
+					"明明如月，何时可掇？"
+					月符「沉静的月神」
+					'''
+			}
+
+			Gem_1: {
+				DisplayName: 金之石
+				Tooltip:
+					'''
+					控制金元素魔法程度的能力
+					"精诚所至,金石为开。"
+					金符「金属疲劳」
+					'''
+			}
+
+			TeleportStaff: {
+				DisplayName: 传送法杖
+				Tooltip:
+					'''
+					走你
+					右键进入子世界_时之风
+					'''
+			}
+		}
+
+		Buffs: {
+			DoThingsReallySloppily: {
+				DisplayName: 拖泥带水Ⅱ
+				Description:
+					'''
+					字面意思。
+					移动速度明显降低，这次是真的"落汤"鸡了，我欣赏你掉到水坑里挣扎的样子（
+					'''
+			}
+
+			DoThingsSloppily: {
+				DisplayName: 拖泥带水
+				Description:
+					'''
+					字面意思。
+					移动速度降低，淋雨淋湿了做事效率会变低呢，小心感冒（
+					'''
+			}
+
+			EasyToBeRusty: {
+				DisplayName: 易生锈
+				Description: 海边的金属是容易生锈的...保护好你身边的金属制品（
+			}
+
+			Gravitation: {
+				DisplayName: 引力
+				Description:
+					'''
+					你开始好奇眼前那天界塔的密度了，为什么它会有这么大引力。而且离得太远或太近引力都不大
+					我知道了，那其实是天界塔碎片对你的吸引力（
+					'''
+			}
+
+			HighTemperature: {
+				DisplayName: 高温
+				Description: 并没有用魔力直接降温的手段哦，这样的温度能还原氧化铁了吧，钢铁就是这么炼成的。（
+			}
+
+			HotWithWet: {
+				DisplayName: 湿热
+				Description: 潮湿与温热并存，你为此而焦躁不安，越是心急越是走不快呢，也没能集中注意力防备或回击怪物了。（
+			}
+
+			Hypoxia: {
+				DisplayName: 缺氧
+				Description: 不及时补充氧气的话，不用多久就会暴毙哦。（坏笑
+			}
+
+			Infected: {
+				DisplayName: 感染
+				Description: 伤口不及时处理会恶化哦（
+			}
+
+			LowTemperature: {
+				DisplayName: 低温
+				Description: 你只能通过消耗魔力来维持体温了，当你魔力耗尽，你也就会感到一种霜冻般的绝望吧。（
+			}
+
+			Radiation: {
+				DisplayName: 辐射
+				Description:
+					'''
+					生命和魔力降低
+					为什么风暴之地的环境debuff是这个？感谢你的提问，我也想知道（
+					'''
+			}
+
+			SwimInTheLava: {
+				DisplayName: 在岩浆中游泳
+				Description: 淦哦老兄，为什么要做这种奇怪的尝试？你的皮肤又不是黑曜石做的，但岩浆里那些鱼是啊。子非鱼，安知鱼之热（
+			}
+
+			TheLastPieceOfPureLand: {
+				DisplayName: 最后一片净土
+				Description: 纯粹地想占用你一个buff槽，气不气（
+			}
+
+			TooDark: {
+				DisplayName: 黑暗
+				Description: 那些阴险的家伙隐匿在黑暗中，你看不见你前程的光明。（
+			}
+
+			TooDazzling: {
+				DisplayName: 刺眼
+				Description:
+					'''
+					那一刻，这片神圣的土地化为了光（
+					暴击、生命上限、魔力上限降低了！
+					'''
+			}
+
+			TooDry: {
+				DisplayName: 干旱
+				Description: 口渴的你，手也软了吧。然而喝那么几壶水并不足以让整个沙漠解渴呢。（
+			}
+
+			TooQuiet: {
+				DisplayName: 寂静
+				Description: 周围静的可怕，你有一种孤独的恐惧，甚至对于周围放下了防备。（
+			}
+
+			TooSweet: {
+				DisplayName: 过分甜蜜
+				Description: 比秘封组还甜的蜂蜜令你不由得扭得像条蛆一样，就连敌对的弹幕也被蜂蜜吸引了！（
+			}
+
+			TooWarm: {
+				DisplayName: 过于温暖
+				Description: 有时候沉溺于温暖之中也不见得是好事（
+			}
+
+			Electrified: {
+				DisplayName: 青电之矢
+				Description: 这是触电一般的感觉...别和其他人挨得太近了。
+			}
+
+			Frozen: {
+				DisplayName: 霜冻之矢
+				Description: 刺骨凌冽的寒风
+			}
+
+			KluexRage1: {
+				DisplayName: 克鲁西斯狂暴Ⅰ
+				Description: 野蛮。
+			}
+
+			KluexRage2: {
+				DisplayName: 克鲁西斯狂暴Ⅱ
+				Description: 太野蛮了。
+			}
+
+			KluexRage3: {
+				DisplayName: 克鲁西斯狂暴Ⅲ
+				Description: 野蛮至极！
+			}
+		}
+
+		BuffName: {
+			ToxicⅠ: 剧毒Ⅰ
+			ToxicⅡ: 剧毒Ⅱ
+			ToxicⅢ: 剧毒Ⅲ
+		}
+
+		BuffDescription: {
+			ToxicⅠ: 你的生命正在以百分比的形式下降。这意味着你的血量和防御再怎么高也没有意义。幸运的是，怪物和boss也是这样。祝你好运。HELL TO YOU
+			ToxicⅡ: 你的生命正在以百分比的形式下降。这意味着你的血量和防御再怎么高也没有意义。幸运的是，怪物和boss也是这样。祝你好运。HELL TO YOU
+			ToxicⅢ: 你的生命正在以百分比的形式下降。这意味着你的血量和防御再怎么高也没有意义。幸运的是，怪物和boss也是这样。祝你好运。HELL TO YOU
+		}
+
+		Projectiles: {
+			InfiniteNightmareHugeJadeBullet.DisplayName: 光团
+			NebulaEnergyBall.DisplayName: 星云光团
+			NebulaEnergyZone.DisplayName: 星云「杀意的百合」
+			SkeletronBullet.DisplayName: 骷髅王之首虚影
+			SkeletronBulletEX.DisplayName: 骷髅王之首虚影机械版
+			SlimeNoise.DisplayName: 史莱姆噪音
+			StarDustLaser.DisplayName: 星尘光束
+			VortexLightningIN.DisplayName: 星旋闪电
+			SolusDash.DisplayName: Solus Dash
+			SolusKatanaFractal.DisplayName: Solus Katana Fractal
+			SolusLevatine.DisplayName: 日炎「破晓之光」
+			SolusUltraLaser.DisplayName: 日炎「杀意的百合」
+			ApeBossMissile.DisplayName: 大猿人导弹
+			ApeBossMissileExp.DisplayName: 大猿人导弹
+			BigApeVectorField.DisplayName: 大猿人向量场
+			EnergyFist.DisplayName: 能量拳
+			LaserTesseract.DisplayName: 超立方体
+			LightDagger.DisplayName: 光之匕首
+			LightDagger_2.DisplayName: 光之匕首
+			LightDagger_Charge.DisplayName: 激光匕首
+			LightPellet.DisplayName: 能量光团
+			StrawberryCross.DisplayName: 十字激光
+			StrawberryCross_PS.DisplayName: 十字激光
+			StrawberryLaser.DisplayName: 四次元阳离子激光
+			VectorFieldCone.DisplayName: 向量场锥刺
+			ErchiusHorrorAggregateLaser.DisplayName: 能源煞魔聚合激光
+			ErchiusHorrorMartixLaser.DisplayName: 能源煞魔平行四边形激光
+			ErchiusHorrorRotLaser.DisplayName: 能源煞魔旋转激光
+			ErchiusHorrorRotStopLaser.DisplayName: 能源煞魔旋转激光
+			ErchiusHorrorSparkLaser.DisplayName: 能源煞魔极限火花
+			ErchiusHorrorTimeVoyagerLaser.DisplayName: 能源煞魔激光
+			ErchiusHorrorTinyLaser.DisplayName: 能源煞魔小型火花
+			FlameCloud.DisplayName: 烈焰
+			DragonFireBall.DisplayName: 龙炎灭却弹
+			DragonFireBullet.DisplayName: 龙火子弹
+			DragonFireCloud.DisplayName: 龙息
+			DragonHeadPistolProj.DisplayName: Dragon Head Pistol Proj
+			ErchiusCrystalPiece.DisplayName: Erchius Crystal Piece
+			ErchiusCrystalProj.DisplayName: 能源水晶块
+			ErchiusLaser.DisplayName: Erchius Laser
+			IxodoomClawProj.DisplayName: 做个锤子
+			KluexPlasmaBall.DisplayName: 克鲁西斯等离子体球
+			KluexPlasmaCrystal.DisplayName: 克鲁西斯能量水晶
+			KluexStaffProj.DisplayName: Kluex Staff Proj
+			KluexZone.DisplayName: 克鲁西斯与狂暴的境界
+			MiniknogLauncherProj.DisplayName: Miniknog Launcher Proj
+			MiniknogRocket.DisplayName: 科技发展部导弹
+			SolusEnergyShard.DisplayName: 日炎能量飞刀
+			SolusKatanaProj.DisplayName: 做个锤子
+			AdaptableCrossbowProj.DisplayName: Adaptable Crossbow Proj
+			CrossBowArrow.DisplayName: 万用十字弩之矢
+			AstralTear.DisplayName: 星辉裂空
+			AsuterosaberuDXProj.DisplayName: 天文军刀豪华版
+			BoomerangProj.DisplayName: 飞镖
+			FrozenBoomerangProj.DisplayName: 飞镖
+			LunarangProj.DisplayName: 飞镖
+			MoltenBoomerangProj.DisplayName: 飞镖
+			ChakramProj.DisplayName: 着蒸逝铬好冥自
+			HardChakramProj.DisplayName: 着蒸逝铬好冥自
+			NeoChakramProj.DisplayName: 着蒸逝铬好冥自
+			SawChakramProj.DisplayName: 着蒸逝铬好冥自
+			FlamingDemonSwordProj.DisplayName: Flaming Demon Sword Proj
+			BoxingGloveProj.DisplayName: 拳击手套
+			ClawGloveProj.DisplayName: 狼爪
+			GauntletProj.DisplayName: 决斗拳套
+			StunGloveProj.DisplayName: 电击拳套
+			SupernovaGauntletProj.DisplayName: 超新星护手
+			VineFistProj.DisplayName: 藤蔓拳套
+			OculusReaverProj.DisplayName: 做个锤子
+			OculusReaverTear.DisplayName: 裂空之眼
+			TeslasWrathBullet.DisplayName: 特斯拉之怒子弹
+			TeslasWrathProj.DisplayName: Teslas Wrath Proj
+			PiercingBullet.DisplayName: 穿甲弹
+			VintageScopedRifleProj.DisplayName: Vintage Scoped Rifle Proj
+			IntestineWhipProj.DisplayName: 鞭
+			LucainesEnergyWhipProj.DisplayName: 鞭
+			LucainesEnergyWhipShock.DisplayName: 鲁卡恩能量珠
+			RopeWhipProj.DisplayName: 鞭
+			VineWhipProj.DisplayName: 鞭
+			ElectricalChain.DisplayName: 闪电链
+			ElectricalFeather.DisplayName: 雷霆羽刃
+			EightTrigramsFurnaceProj.DisplayName: Eight Trigrams Furnace Proj
+			Gem_0Proj.DisplayName: Gem_0 Proj
+			Gem_0Proj1.DisplayName: Gem_0 Proj1
+			ArrowBullet.DisplayName: 箭弹
+			ButterFlyBullet.DisplayName: 蝶弹
+			ConeBullet.DisplayName: 锥弹
+			CrystalBullet.DisplayName: 晶弹
+			DarkBullet.DisplayName: 暗弹
+			DartsBullet.DisplayName: 镖弹
+			DoubleStarBullet.DisplayName: 复星弹
+			DropBullet.DisplayName: 水滴弹
+			EllipseBullet.DisplayName: 椭弹
+			FireBallBullet.DisplayName: 火弹
+			HeartBullet.DisplayName: 心弹
+			HugeJadeBullet.DisplayName: 大玉
+			HugeStarBullet.DisplayName: 大星弹
+			KnifeBullet.DisplayName: 刀弹
+			LaserBullet.DisplayName: 激光
+			LightJadeBullet.DisplayName: 光玉
+			MiddleJadeBullet.DisplayName: 中玉
+			PaperBullet.DisplayName: 札弹
+			PorridgeBullet.DisplayName: 米弹
+			ReallyHugeJadeBullet.DisplayName: 巨型大玉
+			RingBullet.DisplayName: 环玉
+			ScaleBullet.DisplayName: 鳞弹
+			StarBullet.DisplayName: 星弹
+			TeleportStaffProj.DisplayName: Teleport Staff Proj
+		}
+
+		NPCs: {
+			NoisySlime.DisplayName: 噪音史莱姆
+			Baron.DisplayName: 拜隆先生
+			AsraNox.DisplayName: 阿斯拉诺克斯
+			BigApe.DisplayName: 大猿人
+			BigApeProjector.DisplayName: 大猿人投影仪
+			ErchiusHorror.DisplayName: 能源煞魔
+			TinyErchiusCrystal.DisplayName: 能源煞魔小型水晶
+			ElectricalHarpy.DisplayName: 雷羽鸟妖
+			NegativeElectricalSlime.DisplayName: 负电史莱姆
+			NeutralSlime.DisplayName: 中性史莱姆
+			PositiveElectricalSlime.DisplayName: 正电史莱姆
+		}
+
+		Biomes.TimeBackTrackingBiome.DisplayName: Time Back Tracking Biome
+
+		Tiles: {
+			AegisaltOreTile.MapEntry: 霓磷盐矿
+			FeroziumOreTile.MapEntry: 菲洛合金矿
+			SolariumOreTile.MapEntry: 日耀石矿
+			VioliumOreTile.MapEntry: 维奥合金矿
+		}
+	}
+}

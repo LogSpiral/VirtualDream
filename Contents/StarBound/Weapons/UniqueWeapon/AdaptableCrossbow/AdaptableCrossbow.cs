@@ -551,7 +551,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                     target.AddBuff(ModContent.BuffType<ToxicⅠ>(), 180);
                     break;
             }
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
     }
 }

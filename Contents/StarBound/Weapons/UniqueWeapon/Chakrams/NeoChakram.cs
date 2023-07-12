@@ -133,7 +133,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 3;
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         public override bool hit => Projectile.timeLeft <= 30;
         public override bool ShouldUpdatePosition()

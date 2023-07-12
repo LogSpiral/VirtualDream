@@ -192,7 +192,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             {
                 Dust.NewDustPerfect(target.Center, MyDustId.RedBubble, projectile.velocity * .25f + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 4f), 0, Color.White, Main.rand.NextFloat(0, 1.5f)).noGravity = true;
             }
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         public override bool OnTileCollide(Vector2 oldVelocity)
         {

@@ -716,9 +716,9 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             if (npc.life > 0)
             {
                 int num64 = 0;
-                while (num64 < damage / npc.lifeMax * 20.0)
+                while (num64 < hit.Damage / npc.lifeMax * 20.0)
                 {
-                    Dust.NewDust(npc.position, npc.width, npc.height, 241, hitDirection, -1f, 0, default, 1f);
+                    Dust.NewDust(npc.position, npc.width, npc.height, 241, hit.HitDirection, -1f, 0, default, 1f);
                     if (Main.rand.NextBool(2))
                     {
                         Dust dust14 = Main.dust[Dust.NewDust(npc.position, npc.width, npc.height, 6, 0f, 0f, 0, default, 1f)];
@@ -736,7 +736,7 @@ namespace VirtualDream.Contents.Storm.Thunder.NPCs
             {
                 for (int num65 = 0; num65 < 20; num65 = num5 + 1)
                 {
-                    Dust.NewDust(npc.position, npc.width, npc.height, 241, hitDirection, -1f, 0, default, 1f);
+                    Dust.NewDust(npc.position, npc.width, npc.height, 241, hit.HitDirection, -1f, 0, default, 1f);
                     Dust dust15 = Main.dust[Dust.NewDust(npc.position, npc.width, npc.height, 6, 0f, 0f, 0, default, 1f)];
                     dust15.noGravity = true;
                     dust15.scale = 1.5f;

@@ -224,8 +224,18 @@ Mods: {
 				DisplayName: 时之风
 				Tooltip:
 					'''
-					这是一个能扭曲时空的怀表
-					没有人知道这货究竟是怎么工作的，而你也不知道自己是怎么鬼使神差造出这玩意的
+					它能带你找回一些被时间抹杀的东西
+					真的吗
+					它还需要时间进行充能欸
+					'''
+			}
+
+			WindOfTimeStand: {
+				DisplayName: 怀表基座
+				Tooltip:
+					'''
+					为什么一块怀表会需要一个这么庞大的基座？
+					总算将这一抹风暂且地留住了吗？
 					'''
 			}
 
@@ -379,6 +389,14 @@ Mods: {
 					'''
 			}
 
+			SolusKatana_Broken: {
+				DisplayName: 破碎日炎刀
+				Tooltip:
+					'''
+					我觉得你找不到它的原作者了，也许需要用些别的力量修复
+					'''
+			}
+
 			SolusKatana: {
 				DisplayName: 日炎刀
 				Tooltip:
@@ -443,6 +461,14 @@ Mods: {
 					'''
 					彩虹色的剑刃锋利到能够劈开空间
 					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			AsuterosaberuDX_Broken: {
+				DisplayName: 破损的天文军刀
+				Tooltip:
+					'''
+					现在，它不过是一把大玻璃碴子
 					'''
 			}
 

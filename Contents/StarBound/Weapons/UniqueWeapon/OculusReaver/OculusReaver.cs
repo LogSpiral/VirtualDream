@@ -123,7 +123,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         public override void OnRelease(bool charged, bool left)
         {
@@ -252,7 +252,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 10;
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
 
         }
         public override void AI()

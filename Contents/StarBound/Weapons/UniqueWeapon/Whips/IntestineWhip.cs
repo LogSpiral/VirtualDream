@@ -91,14 +91,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            var heal = (int)(damage / 20 * Main.rand.NextFloat(0.85f, 1.15f));
+            var heal = (int)(hit.Damage / 20 * Main.rand.NextFloat(0.85f, 1.15f));
             var realValue = Player.statLife;
             Player.statLife += heal;
             Player.statLife = (int)MathHelper.Clamp(Player.statLife, 0, Player.statLifeMax2 + 0.1f);
             realValue = Player.statLife - realValue;
             if (realValue > 0)
                 Player.HealEffect(realValue);
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         //public T UpgradeValue<T>(T normal, T extra, T defaultValue = default)
         //{

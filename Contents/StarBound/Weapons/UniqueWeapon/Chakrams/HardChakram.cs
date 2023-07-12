@@ -94,7 +94,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
             if (target.CanBeChasedBy()) 
             {
                 var vec = Projectile.oldPos[0] - Projectile.oldPos[1];

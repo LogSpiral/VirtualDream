@@ -6,41 +6,56 @@ using System;
 using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
 using LogSpiralLibrary.CodeLibrary;
 using LogSpiralLibrary;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+using VirtualDream.Contents.StarBound.Materials;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 {
+    public class SolusKatana_Broken : SolusKatana
+    {
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            var recipe = new WeaponRepairRecipe(this);
+            recipe.AddIngredient(ItemID.SolarTablet);
+            recipe.AddIngredient(ItemID.LihzahrdBrick, 50);
+            recipe.AddIngredient(ItemID.LunarTabletFragment, 32);
+            recipe.AddIngredient(ItemID.Topaz, 15);
+            recipe.AddIngredient(ItemID.Amber, 5);
+            recipe.AddIngredient(ItemID.SunStone);
+            recipe.SetResult<SolusKatana>();
+            return recipe;
+        }
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            item.damage = 15;
+            item.rare = ItemRarityID.Green;
+            item.useTime = 30;
+            item.useAnimation = 30;
+            item.shoot = ModContent.ProjectileType<SolusKatana_BrokenProj>();
+        }
+        public override WeaponState State => WeaponState.Broken;
+    }
+    public class SolusKatana_BrokenProj : VertexHammerProj, IStarboundWeaponProjectile
+    {
+
+        public override float MaxTime => Player.itemAnimationMax;
+        public override string Texture => base.Texture.Replace("BrokenProj", "Broken");
+        public override Vector2 CollidingSize => base.CollidingSize * 2;
+
+        public override Vector2 CollidingCenter => new Vector2(projTex.Size().X / 3 - 16, 16);
+        public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-16, 12);
+    }
     public class SolusKatana : StarboundWeaponBase
     {
-        public override bool BossDrop => true;
-        public override void SetStaticDefaults()
+        public override WeaponRepairRecipe RepairRecipe()
         {
-            // DisplayName.SetDefault("日炎刀");
-            // Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//由阿斯拉诺克斯造的是初版，后来她开源了......我的意思是，她公布了制作方法，方法很简单:搜集好材料然后怼到秘银砧上面(
-
+            var recipe = base.RepairRecipe();
+            recipe.AddIngredient<AncientEssence>(5000);
+            recipe.SetResult<SolusKatanaEX>();
+            return recipe;
         }
-        //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
-        //{
-        //    if (Mod.HasAsset((Texture + "_Glow").Replace("VirtualDream/", "")))
-        //        spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow", false), item.Center - Main.screenPosition, null, Color.White, rotation, IllusionBoundMod.GetTexture(Texture + "_Glow", false).Size() * .5f, scale, 0, 0);
-        //}
-
-        //public override void UseStyle(Player player)
-        //{
-        //    if (item.noUseGraphic || !item.melee || item.damage == 0 || item.useStyle != 1) 
-        //    {
-        //        return;
-        //    }
-        //    ShaderSwooshEffectPlayer ssep = player.GetModPlayer<ShaderSwooshEffectPlayer>();
-        //    if (player.itemAnimation == player.itemAnimationMax - 1) 
-        //    {
-        //        ssep.playerOldPos = new Vector2[player.itemAnimationMax - 1];
-        //    }
-        //    ssep.playerOldPos[player.itemAnimationMax - player.itemAnimation - 1] = player.Center;
-        //    if (player.itemAnimation == 1) 
-        //    {
-        //        ssep.NewSwoosh(1 / 12f, item, ShaderSwooshEffectPlayer.ShaderSwooshStyle.LightBlade);
-        //    }
-        //}
+        public override bool BossDrop => true;
         public override void SetDefaults()
         {
             item.damage = 85;
@@ -58,83 +73,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             item.noUseGraphic = true;
             item.noMelee = true;
         }
-
-        public override void MeleeEffects(Player player, Rectangle hitbox)
-        {
-            Dust.NewDust(hitbox.TopLeft(), hitbox.Width, hitbox.Height, MyDustId.Fire, 0, 0, 100, Color.White, 1.0f);
-        }
         public Item item => Item;
 
         public override bool CanUseItem(Player player)
         {
-            //if (player.altFunctionUse == 2)
-            //{
-            //    //item.shoot = ModContent.ProjectileType<SolusEnergyShard>();
-            //    item.shootSpeed = 10f;
-            //    item.mana = 30;
-            //    item.useTime = 48;
-            //    item.useAnimation = 48;
-            //}
-            //else
-            //{
-            //    item.useTime = 16;
-            //    item.mana = 0;
-            //    item.shoot = 0;
-            //    item.useAnimation = 16;
-            //}
             return base.CanUseItem(player);
         }
-        //public override bool AltFunctionUse(Player player)
-        //{
-        //    return true;
-        //}
         public override bool AltFunctionUse(Player player) => true;
-        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-
-            target.AddBuff(BuffID.OnFire, 150);
-            target.AddBuff(BuffID.Daybreak, 150);
-        }
-        public override void AddRecipes()
-        {
-            Recipe recipe1 = CreateRecipe();
-            //recipe1.AddIngredient<Items.Weapons.OrdinaryAcrossKatana>();
-            recipe1.AddIngredient(ItemID.SolarTablet);
-            recipe1.AddIngredient(ItemID.LihzahrdBrick, 50);
-            recipe1.AddIngredient(ItemID.LunarTabletFragment, 32);
-            recipe1.AddIngredient(ItemID.Topaz, 15);
-            recipe1.AddIngredient(ItemID.Amber, 5);
-            recipe1.AddIngredient(ItemID.SunStone);
-            recipe1.AddTile(TileID.MythrilAnvil);
-            recipe1.SetResult(this);
-            recipe1.AddRecipe();
-        }
     }
     public class SolusKatanaEX : SolusKatana
     {
+        public override WeaponRepairRecipe RepairRecipe() => GetEmptyRecipe();
         public override WeaponState State => WeaponState.False_EX;
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
-            // DisplayName.SetDefault("日炎刀EX");
-        }
-        //public override void UseStyle(Player player)
-        //{
-        //    if (item.noUseGraphic || !item.melee || item.damage == 0 || item.useStyle != 1)
-        //    {
-        //        return;
-        //    }
-        //    ShaderSwooshEffectPlayer ssep = player.GetModPlayer<ShaderSwooshEffectPlayer>();
-        //    if (player.itemAnimation == player.itemAnimationMax - 1)
-        //    {
-        //        ssep.playerOldPos = new Vector2[player.itemAnimationMax - 1];
-        //    }
-        //    ssep.playerOldPos[player.itemAnimationMax - player.itemAnimation - 1] = player.Center;
-        //    if (player.itemAnimation == 1)
-        //    {
-        //        ssep.NewSwoosh(1 / 12f, item, ShaderSwooshEffectPlayer.ShaderSwooshStyle.LightBlade);
-        //    }
-        //}
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -146,50 +96,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             item.useAnimation = 13;
             item.knockBack = 8;
         }
-        //public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        //{
-        //    Vector2 vec = Main.MouseWorld - player.Center;
-        //    vec = Vector2.Normalize(vec);
-        //    for (float i = -MathHelper.Pi / 12; i <= MathHelper.Pi / 12; i += MathHelper.Pi / 24)
-        //    {
-        //        Vector2 finalVec = (vec.ToRotation() + i).ToRotationVector2() * 72f;
-        //        Projectile.NewProjectile(source, position, finalVec, ModContent.ProjectileType<Projectiles.SolarEnergySword.SolarEnergySword>(), damage, knockback, player.whoAmI);
-        //    }
-        //    return false;
-        //}
-        //Action<(int, int)> myfunc;
-        public override bool CanUseItem(Player player)
-        {
-            //if (player.altFunctionUse == 2)
-            //{
-            //    item.shoot = ModContent.ProjectileType<SolusEnergyShard>();
-            //    item.shootSpeed = 10f;
-            //    item.mana = 40;
-            //    item.useTime = 39;
-            //    item.useAnimation = 39;
-            //}
-            //else
-            //{
-            //    item.useTime = 13;
-            //    item.mana = 0;
-            //    item.shoot = 0;
-            //    item.useAnimation = 13;
-            //}
-            return true;
-        }
-        public override void AddRecipes()
-        {
-        }
     }
     public class SolusKatanaNEO : SolusKatana
     {
         public override WeaponState State => WeaponState.False_UL;
-
-        public override void SetStaticDefaults()
-        {
-            // Tooltip.SetDefault("日光注入剑中，由阿斯拉诺克斯制造\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯化日炎刀与绝唱机甲日炎刀交汇的辉光，请确保你能驾驭它的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//二次强化的日炎刀，是由阿斯拉诺克斯制造的吗？\n
-            // DisplayName.SetDefault("日炎刀NEO");
-        }
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -199,62 +109,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             item.rare = MyRareID.Tier3;
             item.useTime = 10;
             item.useAnimation = 10;
-        }
-        public override void UseStyle(Player player, Rectangle rectangle)
-        {
-            //if (item.noUseGraphic || !item.melee || item.damage == 0 || item.useStyle != 1)
-            //{
-            //    return;
-            //}
-            //ShaderSwooshEffectPlayer ssep = player.GetModPlayer<ShaderSwooshEffectPlayer>();
-            //if (player.itemAnimation == player.itemAnimationMax - 1)
-            //{
-            //    ssep.playerOldPos = new Vector2[player.itemAnimationMax - 1];
-            //}
-            //ssep.playerOldPos[player.itemAnimationMax - player.itemAnimation - 1] = player.Center;
-            //if (player.itemAnimation == 1)
-            //{
-            //    ssep.NewSwoosh(1 / 12f, item, ShaderSwooshEffectPlayer.ShaderSwooshStyle.LightBlade);
-            //}
-            //if (player.altFunctionUse != 2)
-            //{
-            //    time++;
-            //    if (time == 20)
-            //    {
-            //        Vector2 vec = Main.MouseWorld - player.Center;
-            //        vec = Vector2.Normalize(vec);
-            //        for (float i = -MathHelper.Pi / 12; i <= MathHelper.Pi / 12; i += MathHelper.Pi / 12)
-            //        {
-            //            Vector2 finalVec = (vec.ToRotation() + i).ToRotationVector2() * 72f;
-            //            Projectile.NewProjectile(player.GetSource_ItemUse(item), player.position, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), player.GetWeaponDamage(item), 8, player.whoAmI);
-            //        }
-            //        time = 0;
-            //    }
-            //}
-        }
-        public override bool CanUseItem(Player player)
-        {
-            //if (player.altFunctionUse == 2)
-            //{
-            //    item.shoot = ModContent.ProjectileType<SolusEnergyShard>();
-            //    item.shootSpeed = 10f;
-            //    item.mana = 50;
-            //    item.useTime = 30;
-            //    item.useAnimation = 30;
-            //}
-            //else
-            //{
-            //    item.useTime = 10;
-            //    item.mana = 0;
-            //    item.shoot = 0;
-            //    item.useAnimation = 10;
-            //}
-            return true;
-        }
-        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            target.AddBuff(BuffID.OnFire, 450);
-            target.AddBuff(BuffID.Daybreak, 450);
         }
         public override void HoldItem(Player player)
         {
@@ -287,7 +141,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override Color VertexColor(float time) => Color.Lerp(Color.White, Color.Orange, time);
         public override bool UseRight => true;
         public override (int X, int Y) FrameMax => (3, 1);
-        public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap)
+        public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref int passCount)
         {
             additive = true;
             indexOfGreyTex = this.UpgradeValue(5, 5, 7);

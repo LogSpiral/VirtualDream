@@ -102,7 +102,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
         {
             target.immune[projectile.owner] = 3;
             projectile.timeLeft = 150;
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         public override bool PreDraw(ref Color lightColor)
         {

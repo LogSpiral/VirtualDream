@@ -53,7 +53,7 @@ namespace VirtualDream.Contents.StarBound.OtherProjectiles
         {
             target.immune[projectile.owner] = 5;
             target.AddBuff(Terraria.ID.BuffID.OnFire, 600);
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         //public override bool PreDraw(ref Color lightColor)
         //{

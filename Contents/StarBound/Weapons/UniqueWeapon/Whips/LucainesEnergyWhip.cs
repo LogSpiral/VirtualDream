@@ -159,7 +159,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 5;
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         public override Color? GetAlpha(Color lightColor)
         {

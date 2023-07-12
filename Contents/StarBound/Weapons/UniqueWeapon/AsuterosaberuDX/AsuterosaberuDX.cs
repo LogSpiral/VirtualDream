@@ -1,6 +1,9 @@
 ﻿using LogSpiralLibrary;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Terraria;
 using Terraria.ID;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
 {
@@ -844,6 +847,53 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //    {
 
     //    }
+    public class AsuterosaberuDX_Broken : AsuterosaberuDX
+    {
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            var recipe = GetEmptyRecipe();
+            recipe.AddIngredient(ItemID.WhitePhasesaber);
+            recipe.AddIngredient(ItemID.RedPhasesaber);
+            recipe.AddIngredient(ItemID.GreenPhasesaber);
+            recipe.AddIngredient(ItemID.BluePhasesaber);
+            recipe.AddIngredient(ItemID.YellowPhasesaber);
+            recipe.AddIngredient(ItemID.PurplePhasesaber);
+            recipe.AddIngredient(ItemID.FragmentStardust, 30);
+            recipe.AddIngredient(ItemID.FragmentVortex, 30);
+            recipe.AddIngredient(ItemID.FragmentNebula, 30);
+            recipe.AddIngredient(ItemID.FragmentSolar, 30);
+            recipe.AddIngredient(ItemID.LunarBar, 10);
+            recipe.AddIngredient<Materials.AncientEssence>(1000);
+            recipe.SetResult<AsuterosaberuDX>();
+            return recipe;
+        }
+        public override WeaponState State => WeaponState.Broken;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            item.damage = 15;
+            item.rare = ItemRarityID.Green;
+            item.useTime = 30;
+            item.useAnimation = 30;
+            item.shoot = ModContent.ProjectileType<AsuterosaberuDX_BrokenProj>();
+        }
+    }
+    public class AsuterosaberuDX_BrokenProj : SolusKatana_BrokenProj 
+    {
+        public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref int passCount)
+        {
+            additive = true;
+            indexOfGreyTex = 5;
+
+            base.VertexInfomation(ref additive, ref indexOfGreyTex, ref endAngle, ref useHeatMap, ref passCount);
+        }
+        public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha, bool inverse) useMask)
+        {
+            //useMask = (VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
+
+            base.RenderInfomation(ref useBloom, ref useDistort, ref useMask);
+        }
+    }
     public class AsuterosaberuDX : StarboundWeaponBase
     {
         public override void SetStaticDefaults()
@@ -871,24 +921,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             item.noMelee = true;
         }
         public override bool AltFunctionUse(Player player) => true;
-        public override void AddRecipes()
-        {
-            Recipe recipe1 = CreateRecipe();
-            recipe1.AddIngredient(ItemID.WhitePhasesaber);
-            recipe1.AddIngredient(ItemID.RedPhasesaber);
-            recipe1.AddIngredient(ItemID.GreenPhasesaber);
-            recipe1.AddIngredient(ItemID.BluePhasesaber);
-            recipe1.AddIngredient(ItemID.YellowPhasesaber);
-            recipe1.AddIngredient(ItemID.PurplePhasesaber);
-            recipe1.AddIngredient(ItemID.FragmentStardust, 30);
-            recipe1.AddIngredient(ItemID.FragmentVortex, 30);
-            recipe1.AddIngredient(ItemID.FragmentNebula, 30);
-            recipe1.AddIngredient(ItemID.FragmentSolar, 30);
-            recipe1.AddIngredient(ItemID.LunarBar, 10);
-            recipe1.AddIngredient<Materials.AncientEssence>(1000);
-            recipe1.SetResult(this);
-            recipe1.AddRecipe();
-        }
     }
     public class AsuterosaberuDXEX : AsuterosaberuDX
     {
@@ -926,13 +958,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             item.width = item.height = 94;
         }
     }
-    public class AsuterosaberuDXProj : BossDrop.SolusKatana.SolusKatanaProj
+    public class AsuterosaberuDXProj : SolusKatanaProj
     {
         public override Texture2D HeatMap => LogSpiralLibraryMod.HeatMap[1].Value;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = (controlState == 2 || Projectile.ai[1] > 0) ? this.UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         public override string Texture => base.Texture;//"VirtualDream/Contents/StarBound/Weapons/UniqueWeapon/AsuterosaberuDX/AsuterosaberuDX"
         public override bool DrawLaserFire => false;
@@ -953,12 +985,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         {
             // DisplayName.SetDefault("天文军刀豪华版");
         }
-        public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap)
+        public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref int passCount)
         {
-            additive = true;
-            indexOfGreyTex = this.UpgradeValue(5, 7, 7);
-            useHeatMap = true;
+            base.VertexInfomation(ref additive, ref indexOfGreyTex, ref endAngle, ref useHeatMap, ref passCount);
         }
+
         public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha,bool inverse) useMask)
         {
             //base.RenderInfomation(ref useBloom, ref useDistort, ref useMask);
@@ -1111,7 +1142,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 3;
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
 
         }
         public override void AI()

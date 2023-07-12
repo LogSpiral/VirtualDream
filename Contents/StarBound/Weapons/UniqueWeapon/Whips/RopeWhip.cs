@@ -88,7 +88,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         public override int DustType => MyDustId.Brown;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            base.OnHitNPC(target, damage, knockback, crit);
+            base.OnHitNPC(target, hit, damageDone);
         }
         //public T UpgradeValue<T>(T normal, T extra, T defaultValue = default)
         //{
