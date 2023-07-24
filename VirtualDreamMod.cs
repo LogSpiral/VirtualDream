@@ -30,24 +30,15 @@ using static Terraria.ModLoader.ModContent;
 using System.Linq;
 using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;
 using LogSpiralLibrary;
+using VirtualDream.Contents.StarBound.Weapons;
+using Terraria.WorldBuilding;
+using Terraria.GameContent.Generation;
+using Terraria.IO;
+using Terraria.GameContent.ItemDropRules;
+using VirtualDream.Contents.StarBound.Materials;
 
 namespace VirtualDream
 {
-    //public class VirtualDreamMenu : ModMenu
-    //{
-    //    public override string DisplayName => base.DisplayName + nameof(VirtualDreamMenu);
-    //}
-    //public class StarboundMenu : ModMenu
-    //{
-    //    public override string DisplayName => base.DisplayName + nameof(StarboundMenu);
-
-    //}
-    //public abstract class IllusionBoundTree : ModTree
-    //{
-    //    public abstract Texture2D GetTopTextures(int i, int j, ref int frame, ref int frameWidth, ref int frameHeight, ref int xOffsetLeft, ref int yOffset, int y);
-    //    public abstract Texture2D GetBranchTextures(int i, int j, int trunkOffset, ref int frame, int y);
-    //}
-    // MOD的主类名字，需要与文件名、MOD名完全一致，并且继承Mod类
     public class VirtualDreamMod : Mod
     {
         public static float GlowLight => VirtualDreamSystem.glowLight;
@@ -57,127 +48,7 @@ namespace VirtualDream
         public static VirtualDreamMod Instance;
         public static Mod mod;
         public static float lightConst;
-        public static bool HarderActive
-        {
-            get
-            {
-                try
-                {
-                    //Bug 0
-                    if (Main.LocalPlayer == null || !Main.LocalPlayer.TryGetModPlayer<Contents.InfiniteNightmare.InfiniteNightmarePlayer>(out var result))
-                    {
-                        return false;
-                    }
-
-                    return result.ReallyInfiniteNightmareModeActive || IHarderActive;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-        }
-        public static bool IHarderActive
-        {
-            get
-            {
-                try
-                {
-                    //Bug 0-1
-                    if (Main.LocalPlayer == null || !Main.LocalPlayer.TryGetModPlayer<Contents.InfiniteNightmare.InfiniteNightmarePlayer>(out var result))
-                    {
-                        return false;
-                    }
-
-                    return result.InfiniteNightmareModeActive;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-        }
-        public static bool UnderGroundActive;
         public static ElectricTriangle[] electricTriangle = new ElectricTriangle[100];
-        private int iconFrame = 0;
-        private byte iconFrameCounter = 0;
-        private Texture2D[] icon = new Texture2D[22];
-        private void Main_DrawMenu(Terraria.On_Main.orig_DrawMenu orig, Main self, GameTime gameTime)
-        {
-            //以下两行为获取Main.MenuUI的UIState集
-            FieldInfo uiStateField = Main.MenuUI.GetType().GetField("_history", BindingFlags.NonPublic | BindingFlags.Instance);
-            List<UIState> _history = (List<UIState>)uiStateField.GetValue(Main.MenuUI);
-            //使用for遍历UIState集，寻找UIMods类的实例
-            for (int x = 0; x < _history.Count; x++)
-            {
-                //检测当前UIState的类名全称是否是ModLoader的UIMods
-                if (_history[x].GetType().FullName == "Terraria.ModLoader.UI.UIMods")
-                {
-                    //以下两行为获取UIMods的UI部件集
-                    FieldInfo elementsField = _history[x].GetType().GetField("Elements", BindingFlags.NonPublic | BindingFlags.Instance);
-                    List<UIElement> elements = (List<UIElement>)elementsField.GetValue(_history[x]);
-
-                    //由之前 了解模组选择页面的构成 一节可知，包含了 包含UIList部件的UIPanel 的UIElement第一个被UIMods包含，故此UIElement位于UIMods的部件集的0号索引处
-                    //以下两行用于获取UIElement的UI部件集
-                    FieldInfo uiElementsField = elements[0].GetType().GetField("Elements", BindingFlags.NonPublic | BindingFlags.Instance);
-                    List<UIElement> uiElements = (List<UIElement>)uiElementsField.GetValue(elements[0]);
-
-                    //同理，由 了解模组选择页面的构成 一节可知，UIPanel第一个被UIElements包含，故UIPanel位于UIElement的UI部件集的0号索引处
-                    //以下两行用于获取UIPanel的UI部件集
-                    FieldInfo myModUIPanelField = uiElements[0].GetType().GetField("Elements", BindingFlags.NonPublic | BindingFlags.Instance);
-                    List<UIElement> myModUIPanel = myModUIPanelField.GetValue(uiElements[0]) as List<UIElement>;
-
-                    //同理，由 了解模组选择页面的构成 一节可知，UIList第一个被UIPanel包含，故UIList位于UIPanel的UI部件集的0号索引处
-                    UIList uiList = (UIList)myModUIPanel[0];
-                    //遍历uiList包含的子部件，寻找我们mod的UIModItem部件
-                    for (int i = 0; i < uiList._items.Count; i++)
-                    {
-                        //动态Icon老bug了
-                        //反射获取mod实例，检测其是否是我们的mod
-                        if (uiList._items[i].GetType().GetField("_mod", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(uiList._items[i]).ToString() == Name)
-                        {
-                            //以下两行为获取我们mod的UIModItem的UI部件集
-                            FieldInfo myUIModItemField = uiList._items[i].GetType().GetField("Elements", BindingFlags.NonPublic | BindingFlags.Instance);
-                            List<UIElement> myUIModItem = (List<UIElement>)myUIModItemField.GetValue(uiList._items[i]);
-
-                            float _modIconAdjust = (GetTexture("icon") == null ? 0 : 85);
-                            UIElement badUnloader = myUIModItem.Find((UIElement e) => e.ToString() == "Terraria.ModLoader.UI.UIHoverImage" && e.Top.Pixels == 3);
-                            //遍历UIModItem的UI部件集
-                            for (int j = 0; j < myUIModItem.Count; j++)
-                            {
-                                //如果当前UI部件是UIImage，且其宽高均为80
-                                if (myUIModItem[j] is UIImage && myUIModItem[j].Width.Pixels == 80 && myUIModItem[j].Height.Pixels == 80)
-                                {
-                                    //修改此UI部件的贴图
-                                    (myUIModItem[j] as UIImage).SetImage(icon[iconFrame]);
-                                    //退出循环
-                                    break;
-                                }
-                            }
-                            //最后按逆序逐一SetValue
-                            myUIModItemField.SetValue(uiList._items[i], myUIModItem);
-                            myModUIPanel[0] = uiList;
-                            myModUIPanelField.SetValue(uiElements[0], myModUIPanel);
-                            uiElementsField.SetValue(elements[0], uiElements);
-                            elementsField.SetValue(_history[x], elements);
-                            uiStateField.SetValue(Main.MenuUI, _history);
-                            //退出循环
-                            break;
-                        }
-                    }
-                    //退出循环
-                    break;
-                }
-            }
-            iconFrameCounter++;
-            if (iconFrameCounter >= 6)
-            {
-                iconFrame++;
-                iconFrame %= 22;
-                iconFrameCounter = 0;
-            }
-            orig(self, gameTime);
-        }
         public static Effect GetEffect(string path, bool autoModName = true) => Request<Effect>((autoModName ? "VirtualDream/" : "") + path, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
         public static Texture2D GetTexture(string path, bool autoModName = true) => Request<Texture2D>((autoModName ? "VirtualDream/" : "") + path, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
         public override void Load()
@@ -190,11 +61,6 @@ namespace VirtualDream
             {
                 Filters.Scene["VirtualDream:" + pass.Name] = new Filter(new IllusionScreenShaderData(new Ref<Effect>(effect), pass.Name), EffectPriority.Medium);
                 Filters.Scene["VirtualDream:" + pass.Name].Load();
-            }
-            Terraria.UI.Chat.On_ChatManager.DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool += MoreMoreHeart;
-            for (int i = 0; i < icon.Length; i++)
-            {
-                icon[i] = GetTexture($"icons/icon_ani_{i}");
             }
         }
         /// <summary>
@@ -406,6 +272,10 @@ namespace VirtualDream
             Bloom = GetEffect("Effects/Bloom1");
         }
     }
+    /// <summary>
+    /// 各种杂项
+    /// <br>包括但不限于之前无间地狱那边的配方和奇怪滤镜们</br>
+    /// </summary>
     public class VirtualDreamSystem : ModSystem
     {
         public const string CopperBarRG = "VirtualDream:CopperBar";
@@ -510,29 +380,11 @@ namespace VirtualDream
             });
             RecipeGroup.RegisterGroup(AdamantiteBarRG, group8);
         }
-        public VirtualDreamSystem instance;
-        public static bool MagnifyingGlassActive;
-        public static bool MagicalMagnifyingGlassActive;
-        public static bool CleverGlassActive;
-        public static bool RainBowGlassActive;
-        public static bool ContrastGlassActive;
-        public static bool ShikieikiGlassActive;
-        public static bool InversPhaseGlassActive;
-        public static bool ContrastDownGlassActive;
-        public static bool ContrastUPGlassActiveV2;
-        public static bool ZenithGlassActive;
-        public override void Load()
-        {
-            instance = this;
-        }
-
         public static double ModTime => LogSpiralLibrarySystem.ModTime;
         public static double ModTime2 => LogSpiralLibrarySystem.ModTime2;
-        public static int TimeStopCount;
         public static float glowLight;
         public override void UpdateUI(GameTime gameTime)
         {
-            TimeStopCount -= (TimeStopCount > -300 && !Main.gamePaused) ? 1 : 0;
             if (!Main.gamePaused)
             {
                 foreach (var item in VirtualDreamMod.electricTriangle)
@@ -544,20 +396,19 @@ namespace VirtualDream
         }
         public override void PreUpdateEntities()
         {
-            ControlScreenShader("VirtualDream:Magnifying", MagnifyingGlassActive);
-            ControlScreenShader("VirtualDream:MagicalMagnifying", MagicalMagnifyingGlassActive);
-            ControlScreenShader("VirtualDream:Clever", CleverGlassActive);
-            ControlScreenShader("VirtualDream:Rainbow", RainBowGlassActive);
-            ControlScreenShader("VirtualDream:Contrast", ContrastGlassActive);
-            ControlScreenShader("VirtualDream:ContrastV2", ContrastUPGlassActiveV2);
-            ControlScreenShader("VirtualDream:Shikieiki", ShikieikiGlassActive);
-            ControlScreenShader("VirtualDream:InversPhase", InversPhaseGlassActive);
-            ControlScreenShader("VirtualDream:Zenith", ZenithGlassActive);
-            ControlScreenShader("VirtualDream:ContrastDown", ContrastDownGlassActive);
+            //ControlScreenShader("VirtualDream:Magnifying", MagnifyingGlassActive);
+            //ControlScreenShader("VirtualDream:MagicalMagnifying", MagicalMagnifyingGlassActive);
+            //ControlScreenShader("VirtualDream:Clever", CleverGlassActive);
+            //ControlScreenShader("VirtualDream:Rainbow", RainBowGlassActive);
+            //ControlScreenShader("VirtualDream:Contrast", ContrastGlassActive);
+            //ControlScreenShader("VirtualDream:ContrastV2", ContrastUPGlassActiveV2);
+            //ControlScreenShader("VirtualDream:Shikieiki", ShikieikiGlassActive);
+            //ControlScreenShader("VirtualDream:InversPhase", InversPhaseGlassActive);
+            //ControlScreenShader("VirtualDream:Zenith", ZenithGlassActive);
+            //ControlScreenShader("VirtualDream:ContrastDown", ContrastDownGlassActive);
         }
         private void ControlScreenShader(string name, bool state)
         {
-            //TODO null
             if ((!Filters.Scene[name]?.IsActive() ?? false) && state)
             {
                 Filters.Scene.Activate(name);
@@ -569,95 +420,117 @@ namespace VirtualDream
         }
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
-            //var str = "";
-            //if (Main.audioSystem is LegacyAudioSystem legacy)
-            //{
-            //    if (legacy.AudioTracks[Main.curMusic] is MP3AudioTrack audioTrack)
-            //    {
-            //        var fieldInfo = typeof(MP3AudioTrack).GetField("_mp3Stream", BindingFlags.NonPublic | BindingFlags.Instance);
-            //        var fieldInfo2 = typeof(MP3AudioTrack).GetField("_bufferToSubmit", BindingFlags.NonPublic | BindingFlags.Instance);
-            //        var mp3str = (XPT.Core.Audio.MP3Sharp.MP3Stream)fieldInfo.GetValue(audioTrack);
-            //        var buffer = (byte[])fieldInfo2.GetValue(audioTrack);
-            //        try
-            //        {
-            //            str = (mp3str.Position, mp3str.Length, mp3str.Frequency, buffer.Length, mp3str.CanTimeout).ToString();
-            //        }
-            //        catch { Main.NewText("报错了"); }
-            //        //if ((int)ModTime % 600 == 0)
-            //        //    mp3str.Position = 114514;
-            //    }
-            //}
-            //if (str != "")
-            //    Main.NewText(str);
+        }
+    }
 
-            //var buffer = IllusionBoundMod.musicBuffer;
-            //int length = buffer.Length;
-            //Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(0, 0, 1920, 1120), Color.White * .5f);
-            //float rows = 16f;
-            //float screenHeight = 1024f;
-            //for (int n = 0; n < length - 1; n++)
-            //{
-            //    float factor1 = n / (length - 1f) ;
-            //    float factor2 = (n + 1) / (length - 1f);
-            //    float offsetY = (int)(factor1* rows) / rows;
-            //    if (offsetY != (int)(factor2 * rows) / rows) continue;
-            //    else offsetY *= screenHeight;
-            //    factor1 = factor1 * rows % 1;
-            //    factor2 = factor2 * rows % 1;
-            //    Main.spriteBatch.DrawLine(new Vector2(factor1 * 1920, buffer[n] * (screenHeight / rows / 255f * .75f) + offsetY), new Vector2(factor2 * 1920, buffer[n + 1] * (screenHeight / rows / 255f * .75f) + offsetY), Color.Red, 4);
-            //}
-            //for (int n = 0; n < length; n++)
-            //{
-            //    float factor = n / (length - 1f);
-            //    Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Vector2(factor * 1920, 560 + buffer[n] - 255), new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(.5f), 4, 0, 0);
-            //}
-            //new SpectreBar();
-            //new SpringBar();
-            //new SummerBar();
-            //new AutumnBar();
-            //new WinterBar();
-            //new SoilBar();
-            //for (int n = 0; n < 180; n++)
-            //{
-            //    var fac = (float)n;
-            //    fac = fac < 30 ? ((fac * fac / 45f - fac * 0.666667f + 5) * (1 - 0.03f * fac)) : (0.625f * (0.8f + (float)Math.Sin(ModTime / 30 * MathHelper.Pi) * 0.2f * (fac - 30f).SymmetricalFactor(75, 15)));
-            //    Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Vector2(960, 600) + new Vector2(n - 90, 300 - fac * 128), new Rectangle(0, 0, 1, 1), Color.Cyan, 0, new Vector2(0.5f), 4, 0, 0);
-            //}
+    public class StarboundSystem : ModSystem
+    {
+        public static int[] brokenWeaponTypes;
 
-            if (Contents.InfiniteNightmare.InfiniteNightmarePlayer.TooDarkBuffActive)
+        public override void Load()
+        {
+            On_WorldGen.SpawnThingsFromPot += VirtualDream_BrokenWeaponFromPot;
+            base.Load();
+        }
+        private void VirtualDream_BrokenWeaponFromPot(On_WorldGen.orig_SpawnThingsFromPot orig, int i, int j, int x2, int y2, int style)
+        {
+            if ((int)Player.GetClosestRollLuck(i, j, 200) == 0f)
             {
-                Main.spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/InfiniteNightmare/Dark"), new Vector2(0, 0), null, new Color(153, 153, 153, 153), 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+                Item.NewItem(WorldGen.GetItemSource_FromTileBreak(i, j), i * 16, j * 16, 16, 16, Main.rand.Next(brokenWeaponTypes));
+                return;
             }
-            if (Contents.InfiniteNightmare.InfiniteNightmarePlayer.TooDazzlingBuffActive)
+            orig.Invoke(i, j, x2, y2, style);
+        }
+        public override void PostSetupContent()
+        {
+            List<int> types = new();
+            for (int n = 0; n < ItemLoader.ItemCount; n++)
             {
-                Main.spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/InfiniteNightmare/Light"), new Vector2(0, 0), null, new Color(51, 51, 51, 51), 0, new Vector2(0, 0), 1, SpriteEffects.None, 0);
+                var item = new Item(n);
+                if (item.ModItem is StarboundWeaponBase weaponBase && weaponBase.State == WeaponState.Broken) types.Add(n);
+            }
+            brokenWeaponTypes = types.ToArray();
+            base.PostSetupContent();
+        }
+        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
+        {
+            // Because world generation is like layering several images on top of each other, we need to do some steps between the original world generation steps.
+
+            // Most vanilla ores are generated in a step called "Shinies", so for maximum compatibility, we will also do this.
+            // First, we find out which step "Shinies" is.
+            int ShiniesIndex = tasks.FindIndex(genpass => genpass.Name.Equals("Tile Cleanup"));
+
+            if (ShiniesIndex != -1)
+            {
+                // Next, we insert our pass directly after the original "Shinies" pass.
+                // ExampleOrePass is a class seen bellow
+                tasks.Insert(ShiniesIndex + 1, new StarBoundBrokenWeaponPass());
+            }
+        }
+        class StarBoundBrokenWeaponPass : GenPass
+        {
+            public StarBoundBrokenWeaponPass() : base("StarBoundBrokenWeaponFromChestAddition", 300)
+            {
+
             }
 
-            //Main.NewText(Filters.Scene["IllusionBoundMod:HeatDistortion"].GetShader().Shader.Parameters["uImageSize1"].GetValueVector2());
-            //Main.spriteBatch.Draw((Texture2D)Main.graphics.GraphicsDevice.Textures[1], new Vector2(120, 120), Color.White);
-            //Main.spriteBatch.Draw(Main.screenTarget, new Vector2(64, 64), null, Color.White * .5f, 0, default, 1, 0, 0);
+            protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+            {
+                progress.Message = "添加...残破的武器!!";
+                foreach (var chest in Main.chest)
+                {
+                    if (chest != null && chest.x < Main.maxTilesX && chest.y < Main.maxTilesY && WorldGen.genRand.NextBool(20))
+                    {
+                        chest.AddItemToShop(new Item(WorldGen.genRand.Next(brokenWeaponTypes)));
+                    }
+                }
+            }
+        }
 
-            //var ca = new Color(255, 255, 255, 255);
-            //var cb = new Color(255, 0, 255, 255);
-            //         spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(304, 264, 1312, 592), Color.Black);
-            //         spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(320, 280, 960, 560), cb);
-            //spriteBatch.End();
-            //spriteBatch.Begin(SpriteSortMode.Deferred, (Blend.Zero, Blend.SourceColor).GetBlendState(), SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-            //spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(640, 280, 960, 560), ca);
-            //         spriteBatch.End();
-            //         spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            //         Main.NewText(cb);
+        class StarBoundBrokenWeaponDrop : GlobalNPC
+        {
+            class MaterialDropCondition : IItemDropRuleCondition
+            {
+                Func<Player, bool> _condition;
+                string _description;
+                public MaterialDropCondition(Func<Player, bool> condition, string description)
+                {
+                    _condition = condition;
+                    _description = description ?? "";
+                }
+                public bool CanDrop(DropAttemptInfo info) => NPC.downedMoonlord && !info.npc.friendly && info.npc.value > 0f && (_condition?.Invoke(info.player) ?? false);
 
-            //spriteBatch.End();
-            //spriteBatch.Begin(SpriteSortMode.Immediate,BlendState.Additive);
-            //var effect = GetEffect("Effects/TestTextEffect");
-            //effect.Parameters["uTime"].SetValue((float)ModTime * 0.03f);
-            //effect.Parameters["uColor"].SetValue(Main.hslToRgb((float)ModTime * 0.03f % 1, 1, 0.75f).ToVector4());
-            //Main.graphics.GraphicsDevice.Textures[1] = MaskColor[4];
-            //effect.CurrentTechnique.Passes[0].Apply();
-            //spriteBatch.DrawString(Main.fontMouseText, "这事好的", new Vector2(960, 560), Color.Cyan);
-            //spriteBatch.End();
-            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                public bool CanShowItemDropInUI() => true;
+
+                public string GetConditionDescription() => _description;
+            }
+            public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+            {
+                #region 合成材料
+                (Func<Player, bool>, int, string)[] datas = new (Func<Player, bool>, int, string)[]
+                {
+                            (player => player.ZoneSnow, ItemType<CryonicExtract>(),"雪地非常冷"),
+                            (player => player.ZoneJungle, ItemType<VenomSample>(),"丛林是有毒的对吧"),
+                            (player => player.ZoneUnderworldHeight, ItemType<ScorchedCore>(),"在这炼狱，你的心都要熔化了吧"),
+                            (player => player.ZoneDesert || player.ZoneUndergroundDesert, ItemType<SharpenedClaw>(),"无垠沙海中的生物用锋利的爪撕碎猎物"),
+                            (player => player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight, ItemType<HardenedCarapace>(),"岩层中的小动物们学会了如岩石般保护自己"),
+                            (player => player.ZoneCorrupt || player.ZoneCrimson || player.ZoneHallow,ItemType<Leather>(),"不是，为什么，皮革是找不到地方塞了吗"),
+                            (player => player.ZoneSkyHeight,ItemType<PhaseMatter>(),"高处不胜寒，但是是月相物质"),
+                            (player => player.ZoneMeteor,ItemType<StickOfRAM>(),"你这内存条是陨铁做的是吧"),
+                            (player => player.ZoneDungeon,ItemType<StaticCell>(),"甚至比皮革那个还离谱"),
+                            (player => player.ZonePurity,ItemType<LivingRoot>(),"最后一方净土上的生灵之根")
+                };
+                foreach (var data in datas)
+                {
+                    npcLoot.Add(ItemDropRule.ByCondition(new MaterialDropCondition(data.Item1, data.Item3), data.Item2, 20));
+                }
+                #endregion
+
+                #region 破碎武器
+                npcLoot.Add(ItemDropRule.OneFromOptions(npc.boss ? 30 : 1000, brokenWeaponTypes));
+                #endregion
+                base.ModifyNPCLoot(npc, npcLoot);
+            }
         }
     }
     public class ElectricTriangle
@@ -755,38 +628,6 @@ namespace VirtualDream
     //        }
     //        if (!npc.friendly && npc.value > 0f && NPC.downedMoonlord)
     //        {
-    //            if (npc.lifeMax > 2000)
-    //            {
-    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Materials.AncientEssence>(), Main.rand.Next(40, 60));
-    //            }
-    //            else if (npc.lifeMax > 1000)
-    //            {
-    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Materials.AncientEssence>(), Main.rand.Next(25, 30));
-    //            }
-    //            else if (npc.lifeMax > 500)
-    //            {
-    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Materials.AncientEssence>(), Main.rand.Next(15, 20));
-    //            }
-    //            else if (npc.lifeMax > 100)
-    //            {
-    //                Item.NewItem(npc.GetSource_Loot(), npc.getRect(), ItemType<Materials.AncientEssence>(), Main.rand.Next(5, 10));
-    //            }
-    //            if (player.ZoneSnow)
-    //            {
-    //                LowerMaterials(ItemType<Materials.CryonicExtract>(), npc);
-    //            }
-    //            if (player.ZoneJungle)
-    //            {
-    //                LowerMaterials(ItemType<Materials.VenomSample>(), npc);
-    //            }
-    //            if (player.ZoneUnderworldHeight)
-    //            {
-    //                LowerMaterials(ItemType<Materials.ScorchedCore>(), npc);
-    //            }
-    //            if (player.ZoneDesert || player.ZoneUndergroundDesert)
-    //            {
-    //                LowerMaterials(ItemType<Materials.SharpenedClaw>(), npc);
-    //            }
     //            if (player.ZoneDirtLayerHeight || player.ZoneRockLayerHeight)
     //            {
     //                LowerMaterials(ItemType<Materials.HardenedCarapace>(), npc);

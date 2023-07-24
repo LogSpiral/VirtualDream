@@ -130,12 +130,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
         {
             get
             {
-                return MathHelper.Clamp(Projectile.ai[0] / ((IStarboundWeaponProjectile)this).UpgradeValue(24f, 18f), 0, 1);
+                return MathHelper.Clamp(Projectile.ai[0] / this.UpgradeValue(24f, 18f), 0, 1);
             }
         }
         public override void PostDraw(Color lightColor)
         {
-            var shift = Projectile.ai[0] - ((IStarboundWeaponProjectile)this).UpgradeValue(30f, 24f);
+            var shift = Projectile.ai[0] - this.UpgradeValue(30f, 24f);
             var factor = Factor * Factor;
             var factor_2 = controlState == 3 ? MathHelper.Clamp((Projectile.timeLeft - 12) / 8f, 0, 1) : 1;
             var length = 0f;
@@ -170,7 +170,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
         public override (int X, int Y) FrameMax => (1, 2);
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
-            frame = texture.Frame(FrameMax.X, FrameMax.Y, 0, ((IStarboundWeaponProjectile)this).UpgradeValue(0, 1));
+            frame = texture.Frame(FrameMax.X, FrameMax.Y, 0, this.UpgradeValue(0, 1));
             if (controlState == 3)
             {
                 var fac = (1 - Projectile.timeLeft / 20f).HillFactor2();

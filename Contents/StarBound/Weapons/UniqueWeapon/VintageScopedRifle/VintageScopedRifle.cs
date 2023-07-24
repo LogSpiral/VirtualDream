@@ -1,12 +1,62 @@
 ﻿using LogSpiralLibrary;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+using VirtualDream.Contents.StarBound.Weapons.Broken;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifle
 {
+    public class VintageScopedRifle_Broken : StarboundWeaponBase 
+    {
+        public override WeaponState State => WeaponState.Broken;
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (type == ProjectileID.Bullet) type = ProjectileID.BulletHighVelocity;
+            Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, type, damage, knockback, player.whoAmI);
+            return false;
+        }
+        public override void SetDefaults()
+        {
+            Item.useStyle = 5;
+            Item.useAnimation = 36;
+            Item.useTime = 36;
+            Item.crit += 25;
+            Item.width = 68;
+            Item.height = 24;
+            Item.shoot = 10;
+            Item.useAmmo = AmmoID.Bullet;
+            Item.UseSound = SoundID.Item40;
+            Item.damage = 40;
+            Item.shootSpeed = 24f;
+            Item.noMelee = true;
+            Item.knockBack = 8f;
+            Item.DamageType = DamageClass.Ranged;
+            Item.rare = ModContent.RarityType<BrokenRarity>();
+
+        }
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            var recipe = GetEmptyRecipe();
+            recipe.AddIngredient(ItemID.SniperRifle);
+            recipe.AddIngredient<Materials.SolariumStar>(15);
+            recipe.AddIngredient<Materials.AncientEssence>(2500);
+            recipe.AddIngredient(ItemID.LunarBar, 15);
+            recipe.AddIngredient(ItemID.ShroomiteBar, 25);
+            recipe.SetResult<VintageScopedRifle>();
+            return recipe;
+        }
+    }
     public class VintageScopedRifle : StarboundWeaponBase
     {
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            var recipe = GetEmptyRecipe();
+            recipe.AddIngredient<Materials.AncientEssence>(5000);
+            recipe.SetResult<VintageScopedRifleEX>();
+            return recipe;
+        }
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("老当益壮，这把枪所打出的子弹能轻易击穿钢板。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
@@ -42,20 +92,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            //(hurtCount, killCount) = UpgradeNeed;
             Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, item.shoot, damage, knockback, player.whoAmI);
             return false;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.SniperRifle);
-            recipe.AddIngredient<Materials.SolariumStar>(15);
-            recipe.AddIngredient<Materials.AncientEssence>(2500);
-            recipe.AddIngredient(ItemID.LunarBar, 15);
-            recipe.AddIngredient(ItemID.ShroomiteBar, 25);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-        }
+        //public override void AddRecipes()
+        //{
+        //    Recipe recipe = CreateRecipe();
+        //    recipe.AddIngredient(ItemID.SniperRifle);
+        //    recipe.AddIngredient<Materials.SolariumStar>(15);
+        //    recipe.AddIngredient<Materials.AncientEssence>(2500);
+        //    recipe.AddIngredient(ItemID.LunarBar, 15);
+        //    recipe.AddIngredient(ItemID.ShroomiteBar, 25);
+        //    recipe.SetResult(this);
+        //    recipe.AddRecipe();
+        //}
     }
     public class VintageScopedRifleEX : VintageScopedRifle
     {
@@ -146,7 +197,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
                 {
                     var fac = (shift + 30 * n) % 60;
                     fac /= 60;
-                    Main.spriteBatch.DrawLine(ShootCenter, Vec, Color.Lerp(Color.Red, Color.Transparent, (float)System.Math.Sqrt(fac)) with { A = 0 } * factor_2, 4 + 20 * fac, true, -Main.screenPosition);
+                    Main.spriteBatch.DrawLine(ShootCenter, Vec, Color.Lerp(Color.Red, Color.Transparent, (float)Math.Sqrt(fac)) with { A = 0 } * factor_2, 4 + 20 * fac, true, -Main.screenPosition);
                 }
             }
         }

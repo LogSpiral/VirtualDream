@@ -2,11 +2,60 @@
 using Terraria.ID;
 using System.Collections.Generic;
 using Terraria.DataStructures;
+using VirtualDream.Contents.StarBound.Weapons.Broken;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+using VirtualDream.Contents.StarBound.Materials;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
 {
+    public class KluexStaff_Broken : KluexStaff
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            item.shoot = ProjectileID.RubyBolt;
+            item.rare = ModContent.RarityType<BrokenRarity>();
+            item.useTime = 8;
+            item.damage = 40;
+            item.noUseGraphic = false;
+            item.shootSpeed = 16;
+        }
+        public override WeaponState State => WeaponState.Broken;
+        public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
+        {
+        }
+        public override bool CanUseItem(Player player) => true;
+        public override bool AltFunctionUse(Player player) => false;
+        public override void HoldItem(Player player)
+        {
+        }
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            WeaponRepairRecipe recipe = GetEmptyRecipe();
+            recipe.AddIngredient(ItemID.RubyStaff);
+            recipe.AddIngredient(ItemID.Ruby, 15);
+            recipe.AddIngredient(ItemID.HallowedBar, 30);
+            recipe.AddIngredient(ItemID.ShadowbeamStaff);
+            recipe.AddIngredient(ItemID.SpectreStaff);
+            recipe.AddIngredient(ItemID.InfernoFork);
+            recipe.AddIngredient(ItemID.GoldBar, 15);
+            recipe.AddIngredient(ItemID.ManaCrystal, 5);
+            recipe.AddIngredient(ItemID.Ectoplasm, 30);
+            recipe.SetResult<KluexStaff>();
+
+            return recipe;
+        }
+        public override Vector2? HoldoutOffset()
+        {
+            return new Vector2(-16, 0);
+        }
+    }
     public class KluexStaff : StarboundWeaponBase
     {
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            return GetEmptyRecipe().AddIngredient<AncientEssence>(5000).SetResult<KluexStaffEX>();
+        }
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
@@ -14,14 +63,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             // Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             //Item.staff[item.type] = true;
         }
-        //public int Time;
-        //public int Timex;
-        //public int TimeR;
-        //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
-        //{
-        //    if (Mod.HasAsset((Texture + "_Glow").Replace("VirtualDream/", "")))
-        //        spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow", false), item.Center - Main.screenPosition, null, Color.White, rotation, IllusionBoundMod.GetTexture(Texture + "_Glow", false).Size() * .5f, scale, 0, 0);
-        //}
         public Item item => Item;
         public override void ModifyManaCost(Player player, ref float reduce, ref float mult) => reduce = player.ownedProjectileCounts[item.shoot] > 0 ? reduce : 0;
 
@@ -51,77 +92,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         {
             return true;
         }
-        //public override void UseStyle(Player player, Rectangle rectangle)
-        //{
-        //    if (Main.mouseRight)
-        //    {
-        //        TimeR++;
-        //    }
-        //    else
-        //    {
-        //        if (TimeR >= 60)
-        //        {
-        //            Projectile.NewProjectile(player.GetSource_ItemUse(item), Main.MouseWorld, new Vector2(0, 0), ModContent.ProjectileType<Projectiles.KluexEnergyCrystal.KluexEnergyZone>(), 0, 0, player.whoAmI);
-        //        }
-        //        TimeR = 0;
-        //    }
-        //    if (player.channel)
-        //    {
-        //        Time++;
-        //        Timex++;
-        //        if (Time >= 24 && Timex >= 60)
-        //        {
-        //            Time = 0;
-        //            Projectile.NewProjectile(player.GetSource_ItemUse(item), Main.MouseWorld.X, Main.MouseWorld.Y, 0, 0, ModContent.ProjectileType<Projectiles.KluexEnergyCrystal.KluexEnergyBall>(), player.GetWeaponDamage(item) / 20, 6, player.whoAmI);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Timex = 0;
-        //        Time = 0;
-        //    }
-        //}
         public override void HoldItem(Player player)
         {
             Dust dust = Dust.NewDustPerfect(Main.MouseWorld, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f);
             dust.noGravity = true;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe1 = CreateRecipe();
-            recipe1.AddIngredient(ItemID.RubyStaff);
-            recipe1.AddIngredient(ItemID.Ruby, 15);
-            recipe1.AddIngredient(ItemID.HallowedBar, 30);
-            recipe1.AddIngredient(ItemID.ShadowbeamStaff);
-            recipe1.AddIngredient(ItemID.GoldBar, 15);
-            recipe1.AddIngredient(ItemID.ManaCrystal, 5);
-            recipe1.AddIngredient(ItemID.Ectoplasm, 30);
-            recipe1.SetResult(this);
-            recipe1.AddRecipe();
-            Recipe recipe2 = CreateRecipe();
-            recipe2.AddIngredient(ItemID.RubyStaff);
-            recipe2.AddIngredient(ItemID.Ruby, 15);
-            recipe2.AddIngredient(ItemID.HallowedBar, 30);
-            recipe2.AddIngredient(ItemID.SpectreStaff);
-            recipe2.AddIngredient(ItemID.GoldBar, 15);
-            recipe2.AddIngredient(ItemID.ManaCrystal, 5);
-            recipe2.AddIngredient(ItemID.Ectoplasm, 30);
-            recipe2.SetResult(this);
-            recipe2.AddRecipe();
-            Recipe recipe3 = CreateRecipe();
-            recipe3.AddIngredient(ItemID.RubyStaff);
-            recipe3.AddIngredient(ItemID.Ruby, 15);
-            recipe3.AddIngredient(ItemID.HallowedBar, 30);
-            recipe3.AddIngredient(ItemID.InfernoFork);
-            recipe3.AddIngredient(ItemID.GoldBar, 15);
-            recipe3.AddIngredient(ItemID.ManaCrystal, 5);
-            recipe3.AddIngredient(ItemID.Ectoplasm, 30);
-            recipe3.SetResult(this);
-            recipe3.AddRecipe();
-        }
     }
     public class KluexStaffEX : KluexStaff
     {
+        public override WeaponRepairRecipe RepairRecipe() => GetEmptyRecipe();
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
@@ -345,7 +324,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                                 proj.ai[1] = 1;
 
                                 var vec = (Main.MouseWorld - proj.Center).SafeNormalize(Vector2.UnitX);
-                                Projectile.NewProjectileDirect(proj.GetSource_FromThis(), proj.Center, vec * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), 6, Player.whoAmI, plasmaBallCount).rotation = vec.ToRotation();
+                                Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), proj.Center, vec * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), 6, Player.whoAmI, plasmaBallCount).rotation = vec.ToRotation();
 
                                 count++;
                             }
@@ -407,7 +386,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                         if (proj.active && proj.type == ModContent.ProjectileType<KluexPlasmaBall>())
                         {
                             proj.ai[1] = 1;
-                            Projectile.NewProjectile(proj.GetSource_FromThis(), proj.Center, Vector2.Normalize(Main.MouseWorld - proj.Center) * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), 6, Player.whoAmI, plasmaBallCount);
+                            Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), proj.Center, Vector2.Normalize(Main.MouseWorld - proj.Center) * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), 6, Player.whoAmI, plasmaBallCount);
 
                         }
                     }

@@ -4,12 +4,63 @@ using Terraria;
 //using static VirtualDream.Contents.StarBound.Weapons.BossDrop.UpgradeWeaponExtension;
 using Terraria.DataStructures;
 using Terraria.ID;
+using VirtualDream.Contents.StarBound.Materials;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+using VirtualDream.Contents.StarBound.Weapons.Broken;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
 {
+    public class DragonheadPistol_Broken : DragonheadPistol 
+    {
+        public override WeaponState State => WeaponState.Broken;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            item.damage = 40;
+            item.rare = ModContent.RarityType<BrokenRarity>();
+            item.noUseGraphic = false;
+            item.shootSpeed = 32f;
+            var _item = new Item(ItemID.PhoenixBlaster);
+            item.UseSound = _item.UseSound;
+            item.channel = false;
+
+            //item.UseSound = SoundID.Item41;
+        }
+        public override void HoldStyle(Player player, Rectangle heldItemFrame)
+        {
+            base.HoldStyle(player, heldItemFrame);
+        }
+        public override bool AltFunctionUse(Player player) => false;
+        public override bool CanConsumeAmmo(Item ammo, Player player) => true;
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) 
+        {
+            Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity with { Y = 0 }, type, damage, knockback, player.whoAmI);
+            return false;
+        }
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            var recipe = GetEmptyRecipe();
+            recipe.AddIngredient(ItemID.PhoenixBlaster);
+            recipe.AddIngredient(ItemID.Flamethrower);
+            recipe.AddIngredient(ItemID.Bone, 100);
+            recipe.AddIngredient(ItemID.TitaniumBar, 20);
+            recipe.AddIngredient(ItemID.LivingFireBlock, 150);
+            recipe.AddIngredient(ItemID.Ectoplasm, 25);
+            recipe.AddIngredient(ItemID.Ruby, 10);
+            recipe.SetResult<DragonheadPistol>();
+            return recipe;
+        }
+    }
     // 保证类名跟文件名一致，这样也方便查找
     public class DragonheadPistol : StarboundWeaponBase
     {
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            var recipe = GetEmptyRecipe();
+            recipe.AddIngredient<AncientEssence>(5000);
+            recipe.SetResult<DragonheadPistolEX>();
+            return base.RepairRecipe();
+        }
         // 设置物品名字，描述的地方
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
@@ -22,14 +73,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             // 物品的描述，加入换行符 '\n' 可以多行显示哦
             // Tooltip.SetDefault("一个有急躁脾气的手枪，这里是龙。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
-        //private int Time;
-        //private int Time1;
-        //private int Dam;
-        //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
-        //{
-        //    if (Mod.HasAsset((Texture + "_Glow").Replace("VirtualDream/", "")))
-        //        spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow", false), item.Center - Main.screenPosition, null, Color.White, rotation, IllusionBoundMod.GetTexture(Texture + "_Glow", false).Size() * .5f, scale, 0, 0);
-        //}
         public Item item => Item;
         // 最最最重要的物品基本属性部分
         public override void SetDefaults()
@@ -62,95 +105,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             return false;
         }
         public override bool CanUseItem(Player player) => player.ownedProjectileCounts[item.shoot] < 1;
-        //public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        //{
-        //    //Vector2 vec = Main.MouseWorld - player.Center;
-        //    //Vector2 vec1 = new Vector2(32, 0);
-        //    //if ((player.name == "sans." || player.name == "sans" || player.name == "Sans") && Time <= 1)
-        //    //{
-        //    //    Projectile.NewProjectile(source, player.Center, vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonLaser>(), damage * 3 / 8, 0.5f, player.whoAmI);
-        //    //}
-        //    //if (player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //    //{
-        //    //    Projectile.NewProjectile(source, player.Center, new Vector2(0, 0), ModContent.ProjectileType<Projectiles.Dragonhead.DragonheadPistol>(), 0, 0, player.whoAmI);
-        //    //}
-        //    //Dam = damage;
-        //    Projectile.NewProjectile(source, player.Center, velocity, type, damage, knockback, player.whoAmI);
-        //    return false;
-        //}
         public override bool AltFunctionUse(Player player)
         {
-            //if (player.name != "sans." && player.name != "sans" && player.name != "Sans")
-            //{
-            //    return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
             return true;
-        }
-        //public override void UseStyle(Player player, Rectangle rectangle)
-        //{
-        //    Vector2 vec = Main.MouseWorld - player.Center;
-        //    Vector2 vec1 = new Vector2(32, 0);
-        //    if (Main.mouseRight)
-        //    {
-        //        Time1++;
-        //    }
-        //    else
-        //    {
-        //        Time1 = 0;
-        //    }
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        Time++;
-        //        if (Time >= 2 && Time1 >= 30)
-        //        {
-        //            if (player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vec1.RotatedBy(vec.ToRotation()), vec1.RotatedBy(vec.ToRotation() + Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireCloud>(), Dam * 3 / 4, 0.5f, player.whoAmI);
-        //            }
-        //            Time = 0;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (player.channel)
-        //        {
-        //            Time++;
-        //        }
-        //        else
-        //        {
-        //            if (Time >= 30 && player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBall>(), Dam * 3, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 1 && player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBullet>(), Dam * (1 + Time / 15), 0.25f, player.whoAmI);
-        //            }
-        //            Time = 0;
-        //        }
-        //    }
-        //}
-        public override void AddRecipes()
-        {
-            Recipe recipe1 = CreateRecipe();
-            recipe1.AddIngredient(ItemID.PhoenixBlaster);
-            recipe1.AddIngredient(ItemID.Flamethrower);
-            recipe1.AddIngredient(ItemID.Bone, 100);
-            recipe1.AddIngredient(ItemID.TitaniumBar, 20);
-            recipe1.AddIngredient(ItemID.LivingFireBlock, 150);
-            recipe1.AddIngredient(ItemID.Ectoplasm, 25);
-            recipe1.AddIngredient(ItemID.Ruby, 10);
-            recipe1.AddTile(TileID.MythrilAnvil);
-            recipe1.SetResult(this);
-            recipe1.AddRecipe();
         }
     }
     public class DragonheadPistolEX : DragonheadPistol
     {
+        public override WeaponRepairRecipe RepairRecipe() => GetEmptyRecipe();
         // 设置物品名字，描述的地方
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
@@ -173,61 +135,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             item.damage = 275;
             item.rare = MyRareID.Tier2;
         }
-        //public override void UseStyle(Player player, Rectangle rectangle)
-        //{
-        //    Vector2 vec = Main.MouseWorld - player.Center;
-        //    Vector2 vec1 = new Vector2(32, 0);
-        //    if (Main.mouseRight)
-        //    {
-        //        Time1++;
-        //    }
-        //    else
-        //    {
-        //        Time1 = 0;
-        //    }
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        Time++;
-        //        if (Time >= 2 && Time1 >= 24)
-        //        {
-        //            if (player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vec1.RotatedBy(vec.ToRotation()), vec1.RotatedBy(vec.ToRotation() + Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireCloudEX>(), Dam * 3 / 5, 0.5f, player.whoAmI);
-        //            }
-        //            Time = 0;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (player.channel)
-        //        {
-        //            Time++;
-        //        }
-        //        else
-        //        {
-        //            if (Time >= 24 && player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //            {
-        //                int n = Main.rand.Next(10);
-        //                if (n < 3)
-        //                {
-        //                    Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vec1.RotatedBy(vec.ToRotation() + MathHelper.Pi * 3 / 4), vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBall>(), Dam * (1 + Time / 12), 0.25f, player.whoAmI);
-        //                    Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vec1.RotatedBy(vec.ToRotation() - MathHelper.Pi * 3 / 4), vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBall>(), Dam * (1 + Time / 12), 0.25f, player.whoAmI);
-        //                }
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBall>(), Dam * 3, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 1 && player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //            {
-        //                int n = Main.rand.Next(10);
-        //                if (n < 1 + Time / 12)
-        //                {
-        //                    Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vec1.RotatedBy(vec.ToRotation() + MathHelper.Pi) / 2, vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBullet>(), Dam * (1 + Time / 12), 0.25f, player.whoAmI);
-        //                }
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBullet>(), Dam * (1 + Time / 12), 0.25f, player.whoAmI);
-        //            }
-        //            Time = 0;
-        //        }
-        //    }
-        //}
     }
     public class DragonheadPistolOD : DragonheadPistol
     {
@@ -269,62 +176,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
                 dust.velocity *= v;
             }
         }
-
-        //public override void UseStyle(Player player, Rectangle rectangle)
-        //{
-        //    Vector2 vec = Main.MouseWorld - player.Center;
-        //    Vector2 vec1 = new Vector2(32, 0);
-        //    if (Main.mouseRight)
-        //    {
-        //        Time1++;
-        //    }
-        //    else
-        //    {
-        //        Time1 = 0;
-        //    }
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        Time++;
-        //        if (Time >= 2 && Time1 >= 12)
-        //        {
-        //            if (player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vec1.RotatedBy(vec.ToRotation()), vec1.RotatedBy(vec.ToRotation() + Main.rand.NextFloat(-MathHelper.Pi / 48, MathHelper.Pi / 48)), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireCloudOD>(), Dam * 3 / 10, 0.5f, player.whoAmI);
-        //            }
-        //            Time = 0;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (player.channel)
-        //        {
-        //            Time++;
-        //        }
-        //        else
-        //        {
-        //            if (Time >= 12 && player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //            {
-        //                int n = Main.rand.Next(10);
-        //                if (n < 5)
-        //                {
-        //                    Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vec1.RotatedBy(vec.ToRotation() + MathHelper.Pi * 3 / 4), vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBall>(), Dam * (1 + Time / 12), 0.25f, player.whoAmI);
-        //                    Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vec1.RotatedBy(vec.ToRotation() - MathHelper.Pi * 3 / 4), vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBall>(), Dam * (1 + Time / 12), 0.25f, player.whoAmI);
-        //                }
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBall>(), Dam * 3, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 1 && player.name != "sans." && player.name != "sans" && player.name != "Sans")
-        //            {
-        //                int n = Main.rand.Next(10);
-        //                if (n < 1 + Time / 6)
-        //                {
-        //                    Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center + vec1.RotatedBy(vec.ToRotation() + MathHelper.Pi) / 2, vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBall>(), Dam * (1 + Time / 12), 0.25f, player.whoAmI);
-        //                }
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec1.RotatedBy(vec.ToRotation()), ModContent.ProjectileType<Projectiles.Dragonhead.DragonFireBullet>(), Dam * (1 + Time / 6), 0.25f, player.whoAmI);
-        //            }
-        //            Time = 0;
-        //        }
-        //    }
-        //}
     }
     public class DragonHeadPistolProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {

@@ -8,14 +8,21 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
+    <Compile Remove="Contents\IllusionWorld\**" />
+    <Compile Remove="Contents\Storm\**" />
+    <EffectFile Remove="Contents\IllusionWorld\**" />
+    <EffectFile Remove="Contents\Storm\**" />
+    <EmbeddedResource Remove="Contents\IllusionWorld\**" />
+    <EmbeddedResource Remove="Contents\Storm\**" />
+    <ImageFile Remove="Contents\IllusionWorld\**" />
+    <ImageFile Remove="Contents\Storm\**" />
+    <None Remove="Contents\IllusionWorld\**" />
+    <None Remove="Contents\Storm\**" />
+    <ResourceFile Remove="Contents\IllusionWorld\**" />
+    <ResourceFile Remove="Contents\Storm\**" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Contents\IllusionWorld\" />
-    <Folder Include="Contents\Storm\Others\" />
-    <Folder Include="Contents\Storm\Rain\" />
-    <Folder Include="Contents\Storm\Wind\" />
-    <Folder Include="Contents\Storm\Cloud\" />
+    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LogSpiralLibrary\LogSpiralLibrary.csproj" />

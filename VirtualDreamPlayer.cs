@@ -50,6 +50,7 @@ namespace VirtualDream
         }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
+            //Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Player.luck.ToString(), Player.Center + new Vector2(0,-56) - Main.screenPosition, Color.White);
             //int height = 0;
             //foreach (var item in LogSpiralLibraryMod.TransformEffectEX.Techniques)
             //{

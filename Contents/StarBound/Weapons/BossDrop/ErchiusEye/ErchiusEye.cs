@@ -4,22 +4,52 @@ using Terraria;
 
 using Terraria.DataStructures;
 using Terraria.ID;
+using VirtualDream.Contents.StarBound.Materials;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+using VirtualDream.Contents.StarBound.Weapons.Broken;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
 {
+    public class ErchiusEye_Broken : ErchiusEye 
+    {
+        public override WeaponState State => WeaponState.Broken;
+        public override void SetDefaults()
+        {
+
+            base.SetDefaults();
+            item.shoot = ProjectileID.PurpleLaser;
+            item.damage = 40;
+            item.rare = ModContent.RarityType<BrokenRarity>();
+            item.noUseGraphic = false;
+        }
+        public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
+        {
+        }
+        public override bool AltFunctionUse(Player player) => false;
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            var recipe = GetEmptyRecipe();
+            recipe.AddIngredient(ItemID.MechanicalEye);
+            recipe.AddIngredient(ItemID.Lens, 50);
+            recipe.AddIngredient(ItemID.BlackLens);
+            recipe.AddIngredient(ItemID.Amethyst, 15);
+            recipe.AddIngredient<ErchiusCrystal>(20);
+            recipe.SetResult<ErchiusEye>();
+            return recipe;
+        }
+    }
     public class ErchiusEye : StarboundWeaponBase
     {
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            return GetEmptyRecipe().AddIngredient<AncientEssence>(5000).SetResult<ErchiusEyeEX>();
+        }
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源之眼");
             // Tooltip.SetDefault("能源恐怖的眼睛，专注于你的敌人。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
-        //public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
-        //{
-        //    if(Mod.HasAsset((Texture + "_Glow").Replace("VirtualDream/", "")))
-        //    spriteBatch.Draw(IllusionBoundMod.GetTexture(Texture + "_Glow", false), item.Center - Main.screenPosition, null, Color.White, rotation, IllusionBoundMod.GetTexture(Texture + "_Glow", false).Size() * .5f, scale, 0, 0);
-        //}
         public Item item => Item;
         public override void SetDefaults()
         {
@@ -46,65 +76,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         {
             return true;
         }
-        //public virtual int crystalCount => Main.rand.Next(3, 7);
-        //public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack)
-        //{
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        //Vector2 vec = Main.MouseWorld - player.Center;
-        //        //vec = Vector2.Normalize(vec);
-        //        //for (float i = -MathHelper.Pi / 24; i <= MathHelper.Pi / 24; i += MathHelper.Pi / 24)
-        //        //{
-        //        //    Vector2 finalVec = (vec.ToRotation()).ToRotationVector2() * 25f;
-        //        //    Projectile.NewProjectile(source, position, finalVec, ModContent.ProjectileType<Projectiles.ErchiusCrystal.ErchiusCrystal>(), damage, knockBack, player.whoAmI);
-        //        //}
-        //        Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<ErchiusCrystalProj>(), damage, knockBack, player.whoAmI, crystalCount, Main.rand.Next(5));
-
-        //    }
-        //    else
-        //    {
-        //        Projectile.NewProjectile(source, position, new Vector2(0, 0), ModContent.ProjectileType<ErchiusLaser>(), damage * 3 / 2, knockBack, player.whoAmI);
-        //    }
-        //    return false;
-        //}
-        //public override bool CanUseItem(Player player)
-        //{
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        item.damage = 50;
-        //        item.useTime = 30;
-        //        item.useAnimation = 30;
-        //        item.shoot = ModContent.ProjectileType<ErchiusCrystalProj>();
-        //    }
-        //    else
-        //    {
-        //        item.damage = 50;
-        //        item.useTime = 20;
-        //        item.useAnimation = 20;
-        //        item.shoot = ModContent.ProjectileType<ErchiusLaser>();
-        //    }
-        //    return player.ownedProjectileCounts[ModContent.ProjectileType<ErchiusLaser>()] < 1;
-        //}
-        public override void AddRecipes()
-        {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.MechanicalEye);
-            recipe.AddIngredient(ItemID.Lens, 50);
-            recipe.AddIngredient(ItemID.BlackLens);
-            recipe.AddIngredient(ItemID.Amethyst, 15);
-            //recipe.AddIngredient<Materials.ErchiusCrystal>(20);
-            recipe.AddTile(TileID.MythrilAnvil);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-        }
-
-        //public override Color? GetAlpha(Color lightColor)
-        //{
-        //    return Color.White;
-        //}
     }
     public class ErchiusEyeEX : ErchiusEye
     {
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            return GetEmptyRecipe();
+        }
         public override WeaponState State => WeaponState.False_EX;
         //public override int crystalCount => base.crystalCount + 3;
         public override void SetStaticDefaults()
@@ -120,24 +98,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             item.mana = 8;
             item.rare = MyRareID.Tier2;
         }
-        //public override bool CanUseItem(Player player)
-        //{
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        item.damage = 75;
-        //        item.useTime = 24;
-        //        item.useAnimation = 24;
-        //        item.shoot = ModContent.ProjectileType<ErchiusCrystalProj>();
-        //    }
-        //    else
-        //    {
-        //        item.damage = 75;
-        //        item.useTime = 16;
-        //        item.useAnimation = 16;
-        //        item.shoot = ModContent.ProjectileType<ErchiusLaser>();
-        //    }
-        //    return true;
-        //}
         public override void AddRecipes()
         {
         }
@@ -178,24 +138,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override void AddRecipes()
         {
         }
-        //public override bool CanUseItem(Player player)
-        //{
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        item.damage = 225;
-        //        item.useTime = 19;
-        //        item.useAnimation = 19;
-        //        item.shoot = ModContent.ProjectileType<ErchiusCrystalProj>();
-        //    }
-        //    else
-        //    {
-        //        item.damage = 225;
-        //        item.useTime = 13;
-        //        item.useAnimation = 13;
-        //        item.shoot = ModContent.ProjectileType<ErchiusLaser>();
-        //    }
-        //    return base.CanUseItem(player);
-        //}
     }
     public class ErchiusLaser : RangedHeldProjectile, IStarboundWeaponProjectile
     {
@@ -241,44 +183,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             if (Factor < 0.5f || !Player.controlUseItem) return;
             var factor = 2 * (Factor - 0.5f);
             Main.spriteBatch.DrawQuadraticLaser_PassNormal(ShootCenter, Vector2.Normalize(Projectile.velocity), Color.Purple, LogSpiralLibraryMod.AniTex[this.UpgradeValue(1, 1, 10)].Value, 1024 * factor, 256 * factor, 0.2f * factor, 4);
-            //Main.spriteBatch.DrawQuadraticLaser_PassColorBar(ShootCenter, Vector2.Normalize(Projectile.velocity), 10, 4096 * factor, 1024 * factor, 0, 4, UpgradeValue(1, 1, 10), timeOffset: true);//0.2f * factor
-
-            //var sb = Main.spriteBatch;
-            //var render = IllusionBoundMod.Instance.render;
-            //GraphicsDevice gd = Main.instance.GraphicsDevice;
-            //sb.End();
-            //sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            //gd.SetRenderTarget(render);
-            //gd.Clear(Color.Transparent);
-            //Main.spriteBatch.DrawQuadraticLaser_PassNormal(ShootCenter, Vector2.Normalize(Projectile.velocity), Color.Purple, 4096 * factor, 1024 * factor, 0.2f * factor, 4, UpgradeValue(1, 1, 10));
-            //sb.End();
-            //gd.SetRenderTarget(Main.screenTargetSwap);
-            //gd.Clear(Color.Transparent);
-            //sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
-            //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
-            //IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
-            //IllusionBoundMod.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前gd.SetRenderTarget的不是这个render，否则会报错）
-            //                                                             //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
-            //IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.35f);
-            //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
-            //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.30f);
-            //IllusionBoundMod.Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8);
-            //IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(Main.DiscoColor.ToVector4());//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
-            //                                                                                           //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
-            //                                                                                           //Main.NewText("!!!");
-            //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
-
-            //sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
-            //sb.End();
-
-            ////最后在screenTarget上把刚刚的结果画上
-            //gd.SetRenderTarget(Main.screenTarget);
-            //gd.Clear(Color.Transparent);
-            //sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            //sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-            ////sb.End();
-
-
         }
         public override (int X, int Y) FrameMax => (10, 3);
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)

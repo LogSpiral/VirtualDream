@@ -524,7 +524,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                     if (WeaponRepairSystem.Instance.recipes.TryGetValue(type, out var recipe))
                     {
                         var recipeIcon = new WindOfTimeRecipeIcon(recipe);
-                        if (recipeIcon.items[0].ModItem is StarboundWeaponBase mainWeapon) 
+                        if (recipeIcon.items[0].ModItem is StarboundWeaponBase mainWeapon)
                         {
                             mainWeapon.killCount = dict[type].killCount;
                             mainWeapon.hurtCount = dict[type].hurtCount;
@@ -563,7 +563,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             }
 
             Recalculate();
-        }
+        }  
         public event ElementEvent OnDrag;
     }
     public class WindOfTimeItemSlot : UIElement
@@ -583,7 +583,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
         private void HandleItemSlotLogic()
         {
-            if (base.IsMouseHovering && factor > 1)
+            if (IsMouseHovering && factor > 1)
             {
                 Main.LocalPlayer.mouseInterface = true;
                 Item inv = _item;
@@ -702,7 +702,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         }
         private void HandleItemSlotLogic(int index)
         {
-            if (base.IsMouseHovering && factor > 1 && index != -1)
+            if (IsMouseHovering && factor > 1 && index != -1)
             {
                 Main.LocalPlayer.mouseInterface = true;
                 Item inv = items[index];
@@ -858,7 +858,8 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 } : "未选中合成";
                 var font = FontAssets.MouseText.Value;
                 Vector2 vec = font.MeasureString(str);
-                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, font, str, rect.Center(), IsMouseHovering ? Color.White : Color.Gray, 0, vec * .5f, Vector2.One * new Vector2(1, factor - 1));
+                bool available = recipe?.state == RepairRecipeState.JustDoIt;
+                ChatManager.DrawColorCodedStringWithShadow(spriteBatch, font, str, rect.Center() + (available ? Main.rand.NextVector2Unit() : default), (available ? (IsMouseHovering ? Color.MediumPurple : Color.Purple) : (IsMouseHovering ? Color.White : Color.Gray)), 0, vec * .5f, Vector2.One * new Vector2(1, factor - 1));
             }
 
             base.DrawSelf(spriteBatch);
@@ -869,11 +870,24 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             {
                 Main.NewText("未选中合成", Color.MediumPurple);
             }
-            else 
+            else
             {
                 if (recipe.state == RepairRecipeState.JustDoIt)
                 {
+
                     SoundEngine.PlaySound(SoundID.Zombie104);
+                    //foreach (var item in recipe.recipe.ingredients)
+                    //{
+                    //    for (int n = 0; n < item.stack; n++)
+                    //        Main.LocalPlayer.ConsumeItem(item.type);
+                    //}
+                    //Main.LocalPlayer.ConsumeItem(recipe.recipe.MainWeapon.Type);
+                    var point = WeaponRepairSystem.Instance.repairUI.standData.tilePosition;
+                    var proj = Projectile.NewProjectileDirect(Main.LocalPlayer.GetSource_TileInteraction(point.X, point.Y), point.ToWorldCoordinates() + new Vector2(-24, -64), default, ModContent.ProjectileType<WindOfTimeReactionProj>(), 0, 0, Main.myPlayer);
+                    (proj.ModProjectile as WindOfTimeReactionProj).recipeItemInfo = (Item[])recipe.items.Clone();
+
+                    WeaponRepairSystem.Instance.repairUI.Close();
+
                 }
                 else
                 {
@@ -886,18 +900,53 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
     }
     public class WindOfTimeReactionProj : ModProjectile
     {
-        public WeaponRepairRecipe recipe;
+        public Item[] recipeItemInfo;
         public override void SetDefaults()
         {
+            Projectile.timeLeft = 180;
+
             base.SetDefaults();
         }
         public override void AI()
         {
+            //Dust.NewDustPerfect(Projectile.Center, DustID.PurpleTorch, Main.rand.NextVector2Unit());//糊弄一下(乐
+            if (Projectile.timeLeft == 1)
+            {
+                var i = Item.NewItem(Projectile.GetSource_GiftOrReward(), Projectile.Center, recipeItemInfo[^1].Clone());
+                //var result = Main.item[i];
+                //if (result.ModItem is StarboundWeaponBase weaponBase)
+                //{
+                //    Main.NewText((recipe.MainWeapon.killCount, recipe.MainWeapon.hurtCount));
+                //    (weaponBase.killCount, weaponBase.hurtCount) = (recipe.MainWeapon.killCount, recipe.MainWeapon.hurtCount);
+                //}
+            }
             base.AI();
         }
         public override string Texture => "Terraria/Images/Item_0";
         public override bool PreDraw(ref Color lightColor)
         {
+            //if (Main.gamePaused) Projectile.Update(Projectile.whoAmI);
+            var spb = Main.spriteBatch;
+            var factor = Terraria.Utils.GetLerpValue(0, 180, Projectile.timeLeft);
+            spb.End();
+            spb.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, LogSpiralLibraryMod.FadeEffect, Main.GameViewMatrix.TransformationMatrix);
+            LogSpiralLibraryMod.FadeEffect.Parameters["uOffset"].SetValue(factor);
+            Main.instance.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.BaseTex[9].Value;
+            (DrawData, float)[] drawDatas = new (DrawData, float)[recipeItemInfo.Length - 1];
+            var _cen = Projectile.Center - Main.screenPosition;
+            for (int i = 0; i < drawDatas.Length; i++)
+            {
+                var texture = TextureAssets.Item[recipeItemInfo[i].type].Value;
+                var offset = i == 0 ? default : ((factor + (i - 1f) / (drawDatas.Length - 1f)) * MathHelper.TwoPi).ToRotationVector2();
+                drawDatas[i] = (new DrawData(texture, new Vector2(128, 96) * offset * factor + _cen, null, lightColor, 0, texture.Size() * .5f, 1f, 0), offset.Y);
+            }
+            var newData = drawDatas.OrderBy(data => data.Item2);
+            foreach (var data in newData)
+            {
+                data.Item1.Draw(spb);
+            }
+            spb.End();
+            spb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
     }
@@ -919,7 +968,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             TileObjectData.newTile.UsesCustomCanPlace = true;
             TileObjectData.addTile(Type);
 
-            AddMapEntry(new Color(28, 28, 28), Language.GetText("VirtualDream.Item.WindOfTimeStand.DisplayName"));
+            AddMapEntry(new Color(28, 28, 28), Language.GetText("VirtualDream.Items.WindOfTimeStand.DisplayName"));
             DustType = MyDustId.PurpleLight;
         }
 
@@ -980,7 +1029,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                     zero = Vector2.Zero;
                 }
                 Color color = Lighting.GetColor(i, j);
-                Vector2 position = new Point(i + 2, j + 1).ToWorldCoordinates() + new Vector2(0, -64) - Main.screenPosition + zero + new Vector2(0, MathF.Cos((float)LogSpiralLibrary.LogSpiralLibraryMod.ModTime / 60f) * 16);
+                Vector2 position = new Point(i + 2, j + 1).ToWorldCoordinates() + new Vector2(0, -64) - Main.screenPosition + zero + new Vector2(0, MathF.Cos((float)LogSpiralLibraryMod.ModTime / 60f) * 16);
                 #region MagicZone
                 if (entity.data.item.type == ModContent.ItemType<WindOfTime>())
                 {
@@ -995,8 +1044,8 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                     //spriteBatch.Draw(ModContent.Request<Texture2D>("StoneOfThePhilosophers/UI/ElementPanel").Value, rect, Color.White);
                     var panelText = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/WindOfTimePanel").Value;
                     spriteBatch.Draw(panelText, position, null, color, MathHelper.Pi, new Vector2(256), 1f * factor2 * .5f, 0, 0);
-                    spriteBatch.Draw(panelText, position, null, color * .5f, Main.GlobalTimeWrappedHourly, new Vector2(256), 1.5f * factor2 * .5f, 0, 0);
-                    spriteBatch.Draw(panelText, position, null, color * .75f, -Main.GlobalTimeWrappedHourly * 2, new Vector2(256), 1.25f * factor2 * .5f, 0, 0);
+                    spriteBatch.Draw(panelText, position, null, color * .5f, (float)LogSpiralLibraryMod.ModTime / 60f, new Vector2(256), 1.5f * factor2 * .5f, 0, 0);
+                    spriteBatch.Draw(panelText, position, null, color * .75f, -(float)LogSpiralLibraryMod.ModTime / 30f, new Vector2(256), 1.25f * factor2 * .5f, 0, 0);
                     #region GiveUP
                     //foreach (var button in Buttons)
                     //{

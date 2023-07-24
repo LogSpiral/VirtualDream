@@ -15,6 +15,8 @@ using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;
 using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver;
 using static LogSpiralLibrary.LogSpiralLibraryMod;
 using static Terraria.ModLoader.ModContent;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+
 namespace VirtualDream
 {
     public class VirtualDreamRenderDrawing : RenderBasedDrawing
@@ -121,12 +123,13 @@ namespace VirtualDream
                 float? director = null;
                 #region 遍历查找
                 GetMyDataOut(bars, oculusTears, astralTears, solusKatanaFractal, bars_2, indexer, ref director, ref timeLeft);
+                var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
+
                 #endregion
                 if (bars.Count > 2 || oculusTears.Count > 0 || astralTears.Count > 0 || solusKatanaFractal.Count > 0)
                 {
                     var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                     var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-                    var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
                     var resultMatrix = model * trans * projection;
                     #region 日炎刀合批
                     if (bars.Count > 2 || solusKatanaFractal.Count > 0)
@@ -144,6 +147,46 @@ namespace VirtualDream
                     }
 
                 }
+
+                List<Projectile> windOfTimeProjs = new List<Projectile>();
+                foreach (var proj in Main.projectile)
+                {
+                    if (proj.type == ProjectileType<WindOfTimeReactionProj>() && proj.active)
+                    {
+                        windOfTimeProjs.Add(proj);
+                    }
+                }
+                #region MyRegion
+                var sb = Main.spriteBatch;
+                #region Render
+                graphicsDevice.SetRenderTarget(Instance.Render_AirDistort);
+                graphicsDevice.Clear(Color.Transparent);
+                #endregion
+                sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
+                foreach (var wind in windOfTimeProjs)
+                {
+                    sb.Draw(MagicZone[14].Value, wind.Center - Main.screenPosition, null, Color.White * ((1 - MathF.Cos(MathHelper.TwoPi * wind.timeLeft / 180f)) * .5f), (float)ModTime / 60f, new Vector2(200), (1 - wind.timeLeft / 180f) * 4, 0, 0);
+                }
+                sb.End();
+                #region render
+                graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
+                graphicsDevice.Clear(Color.Transparent);
+                sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                Main.graphics.GraphicsDevice.Textures[2] = Misc[18].Value;
+                AirDistortEffect.Parameters["uScreenSize"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+                AirDistortEffect.Parameters["strength"].SetValue(.001f);
+                AirDistortEffect.Parameters["rotation"].SetValue(0);
+                AirDistortEffect.Parameters["tex0"].SetValue(Instance.Render_AirDistort);
+                AirDistortEffect.CurrentTechnique.Passes[0].Apply();//ApplyPass
+                sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                sb.End();
+                graphicsDevice.SetRenderTarget(Main.screenTarget);
+                graphicsDevice.Clear(Color.Transparent);
+                sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+                sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+                sb.End();
+                #endregion
+                #endregion
             }
 
             if (VirtualDreamMod.bloomValue > 0)
@@ -326,7 +369,7 @@ namespace VirtualDream
                 ShaderSwooshEX.Parameters["distortScaler"].SetValue(0);
                 ShaderSwooshEX.Parameters["lightShift"].SetValue(0f);
 
-                Main.graphics.GraphicsDevice.Textures[0] = BaseTex[7].Value;
+                Main.graphics.GraphicsDevice.Textures[0] = BaseTex[5].Value;
                 Main.graphics.GraphicsDevice.Textures[1] = AniTex[3].Value;
                 Main.graphics.GraphicsDevice.Textures[2] = TextureAssets.Item[ItemType<SolusKatana>()].Value;
                 Main.graphics.GraphicsDevice.Textures[3] = HeatMap[27].Value;
@@ -374,34 +417,45 @@ namespace VirtualDream
 
 
                     //Vector2 direct = (instance.swooshFactorStyle == SwooshFactorStyle.每次开始时决定系数 ? modPlayer.kValue : ((modPlayer.kValue + modPlayer.kValueNext) * .5f)).ToRotationVector2() * -0.1f * fac.SymmetricalFactor2(0.5f, 0.2f) * instance.distortFactor;//(u + v)
-                    DistortEffect.Parameters["offset"].SetValue((director ?? MathHelper.PiOver4).ToRotationVector2() * -0.03f);//设置参数时间
-                    DistortEffect.Parameters["invAlpha"].SetValue(0);
-                    DistortEffect.Parameters["tex0"].SetValue(renderAirDistort);
-                    DistortEffect.CurrentTechnique.Passes[0].Apply();//ApplyPass
+                    //RenderEffect.Parameters["offset"].SetValue((director ?? MathHelper.PiOver4).ToRotationVector2() * -0.03f);//设置参数时间
+                    //RenderEffect.Parameters["invAlpha"].SetValue(0);
+                    //RenderEffect.Parameters["tex0"].SetValue(renderAirDistort);
+                    //RenderEffect.CurrentTechnique.Passes[0].Apply();//ApplyPass
+                    Main.instance.GraphicsDevice.Textures[2] = Misc[18].Value;
+                    AirDistortEffect.Parameters["uScreenSize"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
+                    AirDistortEffect.Parameters["strength"].SetValue(.0005f);
+                    AirDistortEffect.Parameters["rotation"].SetValue(0f);
+                    AirDistortEffect.Parameters["tex0"].SetValue(renderAirDistort);
+                    AirDistortEffect.CurrentTechnique.Passes[0].Apply();//ApplyPass
+
+
                     spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//绘制原先屏幕内容
                     graphicsDevice.SetRenderTarget(Main.screenTarget);
                     graphicsDevice.Clear(Color.Transparent);
                     spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
 
-                    DistortEffect.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-                    DistortEffect.Parameters["tex0"].SetValue(render);
+                    RenderEffect.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
 
-                    DistortEffect.Parameters["position"].SetValue(new Vector2(0, 3f));
-                    DistortEffect.Parameters["tier2"].SetValue(0.2f);
-                    //for (int n = 0; n < 1; n++)
-                    //{
-                    graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
-                    graphicsDevice.Clear(Color.Transparent);
-                    DistortEffect.CurrentTechnique.Passes[7].Apply();
-                    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                    RenderEffect.Parameters["position"].SetValue(new Vector2(0f, 6f));
+                    RenderEffect.Parameters["tier2"].SetValue(0.2f);
+                    RenderEffect.Parameters["invAlpha"].SetValue(1f);
+
+                    for (int n = 0; n < 2; n++)
+                    {
+                        graphicsDevice.SetRenderTarget(renderAirDistort);
+                        RenderEffect.Parameters["tex0"].SetValue(render);
+                        graphicsDevice.Clear(Color.Transparent);
+                        RenderEffect.CurrentTechnique.Passes[9].Apply();
+                        spriteBatch.Draw(render, Vector2.Zero, Color.White);
 
 
 
-                    graphicsDevice.SetRenderTarget(Main.screenTarget);
-                    graphicsDevice.Clear(Color.Transparent);
-                    DistortEffect.CurrentTechnique.Passes[6].Apply();
-                    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                    //}
+                        graphicsDevice.SetRenderTarget(render);
+                        RenderEffect.Parameters["tex0"].SetValue(renderAirDistort);
+                        graphicsDevice.Clear(Color.Transparent);
+                        RenderEffect.CurrentTechnique.Passes[8].Apply();
+                        spriteBatch.Draw(renderAirDistort, Vector2.Zero, Color.White);
+                    }
                     //Distort.Parameters["position"].SetValue(new Vector2(0, 5f));
                     //Distort.Parameters["ImageSize"].SetValue(new Vector2(0.707f) * -0.006f);//projectile.rotation.ToRotationVector2() * -0.006f
 
@@ -420,7 +474,7 @@ namespace VirtualDream
                     //}
                     spriteBatch.End();
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-
+                    graphicsDevice.SetRenderTarget(Main.screenTarget);
                     spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
                     spriteBatch.Draw(render, Vector2.Zero, Color.White);
                 }
@@ -458,19 +512,19 @@ namespace VirtualDream
             graphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
             Main.graphics.GraphicsDevice.Textures[1] = VirtualDreamMod.GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
-            DistortEffect.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前graphicsDevice.SetRenderTarget的不是这个render，否则会报错）
-                                                              //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
-            DistortEffect.Parameters["invAlpha"].SetValue(0.35f);
-            DistortEffect.Parameters["lightAsAlpha"].SetValue(true);
-            DistortEffect.Parameters["tier2"].SetValue(0.30f);
-            DistortEffect.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)ModTime * 8);
-            DistortEffect.Parameters["maskGlowColor"].SetValue(new Vector4(1, 0, 0.25f, 1));//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
-                                                                                            //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
-                                                                                            //Main.NewText("!!!");
-            DistortEffect.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
-            DistortEffect.Parameters["inverse"].SetValue(false);
+            RenderEffect.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前graphicsDevice.SetRenderTarget的不是这个render，否则会报错）
+                                                             //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
+            RenderEffect.Parameters["invAlpha"].SetValue(0.35f);
+            RenderEffect.Parameters["lightAsAlpha"].SetValue(true);
+            RenderEffect.Parameters["tier2"].SetValue(0.30f);
+            RenderEffect.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)ModTime * 8);
+            RenderEffect.Parameters["maskGlowColor"].SetValue(new Vector4(1, 0, 0.25f, 1));//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
+                                                                                           //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
+                                                                                           //Main.NewText("!!!");
+            RenderEffect.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
+            RenderEffect.Parameters["inverse"].SetValue(false);
 
-            DistortEffect.CurrentTechnique.Passes[1].Apply();
+            RenderEffect.CurrentTechnique.Passes[1].Apply();
 
             spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
 
@@ -499,16 +553,16 @@ namespace VirtualDream
             graphicsDevice.Clear(Color.Transparent);
             sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             Main.graphics.GraphicsDevice.Textures[1] = VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3");
-            DistortEffect.Parameters["tex0"].SetValue(render);
-            DistortEffect.Parameters["invAlpha"].SetValue(0.35f);
-            DistortEffect.Parameters["lightAsAlpha"].SetValue(true);
-            DistortEffect.Parameters["tier2"].SetValue(0.30f);
-            DistortEffect.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)ModTime * 8);
-            DistortEffect.Parameters["maskGlowColor"].SetValue(Color.Cyan.ToVector4());
-            DistortEffect.Parameters["ImageSize"].SetValue(new Vector2(64, 48));
-            DistortEffect.Parameters["inverse"].SetValue(false);
+            RenderEffect.Parameters["tex0"].SetValue(render);
+            RenderEffect.Parameters["invAlpha"].SetValue(0.35f);
+            RenderEffect.Parameters["lightAsAlpha"].SetValue(true);
+            RenderEffect.Parameters["tier2"].SetValue(0.30f);
+            RenderEffect.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)ModTime * 8);
+            RenderEffect.Parameters["maskGlowColor"].SetValue(Color.Cyan.ToVector4());
+            RenderEffect.Parameters["ImageSize"].SetValue(new Vector2(64, 48));
+            RenderEffect.Parameters["inverse"].SetValue(false);
 
-            DistortEffect.CurrentTechnique.Passes[1].Apply();
+            RenderEffect.CurrentTechnique.Passes[1].Apply();
             sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
             sb.End();
             graphicsDevice.SetRenderTarget(Main.screenTarget);
@@ -527,7 +581,7 @@ namespace VirtualDream
             Main.spriteBatch.End();
 
             //取样
-            graphicsDevice.SetRenderTarget(LogSpiralLibraryMod.Instance.Render);
+            graphicsDevice.SetRenderTarget(Instance.Render);
             graphicsDevice.Clear(Color.Transparent);
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             VirtualDreamMod.Bloom.CurrentTechnique.Passes[0].Apply();//取亮度超过m值的部分
@@ -547,10 +601,10 @@ namespace VirtualDream
                 VirtualDreamMod.Bloom.CurrentTechnique.Passes["GlurV"].Apply();//横向
                 graphicsDevice.SetRenderTarget(Main.screenTarget);
                 graphicsDevice.Clear(Color.Transparent);
-                Main.spriteBatch.Draw(LogSpiralLibraryMod.Instance.Render, Vector2.Zero, Color.White);
+                Main.spriteBatch.Draw(Instance.Render, Vector2.Zero, Color.White);
 
                 VirtualDreamMod.Bloom.CurrentTechnique.Passes["GlurH"].Apply();//纵向
-                graphicsDevice.SetRenderTarget(LogSpiralLibraryMod.Instance.Render);
+                graphicsDevice.SetRenderTarget(Instance.Render);
                 graphicsDevice.Clear(Color.Transparent);
                 Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
             }
@@ -561,7 +615,7 @@ namespace VirtualDream
             graphicsDevice.Clear(Color.Transparent);
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);//Additive把模糊后的部分加到Main.screenTarget里
             Main.spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-            Main.spriteBatch.Draw(LogSpiralLibraryMod.Instance.Render, Vector2.Zero, Color.White);
+            Main.spriteBatch.Draw(Instance.Render, Vector2.Zero, Color.White);
             Main.spriteBatch.End();
             VirtualDreamMod.bloomValue = 0;
         }

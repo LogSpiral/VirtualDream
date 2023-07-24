@@ -53,8 +53,8 @@ namespace VirtualDream.Contents.StarBound.Weapons
                 return null;
             }
         }
-        public const float defaultBrokenHurt = 150000f;
-        public const int defaultBrokenKill = 500;
+        public const float defaultBrokenHurt = 4500f;
+        public const int defaultBrokenKill = 100;
 
         public const float defaultNormalHurt = 500000f;
         public const int defaultNormalKill = 2000;
@@ -171,13 +171,20 @@ namespace VirtualDream.Contents.StarBound.Weapons
     }
     public static class StarboundWeaponExtension
     {
-        //0 赝品   | 赝品
-        //1 赝品ex | 赝品ex
-        //2 赝品ul | 真品
-        //3 真品   | 真品ex
-        //4 真品ex | 残品
-        //4 真品ul
-        //5 残品
+        /// <summary>
+        /// 参考以下下标|状态表
+        /// <br>0 赝品   | 赝品</br>
+        /// <br>1 赝品ex | 赝品ex</br>
+        /// <br>2 赝品ul | 真品</br>
+        /// <br>3 真品   | 真品ex</br>
+        /// <br>4 真品ex | 残品</br>
+        /// <br>5 真品ul</br>
+        /// <br>6 残品</br>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="weapon"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
         public static T UpgradeValue<T>(this StarboundWeaponBase weapon, params T[] values)
         {
             if (weapon == null)
@@ -204,6 +211,16 @@ namespace VirtualDream.Contents.StarBound.Weapons
                 return default;
             }
         }
+        /// <summary>
+        /// 参考以下下标|状态表
+        /// <br>0 赝品   | 赝品</br>
+        /// <br>1 赝品ex | 赝品ex</br>
+        /// <br>2 赝品ul | 真品</br>
+        /// <br>3 真品   | 真品ex</br>
+        /// <br>4 真品ex | 残品</br>
+        /// <br>5 真品ul</br>
+        /// <br>6 残品</br>
+        /// </summary>
         public static T UpgradeValue<T>(this IStarboundWeaponProjectile weaponProj, params T[] values) => UpgradeValue(weaponProj.weapon, values);
     }
     public class StarboundGlobalProjectile : GlobalProjectile

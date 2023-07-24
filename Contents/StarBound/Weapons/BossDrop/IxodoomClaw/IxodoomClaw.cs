@@ -3,11 +3,53 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.Buffs;
+using VirtualDream.Contents.StarBound.Materials;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+using VirtualDream.Contents.StarBound.Weapons.Broken;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
 {
+    public class IxodoomClaw_Broken : IxodoomClaw 
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            item.damage = 40;
+            item.shoot = ModContent.ProjectileType<IxodoomClaw_BrokenProj>();
+            item.useTime = 45;
+            item.rare = ModContent.RarityType<BrokenRarity>();
+        }
+        public override WeaponState State => WeaponState.Broken;
+        public override bool AltFunctionUse(Player player) => false;
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            var recipe = GetEmptyRecipe();
+            recipe.AddIngredient(ItemID.SpiderFang, 50);
+            recipe.AddIngredient(ItemID.Bone, 25);
+            recipe.AddIngredient(ItemID.VialofVenom, 50);
+            recipe.AddIngredient(ItemID.Stinger, 30);
+            recipe.AddIngredient(ItemID.StyngerBolt, 30);
+            recipe.AddIngredient(ItemID.Ectoplasm, 15);
+            recipe.SetResult<IxodoomClaw>();
+            return recipe;
+        }
+    }
+    public class IxodoomClaw_BrokenProj : VertexHammerProj, IStarboundWeaponProjectile
+    {
+
+        public override float MaxTime => Player.itemAnimationMax;
+        public override string Texture => base.Texture.Replace("BrokenProj", "Broken");
+        public override Vector2 CollidingSize => base.CollidingSize * 2;
+
+        public override Vector2 CollidingCenter => new Vector2(projTex.Size().X / 3 - 16, 16);
+        public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-16, 12);
+    }
     public class IxodoomClaw : StarboundWeaponBase
     {
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            return GetEmptyRecipe().AddIngredient<AncientEssence>(5000).SetResult<IxodoomClawEX>();
+        }
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
@@ -39,22 +81,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         {
             return true;
         }
-        public override void AddRecipes()
-        {
-            Recipe recipe1 = CreateRecipe();
-            recipe1.AddIngredient(ItemID.SpiderFang, 50);
-            recipe1.AddIngredient(ItemID.Bone, 25);
-            recipe1.AddIngredient(ItemID.VialofVenom, 50);
-            recipe1.AddIngredient(ItemID.Stinger, 30);
-            recipe1.AddIngredient(ItemID.StyngerBolt, 30);
-            recipe1.AddIngredient(ItemID.Ectoplasm, 15);
-            recipe1.AddTile(TileID.MythrilAnvil);
-            recipe1.SetResult(this);
-            recipe1.AddRecipe();
-        }
     }
     public class IxodoomClawEX : IxodoomClaw
     {
+        public override WeaponRepairRecipe RepairRecipe() => GetEmptyRecipe();
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
@@ -85,13 +115,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             item.crit = 50;
             item.rare = MyRareID.Tier3;
         }
-        //private static int Time = 0;
         public override void HoldItem(Player player)
         {
-            //Time++;
-            //if (Time > 360)
-            //    Time = 0;
-            //int n = 8;
             int d = MyDustId.PinkBubble;
             float W = (3.1415926f / 180) * (float)VirtualDreamSystem.ModTime2;
             for (int n = 0; n < 8; n++)
@@ -99,51 +124,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
                 Dust dust1 = Dust.NewDustPerfect(player.Center + (0.5f * 7 * W + MathHelper.TwoPi * n / 8).ToRotationVector2() * (float)(Math.Tan(4 * W) / Math.Sin(4 * W) + 8) * 25, d, new Vector2(0f, 0f), 0, Color.White, 1.5f);
                 dust1.noGravity = true;
             }
-            //float X1 = (float)Math.Cos(0.5f * 7 * W) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float Y1 = (float)Math.Sin(0.5f * 7 * W) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float X2 = (float)Math.Cos(0.5f * 7 * (W + 3.1415926f * 2 / n)) * (float)(Math.Tan(0.5f * n * W)/ Math.Sin(0.5f * n * W) + n) * 25;
-            //float Y2 = (float)Math.Sin(0.5f * 7 * (W + 3.1415926f * 2 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float X3 = (float)Math.Cos(0.5f * 7 * (W + 3.1415926f * 4 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float Y3 = (float)Math.Sin(0.5f * 7 * (W + 3.1415926f * 4 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float X4 = (float)Math.Cos(0.5f * 7 * (W + 3.1415926f * 6 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float Y4 = (float)Math.Sin(0.5f * 7 * (W + 3.1415926f * 6 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float X5 = (float)Math.Cos(0.5f * 7 * (W + 3.1415926f * 8 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float Y5 = (float)Math.Sin(0.5f * 7 * (W + 3.1415926f * 8 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float X6 = (float)Math.Cos(0.5f * 7 * (W + 3.1415926f * 10 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float Y6 = (float)Math.Sin(0.5f * 7 * (W + 3.1415926f * 10 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float X7 = (float)Math.Cos(0.5f * 7 * (W + 3.1415926f * 12 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float Y7 = (float)Math.Sin(0.5f * 7 * (W + 3.1415926f * 12 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float X8 = (float)Math.Cos(0.5f * 7 * (W + 3.1415926f * 14 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float Y8 = (float)Math.Sin(0.5f * 7 * (W + 3.1415926f * 14 / n)) * (float)(Math.Tan(0.5f * n * W) / Math.Sin(0.5f * n * W) + n) * 25;
-            //float s = 1.5f;
-            //float v = 2f;
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    Dust dust1 = Terraria.Dust.NewDustPerfect(player.Center + new Vector2(X1, Y1), d, new Vector2(0f, 0f), 0, Color.White, s);
-            //    Dust dust2 = Terraria.Dust.NewDustPerfect(player.Center + new Vector2(X2, Y2), d, new Vector2(0, 0), 0, Color.White, s);
-            //    Dust dust3 = Terraria.Dust.NewDustPerfect(player.Center + new Vector2(X3, Y3), d, new Vector2(0f, 0f), 0, Color.White, s);
-            //    Dust dust4 = Terraria.Dust.NewDustPerfect(player.Center + new Vector2(X4, Y4), d, new Vector2(0, 0), 0, Color.White, s);
-            //    Dust dust5 = Terraria.Dust.NewDustPerfect(player.Center + new Vector2(X5, Y5), d, new Vector2(0f, 0f), 0, Color.White, s);
-            //    Dust dust6 = Terraria.Dust.NewDustPerfect(player.Center + new Vector2(X6, Y6), d, new Vector2(0f, 0f), 0, Color.White, s);
-            //    Dust dust7 = Terraria.Dust.NewDustPerfect(player.Center + new Vector2(X7, Y7), d, new Vector2(0, 0), 0, Color.White, s);
-            //    Dust dust8 = Terraria.Dust.NewDustPerfect(player.Center + new Vector2(X8, Y8), d, new Vector2(0f, 0f), 0, Color.White, s);
-            //    dust1.noGravity = true;
-            //    dust1.velocity *= v;
-            //    dust2.noGravity = true;
-            //    dust2.velocity *= v;
-            //    dust3.noGravity = true;
-            //    dust3.velocity *= v;
-            //    dust4.noGravity = true;
-            //    dust4.velocity *= v;
-            //    dust5.noGravity = true;
-            //    dust5.velocity *= v;
-            //    dust6.noGravity = true;
-            //    dust6.velocity *= v;
-            //    dust7.noGravity = true;
-            //    dust7.velocity *= v;
-            //    dust8.noGravity = true;
-            //    dust8.velocity *= v;
-            //}
         }
     }
     public class IxodoomClawProj : VertexHammerProj,IStarboundWeaponProjectile

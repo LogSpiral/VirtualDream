@@ -3224,7 +3224,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                 for (int n = 0; n < 256; n++)
                 {
-                    spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, ((n / 128f) % 1).ArrayLerp_Loop(projPos.array) - Main.screenPosition, new Rectangle(128, 0, 32, 32), Color.White * v, (float)Main.time / 60f * MathHelper.TwoPi, new Vector2(16), 1.5f, 0, 0);// + (float)Main.time / 6000f
+                    spriteBatch.Draw(LogSpiralLibraryMod.Misc[19].Value, ((n / 128f) % 1).ArrayLerp_Loop(projPos.array) - Main.screenPosition, new Rectangle(128, 0, 32, 32), Color.White * v, (float)Main.time / 60f * MathHelper.TwoPi, new Vector2(16), 1.5f, 0, 0);// + (float)Main.time / 6000f
                 }
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);

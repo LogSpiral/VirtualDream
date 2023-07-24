@@ -8,6 +8,7 @@ using LogSpiralLibrary.CodeLibrary;
 using LogSpiralLibrary;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
 using VirtualDream.Contents.StarBound.Materials;
+using VirtualDream.Contents.StarBound.Weapons.Broken;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 {
@@ -29,12 +30,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         {
             base.SetDefaults();
             item.damage = 15;
-            item.rare = ItemRarityID.Green;
+            item.rare = ModContent.RarityType<BrokenRarity>();
             item.useTime = 30;
             item.useAnimation = 30;
             item.shoot = ModContent.ProjectileType<SolusKatana_BrokenProj>();
         }
         public override WeaponState State => WeaponState.Broken;
+        public override bool AltFunctionUse(Player player) => false;
+
     }
     public class SolusKatana_BrokenProj : VertexHammerProj, IStarboundWeaponProjectile
     {
@@ -144,13 +147,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref int passCount)
         {
             additive = true;
-            indexOfGreyTex = this.UpgradeValue(5, 5, 7);
+            indexOfGreyTex = this.UpgradeValue(1, 5, 7);
             useHeatMap = true;
         }
-        public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha, bool inverse) useMask)
+        public override void RenderInfomation(ref BloomEffectInfo useBloom, ref AirDistortEffectInfo useDistort, ref MaskEffectInfo useMask)
         {
-            useBloom = (0f, .5f, 6f);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
-            useDistort = (0f, 1.5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.015f);//  //
+            useBloom = new BloomEffectInfo(0f, .25f, 6f, 3, true);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
+            useDistort = new AirDistortEffectInfo(1.5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.015f);//  //
         }
         public override Texture2D HeatMap
         {

@@ -1,4 +1,5 @@
 ﻿using LogSpiralLibrary;
+using Microsoft.Xna.Framework.Graphics.PackedVector;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -141,14 +142,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
                 for (int n = 0; n < 18; n++)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (MathHelper.TwoPi / 18 * n).ToRotationVector2() * 8, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>(), 25 * damageScaler, 0, Main.myPlayer, 2);
+                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, (MathHelper.TwoPi / 18 * n).ToRotationVector2() * 8, ModContent.ProjectileType<ErcuiusHorrorLightJade>(), 25 * damageScaler, 0, Main.myPlayer, 2).frame = 2;
                 }
             }
             if ((int)npc.ai[0] == 80)
             {
                 for (int n = 0; n < 36; n++)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - (MathHelper.TwoPi / 36 * n).ToRotationVector2() * 64, (MathHelper.TwoPi / 36 * n).ToRotationVector2() * 16, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>(), 35 * damageScaler, 0, Main.myPlayer, 2);
+                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center - (MathHelper.TwoPi / 36 * n).ToRotationVector2() * 64, (MathHelper.TwoPi / 36 * n).ToRotationVector2() * 16, ModContent.ProjectileType<ErcuiusHorrorLightJade>(), 35 * damageScaler, 0, Main.myPlayer, 2).frame = 2;
                 }
             }
             if (npc.ai[0] >= 120)
@@ -193,44 +194,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 for (int n = 0; n < 6; n++)
                 {
                     float r = (MathHelper.TwoPi / 150f * npc.ai[0] + MathHelper.Pi / 3 * n);
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + r.ToRotationVector2() * 80f, (r + MathHelper.PiOver2).ToRotationVector2() * 4f, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.StarBullet>(), 15 * damageScaler, 0, Main.myPlayer, 4, 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + r.ToRotationVector2() * 80f, (r + MathHelper.PiOver2).ToRotationVector2() * 4f, ModContent.ProjectileType<ErcuiusHorrorSimpleProjs>(), 15 * damageScaler, 0, Main.myPlayer, 1);
                 }
             }
             npc.ai[0]++;
         }
         private void AttackMode_2()
         {
-            //事聚合激光哦
-            //if ((int)npc.ai[0] % 60 == 0)
-            //{
-            //	//if (npc.ai[1] + Main.rand.Next(5) >= 10)
-            //	if (npc.ai[1] + Main.rand.Next(3) >= 4)
-            //	{
-            //		SetAI();
-            //		oldAiStyle = 2;
-            //		return;
-            //	}
-            //	npc.ai[0] = 1;
-            //	npc.ai[1]++;
-            //	Projectile.NewProjectile(npc.GetSource_FromAI(),npc.Center, Vector2.Normalize(targetPlayer.Center - npc.Center), ModContent.ProjectileType<ErchiusHorrorAggregateLaser>(), 55, 0, Main.myPlayer);
-            //}
-            //if ((int)npc.ai[0] % (30 - 10 * Stage) == 0)
-            //{
-            //	for (int n = 0; n < 3; n++)
-            //	{
-            //		Projectile.NewProjectile(npc.GetSource_FromAI(),npc.Center, Vector2.Normalize(targetPlayer.Center - npc.Center).RotatedBy(-MathHelper.Pi / 3 * (1 - npc.ai[0] / 60f)) * 4 * (n + 1), ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.ConeBullet>(), 25, 0, Main.myPlayer, 5, 1);
-            //		Projectile.NewProjectile(npc.GetSource_FromAI(),npc.Center, Vector2.Normalize(targetPlayer.Center - npc.Center).RotatedBy(MathHelper.Pi / 3 * (1 - npc.ai[0] / 60f)) * 4 * (n + 1), ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.ConeBullet>(), 25, 0, Main.myPlayer, 5, 1);
-            //	}
-            //}
-
-            //if ((int)npc.ai[0] % 10 == 0)
-            //{
-            //	for (int n = 0; n < 3; n++) 
-            //	{
-            //		Projectile.NewProjectile(npc.GetSource_FromAI(),npc.Center, Vector2.Normalize(targetPlayer.Center - npc.Center).RotatedBy(-MathHelper.Pi / 3 * (1 - npc.ai[0] / 60f)) * 4 * (n + 1), ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.ConeBullet>(), 35, 2, Main.myPlayer, 5, 1);
-            //		Projectile.NewProjectile(npc.GetSource_FromAI(),npc.Center, Vector2.Normalize(targetPlayer.Center - npc.Center).RotatedBy(MathHelper.Pi / 3 * (1 - npc.ai[0] / 60f)) * 4 * (n + 1), ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.ConeBullet>(), 35, 2, Main.myPlayer, 5, 1);
-            //	}
-            //}
             if ((int)npc.ai[0] % 900 == 0)
             {
                 if ((int)npc.ai[0] / 900 + Main.rand.Next(2) >= 3)
@@ -310,7 +280,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
                 for (int n = 0; n < 12; n++)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (MathHelper.Pi / 6 * n + MathHelper.Pi / 360 * npc.ai[0]).ToRotationVector2() * 8f, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.CrystalBullet>(), 15 * damageScaler, 0, Main.myPlayer, 5, 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (MathHelper.Pi / 6 * n + MathHelper.Pi / 360 * npc.ai[0]).ToRotationVector2() * 8f, ModContent.ProjectileType<ErcuiusHorrorSimpleProjs>(), 15 * damageScaler, 0, Main.myPlayer);
                 }
             }
             //if ((int)npc.ai[0] % 10 == 0)
@@ -334,7 +304,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                     for (int n = 0; n < 6; n++)
                     {
                         Vector2 vec = (r + MathHelper.Pi / 3 * n).ToRotationVector2();
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + vec * 200, new Vector2(vec.Y, -vec.X) * 16, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.StarBullet>(), 25 * damageScaler, 0, Main.myPlayer, 4, 2);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + vec * 200, new Vector2(vec.Y, -vec.X) * 16, ModContent.ProjectileType<ErcuiusHorrorSimpleProjs>(), 25 * damageScaler, 0, Main.myPlayer, 1);
                     }
                 }
             }
@@ -346,7 +316,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                     for (int n = 0; n < 6; n++)
                     {
                         Vector2 vec = (r + MathHelper.Pi / 3 * n).ToRotationVector2();
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + vec * 200, new Vector2(vec.Y, -vec.X) * 16, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.StarBullet>(), 25 * damageScaler, 0, Main.myPlayer, 4, 2);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + vec * 200, new Vector2(vec.Y, -vec.X) * 16, ModContent.ProjectileType<ErcuiusHorrorSimpleProjs>(), 25 * damageScaler, 0, Main.myPlayer, 1);
                     }
                 }
             }
@@ -378,9 +348,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 for (int n = 0; n < 6; n++)
                 {
                     Vector2 vec1 = (MathHelper.Pi / 3 * n * (1 + npc.ai[0] / 150f)).ToRotationVector2();
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - vec1 * 200 * (npc.ai[0] / 150f), vec1 * (npc.ai[0] / 150f + 0.2f) * 16f, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.HugeStarBullet>(), 45 * damageScaler, 0, Main.myPlayer, 2, 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - vec1 * 200 * (npc.ai[0] / 150f), vec1 * (npc.ai[0] / 150f + 0.2f) * 16f, ModContent.ProjectileType<ErcuiusHorrorSimpleProjs>(), 45 * damageScaler, 0, Main.myPlayer, 2);
                     Vector2 vec2 = (-MathHelper.Pi / 3 * n * (1 + npc.ai[0] / 150f)).ToRotationVector2();
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - vec2 * 200 * (npc.ai[0] / 150f), vec2 * (npc.ai[0] / 150f + 0.2f) * 16f, ModContent.ProjectileType<TouhouProject.NPCs.Fairy.HugeStarBullet>(), 45 * damageScaler, 0, Main.myPlayer, 2, 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center - vec2 * 200 * (npc.ai[0] / 150f), vec2 * (npc.ai[0] / 150f + 0.2f) * 16f, ModContent.ProjectileType<ErcuiusHorrorSimpleProjs>(), 45 * damageScaler, 0, Main.myPlayer, 2);
                 }
             }
             if ((int)npc.ai[0] % 150 == 0)
@@ -429,9 +399,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //{
         //    npc.life = (int)(npc.lifeMax * 0.25f);
         //}
-        void SetAI() 
+        void SetAI()
         {
-            for (int n = 0; n < 4; n++) 
+            for (int n = 0; n < 4; n++)
             {
                 if (n != 2) npc.ai[n] = 0;
             }
@@ -478,7 +448,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 {
                     tinyCrystalTimer++;
                 }
-                if (tinyCrystalTimer >= (Main.expertMode ? 1200 : 1500))
+                if (tinyCrystalTimer >= OtherMethods.HardmodeValue(1500, 1200, 900))
                 {
                     NewTinyCrystal();
                     tinyCrystalTimer = 0;
@@ -756,11 +726,134 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         {
             return PreDraw(Main.spriteBatch, lightColor);
         }
-        public Texture2D projTex => TextureAssets.Projectile[projectile.type].Value;
+        public Texture2D projTex => TextureAssets.Projectile[Type].Value;
         //public override void OnHitPlayer(Player target, int damage, bool crit)
         //{
         //    target.immuneTime = 10;
         //}
+    }
+    public class ErcuiusHorrorLightJade : ErchiusProj
+    {
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailingMode[projectile.type] = 0;
+            ProjectileID.Sets.TrailCacheLength[projectile.type] = 10;
+            base.SetStaticDefaults();
+        }
+        public override string Texture => "Terraria/Images/Item_0";
+        public override void SetDefaults()
+        {
+            projectile.timeLeft = 300;
+            projectile.width = projectile.height = 16;
+            projectile.friendly = false;
+            projectile.hostile = true;
+            projectile.tileCollide = false;
+            projectile.aiStyle = -1;
+            projectile.penetrate = -1;
+            base.SetDefaults();
+        }
+        public override void AI()
+        {
+            //Alpha = ((float)projectile.timeLeft).SymmetricalFactor(150, 150f);
+            projectile.velocity *= 1.01f;
+            base.AI();
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Draw(LogSpiralLibraryMod.Misc[19].Value, projectile.Center - Main.screenPosition, new Rectangle(32 * projectile.frame, 0, 32, 32), Color.White, projectile.velocity.ToRotation(), new Vector2(projectile.width / 2, projectile.height / 2), 1f, SpriteEffects.None, 0);
+            if ((int)projectile.ai[1] == 2)
+            {
+                Main.spriteBatch.DrawShaderTail(projectile, LogSpiralLibraryMod.HeatMap[5].Value, LogSpiralLibraryMod.AniTex[10].Value, LogSpiralLibraryMod.BaseTex[8].Value);
+            }
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            return false;
+        }
+    }
+    public class ErcuiusHorrorSimpleProjs : ErchiusProj
+    {
+        public override void SetDefaults()
+        {
+            projectile.width = projectile.height = 16;
+            projectile.friendly = false;
+            projectile.hostile = true;
+            projectile.tileCollide = false;
+            projectile.aiStyle = -1;
+            projectile.timeLeft = 300;
+            projectile.penetrate = -1;
+            base.SetDefaults();
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        {
+            spriteBatch.Draw(TextureAssets.Projectile[Type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[Type].Frame(3, 1, state), Color.White, projectile.rotation, new Vector2(16), 1f, 0, 0);
+            return false;
+        }
+        int state => (int)Projectile.ai[0];
+        bool setedValue
+        {
+            get => (int)projectile.ai[1] != 0;
+            set => projectile.ai[1] = value ? 1 : 0;
+        }
+        public override void AI()
+        {
+            switch (state)
+            {
+                case 0:
+                    {
+                        if (!setedValue)
+                        {
+                            setedValue = true;
+                            projectile.timeLeft = 450;
+                        }
+                        if (projectile.timeLeft > 150)
+                        {
+                            projectile.velocity = projectile.velocity.RotatedBy(MathHelper.Pi / 72 * (projectile.timeLeft - 150) / 300f);
+                        }
+                        projectile.rotation = projectile.velocity.ToRotation() + MathHelper.PiOver4;
+                        break;
+                    }
+                case 1:
+                    {
+                        //projectile.rotation += projectile.velocity.Length();
+                        //projectile.velocity *= 1.01f;
+                        projectile.rotation += projectile.velocity.Length();
+                        if (projectile.timeLeft > 240)
+                        {
+                            projectile.velocity *= 0.975f;
+                        }
+                        else if (projectile.timeLeft == 240)
+                        {
+                            projectile.velocity = Vector2.Normalize(Main.LocalPlayer.Center - projectile.Center) * 4;
+                        }
+                        else
+                        {
+                            if (projectile.velocity.LengthSquared() < 64)
+                            {
+                                projectile.velocity *= 1.05f;
+                            }
+                            else if (projectile.velocity.LengthSquared() > 64)
+                            {
+                                projectile.velocity = Vector2.Normalize(projectile.velocity) * 8;
+                            }
+                        }
+                        break;
+                    }
+                case 2:
+                    {
+                        projectile.rotation += projectile.velocity.Length();
+                        break;
+                    }
+            }
+            base.AI();
+        }
+        public override void ModifyDamageHitbox(ref Rectangle hitbox)
+        {
+            if (state == 2)
+                hitbox = Terraria.Utils.CenteredRectangle(hitbox.Center.ToVector2(), new Vector2(32));
+            base.ModifyDamageHitbox(ref hitbox);
+        }
     }
     public class ErchiusHorrorRotLaser : ErchiusProj
     {
@@ -839,11 +932,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             loti.tris = tris;
             loti.height = height;
         }
-        //public ErchiusHorrorRotLaser()
-        //{
-        //    loti = new VertexTriangle3List(2000, projectile.Center);
-        //    NewTris(2000);
-        //}
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             var set = new (Vector2 start, Vector2 unit)[6];
@@ -853,7 +941,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
                 var u = (MathHelper.TwoPi / 6 * n + projectile.ai[0]).ToRotationVector2();
                 set[n].start = projectile.Center + u * 200;
-                //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, set[n].start - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 24, 0, 0);
+                //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.ErcuiusHorrorLightJade>()].Value, set[n].start - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 24, 0, 0);
                 set[n].unit = u;
             }
             spriteBatch.DrawQuadraticLaser_PassNormal(set, Main.hslToRgb(0.8f, 1, 0.75f) * factor, LogSpiralLibraryMod.AniTex[1].Value, 3200, width);
@@ -861,135 +949,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);//IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath+"StrawBerryArea")//IllusionBoundMod.MagicZone[2]
             return false;
         }
-        //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-        //{
-        //	projectile.velocity = projectile.ai[0].ToRotationVector2();
-        //	spriteBatch.End();
-        //	spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	List<CustomVertexInfo> bars1 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars2 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars3 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars4 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars5 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars6 = new List<CustomVertexInfo>();
-        //	for (int i = 200; i <= 1600; i += 10)
-        //	{
-        //		var factor = (i - 200f) / 1400f;
-        //		var normalDir1 = -projectile.velocity;
-        //		normalDir1 = Vector2.Normalize(new Vector2(-normalDir1.Y, normalDir1.X));
-        //		//float width = projectile.timeLeft <= 180 ? 24 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 180f)) : 4f;
-        //		float width = projectile.timeLeft <= 180 ? 16 * (float)Math.Pow(i + 1, 1 / 4f) * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 180f)) : 4f;
-        //		float xValue = (factor / 100f - 0.5f) * 3 / 4 + 0.5f;
-        //		float zValue = projectile.timeLeft <= 180 ? 2 * factor * (1 - factor) + 0.125f : 0.25f;
-        //		bars1.Add(new CustomVertexInfo(projectile.velocity * i + normalDir1 * width + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars1.Add(new CustomVertexInfo(projectile.velocity * i + normalDir1 * -width + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars2.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6) + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars2.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6) + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars3.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6 * 2) + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars3.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6 * 2) + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars4.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6 * 3) + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars4.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6 * 3) + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars5.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6 * 4) + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars5.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6 * 4) + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars6.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6 * 5) + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars6.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6 * 5) + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //	}
-        //	List<CustomVertexInfo> triangleList1 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList2 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList3 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList4 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList5 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList6 = new List<CustomVertexInfo>();
-        //	if (bars1.Count > 2)
-        //	{
-        //		for (int i = 0; i < bars1.Count - 2; i += 2)
-        //		{
-        //			triangleList1.Add(bars1[i]);
-        //			triangleList1.Add(bars1[i + 2]);
-        //			triangleList1.Add(bars1[i + 1]);
-        //			triangleList1.Add(bars1[i + 1]);
-        //			triangleList1.Add(bars1[i + 2]);
-        //			triangleList1.Add(bars1[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars2.Count - 2; i += 2)
-        //		{
-        //			triangleList2.Add(bars2[i]);
-        //			triangleList2.Add(bars2[i + 2]);
-        //			triangleList2.Add(bars2[i + 1]);
-        //			triangleList2.Add(bars2[i + 1]);
-        //			triangleList2.Add(bars2[i + 2]);
-        //			triangleList2.Add(bars2[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars3.Count - 2; i += 2)
-        //		{
-        //			triangleList3.Add(bars3[i]);
-        //			triangleList3.Add(bars3[i + 2]);
-        //			triangleList3.Add(bars3[i + 1]);
-        //			triangleList3.Add(bars3[i + 1]);
-        //			triangleList3.Add(bars3[i + 2]);
-        //			triangleList3.Add(bars3[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars4.Count - 2; i += 2)
-        //		{
-        //			triangleList4.Add(bars4[i]);
-        //			triangleList4.Add(bars4[i + 2]);
-        //			triangleList4.Add(bars4[i + 1]);
-        //			triangleList4.Add(bars4[i + 1]);
-        //			triangleList4.Add(bars4[i + 2]);
-        //			triangleList4.Add(bars4[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars5.Count - 2; i += 2)
-        //		{
-        //			triangleList5.Add(bars5[i]);
-        //			triangleList5.Add(bars5[i + 2]);
-        //			triangleList5.Add(bars5[i + 1]);
-        //			triangleList5.Add(bars5[i + 1]);
-        //			triangleList5.Add(bars5[i + 2]);
-        //			triangleList5.Add(bars5[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars6.Count - 2; i += 2)
-        //		{
-        //			triangleList6.Add(bars6[i]);
-        //			triangleList6.Add(bars6[i + 2]);
-        //			triangleList6.Add(bars6[i + 1]);
-        //			triangleList6.Add(bars6[i + 1]);
-        //			triangleList6.Add(bars6[i + 2]);
-        //			triangleList6.Add(bars6[i + 3]);
-        //		}
-        //		spriteBatch.End();
-        //		spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-        //		float width = projectile.timeLeft <= 180 ? 24 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 180f)) : 4f;
-        //		for (int n = 0; n < 6; n++) 
-        //		{
-        //			spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity.RotatedBy(MathHelper.TwoPi / 6 * n) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), 2f * width / 24, 0, 0);
-        //		}
-        //		RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-        //		var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
-        //		var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-        //		IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-        //		IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
-        //		Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
-        //		Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/laser1");
-        //		Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.MaskColor[6];
-        //		Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
-        //		Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-        //		Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-        //		IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList1.ToArray(), 0, triangleList1.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList2.ToArray(), 0, triangleList2.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList3.ToArray(), 0, triangleList3.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList4.ToArray(), 0, triangleList4.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList5.ToArray(), 0, triangleList5.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList6.ToArray(), 0, triangleList6.Count / 3);
-        //		Main.graphics.GraphicsDevice.RasterizerState = originalState;
-        //		spriteBatch.End();
-        //		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	}
-        //	spriteBatch.End();
-        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	return false;
-        //}
         public override bool ShouldUpdatePosition()
         {
             return false;
@@ -1041,10 +1000,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 return target;
             }
         }
-        //public override void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI)
-        //{
-        //	Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
-        //}
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (projectile.ai[1] < 60 || targetPlayer == null)
@@ -1141,9 +1096,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
                 float width = projectile.ai[0] < 1 ? 1.33f : 2f;
-                spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity.RotatedBy((1 - projectile.ai[0]) * MathHelper.TwoPi / 6) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 2, 0, 0);
-                spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width, 0, 0);
-                spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity.RotatedBy(-(1 - projectile.ai[0]) * MathHelper.TwoPi / 6) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 2, 0, 0);
+                spriteBatch.Draw(LogSpiralLibraryMod.Misc[19].Value, projectile.Center + projectile.velocity.RotatedBy((1 - projectile.ai[0]) * MathHelper.TwoPi / 6) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 2, 0, 0);
+                spriteBatch.Draw(LogSpiralLibraryMod.Misc[19].Value, projectile.Center + projectile.velocity * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width, 0, 0);
+                spriteBatch.Draw(LogSpiralLibraryMod.Misc[19].Value, projectile.Center + projectile.velocity.RotatedBy(-(1 - projectile.ai[0]) * MathHelper.TwoPi / 6) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 2, 0, 0);
                 RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                 var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
@@ -1225,11 +1180,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             return false;
         }
-
-        //public override void DrawBehind(int index, List<int> drawCacheProjsBehindNPCsAndTiles, List<int> drawCacheProjsBehindNPCs, List<int> drawCacheProjsBehindProjectiles, List<int> drawCacheProjsOverWiresUI)
-        //{
-        //	Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
-        //}
         private VertexTriangle3List loti;
         private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (((v * size).ApplyMatrix(Matrix.CreateRotationX(((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi))) - new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ((projectile.ai[1] * MathHelper.TwoPi / 3))) + new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ(r));//Main.time////size *//* ModContent.GetInstance<IllusionConfigClient>().offSetSize
         public void UpdateTris(float factor)
@@ -1303,7 +1253,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             for (int n = 0; n < 6; n++)
             {
                 set[n].start = projectile.Center + (MathHelper.Pi / 3 * projectile.ai[1] + projectile.ai[0] + n * MathHelper.Pi / 3).ToRotationVector2() * 200f;//projectile.Center + u * 200
-                                                                                                                                                                //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, set[n].start - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 24, 0, 0);
+                                                                                                                                                                //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.ErcuiusHorrorLightJade>()].Value, set[n].start - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), width / 24, 0, 0);
                 set[n].unit = (MathHelper.TwoPi / 6 * n + projectile.ai[0]).ToRotationVector2();
             }
             spriteBatch.DrawQuadraticLaser_PassNormal(set, Main.hslToRgb(0.8f, 1, 0.75f) * factor, LogSpiralLibraryMod.AniTex[1].Value, 3200, width);
@@ -1311,136 +1261,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);
             return false;
         }
-        //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-        //{
-        //	projectile.velocity = projectile.ai[0].ToRotationVector2();
-        //	spriteBatch.End();
-        //	spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	List<CustomVertexInfo> bars1 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars2 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars3 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars4 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars5 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> bars6 = new List<CustomVertexInfo>();
-        //	for (int i = 200; i <= 1600; i += 10)
-        //	{
-        //		var factor = (i - 200f) / 1400f;
-        //		var normalDir1 = -projectile.velocity;
-        //		normalDir1 = Vector2.Normalize(new Vector2(-normalDir1.Y, normalDir1.X));
-        //		//float width = projectile.timeLeft <= 30 ? 24 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 30f)) : 4f;
-        //		float width = projectile.timeLeft <= 30 ? 16 * (float)Math.Pow(i + 1, 1 / 4f) * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 30f)) : 4f;
-        //		float xValue = (factor / 100f - 0.5f) * 3 / 4 + 0.5f;
-        //		float zValue = projectile.timeLeft <= 30 ? 2 * factor * (1 - factor) + 0.125f : 0.25f;
-        //		float vR = projectile.velocity.ToRotation();
-        //		bars1.Add(new CustomVertexInfo(projectile.velocity * i + normalDir1 * width + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars1.Add(new CustomVertexInfo(projectile.velocity * i + normalDir1 * -width + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars2.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars2.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars3.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6 * 2) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6 * 2).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars3.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6 * 2) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6 * 2).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars4.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6 * 3) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6 * 3).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars4.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6 * 3) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6 * 3).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars5.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6 * 4) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6 * 4).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars5.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6 * 4) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6 * 4).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 0, zValue)));
-        //		bars6.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.TwoPi / 6 * 5) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6 * 5).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars6.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.TwoPi / 6 * 5) + projectile.Center + (MathHelper.TwoPi / 3 * projectile.ai[1] + vR + MathHelper.TwoPi / 6 * 5).ToRotationVector2() * 200f, Color.White, new Vector3(xValue, 0, zValue)));
-        //	}
-        //	List<CustomVertexInfo> triangleList1 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList2 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList3 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList4 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList5 = new List<CustomVertexInfo>();
-        //	List<CustomVertexInfo> triangleList6 = new List<CustomVertexInfo>();
-        //	if (bars1.Count > 2)
-        //	{
-        //		for (int i = 0; i < bars1.Count - 2; i += 2)
-        //		{
-        //			triangleList1.Add(bars1[i]);
-        //			triangleList1.Add(bars1[i + 2]);
-        //			triangleList1.Add(bars1[i + 1]);
-        //			triangleList1.Add(bars1[i + 1]);
-        //			triangleList1.Add(bars1[i + 2]);
-        //			triangleList1.Add(bars1[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars2.Count - 2; i += 2)
-        //		{
-        //			triangleList2.Add(bars2[i]);
-        //			triangleList2.Add(bars2[i + 2]);
-        //			triangleList2.Add(bars2[i + 1]);
-        //			triangleList2.Add(bars2[i + 1]);
-        //			triangleList2.Add(bars2[i + 2]);
-        //			triangleList2.Add(bars2[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars3.Count - 2; i += 2)
-        //		{
-        //			triangleList3.Add(bars3[i]);
-        //			triangleList3.Add(bars3[i + 2]);
-        //			triangleList3.Add(bars3[i + 1]);
-        //			triangleList3.Add(bars3[i + 1]);
-        //			triangleList3.Add(bars3[i + 2]);
-        //			triangleList3.Add(bars3[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars4.Count - 2; i += 2)
-        //		{
-        //			triangleList4.Add(bars4[i]);
-        //			triangleList4.Add(bars4[i + 2]);
-        //			triangleList4.Add(bars4[i + 1]);
-        //			triangleList4.Add(bars4[i + 1]);
-        //			triangleList4.Add(bars4[i + 2]);
-        //			triangleList4.Add(bars4[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars5.Count - 2; i += 2)
-        //		{
-        //			triangleList5.Add(bars5[i]);
-        //			triangleList5.Add(bars5[i + 2]);
-        //			triangleList5.Add(bars5[i + 1]);
-        //			triangleList5.Add(bars5[i + 1]);
-        //			triangleList5.Add(bars5[i + 2]);
-        //			triangleList5.Add(bars5[i + 3]);
-        //		}
-        //		for (int i = 0; i < bars6.Count - 2; i += 2)
-        //		{
-        //			triangleList6.Add(bars6[i]);
-        //			triangleList6.Add(bars6[i + 2]);
-        //			triangleList6.Add(bars6[i + 1]);
-        //			triangleList6.Add(bars6[i + 1]);
-        //			triangleList6.Add(bars6[i + 2]);
-        //			triangleList6.Add(bars6[i + 3]);
-        //		}
-        //		spriteBatch.End();
-        //		spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-        //		float width = projectile.timeLeft <= 30 ? 24 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 30f)) : 8f;
-        //		for (int n = 0; n < 6; n++)
-        //		{
-        //			spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity.RotatedBy(MathHelper.TwoPi / 6 * n) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), 2f * width / 24, 0, 0);
-        //		}
-        //		RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-        //		var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
-        //		var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-        //		IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-        //		IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
-        //		Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
-        //		Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/laser1");
-        //		Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.MaskColor[6];
-        //		Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
-        //		Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-        //		Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-        //		IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList1.ToArray(), 0, triangleList1.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList2.ToArray(), 0, triangleList2.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList3.ToArray(), 0, triangleList3.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList4.ToArray(), 0, triangleList4.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList5.ToArray(), 0, triangleList5.Count / 3);
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList6.ToArray(), 0, triangleList6.Count / 3);
-        //		Main.graphics.GraphicsDevice.RasterizerState = originalState;
-        //		spriteBatch.End();
-        //		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	}
-        //	spriteBatch.End();
-        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	return false;
-        //}
         public override bool ShouldUpdatePosition()
         {
             return false;
@@ -1562,21 +1382,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 SoundEngine.PlaySound(SoundID.Item13, projectile.Center);
             }
             projectile.hostile = projectile.timeLeft <= 210;
-            //if (projectile.timeLeft <= 30 && projectile.timeLeft % 5 == 0) 
-            //{
-            //	Vector2 startVec = projectile.Center - 5 * baseOfY;
-            //	Vector2 endVec = projectile.Center + 5 * baseOfY;
-            //	for (int n = -5; n <= 5; n++)
-            //	{
-            //		Tools.LinerDust(startVec + n * baseOfX, endVec + n * baseOfX, MyDustId.PinkBubble, 8);
-            //	}
-            //	startVec = projectile.Center - 5 * baseOfX;
-            //	endVec = projectile.Center + 5 * baseOfX;
-            //	for (int n = -5; n <= 5; n++)
-            //	{
-            //		Tools.LinerDust(startVec + n * baseOfY, endVec + n * baseOfY, MyDustId.PinkBubble, 8);
-            //	}
-            //}
             if (owner.type != ModContent.NPCType<ErchiusHorror>() || !owner.active || owner.ai[3] != 4)
             {
                 projectile.Kill();
@@ -1597,21 +1402,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             else
             {
-                //spriteBatch.DrawPath
-                //(
-
-                //);
-                //Rectangle rectangle = new Rectangle(0, projectile.timeLeft % 2 * 6, 6, 6);
-                //for (int n = -5; n <= 5; n++)
-                //{
-                //    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex"), projectile.Center + n * baseOfY - Main.screenPosition, rectangle, Color.White, baseOfX.ToRotation(), new Vector2(3, 3), new Vector2(baseOfX.Length() * 5 / 3, 2), 0, 0);
-                //    spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex"), projectile.Center + n * baseOfX - Main.screenPosition, rectangle, Color.White, baseOfY.ToRotation(), new Vector2(3, 3), new Vector2(baseOfY.Length() * 5 / 3, 2), 0, 0);
-                //}
-                //for (int n = -1; n <= 1; n++)
-                //{
-                //	spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex"), projectile.Center + n * baseOfY - Main.screenPosition, rectangle, Color.White, baseOfX.ToRotation(), new Vector2(3, 3), new Vector2(baseOfX.Length() / 3, 2), 0, 0);
-                //	spriteBatch.Draw(IllusionBoundMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/MartixLaserTex"), projectile.Center + n * baseOfX - Main.screenPosition, rectangle, Color.White, baseOfY.ToRotation(), new Vector2(3, 3), new Vector2(baseOfY.Length() / 3, 2), 0, 0);
-                //}
                 var f = 1 - projectile.timeLeft / 210f;
                 var l = MathHelper.Clamp(3.5f - Math.Abs(0.5f - f) * 7, 0, 1);
                 f = MathHelper.Clamp(f * 7, 0, 1);
@@ -1740,99 +1530,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
 
             return false;
         }
-        //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-        //{
-        //	projectile.velocity = projectile.ai[0].ToRotationVector2();
-
-        //	//spriteBatch.End();
-        //	//spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	//List<CustomVertexInfo> bars1 = new List<CustomVertexInfo>();
-        //	//List<CustomVertexInfo> bars2 = new List<CustomVertexInfo>();
-        //	//List<CustomVertexInfo> bars3 = new List<CustomVertexInfo>();
-        //	//for (int i = 144; i <= 1544; i += 10)
-        //	//{
-        //	//	var factor = (i - 144f) / 1400f;
-        //	//	var normalDir1 = -projectile.velocity;
-        //	//	normalDir1 = Vector2.Normalize(new Vector2(-normalDir1.Y, normalDir1.X));
-        //	//	float width = projectile.timeLeft <= 300 ? 64 * (float)Math.Pow(i / 4, 1 / 2f) * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 300f)) : 16f;
-        //	//	float xValue = (factor / 100f - 0.5f) * 3 / 4 + 0.5f;
-        //	//	float zValue = projectile.timeLeft <= 300 ? 1 - (float)Math.Pow(factor,1/4f) : 0.25f;
-        //	//	bars1.Add(new CustomVertexInfo(projectile.velocity * i + normalDir1 * width + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //	//	bars1.Add(new CustomVertexInfo(projectile.velocity * i + normalDir1 * -width + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //	//	if (projectile.timeLeft <= 300) 
-        //	//	{
-        //	//		bars2.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(MathHelper.Pi / 24) + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //	//		bars2.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(MathHelper.Pi / 24) + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //	//		bars3.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * width).RotatedBy(-MathHelper.Pi / 24) + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //	//		bars3.Add(new CustomVertexInfo((projectile.velocity * i + normalDir1 * -width).RotatedBy(-MathHelper.Pi / 24) + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //	//	}
-        //	//}
-        //	//List<CustomVertexInfo> triangleList1 = new List<CustomVertexInfo>();
-        //	//List<CustomVertexInfo> triangleList2 = new List<CustomVertexInfo>();
-        //	//List<CustomVertexInfo> triangleList3 = new List<CustomVertexInfo>();
-        //	//if (bars1.Count > 2)
-        //	//{
-        //	//	for (int i = 0; i < bars1.Count - 2; i += 2)
-        //	//	{
-        //	//		triangleList1.Add(bars1[i]);
-        //	//		triangleList1.Add(bars1[i + 2]);
-        //	//		triangleList1.Add(bars1[i + 1]);
-        //	//		triangleList1.Add(bars1[i + 1]);
-        //	//		triangleList1.Add(bars1[i + 2]);
-        //	//		triangleList1.Add(bars1[i + 3]);
-        //	//	}
-        //	//	if (projectile.timeLeft <= 300)
-        //	//	{
-        //	//		for (int i = 0; i < bars2.Count - 2; i += 2)
-        //	//		{
-        //	//			triangleList2.Add(bars2[i]);
-        //	//			triangleList2.Add(bars2[i + 2]);
-        //	//			triangleList2.Add(bars2[i + 1]);
-        //	//			triangleList2.Add(bars2[i + 1]);
-        //	//			triangleList2.Add(bars2[i + 2]);
-        //	//			triangleList2.Add(bars2[i + 3]);
-        //	//		}
-        //	//		for (int i = 0; i < bars3.Count - 2; i += 2)
-        //	//		{
-        //	//			triangleList3.Add(bars3[i]);
-        //	//			triangleList3.Add(bars3[i + 2]);
-        //	//			triangleList3.Add(bars3[i + 1]);
-        //	//			triangleList3.Add(bars3[i + 1]);
-        //	//			triangleList3.Add(bars3[i + 2]);
-        //	//			triangleList3.Add(bars3[i + 3]);
-        //	//		}
-        //	//	}
-        //	//	spriteBatch.End();
-        //	//	spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-        //	//	//float width = projectile.timeLeft <= 300 ? 24 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 300f)) : 4f;
-        //	//	//spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity * 200 - Main.screenPosition, new Rectangle(32, 0, 32, 32), Color.White, 0, new Vector2(16, 16), 8f * width / 24, 0, 0);
-        //	//	RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-        //	//	var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
-        //	//	var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //	//	IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-        //	//	IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-        //	//	IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
-        //	//	Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
-        //	//	Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/laser1");
-        //	//	Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.MaskColor[6];
-        //	//	Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
-        //	//	Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-        //	//	Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-        //	//	IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
-        //	//	Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList1.ToArray(), 0, triangleList1.Count / 3);
-        //	//	if (projectile.timeLeft <= 300)
-        //	//	{
-        //	//		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList2.ToArray(), 0, triangleList2.Count / 3);
-        //	//		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList3.ToArray(), 0, triangleList3.Count / 3);
-        //	//	}
-        //	//	Main.graphics.GraphicsDevice.RasterizerState = originalState;
-        //	//	spriteBatch.End();
-        //	//	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	//}
-        //	//spriteBatch.End();
-        //	//spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	return false;
-        //}
         public override bool ShouldUpdatePosition()
         {
             return false;
@@ -1964,61 +1661,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             return false;
         }
 
-        //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
-        //{
-        //	projectile.velocity = projectile.ai[0].ToRotationVector2();
-        //	spriteBatch.End();
-        //	spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	List<CustomVertexInfo> bars1 = new List<CustomVertexInfo>();
-        //	for (int i = 20; i <= 1600; i += 10)
-        //	{
-        //		var factor = (i - 20f) / 1580f;
-        //		var normalDir1 = -projectile.velocity;
-        //		normalDir1 = Vector2.Normalize(new Vector2(-normalDir1.Y, normalDir1.X));
-        //		float width = projectile.timeLeft <= 30 ? 16 * (float)Math.Pow(i / 4, 1 / 2f) * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 30f)) : 4f;
-        //		float xValue = (factor / 100f - 0.5f) * 3 / 4 + 0.5f;
-        //		float zValue = projectile.timeLeft <= 30 ? 1 - (float)Math.Pow(factor, 1 / 4f) : 0.25f;
-        //		bars1.Add(new CustomVertexInfo(projectile.velocity * i + normalDir1 * width + projectile.Center, Color.White, new Vector3(xValue, 1 / 16f, zValue)));
-        //		bars1.Add(new CustomVertexInfo(projectile.velocity * i + normalDir1 * -width + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
-        //	}
-        //	List<CustomVertexInfo> triangleList1 = new List<CustomVertexInfo>();
-        //	if (bars1.Count > 2)
-        //	{
-        //		for (int i = 0; i < bars1.Count - 2; i += 2)
-        //		{
-        //			triangleList1.Add(bars1[i]);
-        //			triangleList1.Add(bars1[i + 2]);
-        //			triangleList1.Add(bars1[i + 1]);
-        //			triangleList1.Add(bars1[i + 1]);
-        //			triangleList1.Add(bars1[i + 2]);
-        //			triangleList1.Add(bars1[i + 3]);
-        //		}
-        //		spriteBatch.End();
-        //		spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
-        //		//float width = projectile.timeLeft <= 300 ? 24 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 300f)) : 4f;
-        //		//spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Contents.TouhouProject.NPCs.Fairy.LightJadeBullet>()].Value, projectile.Center + projectile.velocity * 200 - Main.screenPosition, new Rectangle(32, 0, 32, 32), Color.White, 0, new Vector2(16, 16), 8f * width / 24, 0, 0);
-        //		RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-        //		var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
-        //		var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-        //		IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
-        //		IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(0);
-        //		IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(3 / 4f, 1, 0.5f).ToVector4());
-        //		Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/laser1");
-        //		Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/laser1");
-        //		Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.MaskColor[6];
-        //		Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
-        //		Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
-        //		Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
-        //		IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
-        //		Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList1.ToArray(), 0, triangleList1.Count / 3);
-        //		Main.graphics.GraphicsDevice.RasterizerState = originalState;
-        //		spriteBatch.End();
-        //		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	}
-        //	spriteBatch.End();
-        //	spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        //	return false;
-        //}
         public override bool ShouldUpdatePosition()
         {
             return false;

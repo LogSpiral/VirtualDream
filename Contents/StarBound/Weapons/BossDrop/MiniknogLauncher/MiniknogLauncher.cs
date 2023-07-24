@@ -3,11 +3,50 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using System;
 using LogSpiralLibrary;
+using VirtualDream.Contents.StarBound.Weapons.Broken;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+using VirtualDream.Contents.StarBound.Materials;
+using VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
 {
+    public class MiniknogLauncher_Broken : MiniknogLauncher
+    {
+        public override WeaponState State => WeaponState.Broken;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            item.rare = ModContent.RarityType<BrokenRarity>();
+            item.damage = 40;
+            item.shoot = ProjectileID.RocketI;
+            item.noUseGraphic = false;
+            item.UseSound = SoundID.Item62;
+            item.channel = false;
+            item.shootSpeed = 8f;
+        }
+        public override bool CanConsumeAmmo(Item ammo, Player player) => true;
+        public override bool CanUseItem(Player player) => true;
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, type, damage, knockback, player.whoAmI);
+            return false;
+        }
+        public override WeaponRepairRecipe RepairRecipe()
+        {
+            WeaponRepairRecipe recipe = GetEmptyRecipe();
+            recipe.AddIngredient(ItemID.RocketI, 50);
+            recipe.AddIngredient(ItemID.RocketII, 50);
+            recipe.AddIngredient(ItemID.RocketIII, 50);
+            recipe.AddIngredient(ItemID.RocketIV, 50);
+            recipe.AddIngredient(ItemID.TitaniumBar, 30);
+            recipe.AddIngredient(ItemID.SnowmanCannon);
+            recipe.SetResult<MiniknogLauncher>();
+            return recipe;
+        }
+    }
     public class MiniknogLauncher : StarboundWeaponBase
     {
+        public override WeaponRepairRecipe RepairRecipe() => GetEmptyRecipe().AddIngredient<AncientEssence>(5000).SetResult<MiniknogLauncherEX>();
         public override bool BossDrop => true;
         public override void SetStaticDefaults()
         {
@@ -51,93 +90,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
             Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, item.shoot, damage, knockback, player.whoAmI);
             return false;
         }
-        //public override void UseStyle(Player player, Rectangle rectangle)
-        //{
-        //    Vector2 vec = Main.MouseWorld - player.Center;
-        //    vec = Vector2.Normalize(vec) * 16;
-        //    var Dam = player.GetWeaponDamage(item);
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        Time++;
-        //        if (Time >= 20)
-        //        {
-        //            Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketG>(), Dam / 4 * 3, 5f, player.whoAmI);
-        //            Time = 0;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (player.channel)
-        //        {
-        //            Time++;
-        //        }
-        //        else
-        //        {
-        //            if (Time >= 80)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 24).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketE>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 24).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketB>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 24 + MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 24 - MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 60)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketE>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 40)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 24).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 24).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 20)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            Time = 0;
-        //        }
-        //        if (Time % 20 == 0)
-        //        {
-        //            var rect = player.Hitbox;
-        //            rect.Offset(0, -64);
-        //            if (Time == 20)
-        //            {
-        //                Main.combatText[CombatText.NewText(rect, Color.Cyan, "穿墙导弹填充完毕", true)].velocity.Y = -1;
-        //            }
-        //            if (Time == 40)
-        //            {
-        //                Main.combatText[CombatText.NewText(rect, Color.Cyan, "折射导弹填充完毕", true)].velocity.Y = -1;
-        //            }
-        //            if (Time == 60)
-        //            {
-        //                Main.combatText[CombatText.NewText(rect, Color.Cyan, "Buff导弹填充完毕", true)].velocity.Y = -1;
-        //            }
-        //            if (Time == 80)
-        //            {
-        //                Main.combatText[CombatText.NewText(rect, Color.Cyan, "爆炸导弹填充完毕", true)].velocity.Y = -1;
-        //                rect.Offset(0, -32);
-        //                Main.combatText[CombatText.NewText(rect, Color.Blue, "所有导弹填充完毕！", true)].velocity.Y = -2;
-        //            }
-        //        }
-
-        //    }
-        //}
-        public override void AddRecipes()
-        {
-            Recipe recipe1 = CreateRecipe();
-            recipe1.AddIngredient(ItemID.RocketI, 50);
-            recipe1.AddIngredient(ItemID.RocketII, 50);
-            recipe1.AddIngredient(ItemID.RocketIII, 50);
-            recipe1.AddIngredient(ItemID.RocketIV, 50);
-            recipe1.AddIngredient(ItemID.TitaniumBar, 30);
-            recipe1.AddIngredient(ItemID.SnowmanCannon);
-            recipe1.SetResult(this);
-            recipe1.AddRecipe();
-        }
     }
     public class MiniknogLauncherEX : MiniknogLauncher
     {
+        public override WeaponRepairRecipe RepairRecipe() => GetEmptyRecipe();
         public override WeaponState State => WeaponState.False_EX;
         public override void SetStaticDefaults()
         {
@@ -155,85 +111,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
         public override void AddRecipes()
         {
         }
-        //public override void UseStyle(Player player, Rectangle rectangle)
-        //{
-        //    Vector2 vec = Main.MouseWorld - player.Center;
-        //    vec = Vector2.Normalize(vec) * 16;
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        Time++;
-        //        if (Time >= 16)
-        //        {
-        //            Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketG>(), Dam / 4 * 3, 5f, player.whoAmI);
-        //            Time = 0;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (player.channel)
-        //        {
-        //            Time++;
-        //        }
-        //        else
-        //        {
-        //            if (Time >= 64)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketE>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 18).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketB>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 18).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketB>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 9).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 9).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 6).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 6).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 48)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketB>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketB>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 36 * 5).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 36 * 5).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 32)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 16)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            Time = 0;
-        //        }
-        //        if (Time % 16 == 0)
-        //        {
-        //            var rect = player.Hitbox;
-        //            rect.Offset(0, -64);
-        //            if (Time == 16)
-        //            {
-        //                Main.combatText[CombatText.NewText(rect, Color.Cyan, "穿墙导弹填充完毕", true)].velocity.Y = -1;
-        //            }
-        //            if (Time == 32)
-        //            {
-        //                Main.combatText[CombatText.NewText(rect, Color.Cyan, "折射导弹填充完毕", true)].velocity.Y = -1;
-        //            }
-        //            if (Time == 48)
-        //            {
-        //                Main.combatText[CombatText.NewText(rect, Color.Cyan, "Buff导弹填充完毕", true)].velocity.Y = -1;
-        //            }
-        //            if (Time == 64)
-        //            {
-        //                Main.combatText[CombatText.NewText(rect, Color.Cyan, "爆炸导弹填充完毕", true)].velocity.Y = -1;
-        //                rect.Offset(0, -32);
-        //                Main.combatText[CombatText.NewText(rect, Color.Blue, "所有导弹填充完毕！", true)].velocity.Y = -2;
-        //            }
-        //        }
-        //    }
-        //}
     }
     public class MiniknogLauncherLT : MiniknogLauncher
     {
@@ -251,83 +128,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
             item.width = 48;
             item.height = 36;
         }
-        //public override bool AltFunctionUse(Player player)
-        //{
-        //    return true;
-        //}
-        //public override void UseStyle(Player player, Rectangle rectangle)
-        //{
-        //    Vector2 vec = Main.MouseWorld - player.Center;
-        //    vec = Vector2.Normalize(vec) * 16;
-        //    if (player.altFunctionUse == 2)
-        //    {
-        //        Time++;
-        //        if (Time >= 8)
-        //        {
-        //            Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketG>(), Dam / 4 * 3, 5f, player.whoAmI);
-        //            Time = 0;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (player.channel)
-        //        {
-        //            Time++;
-        //        }
-        //        else
-        //        {
-        //            if (Time >= 32)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, vec, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketE>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 18).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketB>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 18).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketB>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 9).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 9).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 6).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 6).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 24)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketB>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketB>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 36 * 5).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 36 * 5).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 16)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketR>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 12).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            else if (Time >= 8)
-        //            {
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() - MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //                Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center, (vec.ToRotation() + MathHelper.Pi / 36).ToRotationVector2() * 16, ModContent.ProjectileType<Projectiles.MiniknogLauncher.MiniknogRocketP>(), Dam, 5f, player.whoAmI);
-        //            }
-        //            Time = 0;
-        //        }
-        //        if (Time == 8)
-        //        {
-        //            Main.NewText("穿墙导弹填充完毕");
-        //        }
-        //        if (Time == 16)
-        //        {
-        //            Main.NewText("折射导弹填充完毕");
-        //        }
-        //        if (Time == 24)
-        //        {
-        //            Main.NewText("Buff导弹填充完毕");
-        //        }
-        //        if (Time == 32)
-        //        {
-        //            Main.NewText("爆炸导弹填充完毕");
-        //            Main.NewText("[c/00FFFF:导弹填充完毕！]");
-        //        }
-        //    }
-        //}
         public override void HoldItem(Player player)
         {
             var theta = (float)VirtualDreamMod.ModTime2 * MathHelper.Pi / 180f;
@@ -337,30 +137,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
             {
                 Dust.NewDustPerfect(player.Center + (theta + MathHelper.Pi / 3 * n).ToRotationVector2() * a, MyDustId.CyanBubble, newColor: Color.White).noGravity = true;
             }
-            //float X1 = (float)Math.Cos(TimeD + MathHelper.TwoPi / 6 * 0) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float X2 = (float)Math.Cos(TimeD + MathHelper.TwoPi / 6 * 1) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float X3 = (float)Math.Cos(TimeD + MathHelper.TwoPi / 6 * 2) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float X4 = (float)Math.Cos(TimeD + MathHelper.TwoPi / 6 * 3) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float X5 = (float)Math.Cos(TimeD + MathHelper.TwoPi / 6 * 4) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float X6 = (float)Math.Cos(TimeD + MathHelper.TwoPi / 6 * 5) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float Y1 = (float)Math.Sin(TimeD + MathHelper.TwoPi / 6 * 0) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float Y2 = (float)Math.Sin(TimeD + MathHelper.TwoPi / 6 * 1) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float Y3 = (float)Math.Sin(TimeD + MathHelper.TwoPi / 6 * 2) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float Y4 = (float)Math.Sin(TimeD + MathHelper.TwoPi / 6 * 3) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float Y5 = (float)Math.Sin(TimeD + MathHelper.TwoPi / 6 * 4) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //float Y6 = (float)Math.Sin(TimeD + MathHelper.TwoPi / 6 * 5) * (float)(Math.Sin(6 * TimeD) + 0.5f);
-            //Dust dust1 = Dust.NewDustPerfect(player.Center + new Vector2(X1, Y1) * a, MyDustId.CyanBubble, new Vector2(0, 0), 0, Color.White, 1f);
-            //Dust dust2 = Dust.NewDustPerfect(player.Center + new Vector2(X2, Y2) * a, MyDustId.CyanBubble, new Vector2(0, 0), 0, Color.White, 1f);
-            //Dust dust3 = Dust.NewDustPerfect(player.Center + new Vector2(X3, Y3) * a, MyDustId.CyanBubble, new Vector2(0, 0), 0, Color.White, 1f);
-            //Dust dust4 = Dust.NewDustPerfect(player.Center + new Vector2(X4, Y4) * a, MyDustId.CyanBubble, new Vector2(0, 0), 0, Color.White, 1f);
-            //Dust dust5 = Dust.NewDustPerfect(player.Center + new Vector2(X5, Y5) * a, MyDustId.CyanBubble, new Vector2(0, 0), 0, Color.White, 1f);
-            //Dust dust6 = Dust.NewDustPerfect(player.Center + new Vector2(X6, Y6) * a, MyDustId.CyanBubble, new Vector2(0, 0), 0, Color.White, 1f);
-            //dust1.noGravity = true;
-            //dust2.noGravity = true;
-            //dust3.noGravity = true;
-            //dust4.noGravity = true;
-            //dust5.noGravity = true;
-            //dust6.noGravity = true;
         }
         public override void AddRecipes()
         {

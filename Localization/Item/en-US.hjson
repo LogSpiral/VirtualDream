@@ -239,6 +239,14 @@ Mods: {
 					'''
 			}
 
+			DragonheadPistol_Broken: {
+				DisplayName: 破损的龙头手枪
+				Tooltip:
+					'''
+					我发誓这不是在哪个博物馆里偷出来的化石
+					'''
+			}
+
 			DragonheadPistol: {
 				DisplayName: 龙头手枪
 				Tooltip:
@@ -265,6 +273,13 @@ Mods: {
 					一个有急躁脾气的手枪，这里是龙。
 					看上去，这头龙开始暴走(OverDrive)了    [c/333333:龙和龙的体质不能一概而论(]
 					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+			ErchiusEye_Broken: {
+				DisplayName: 失神的能源之眼
+				Tooltip:
+					'''
+					它看起来失去了什么
 					'''
 			}
 
@@ -297,12 +312,19 @@ Mods: {
 					'''
 			}
 
+			IxodoomClaw_Broken: {
+				DisplayName: 破损的死亡主宰爪
+				Tooltip:
+					'''
+					也许有某个大型生物觉得它很补钙就啃成这样了
+					'''
+			}
+
 			IxodoomClaw: {
 				DisplayName: 死亡主宰爪
 				Tooltip:
 					'''
 					强大的死亡主宰的断腿。这可以作为一个强大的武器。
-					[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]
 					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
 					'''
 			}
@@ -313,7 +335,6 @@ Mods: {
 					'''
 					强大的死亡主宰的断腿。这可以作为一个强大的武器。
 					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
-					[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]
 					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
 					'''
 			}
@@ -324,8 +345,15 @@ Mods: {
 					'''
 					强大的死亡主宰的断腿。这可以作为一个强大的武器。
 					它的刀刃上附着着高度的剧毒
-					[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]
 					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+
+			KluexStaff_Broken: {
+				DisplayName: 破损的克鲁西斯法杖
+				Tooltip:
+					'''
+					昔日荣光不再，杖端宝石闪耀
 					'''
 			}
 
@@ -356,6 +384,13 @@ Mods: {
 					 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。
 					纯粹幻象赤色水晶凝聚跃动着的能量，充斥着整根法杖，又聚焦于一点
 					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+			MiniknogLauncher_Broken: {
+				DisplayName: 战损的科技发展部发射器
+				Tooltip:
+					'''
+					战争机器应有的下场。
 					'''
 			}
 
@@ -759,6 +794,13 @@ Mods: {
 					斩断那呼啸的时之风。
 					但朝花也只能于夕拾。
 					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
+			VintageScopedRifle_Broken: {
+				DisplayName: 破损的老式狙击步枪
+				Tooltip:
+					'''
+					老了，不中用了，到了该退休的时候就别勉强它了。
 					'''
 			}
 

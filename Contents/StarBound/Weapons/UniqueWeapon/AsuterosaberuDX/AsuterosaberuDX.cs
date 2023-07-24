@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
+using VirtualDream.Contents.StarBound.Weapons.Broken;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
 {
@@ -876,22 +877,28 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             item.useTime = 30;
             item.useAnimation = 30;
             item.shoot = ModContent.ProjectileType<AsuterosaberuDX_BrokenProj>();
+            item.rare = ModContent.RarityType<BrokenRarity>();
+
         }
+        public override bool AltFunctionUse(Player player) => false;
     }
-    public class AsuterosaberuDX_BrokenProj : SolusKatana_BrokenProj 
+    public class AsuterosaberuDX_BrokenProj : SolusKatana_BrokenProj
     {
         public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref int passCount)
         {
-            additive = true;
-            indexOfGreyTex = 5;
+
 
             base.VertexInfomation(ref additive, ref indexOfGreyTex, ref endAngle, ref useHeatMap, ref passCount);
+            additive = true;
+            indexOfGreyTex = 5;
         }
-        public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha, bool inverse) useMask)
+        public override void RenderInfomation(ref BloomEffectInfo useBloom, ref AirDistortEffectInfo useDistort, ref MaskEffectInfo useMask)
         {
             //useMask = (VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
-
+            //useBloom = new BloomEffectInfo(0f, 2f, 3f);
             base.RenderInfomation(ref useBloom, ref useDistort, ref useMask);
+            useBloom = new BloomEffectInfo(0f, .25f, 6f, 3, true);
+            //useDistort = new AirDistortEffectInfo(1.5f, Vector2.UnitX);
         }
     }
     public class AsuterosaberuDX : StarboundWeaponBase
@@ -988,12 +995,24 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
         public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref int passCount)
         {
             base.VertexInfomation(ref additive, ref indexOfGreyTex, ref endAngle, ref useHeatMap, ref passCount);
+            indexOfGreyTex = this.UpgradeValue(5, 5, 7);
         }
 
-        public override void RenderInfomation(ref (float M, float Intensity, float Range) useBloom, ref (float M, float Range, Vector2 director) useDistort, ref (Texture2D fillTex, Vector2 texSize, Color glowColor, Color boundColor, float tier1, float tier2, Vector2 offset, bool lightAsAlpha,bool inverse) useMask)
+        public override void RenderInfomation(ref BloomEffectInfo useBloom, ref AirDistortEffectInfo useDistort, ref MaskEffectInfo useMask)
         {
-            //base.RenderInfomation(ref useBloom, ref useDistort, ref useMask);
-            useMask = (VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
+            useBloom = new BloomEffectInfo()
+            {
+                threshold = 0,
+                intensity = this.UpgradeValue(0.15f, 0.25f, 0.25f, 0.35f),
+                range = this.UpgradeValue(false, false, true, true) ? MathHelper.Lerp(4, 12, Main.GlobalTimeWrappedHourly.CosFactor()) : 6,
+                times = this.UpgradeValue(2, 3, 3, 4),
+                additive = true
+                //TODO Bloom可以不使用加法模式
+                //additive = this.UpgradeValue(false, false, true, true)
+            };
+            useMask = default;
+            //useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSky_0"), new Vector2(960,560), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
+            //useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
         }
     }
     public class AstralTear : ModProjectile, IStarboundWeaponProjectile
