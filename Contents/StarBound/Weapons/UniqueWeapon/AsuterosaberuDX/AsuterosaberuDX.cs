@@ -898,7 +898,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //useBloom = new BloomEffectInfo(0f, 2f, 3f);
             base.RenderInfomation(ref useBloom, ref useDistort, ref useMask);
             useBloom = new BloomEffectInfo(0f, .25f, 6f, 3, true);
-            //useDistort = new AirDistortEffectInfo(1.5f, Vector2.UnitX);
+            useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
+            //useDistort = new AirDistortEffectInfo(1.5f, Vector2.UnitY);
         }
     }
     public class AsuterosaberuDX : StarboundWeaponBase
@@ -985,7 +986,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //    Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), projectile.damage / 9, projectile.knockBack, projectile.owner, 0, UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
             //    unit = new Vector2(-unit.Y, unit.X);
             //}
-            Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), Projectile.damage / 9, Projectile.knockBack, Projectile.owner, 0, this.UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
+
+            //Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), Projectile.damage / 9, Projectile.knockBack, Projectile.owner, 0, this.UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
 
         }
         public override void SetStaticDefaults()
@@ -1010,9 +1012,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
                 //TODO Bloom可以不使用加法模式
                 //additive = this.UpgradeValue(false, false, true, true)
             };
-            useMask = default;
+            //useMask = default;
             //useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSky_0"), new Vector2(960,560), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
-            //useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
+            useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
         }
     }
     public class AstralTear : ModProjectile, IStarboundWeaponProjectile

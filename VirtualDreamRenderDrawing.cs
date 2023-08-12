@@ -175,8 +175,9 @@ namespace VirtualDream
                 Main.graphics.GraphicsDevice.Textures[2] = Misc[18].Value;
                 AirDistortEffect.Parameters["uScreenSize"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
                 AirDistortEffect.Parameters["strength"].SetValue(.001f);
-                AirDistortEffect.Parameters["rotation"].SetValue(0);
+                AirDistortEffect.Parameters["rotation"].SetValue(Matrix.Identity);
                 AirDistortEffect.Parameters["tex0"].SetValue(Instance.Render_AirDistort);
+                AirDistortEffect.Parameters["colorOffset"].SetValue(0);
                 AirDistortEffect.CurrentTechnique.Passes[0].Apply();//ApplyPass
                 sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
                 sb.End();
@@ -360,14 +361,16 @@ namespace VirtualDream
                 }
 
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                ShaderSwooshEX.Parameters["uTransform"].SetValue(resultMatrix);
-                ShaderSwooshEX.Parameters["uLighter"].SetValue(0);
-                ShaderSwooshEX.Parameters["uTime"].SetValue(-(float)VirtualDreamSystem.ModTime * 0.03f);//-(float)Main.time * 0.06f
-                ShaderSwooshEX.Parameters["checkAir"].SetValue(false);
-                ShaderSwooshEX.Parameters["airFactor"].SetValue(1);
-                ShaderSwooshEX.Parameters["gather"].SetValue(true);
-                ShaderSwooshEX.Parameters["distortScaler"].SetValue(0);
-                ShaderSwooshEX.Parameters["lightShift"].SetValue(0f);
+                ShaderSwooshUL.Parameters["uTransform"].SetValue(resultMatrix);
+                ShaderSwooshUL.Parameters["uLighter"].SetValue(0);
+                ShaderSwooshUL.Parameters["uTime"].SetValue(-(float)VirtualDreamSystem.ModTime * 0.03f);//-(float)Main.time * 0.06f
+                ShaderSwooshUL.Parameters["checkAir"].SetValue(false);
+                ShaderSwooshUL.Parameters["airFactor"].SetValue(1);
+                ShaderSwooshUL.Parameters["gather"].SetValue(true);
+                ShaderSwooshUL.Parameters["distortScaler"].SetValue(0);
+                ShaderSwooshUL.Parameters["lightShift"].SetValue(0f);
+                ShaderSwooshUL.Parameters["AlphaVector"].SetValue(new Vector3(0, 0, 1));
+
 
                 Main.graphics.GraphicsDevice.Textures[0] = BaseTex[5].Value;
                 Main.graphics.GraphicsDevice.Textures[1] = AniTex[3].Value;
@@ -379,15 +382,15 @@ namespace VirtualDream
                 Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
                 Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.AnisotropicClamp;
 
-                ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
+                ShaderSwooshUL.CurrentTechnique.Passes[7].Apply();
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 if (useRender)
                 {
                     graphicsDevice.SetRenderTarget(renderAirDistort);
                     graphicsDevice.Clear(Color.Transparent);
-                    ShaderSwooshEX.Parameters["distortScaler"].SetValue(1.5f);
-                    ShaderSwooshEX.CurrentTechnique.Passes[2].Apply();
+                    ShaderSwooshUL.Parameters["distortScaler"].SetValue(1.5f);
+                    ShaderSwooshUL.CurrentTechnique.Passes[7].Apply();
                     for (int i = 0; i < bars_2.Count - 2; i += 2)
                     {
                         if (indexer.ToArray().Contains(i)) continue;
@@ -424,9 +427,10 @@ namespace VirtualDream
                     Main.instance.GraphicsDevice.Textures[2] = Misc[18].Value;
                     AirDistortEffect.Parameters["uScreenSize"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
                     AirDistortEffect.Parameters["strength"].SetValue(.0005f);
-                    AirDistortEffect.Parameters["rotation"].SetValue(0f);
+                    AirDistortEffect.Parameters["rotation"].SetValue(Matrix.Identity);
                     AirDistortEffect.Parameters["tex0"].SetValue(renderAirDistort);
-                    AirDistortEffect.CurrentTechnique.Passes[0].Apply();//ApplyPass
+                    AirDistortEffect.Parameters["colorOffset"].SetValue(0);
+                    AirDistortEffect.CurrentTechnique.Passes[1].Apply();//ApplyPass
 
 
                     spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//绘制原先屏幕内容

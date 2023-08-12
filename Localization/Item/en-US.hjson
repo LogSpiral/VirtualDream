@@ -1,4 +1,3 @@
-
 Mods: {
 	VirtualDream: {
 		Items: {
@@ -241,10 +240,7 @@ Mods: {
 
 			DragonheadPistol_Broken: {
 				DisplayName: 破损的龙头手枪
-				Tooltip:
-					'''
-					我发誓这不是在哪个博物馆里偷出来的化石
-					'''
+				Tooltip: 我发誓这不是在哪个博物馆里偷出来的化石
 			}
 
 			DragonheadPistol: {
@@ -275,12 +271,10 @@ Mods: {
 					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
 					'''
 			}
+
 			ErchiusEye_Broken: {
 				DisplayName: 失神的能源之眼
-				Tooltip:
-					'''
-					它看起来失去了什么
-					'''
+				Tooltip: 它看起来失去了什么
 			}
 
 			ErchiusEye: {
@@ -314,10 +308,7 @@ Mods: {
 
 			IxodoomClaw_Broken: {
 				DisplayName: 破损的死亡主宰爪
-				Tooltip:
-					'''
-					也许有某个大型生物觉得它很补钙就啃成这样了
-					'''
+				Tooltip: 也许有某个大型生物觉得它很补钙就啃成这样了
 			}
 
 			IxodoomClaw: {
@@ -351,10 +342,7 @@ Mods: {
 
 			KluexStaff_Broken: {
 				DisplayName: 破损的克鲁西斯法杖
-				Tooltip:
-					'''
-					昔日荣光不再，杖端宝石闪耀
-					'''
+				Tooltip: 昔日荣光不再，杖端宝石闪耀
 			}
 
 			KluexStaff: {
@@ -386,12 +374,10 @@ Mods: {
 					此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
 					'''
 			}
+
 			MiniknogLauncher_Broken: {
 				DisplayName: 战损的科技发展部发射器
-				Tooltip:
-					'''
-					战争机器应有的下场。
-					'''
+				Tooltip: 战争机器应有的下场。
 			}
 
 			MiniknogLauncher: {
@@ -426,10 +412,7 @@ Mods: {
 
 			SolusKatana_Broken: {
 				DisplayName: 破碎日炎刀
-				Tooltip:
-					'''
-					我觉得你找不到它的原作者了，也许需要用些别的力量修复
-					'''
+				Tooltip: 我觉得你找不到它的原作者了，也许需要用些别的力量修复
 			}
 
 			SolusKatana: {
@@ -501,10 +484,7 @@ Mods: {
 
 			AsuterosaberuDX_Broken: {
 				DisplayName: 破损的天文军刀
-				Tooltip:
-					'''
-					现在，它不过是一把大玻璃碴子
-					'''
+				Tooltip: 现在，它不过是一把大玻璃碴子
 			}
 
 			AsuterosaberuDXEX: {
@@ -796,12 +776,10 @@ Mods: {
 					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
 					'''
 			}
+
 			VintageScopedRifle_Broken: {
 				DisplayName: 破损的老式狙击步枪
-				Tooltip:
-					'''
-					老了，不中用了，到了该退休的时候就别勉强它了。
-					'''
+				Tooltip: 老了，不中用了，到了该退休的时候就别勉强它了。
 			}
 
 			VintageScopedRifle: {
@@ -1065,6 +1043,21 @@ Mods: {
 				DisplayName: 克鲁西斯狂暴Ⅲ
 				Description: 野蛮至极！
 			}
+
+			ToxicⅠ: {
+				DisplayName: ToxicⅠ
+				Description: Mods.VirtualDream.Buffs.ToxicⅠ.Description
+			}
+
+			ToxicⅡ: {
+				DisplayName: ToxicⅡ
+				Description: Mods.VirtualDream.Buffs.ToxicⅡ.Description
+			}
+
+			ToxicⅢ: {
+				DisplayName: ToxicⅢ
+				Description: Mods.VirtualDream.Buffs.ToxicⅢ.Description
+			}
 		}
 
 		BuffName: {
@@ -1188,11 +1181,32 @@ Mods: {
 			ScaleBullet.DisplayName: 鳞弹
 			StarBullet.DisplayName: 星弹
 			TeleportStaffProj.DisplayName: Teleport Staff Proj
+			ErcuiusHorrorLightJade.DisplayName: Ercuius Horror Light Jade
+			ErcuiusHorrorSimpleProjs.DisplayName: Ercuius Horror Simple Projs
+			WindOfTimeReactionProj.DisplayName: Wind Of Time Reaction Proj
+			IxodoomClaw_BrokenProj.DisplayName: Ixodoom Claw_ Broken Proj
+			SolusKatana_BrokenProj.DisplayName: Solus Katana_ Broken Proj
+			AsuterosaberuDX_BrokenProj.DisplayName: Asuterosaberu D X_ Broken Proj
 		}
 
 		NPCs: {
 			NoisySlime.DisplayName: 噪音史莱姆
-			Baron.DisplayName: 拜隆先生
+
+			Baron: {
+				DisplayName: 拜隆先生
+
+				TownNPCMood: {
+					Content: 我很满足。
+					NoHome: 我讨厌没有家。
+					FarFromHome: 我离家太远了。
+					LoveSpace: 我非常喜欢有这么大的空间。
+					DislikeCrowded: 我不喜欢这么拥挤。
+					HateCrowded: 我讨厌这么拥挤。
+					LikeNPC_Princess: I like {NPCName}.
+					Princess_LovesNPC: I like {NPCName}.
+				}
+			}
+
 			AsraNox.DisplayName: 阿斯拉诺克斯
 			BigApe.DisplayName: 大猿人
 			BigApeProjector.DisplayName: 大猿人投影仪
@@ -1204,7 +1218,12 @@ Mods: {
 			PositiveElectricalSlime.DisplayName: 正电史莱姆
 		}
 
-		Biomes.TimeBackTrackingBiome.DisplayName: Time Back Tracking Biome
+		Biomes: {
+			TimeBackTrackingBiome: {
+				DisplayName: Time Back Tracking Biome
+				TownNPCDialogueName: the Time Back Tracking Biome
+			}
+		}
 
 		Tiles: {
 			AegisaltOreTile.MapEntry: 霓磷盐矿

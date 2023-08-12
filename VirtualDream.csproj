@@ -22,6 +22,7 @@
     <ResourceFile Remove="Contents\Storm\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.3.0" />
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
@@ -29,7 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SubworldLibrary">
-      <HintPath>..\..\..\TmodSources_Old\ModSources\SubworldLibrary\SubworldLibrary.dll</HintPath>
+      <HintPath>E:\Users\Administrator\Source\Repos\TmodSources_Old\ModSources\SubworldLibrary\SubworldLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -571,7 +571,7 @@ namespace VirtualDream
                 float num = i / (float)_meteors.Length;
                 _meteors[i].Position.X = num * (Main.maxTilesX * 16f) + _random.NextFloat() * 40f - 20f;
                 _meteors[i].Position.Y = _random.NextFloat() * (0f - ((float)Main.worldSurface * 16f + 10000f)) - 10000f;
-                if (_random.Next(3) != 0)
+                if (!_random.NextBool(3))
                     _meteors[i].Depth = _random.NextFloat() * 3f + 1.8f;
                 else
                     _meteors[i].Depth = _random.NextFloat() * 5f + 4.8f;
