@@ -6,6 +6,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
+	  <Solaestas-UseAssetPath>false</Solaestas-UseAssetPath>
+
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Contents\IllusionWorld\**" />
@@ -32,6 +34,9 @@
     <Reference Include="SubworldLibrary">
       <HintPath>E:\Users\Administrator\Source\Repos\TmodSources_Old\ModSources\SubworldLibrary\SubworldLibrary.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" />
   </ItemGroup>
 
 	

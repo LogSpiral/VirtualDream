@@ -474,7 +474,7 @@ namespace VirtualDream
 
             }
 
-            protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+            public override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
             {
                 progress.Message = "Ìí¼Ó...²ÐÆÆµÄÎäÆ÷!!";
                 foreach (var chest in Main.chest)

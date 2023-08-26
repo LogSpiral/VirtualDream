@@ -389,7 +389,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             base.Recalculate();
             //panelInfo.destination = GetDimensions().ToRectangle();
         }
-        protected override void DrawSelf(SpriteBatch spriteBatch)
+        public override void DrawSelf(SpriteBatch spriteBatch)
         {
             CalculatedStyle dimenstions = GetDimensions();
             var rect = dimenstions.ToRectangle();
@@ -596,7 +596,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             }
         }
 
-        protected override void DrawSelf(SpriteBatch spriteBatch)
+       public override void DrawSelf(SpriteBatch spriteBatch)
         {
             HandleItemSlotLogic();
             Item inv = _item;
@@ -713,7 +713,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 items[index] = inv;
             }
         }
-        protected override void DrawSelf(SpriteBatch spriteBatch)
+        public override void DrawSelf(SpriteBatch spriteBatch)
         {
             int _state = 0;
             #region 底板
@@ -828,7 +828,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         {
             recipe = repairRecipe;
         }
-        protected override void DrawSelf(SpriteBatch spriteBatch)
+        public override void DrawSelf(SpriteBatch spriteBatch)
         {
             CalculatedStyle dimenstions = GetDimensions();
             var rect = dimenstions.ToRectangle();
