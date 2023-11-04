@@ -1,6 +1,6 @@
 ﻿using Humanizer;
 using LogSpiralLibrary;
-using LogSpiralLibrary.CodeLibrary;
+using LogSpiralLibrary.CodeLibrary.DataStructures;
 using Microsoft.CodeAnalysis;
 using ReLogic.Content;
 using ReLogic.Utilities;

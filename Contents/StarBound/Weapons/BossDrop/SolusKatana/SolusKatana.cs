@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using System;
 using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
-using LogSpiralLibrary.CodeLibrary;
 using LogSpiralLibrary;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
 using VirtualDream.Contents.StarBound.Materials;
 using VirtualDream.Contents.StarBound.Weapons.Broken;
+using LogSpiralLibrary.CodeLibrary.DataStructures;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 {
@@ -153,7 +153,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override void RenderInfomation(ref BloomEffectInfo useBloom, ref AirDistortEffectInfo useDistort, ref MaskEffectInfo useMask)
         {
             useBloom = new BloomEffectInfo(0f, .25f, 6f, 3, true);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
-            useDistort = new AirDistortEffectInfo(1.5f, (controlState == 1 ? CurrentSwoosh.rotation : Rotation).ToRotationVector2() * -0.015f);//  //
+            useDistort = new AirDistortEffectInfo(1.5f);//  //controlState == 1 ? CurrentSwoosh.rotation : Rotation
         }
         public override Texture2D HeatMap
         {

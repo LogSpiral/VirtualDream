@@ -1,4 +1,5 @@
 ﻿using LogSpiralLibrary;
+using LogSpiralLibrary.CodeLibrary.DataStructures;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Terraria;
 using Terraria.ID;
@@ -987,7 +988,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //    unit = new Vector2(-unit.Y, unit.X);
             //}
 
-            //Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), Projectile.damage / 9, Projectile.knockBack, Projectile.owner, 0, this.UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
+            Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), Projectile.damage / 9, Projectile.knockBack, Projectile.owner, 0, this.UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
 
         }
         public override void SetStaticDefaults()

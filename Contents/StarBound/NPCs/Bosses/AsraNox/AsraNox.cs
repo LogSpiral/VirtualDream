@@ -1,4 +1,5 @@
 ﻿using LogSpiralLibrary;
+using LogSpiralLibrary.CodeLibrary.DataStructures;
 using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;

@@ -16,6 +16,7 @@ using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver;
 using static LogSpiralLibrary.LogSpiralLibraryMod;
 using static Terraria.ModLoader.ModContent;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
+using LogSpiralLibrary.CodeLibrary.DataStructures;
 
 namespace VirtualDream
 {
@@ -174,7 +175,7 @@ namespace VirtualDream
                 sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 Main.graphics.GraphicsDevice.Textures[2] = Misc[18].Value;
                 AirDistortEffect.Parameters["uScreenSize"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-                AirDistortEffect.Parameters["strength"].SetValue(.001f);
+                AirDistortEffect.Parameters["strength"].SetValue(5f);
                 AirDistortEffect.Parameters["rotation"].SetValue(Matrix.Identity);
                 AirDistortEffect.Parameters["tex0"].SetValue(Instance.Render_AirDistort);
                 AirDistortEffect.Parameters["colorOffset"].SetValue(0);
@@ -426,7 +427,7 @@ namespace VirtualDream
                     //RenderEffect.CurrentTechnique.Passes[0].Apply();//ApplyPass
                     Main.instance.GraphicsDevice.Textures[2] = Misc[18].Value;
                     AirDistortEffect.Parameters["uScreenSize"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-                    AirDistortEffect.Parameters["strength"].SetValue(.0005f);
+                    AirDistortEffect.Parameters["strength"].SetValue(20f);
                     AirDistortEffect.Parameters["rotation"].SetValue(Matrix.Identity);
                     AirDistortEffect.Parameters["tex0"].SetValue(renderAirDistort);
                     AirDistortEffect.Parameters["colorOffset"].SetValue(0);

@@ -1,4 +1,5 @@
 ﻿using LogSpiralLibrary;
+using LogSpiralLibrary.CodeLibrary.DataStructures;
 using System;
 using System.Collections.Generic;
 using System.Linq;

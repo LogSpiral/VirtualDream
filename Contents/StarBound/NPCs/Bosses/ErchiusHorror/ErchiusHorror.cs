@@ -1,4 +1,5 @@
 ﻿using LogSpiralLibrary;
+using LogSpiralLibrary.CodeLibrary.DataStructures;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using System;
 using System.Collections.Generic;
