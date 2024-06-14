@@ -1,14 +1,7 @@
 ﻿using LogSpiralLibrary;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria.GameContent.Drawing;
 using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
 using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;

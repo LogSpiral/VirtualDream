@@ -1,6 +1,4 @@
-﻿using LogSpiralLibrary;
-using Terraria;
-using VirtualDream.Contents.StarBound.Weapons;
+﻿using VirtualDream.Contents.StarBound.Weapons;
 
 namespace VirtualDream.Contents.StarBound.OtherProjectiles
 {

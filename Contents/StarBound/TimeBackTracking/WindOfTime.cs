@@ -1,34 +1,19 @@
-﻿using Humanizer;
-using LogSpiralLibrary;
+﻿using LogSpiralLibrary;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
 using Microsoft.CodeAnalysis;
-using ReLogic.Content;
-using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.GameContent.ObjectInteractions;
-using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.ObjectData;
 using Terraria.UI;
 using Terraria.UI.Chat;
 using VirtualDream.Contents.StarBound.Weapons;
-using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver;
-using static System.Net.Mime.MediaTypeNames;
-using static Terraria.ModLoader.PlayerDrawLayer;
 
 namespace VirtualDream.Contents.StarBound.TimeBackTracking
 {

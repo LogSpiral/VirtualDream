@@ -1,6 +1,5 @@
 ﻿using LogSpiralLibrary;
 using System;
-using Terraria;
 //using static VirtualDream.Contents.StarBound.Weapons.BossDrop.UpgradeWeaponExtension;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -327,11 +326,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
                 projectile.rotation = projectile.velocity.ToRotation();
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 5; i++)
             {
-                base.Kill(timeLeft);
+                base.OnKill(timeLeft);
                 Dust d = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height,
                     MyDustId.Fire, 0, 0, 100, Color.White, 1.5f);
                 d.noGravity = true;

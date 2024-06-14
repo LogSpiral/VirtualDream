@@ -1,8 +1,5 @@
 ﻿using LogSpiralLibrary;
 using System;
-using Terraria;
-
-using Terraria.DataStructures;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.Materials;
 using VirtualDream.Contents.StarBound.TimeBackTracking;

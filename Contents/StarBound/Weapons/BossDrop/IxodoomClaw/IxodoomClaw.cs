@@ -1,6 +1,4 @@
 ﻿using System;
-using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.Buffs;
 using VirtualDream.Contents.StarBound.Materials;
@@ -142,7 +140,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
 
         public override bool UseRight => true;
         public override (int X, int Y) FrameMax => (3, 1);
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             int max = (int)(30 * Factor);
             var vec = (CollidingCenter - DrawOrigin).RotatedBy(Rotation) + projCenter;
@@ -157,7 +155,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             //{
             //    Projectile.NewProjectile(projectile.GetSource_FromThis(), vec, default, ModContent.ProjectileType<HolyExp>(), player.GetWeaponDamage(player.HeldItem) * 3, projectile.knockBack, projectile.owner);
             //}
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {

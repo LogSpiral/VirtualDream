@@ -1,9 +1,7 @@
 ﻿using LogSpiralLibrary;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
 using System;
 using System.Collections.Generic;
-using Terraria;
 using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror

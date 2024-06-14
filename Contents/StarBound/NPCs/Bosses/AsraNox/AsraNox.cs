@@ -1,11 +1,7 @@
 ﻿using LogSpiralLibrary;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
-using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
 namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox

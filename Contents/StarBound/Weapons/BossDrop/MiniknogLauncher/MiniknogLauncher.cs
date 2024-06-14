@@ -1,12 +1,10 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using Terraria.ID;
 using Terraria.DataStructures;
 using System;
 using LogSpiralLibrary;
 using VirtualDream.Contents.StarBound.Weapons.Broken;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
 using VirtualDream.Contents.StarBound.Materials;
-using VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
 {

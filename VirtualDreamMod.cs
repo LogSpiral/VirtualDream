@@ -6,33 +6,24 @@ global using Terraria.GameContent;
 global using Terraria.ModLoader;
 global using VirtualDream.Utils;
 global using LogSpiralLibrary.CodeLibrary;
-using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Collections.Generic;
 //using VirtualDream.Tiles.StormZone;
 //using VirtualDream.NPCs.StormZone;
 using System.Reflection;
 using Terraria.GameContent.UI.Chat;
-using Terraria.GameContent.UI.Elements;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.Localization;
 //using VirtualDream.UI.Spectre;
 //using VirtualDream.UI;
-using Terraria.UI;
 using Terraria.UI.Chat;
-using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
-using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
-using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver;
 using VirtualDream.Effects;
 
 using static Terraria.ModLoader.ModContent;
-using System.Linq;
-using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;
 using LogSpiralLibrary;
 using VirtualDream.Contents.StarBound.Weapons;
 using Terraria.WorldBuilding;
-using Terraria.GameContent.Generation;
 using Terraria.IO;
 using Terraria.GameContent.ItemDropRules;
 using VirtualDream.Contents.StarBound.Materials;
@@ -62,6 +53,7 @@ namespace VirtualDream
                 Filters.Scene["VirtualDream:" + pass.Name] = new Filter(new IllusionScreenShaderData(new Ref<Effect>(effect), pass.Name), EffectPriority.Medium);
                 Filters.Scene["VirtualDream:" + pass.Name].Load();
             }
+            //On_UnifiedRandom.Next_int_int += UnifiedRandom_Next_int_int;
         }
         /// <summary>
         /// ¿√ªÓ
@@ -241,6 +233,11 @@ namespace VirtualDream
             //    value = orig.Invoke(self, minValue, value);
             //    counter++;
             //    if (counter < 2) goto mylabel;
+            //double mu = (minValue + maxValue) * .5;
+            //double sigma = (maxValue - minValue) / 6.0;
+            //double v = self.GaussianRandom(mu, sigma);
+            //if (maxValue - 1 < minValue) maxValue = minValue + 1;
+            //return Math.Clamp((int)v, minValue, maxValue - 1);//orig.Invoke(self, minValue, maxValue)
             return orig.Invoke(self, minValue, maxValue);
         }
 

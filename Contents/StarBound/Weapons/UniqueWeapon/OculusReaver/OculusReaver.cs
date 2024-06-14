@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
@@ -101,7 +98,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
         public override bool UseRight => true;
         public override (int X, int Y) FrameMax => (2, 1);
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
 
             //Lighting.add
@@ -119,7 +116,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             //{
             //    Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), vec, default, ModContent.ProjectileType<HolyExp>(), player.GetWeaponDamage(player.HeldItem) * 3, projectile.knockBack, projectile.owner);
             //}
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {

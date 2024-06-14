@@ -1,5 +1,4 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 using Terraria.DataStructures;
 using LogSpiralLibrary;

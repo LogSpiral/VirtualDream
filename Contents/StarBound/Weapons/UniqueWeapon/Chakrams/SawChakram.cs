@@ -1,7 +1,5 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
-using Terraria.DataStructures;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
 {

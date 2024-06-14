@@ -1,6 +1,4 @@
 ﻿using System;
-using Terraria;
-using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
 {

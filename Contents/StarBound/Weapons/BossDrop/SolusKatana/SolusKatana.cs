@@ -1,7 +1,5 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using Terraria.ID;
 using System.Collections.Generic;
-using Terraria.DataStructures;
 using System;
 using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
 using LogSpiralLibrary;
@@ -505,7 +503,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 SoundEngine.PlaySound(SoundID.Item62);
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
 
             //if (Charged && controlState == 2)
@@ -518,7 +516,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             //{
             //    Projectile.NewProjectile(weapon.GetSource_StarboundWeapon(), vec, default, ModContent.ProjectileType<HolyExp>(), player.GetWeaponDamage(player.HeldItem) * 3, projectile.knockBack, projectile.owner);
             //}
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
         public override bool RedrawSelf => true;//controlState == 1
         public override bool PreDraw(ref Color lightColor)

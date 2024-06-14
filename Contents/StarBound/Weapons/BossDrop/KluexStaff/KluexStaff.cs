@@ -1,7 +1,5 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using Terraria.ID;
 using System.Collections.Generic;
-using Terraria.DataStructures;
 using VirtualDream.Contents.StarBound.Weapons.Broken;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
 using VirtualDream.Contents.StarBound.Materials;
@@ -486,11 +484,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                 projectile.rotation = projectile.velocity.ToRotation();
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 15; i++)
             {
-                base.Kill(timeLeft);
+                base.OnKill(timeLeft);
                 Dust d = Dust.NewDustDirect(projectile.position, projectile.width, projectile.height,
                     MyDustId.RedBubble, 0, 0, 100, Color.White, 1.5f);
                 d.noGravity = true;

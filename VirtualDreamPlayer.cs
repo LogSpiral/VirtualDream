@@ -1,8 +1,4 @@
-﻿using LogSpiralLibrary;
-using ReLogic.Graphics;
-using System;
-using Terraria.DataStructures;
-using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;
+﻿using Terraria.DataStructures;
 
 namespace VirtualDream
 {

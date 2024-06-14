@@ -1,6 +1,4 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.DataStructures;
+﻿using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
 {

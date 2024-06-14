@@ -1,5 +1,4 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿using Terraria.ID;
 using VirtualDream.Contents.StarBound.Buffs;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips

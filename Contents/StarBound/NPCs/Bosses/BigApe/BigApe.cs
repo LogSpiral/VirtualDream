@@ -3,7 +3,6 @@ using LogSpiralLibrary.CodeLibrary.DataStructures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Terraria;
 using Terraria.ID;
 
 using static VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe.BigApeTools;
@@ -1715,9 +1714,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         {
             // DisplayName.SetDefault("激光匕首");
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
         public override void AI()
         {
@@ -2202,9 +2201,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         {
             // DisplayName.SetDefault("能量拳");
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
         public override void AI()
         {
