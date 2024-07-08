@@ -897,7 +897,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //useBloom = new BloomEffectInfo(0f, 2f, 3f);
             base.RenderInfomation(ref useBloom, ref useDistort, ref useMask);
             useBloom = new BloomEffectInfo(0f, .25f, 6f, 3, true);
-            useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
+            useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
             //useDistort = new AirDistortEffectInfo(1.5f, Vector2.UnitY);
         }
     }
@@ -1013,7 +1013,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             };
             //useMask = default;
             //useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSky_0"), new Vector2(960,560), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
-            useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), new Vector2(64, 48), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
+            useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
         }
     }
     public class AstralTear : ModProjectile, IStarboundWeaponProjectile

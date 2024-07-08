@@ -37,29 +37,33 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 musics.Item2 = MusicLoader.GetMusicSlot(music, "Assets/Music/JudasKiss_Part2");
             }
             Music = MusicID.Boss2;
-            visualPlayer = new Player();
-            visualPlayer.armor[1] = new Item(ItemID.HallowedPlateMail);
-            visualPlayer.armor[2] = new Item(ItemID.NebulaLeggings);
-            visualPlayer.armor[3] = new Item(ItemID.HeroShield);
-            visualPlayer.armor[4] = new Item(ItemID.PrinceCape);
-            visualPlayer.armor[5] = new Item(ItemID.LeinforsWings);
-            visualPlayer.dye[1] = new Item(ItemID.ReflectiveSilverDye);
-            visualPlayer.dye[3] = new Item(ItemID.PurpleDye);
-            visualPlayer.dye[4] = new Item(ItemID.PurpleDye);
-            //visualPlayer.inventory[0] = new Item(ItemID.TerraBlade);
-            //visualPlayer.itemAnimationMax = 15;
-            //visualPlayer.itemAnimation = 5;
-            visualPlayer.skinColor = new Color(255, 125, 90, 255);
-            visualPlayer.eyeColor = new Color(38, 38, 38, 255);
-            visualPlayer.hairColor = new Color(38, 38, 38, 255);
-            visualPlayer.hair = 85;
-            visualPlayer.isFirstFractalAfterImage = true;
-            //visualPlayer.ResetEffects();
-            visualPlayer.ResetVisibleAccessories();
-            visualPlayer.UpdateDyes();
-            visualPlayer.DisplayDollUpdate();
-            visualPlayer.UpdateSocialShadow();
-            visualPlayer.PlayerFrame();
+            if (!Main.gameMenu)
+            {
+
+                visualPlayer = new Player();
+                visualPlayer.armor[1] = new Item(ItemID.HallowedPlateMail);
+                visualPlayer.armor[2] = new Item(ItemID.NebulaLeggings);
+                visualPlayer.armor[3] = new Item(ItemID.HeroShield);
+                visualPlayer.armor[4] = new Item(ItemID.PrinceCape);
+                visualPlayer.armor[5] = new Item(ItemID.LeinforsWings);
+                visualPlayer.dye[1] = new Item(ItemID.ReflectiveSilverDye);
+                visualPlayer.dye[3] = new Item(ItemID.PurpleDye);
+                visualPlayer.dye[4] = new Item(ItemID.PurpleDye);
+                //visualPlayer.inventory[0] = new Item(ItemID.TerraBlade);
+                //visualPlayer.itemAnimationMax = 15;
+                //visualPlayer.itemAnimation = 5;
+                visualPlayer.skinColor = new Color(255, 125, 90, 255);
+                visualPlayer.eyeColor = new Color(38, 38, 38, 255);
+                visualPlayer.hairColor = new Color(38, 38, 38, 255);
+                visualPlayer.hair = 85;
+                visualPlayer.isFirstFractalAfterImage = true;
+                //visualPlayer.ResetEffects();
+                visualPlayer.ResetVisibleAccessories();
+                visualPlayer.UpdateDyes();
+                visualPlayer.DisplayDollUpdate();
+                visualPlayer.UpdateSocialShadow();
+                visualPlayer.PlayerFrame();
+            }
 
             solusEnergyShard = ModContent.ProjectileType<SolusEnergyShard>();
             solusKatanaFractal = ModContent.ProjectileType<SolusKatanaFractal>();

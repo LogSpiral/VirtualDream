@@ -26,11 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LogSpiralLibrary\LogSpiralLibrary.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="SubworldLibrary">
-      <HintPath>E:\Users\Administrator\Source\Repos\TmodSources_Old\ModSources\SubworldLibrary\SubworldLibrary.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\SubworldLibrary\SubworldLibrary.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" />

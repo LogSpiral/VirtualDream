@@ -153,7 +153,7 @@ namespace VirtualDream
                 #region MyRegion
                 var sb = Main.spriteBatch;
                 #region Render
-                graphicsDevice.SetRenderTarget(Instance.Render_AirDistort);
+                graphicsDevice.SetRenderTarget(Instance.Render_Swap);
                 graphicsDevice.Clear(Color.Transparent);
                 #endregion
                 sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
@@ -170,7 +170,7 @@ namespace VirtualDream
                 AirDistortEffect.Parameters["uScreenSize"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
                 AirDistortEffect.Parameters["strength"].SetValue(5f);
                 AirDistortEffect.Parameters["rotation"].SetValue(Matrix.Identity);
-                AirDistortEffect.Parameters["tex0"].SetValue(Instance.Render_AirDistort);
+                AirDistortEffect.Parameters["tex0"].SetValue(Instance.Render_Swap);
                 AirDistortEffect.Parameters["colorOffset"].SetValue(0);
                 AirDistortEffect.CurrentTechnique.Passes[0].Apply();//ApplyPass
                 sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
@@ -432,18 +432,17 @@ namespace VirtualDream
                     graphicsDevice.Clear(Color.Transparent);
                     spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
 
-                    RenderEffect.Parameters["offset"].SetValue(new Vector2(Main.screenWidth, Main.screenHeight));
-
-                    RenderEffect.Parameters["position"].SetValue(new Vector2(0f, 6f));
-                    RenderEffect.Parameters["tier2"].SetValue(0.2f);
-                    RenderEffect.Parameters["invAlpha"].SetValue(1f);
+                    RenderEffect.Parameters["offset"].SetValue(Main.ScreenSize.ToVector2());
+                    RenderEffect.Parameters["threshold"].SetValue(0f);
+                    RenderEffect.Parameters["range"].SetValue(6f);
+                    RenderEffect.Parameters["intensity"].SetValue(0.2f);
 
                     for (int n = 0; n < 2; n++)
                     {
                         graphicsDevice.SetRenderTarget(renderAirDistort);
                         RenderEffect.Parameters["tex0"].SetValue(render);
                         graphicsDevice.Clear(Color.Transparent);
-                        RenderEffect.CurrentTechnique.Passes[9].Apply();
+                        RenderEffect.CurrentTechnique.Passes[3].Apply();
                         spriteBatch.Draw(render, Vector2.Zero, Color.White);
 
 
@@ -451,7 +450,7 @@ namespace VirtualDream
                         graphicsDevice.SetRenderTarget(render);
                         RenderEffect.Parameters["tex0"].SetValue(renderAirDistort);
                         graphicsDevice.Clear(Color.Transparent);
-                        RenderEffect.CurrentTechnique.Passes[8].Apply();
+                        RenderEffect.CurrentTechnique.Passes[2].Apply();
                         spriteBatch.Draw(renderAirDistort, Vector2.Zero, Color.White);
                     }
                     //Distort.Parameters["position"].SetValue(new Vector2(0, 5f));
