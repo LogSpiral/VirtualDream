@@ -7,6 +7,7 @@ using VirtualDream.Contents.StarBound.TimeBackTracking;
 using VirtualDream.Contents.StarBound.Materials;
 using VirtualDream.Contents.StarBound.Weapons.Broken;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
+using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 {

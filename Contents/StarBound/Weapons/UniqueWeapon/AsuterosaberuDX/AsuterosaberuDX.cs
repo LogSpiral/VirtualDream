@@ -1,5 +1,6 @@
 ﻿using LogSpiralLibrary;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
+using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;

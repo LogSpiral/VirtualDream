@@ -1,5 +1,6 @@
 ﻿using LogSpiralLibrary;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
+using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
 using ReLogic.Content;
 using System;
 using Terraria.Graphics.Effects;

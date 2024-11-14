@@ -10,6 +10,7 @@ using static LogSpiralLibrary.LogSpiralLibraryMod;
 using static Terraria.ModLoader.ModContent;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
+using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
 
 namespace VirtualDream
 {
@@ -355,16 +356,17 @@ namespace VirtualDream
                 }
 
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-                ShaderSwooshUL.Parameters["uTransform"].SetValue(resultMatrix);
-                ShaderSwooshUL.Parameters["uLighter"].SetValue(0);
-                ShaderSwooshUL.Parameters["uTime"].SetValue(-(float)VirtualDreamSystem.ModTime * 0.03f);//-(float)Main.time * 0.06f
-                ShaderSwooshUL.Parameters["checkAir"].SetValue(false);
-                ShaderSwooshUL.Parameters["airFactor"].SetValue(1);
-                ShaderSwooshUL.Parameters["gather"].SetValue(true);
-                ShaderSwooshUL.Parameters["distortScaler"].SetValue(0);
-                ShaderSwooshUL.Parameters["lightShift"].SetValue(0f);
-                ShaderSwooshUL.Parameters["AlphaVector"].SetValue(new Vector3(0, 0, 1));
-
+                var swooshUL = ShaderSwooshUL;
+                swooshUL.Parameters["uTransform"].SetValue(resultMatrix);
+                swooshUL.Parameters["uLighter"].SetValue(0);
+                swooshUL.Parameters["uTime"].SetValue(-(float)VirtualDreamSystem.ModTime * 0.03f);//-(float)Main.time * 0.06f
+                swooshUL.Parameters["checkAir"].SetValue(false);
+                swooshUL.Parameters["airFactor"].SetValue(1);
+                swooshUL.Parameters["gather"].SetValue(true);
+                swooshUL.Parameters["distortScaler"].SetValue(0);
+                swooshUL.Parameters["lightShift"].SetValue(0f);
+                swooshUL.Parameters["AlphaVector"].SetValue(new Vector3(0, 0, 1));
+                swooshUL.Parameters["uItemFrame"].SetValue(new Vector4(0, 0, 1, 1));
 
                 Main.graphics.GraphicsDevice.Textures[0] = BaseTex[5].Value;
                 Main.graphics.GraphicsDevice.Textures[1] = AniTex[3].Value;
@@ -376,15 +378,15 @@ namespace VirtualDream
                 Main.graphics.GraphicsDevice.SamplerStates[2] = sampler;
                 Main.graphics.GraphicsDevice.SamplerStates[3] = SamplerState.AnisotropicClamp;
 
-                ShaderSwooshUL.CurrentTechnique.Passes[7].Apply();
+                swooshUL.CurrentTechnique.Passes[7].Apply();
                 Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
                 Main.graphics.GraphicsDevice.RasterizerState = originalState;
                 if (useRender)
                 {
                     graphicsDevice.SetRenderTarget(renderAirDistort);
                     graphicsDevice.Clear(Color.Transparent);
-                    ShaderSwooshUL.Parameters["distortScaler"].SetValue(1.5f);
-                    ShaderSwooshUL.CurrentTechnique.Passes[7].Apply();
+                    swooshUL.Parameters["distortScaler"].SetValue(1.5f);
+                    swooshUL.CurrentTechnique.Passes[7].Apply();
                     for (int i = 0; i < bars_2.Count - 2; i += 2)
                     {
                         if (indexer.ToArray().Contains(i)) continue;
