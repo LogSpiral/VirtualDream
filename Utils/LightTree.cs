@@ -16,7 +16,7 @@ namespace VirtualDream.Utils
                 this.rad = rad;
                 this.size = size;
                 this.length = length;
-                this.children = new List<Node>();
+                this.children = [];
             }
         };
         private Node root;
@@ -36,7 +36,7 @@ namespace VirtualDream.Utils
         {
             // 根节点生成，朝向0，粗细1，长度随机50中选
             root = new Node(0, 1f, rand() * 50f);
-            keyPoints = new List<Vector2>();
+            keyPoints = [];
             this.target = target;
             root = _build(root, pos, vel, true);
             // Main.NewText($"生成了一个{cnt}个节点的树状结构");
@@ -246,7 +246,7 @@ namespace VirtualDream.Utils
                 this.rad = rad;
                 this.size = size;
                 this.length = length;
-                this.children = new List<Node>();
+                this.children = [];
             }
         };
         private Node root;
@@ -268,7 +268,7 @@ namespace VirtualDream.Utils
         {
             // 根节点生成，朝向0，粗细1，长度随机50中选
             root = new Node(0, 1f, rand() * 50f);
-            keyPoints = new List<Vector2>();
+            keyPoints = [];
             this.target = target;
             root = _build(root, pos, vel, true);
             // Main.NewText($"生成了一个{cnt}个节点的树状结构");

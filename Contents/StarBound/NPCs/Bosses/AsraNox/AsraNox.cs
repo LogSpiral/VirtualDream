@@ -4610,10 +4610,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 return false;
             }
             SpriteBatch spriteBatch = Main.spriteBatch;
-            List<CustomVertexInfo> bars1 = new List<CustomVertexInfo>();
-            List<CustomVertexInfo> bars2 = new List<CustomVertexInfo>();
-            List<CustomVertexInfo> bars3 = new List<CustomVertexInfo>();
-            List<CustomVertexInfo> bars4 = new List<CustomVertexInfo>();
+            List<CustomVertexInfo> bars1 = [];
+            List<CustomVertexInfo> bars2 = [];
+            List<CustomVertexInfo> bars3 = [];
+            List<CustomVertexInfo> bars4 = [];
             int sint = Math.Clamp((int)Time * 4 - 120, 1, 120);
             int eint = Math.Clamp((int)Time * 4, 1, 120);
             var _orange = Color.Lerp(Color.Orange, Color.OrangeRed, .5f);
@@ -4640,7 +4640,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 bars4.Add(new CustomVertexInfo(GetVec(posP[i]) + projectile.Center + normalDir4 * 32, _orange, new Vector3(factor, 1, w)));
                 bars4.Add(new CustomVertexInfo(GetVec(posP[i]) + projectile.Center + normalDir4 * -32, _orange, new Vector3(factor, 0, w)));
             }
-            List<CustomVertexInfo> triangleList1 = new List<CustomVertexInfo>();
+            List<CustomVertexInfo> triangleList1 = [];
             if (bars1.Count > 2)
             {
                 for (int i = 0; i < bars1.Count - 2; i += 2)

@@ -18,12 +18,12 @@ namespace VirtualDream
     {
         public override void CommonDrawingMethods(SpriteBatch spriteBatch)
         {
-            List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
-            List<int> indexer = new List<int>();
+            List<CustomVertexInfo> bars = [];
+            List<int> indexer = [];
             //Player player = null;
-            List<Projectile> oculusTears = new List<Projectile>();
-            List<Projectile> astralTears = new List<Projectile>();
-            List<Projectile> solusKatanaFractal = new List<Projectile>();
+            List<Projectile> oculusTears = [];
+            List<Projectile> astralTears = [];
+            List<Projectile> solusKatanaFractal = [];
             var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
             #region 遍历查找
             float? dir = 0;
@@ -106,13 +106,13 @@ namespace VirtualDream
             if (!Main.drawToScreen)
             {
 
-                List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
-                List<CustomVertexInfo> bars_2 = new List<CustomVertexInfo>();
+                List<CustomVertexInfo> bars = [];
+                List<CustomVertexInfo> bars_2 = [];
 
-                List<int> indexer = new List<int>();
-                List<Projectile> oculusTears = new List<Projectile>();
-                List<Projectile> astralTears = new List<Projectile>();
-                List<Projectile> solusKatanaFractal = new List<Projectile>();
+                List<int> indexer = [];
+                List<Projectile> oculusTears = [];
+                List<Projectile> astralTears = [];
+                List<Projectile> solusKatanaFractal = [];
 
                 int timeLeft = -1919810;
                 float? director = null;
@@ -143,7 +143,7 @@ namespace VirtualDream
 
                 }
 
-                List<Projectile> windOfTimeProjs = new List<Projectile>();
+                List<Projectile> windOfTimeProjs = [];
                 foreach (var proj in Main.projectile)
                 {
                     if (proj.type == ProjectileType<WindOfTimeReactionProj>() && proj.active)

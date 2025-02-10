@@ -24,7 +24,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 mana = tag.Get<int>("mana");
             }
         }
-        public static Dictionary<int, PlrData> plrSaver = new Dictionary<int, PlrData>();
+        public static Dictionary<int, PlrData> plrSaver = [];
         public static bool loadingData;
         public static TagCompound[] itemData = new TagCompound[400];
         public static TagCompound[] npcData = new TagCompound[200];

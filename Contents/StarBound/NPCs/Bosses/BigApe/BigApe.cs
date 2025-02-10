@@ -1873,7 +1873,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
                     Main.spriteBatch.End();
                     Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-                    List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+                    List<CustomVertexInfo> bars = [];
                     for (int i = 0; i < 30; i++)
                     {
                         var f = 1 - (i + 1) / 30f;
@@ -1884,7 +1884,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     }
                     DrawLightSword(Color.Cyan, new Vector2(8f + 4 * projectile.frame, 3f) * new Vector2(36, 23), alpha, false);
                     //Main.NewText(new Vector3(fac, MathHelper.Clamp(modPlayer.negativeDir ? (4 * fac - 3) : 4 * fac, 0, 1), modPlayer.negativeDir ? -1 : 1));
-                    List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+                    List<CustomVertexInfo> triangleList = [];
                     //spriteBatch.Draw(projTex, projectile.oldPos[0] - Main.screenPosition, null, Color.White * alpha, projectile.rotation + MathHelper.PiOver2 * projectile.ai[1], new Vector2(4, 12), new Vector2(8f, 3f) * alpha, 0, 0);
                     if (bars.Count >= 4)
                     {
@@ -4387,7 +4387,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
 
             {
-                List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+                List<CustomVertexInfo> bars = [];
 
                 // 把所有的点都生成出来，按照顺序
                 for (int i = 1; i < projectile.oldPos.Length; ++i)
@@ -4411,7 +4411,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     bars.Add(new CustomVertexInfo(projectile.oldPos[i] + normalDir * -10 * f2, color, new Vector3((float)Math.Sqrt(factor), 0, w)));
                 }
 
-                List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+                List<CustomVertexInfo> triangleList = [];
 
                 if (bars.Count > 2)
                 {

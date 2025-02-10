@@ -156,7 +156,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
 
         public override List<string> SetNPCNameList()
         {
-            return new List<string>() {
+            return [
                 " 拜隆先生",
                 " 一个古怪的电子人",
                 " 时之风吹拂的隐星",
@@ -165,7 +165,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Baron
                 " 遗忘与被遗忘的存在",
                 " 漫漫星河下的旅人",
                 " 过去与未来的见证者"
-            };
+            ];
         }
 
         public override void FindFrame(int frameHeight)

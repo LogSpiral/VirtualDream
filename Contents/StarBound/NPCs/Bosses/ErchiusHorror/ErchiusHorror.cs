@@ -1035,9 +1035,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         {
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            List<CustomVertexInfo> bars1 = new List<CustomVertexInfo>();
-            List<CustomVertexInfo> bars2 = new List<CustomVertexInfo>();
-            List<CustomVertexInfo> bars3 = new List<CustomVertexInfo>();
+            List<CustomVertexInfo> bars1 = [];
+            List<CustomVertexInfo> bars2 = [];
+            List<CustomVertexInfo> bars3 = [];
             for (int i = 200; i <= 1600; i += 10)
             {
                 var factor = (i - 200f) / 1400f;
@@ -1058,9 +1058,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                     bars3.Add(new CustomVertexInfo((projectile.velocity * i + normalDir * -width).RotatedBy(-(1 - projectile.ai[0]) * MathHelper.TwoPi / 6) + projectile.Center, Color.White, new Vector3(xValue, 0, zValue)));
                 }
             }
-            List<CustomVertexInfo> triangleList1 = new List<CustomVertexInfo>();
-            List<CustomVertexInfo> triangleList2 = new List<CustomVertexInfo>();
-            List<CustomVertexInfo> triangleList3 = new List<CustomVertexInfo>();
+            List<CustomVertexInfo> triangleList1 = [];
+            List<CustomVertexInfo> triangleList2 = [];
+            List<CustomVertexInfo> triangleList3 = [];
             if (bars1.Count > 2)
             {
                 for (int i = 0; i < bars1.Count - 2; i += 2)

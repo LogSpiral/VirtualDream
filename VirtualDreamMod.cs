@@ -56,7 +56,7 @@ namespace VirtualDream
             //On_UnifiedRandom.Next_int_int += UnifiedRandom_Next_int_int;
         }
         /// <summary>
-        /// ÀÃ»î
+        /// ï¿½Ã»ï¿½
         /// </summary>
         /// <param name="orig"></param>
         /// <param name="spriteBatch"></param>
@@ -114,12 +114,12 @@ namespace VirtualDream
 
             //var mp3str = (XPT.Core.Audio.MP3Sharp.MP3Stream)fieldInfo.GetValue(self);
             //long position = mp3str.Position;
-            //Main.NewText($"Mp3Length¸üÐÂÇ°:{position}");
+            //Main.NewText($"Mp3Lengthï¿½ï¿½ï¿½ï¿½Ç°:{position}");
 
             //{
             //    byte[] bufferToSubmit = (byte[])fieldInfo2.GetValue(self);
             //    int count = mp3str.Read(bufferToSubmit, 0, bufferToSubmit.Length);
-            //    Main.NewText("¶ÁÈ¡ÁË" + count);
+            //    Main.NewText("ï¿½ï¿½È¡ï¿½ï¿½" + count);
             //    if (count < 1)
             //    {
             //        self.Stop(AudioStopOptions.Immediate);
@@ -136,8 +136,8 @@ namespace VirtualDream
             //        ((DynamicSoundEffectInstance)fieldInfo3.GetValue(self)).SubmitBuffer(newbuffer);
             //    }
             //}
-            //Main.NewText($"Mp3Length¸üÐÂºó:{mp3str.Position}");
-            //Main.NewText($"Mp3Length²îÖµ:{mp3str.Position - position}");
+            //Main.NewText($"Mp3Lengthï¿½ï¿½ï¿½Âºï¿½:{mp3str.Position}");
+            //Main.NewText($"Mp3Lengthï¿½ï¿½Öµ:{mp3str.Position - position}");
         }
         //private void MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer(On.Terraria.Audio.MP3AudioTrack.orig_ReadAheadPutAChunkIntoTheBuffer orig, MP3AudioTrack self)
         //{
@@ -147,14 +147,14 @@ namespace VirtualDream
 
         //    var mp3str = (XPT.Core.Audio.MP3Sharp.MP3Stream)fieldInfo.GetValue(self);
         //    long position = mp3str.Position;
-        //    Main.NewText($"Mp3Length¸üÐÂÇ°:{position}");
+        //    Main.NewText($"Mp3Lengthï¿½ï¿½ï¿½ï¿½Ç°:{position}");
         //    //orig.Invoke(self);
         //    //orig.Invoke(self);
 
         //    {
         //        byte[] bufferToSubmit = (byte[])fieldInfo2.GetValue(self);
         //        int count = mp3str.Read(bufferToSubmit, 0, bufferToSubmit.Length);
-        //        Main.NewText("¶ÁÈ¡ÁË"+count);
+        //        Main.NewText("ï¿½ï¿½È¡ï¿½ï¿½"+count);
         //        if (count < 1)
         //        {
         //            self.Stop(AudioStopOptions.Immediate);
@@ -167,7 +167,7 @@ namespace VirtualDream
         //        {
         //            byte[] newbuffer = new byte[bufferToSubmit.Length];
         //            int offsetor = (int)(ModTime / 10) % 32;
-        //            //Main.NewText("µ±Ç°ÆµÂÊÏµÊý" + offsetor);
+        //            //Main.NewText("ï¿½ï¿½Ç°Æµï¿½ï¿½Ïµï¿½ï¿½" + offsetor);
 
         //            for (int n = 0; n < bufferToSubmit.Length; n++)
         //            {
@@ -182,13 +182,13 @@ namespace VirtualDream
         //                newbuffer[n] = bufferToSubmit[n];
         //            }
         //            musicBuffer = newbuffer;
-        //            //Main.NewText($"Mp3Length¸üÐÂÖÐ:{mp3str.Position}");
+        //            //Main.NewText($"Mp3Lengthï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:{mp3str.Position}");
         //            ((DynamicSoundEffectInstance)fieldInfo3.GetValue(self)).SubmitBuffer(newbuffer);
-        //            //Main.NewText($"Mp3Length¸üÐÂºó:{mp3str.Position}");
+        //            //Main.NewText($"Mp3Lengthï¿½ï¿½ï¿½Âºï¿½:{mp3str.Position}");
         //        }
         //    }
-        //    Main.NewText($"Mp3Length¸üÐÂºó:{mp3str.Position}");
-        //    Main.NewText($"Mp3Length²îÖµ:{mp3str.Position - position}");
+        //    Main.NewText($"Mp3Lengthï¿½ï¿½ï¿½Âºï¿½:{mp3str.Position}");
+        //    Main.NewText($"Mp3Lengthï¿½ï¿½Öµ:{mp3str.Position - position}");
         //    //try
         //    //{
         //    //    mp3str.Position += 418;
@@ -261,7 +261,7 @@ namespace VirtualDream
         public static Effect TextureEffect;
         public override void PostSetupContent()
         {
-            //TODO °ÑÕâ¸öÒÆÈë
+            //TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             ColorfulEffect = GetEffect("Effects/Trail2");
             CleverEffect = GetEffect("Effects/CleverGlass");
             OriginEffect = GetEffect("Effects/PixelShader");
@@ -270,8 +270,8 @@ namespace VirtualDream
         }
     }
     /// <summary>
-    /// ¸÷ÖÖÔÓÏî
-    /// <br>°üÀ¨µ«²»ÏÞÓÚÖ®Ç°ÎÞ¼äµØÓüÄÇ±ßµÄÅä·½ºÍÆæ¹ÖÂË¾µÃÇ</br>
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    /// <br>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®Ç°ï¿½Þ¼ï¿½ï¿½ï¿½ï¿½ï¿½Ç±ßµï¿½ï¿½ä·½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¾ï¿½ï¿½ï¿½</br>
     /// </summary>
     public class VirtualDreamSystem : ModSystem
     {
@@ -285,25 +285,25 @@ namespace VirtualDream
         public const string AdamantiteBarRG = "VirtualDream:AdamantiteBar";
         public override void AddRecipeGroups()
         {
-            RecipeGroup group1 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Í­¶§", new int[]
+            RecipeGroup group1 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Í­ï¿½ï¿½", new int[]
             {
                 ItemID.CopperBar,
                 ItemID.TinBar
             });
             RecipeGroup.RegisterGroup(CopperBarRG, group1);
-            RecipeGroup group2 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " Òø¶§", new int[]
+            RecipeGroup group2 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ï¿½ï¿½ï¿½ï¿½", new int[]
             {
                 ItemID.SilverBar,
                 ItemID.TungstenBar
             });
             RecipeGroup.RegisterGroup(SilverBarRG, group2);
-            RecipeGroup group3 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ½ð¶§", new int[]
+            RecipeGroup group3 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ï¿½ï¿½", new int[]
             {
                 ItemID.GoldBar,
                 ItemID.PlatinumBar
             });
             RecipeGroup.RegisterGroup(GoldBarRG, group3);
-            RecipeGroup group4 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " »ð°Ñ", new int[]
+            RecipeGroup group4 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ï¿½ï¿½ï¿½", new int[]
             {
                 ItemID.Torch,
                 ItemID.BlueTorch,
@@ -324,7 +324,7 @@ namespace VirtualDream
                 ItemID.YellowTorch,
             });
             RecipeGroup.RegisterGroup(TorchRG, group4);
-            RecipeGroup group5 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ÓÍÆá", new int[]
+            RecipeGroup group5 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ï¿½ï¿½ï¿½ï¿½", new int[]
             {
                 ItemID.BlackPaint,
                 ItemID.BluePaint,
@@ -358,19 +358,19 @@ namespace VirtualDream
                 ItemID.YellowPaint,
             });
             RecipeGroup.RegisterGroup(PaintRG, group5);
-            RecipeGroup group6 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " îÜÀ¶¶§", new int[]
+            RecipeGroup group6 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", new int[]
             {
                 ItemID.CobaltBar,
                 ItemID.PalladiumBar
             });
             RecipeGroup.RegisterGroup(CobaltRG, group6);
-            RecipeGroup group7 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ÃØÒø¶§", new int[]
+            RecipeGroup group7 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", new int[]
             {
                 ItemID.MythrilBar,
                 ItemID.OrichalcumBar
             });
             RecipeGroup.RegisterGroup(MythrilBarRG, group7);
-            RecipeGroup group8 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ¾«½ð¶§", new int[]
+            RecipeGroup group8 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ï¿½ï¿½ï¿½ï¿½", new int[]
             {
                 ItemID.AdamantiteBar,
                 ItemID.TitaniumBar
@@ -440,7 +440,7 @@ namespace VirtualDream
         }
         public override void PostSetupContent()
         {
-            List<int> types = new();
+            List<int> types = [];
             for (int n = 0; n < ItemLoader.ItemCount; n++)
             {
                 var item = new Item(n);
@@ -473,7 +473,7 @@ namespace VirtualDream
 
             public override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
             {
-                progress.Message = "Ìí¼Ó...²ÐÆÆµÄÎäÆ÷!!";
+                progress.Message = "ï¿½ï¿½ï¿½ï¿½...ï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½!!";
                 foreach (var chest in Main.chest)
                 {
                     if (chest != null && chest.x < Main.maxTilesX && chest.y < Main.maxTilesY && WorldGen.genRand.NextBool(20))
@@ -503,19 +503,19 @@ namespace VirtualDream
             }
             public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
             {
-                #region ºÏ³É²ÄÁÏ
+                #region ï¿½Ï³É²ï¿½ï¿½ï¿½
                 (Func<Player, bool>, int, string)[] datas = new (Func<Player, bool>, int, string)[]
                 {
-                            (player => player.ZoneSnow, ItemType<CryonicExtract>(),"Ñ©µØ·Ç³£Àä"),
-                            (player => player.ZoneJungle, ItemType<VenomSample>(),"´ÔÁÖÊÇÓÐ¶¾µÄ¶Ô°É"),
-                            (player => player.ZoneUnderworldHeight, ItemType<ScorchedCore>(),"ÔÚÕâÁ¶Óü£¬ÄãµÄÐÄ¶¼ÒªÈÛ»¯ÁË°É"),
-                            (player => player.ZoneDesert || player.ZoneUndergroundDesert, ItemType<SharpenedClaw>(),"ÎÞÛóÉ³º£ÖÐµÄÉúÎïÓÃ·æÀûµÄ×¦ËºËéÁÔÎï"),
-                            (player => player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight, ItemType<HardenedCarapace>(),"ÑÒ²ãÖÐµÄÐ¡¶¯ÎïÃÇÑ§»áÁËÈçÑÒÊ¯°ã±£»¤×Ô¼º"),
-                            (player => player.ZoneCorrupt || player.ZoneCrimson || player.ZoneHallow,ItemType<Leather>(),"²»ÊÇ£¬ÎªÊ²Ã´£¬Æ¤¸ïÊÇÕÒ²»µ½µØ·½ÈûÁËÂð"),
-                            (player => player.ZoneSkyHeight,ItemType<PhaseMatter>(),"¸ß´¦²»Ê¤º®£¬µ«ÊÇÊÇÔÂÏàÎïÖÊ"),
-                            (player => player.ZoneMeteor,ItemType<StickOfRAM>(),"ÄãÕâÄÚ´æÌõÊÇÔÉÌú×öµÄÊÇ°É"),
-                            (player => player.ZoneDungeon,ItemType<StaticCell>(),"ÉõÖÁ±ÈÆ¤¸ïÄÇ¸ö»¹ÀëÆ×"),
-                            (player => player.ZonePurity,ItemType<LivingRoot>(),"×îºóÒ»·½¾»ÍÁÉÏµÄÉúÁéÖ®¸ù")
+                            (player => player.ZoneSnow, ItemType<CryonicExtract>(),"Ñ©ï¿½Ø·Ç³ï¿½ï¿½ï¿½"),
+                            (player => player.ZoneJungle, ItemType<VenomSample>(),"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½Ä¶Ô°ï¿½"),
+                            (player => player.ZoneUnderworldHeight, ItemType<ScorchedCore>(),"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¶ï¿½Òªï¿½Û»ï¿½ï¿½Ë°ï¿½"),
+                            (player => player.ZoneDesert || player.ZoneUndergroundDesert, ItemType<SharpenedClaw>(),"ï¿½ï¿½ï¿½ï¿½É³ï¿½ï¿½ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½ï¿½ï¿½×¦Ëºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),
+                            (player => player.ZoneRockLayerHeight || player.ZoneDirtLayerHeight, ItemType<HardenedCarapace>(),"ï¿½Ò²ï¿½ï¿½Ðµï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¯ï¿½ã±£ï¿½ï¿½ï¿½Ô¼ï¿½"),
+                            (player => player.ZoneCorrupt || player.ZoneCrimson || player.ZoneHallow,ItemType<Leather>(),"ï¿½ï¿½ï¿½Ç£ï¿½ÎªÊ²Ã´ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½Ò²ï¿½ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),
+                            (player => player.ZoneSkyHeight,ItemType<PhaseMatter>(),"ï¿½ß´ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),
+                            (player => player.ZoneMeteor,ItemType<StickOfRAM>(),"ï¿½ï¿½ï¿½ï¿½ï¿½Ú´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½"),
+                            (player => player.ZoneDungeon,ItemType<StaticCell>(),"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½Ç¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"),
+                            (player => player.ZonePurity,ItemType<LivingRoot>(),"ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½")
                 };
                 foreach (var data in datas)
                 {
@@ -523,7 +523,7 @@ namespace VirtualDream
                 }
                 #endregion
 
-                #region ÆÆËéÎäÆ÷
+                #region ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 npcLoot.Add(ItemDropRule.OneFromOptions(npc.boss ? 30 : 1000, brokenWeaponTypes));
                 #endregion
                 base.ModifyNPCLoot(npc, npcLoot);
@@ -598,7 +598,7 @@ namespace VirtualDream
             if (item.type == ItemID.BrokenHeroSword)
             {
                 var targetText = item.GetType().GetField("_nameOverride", BindingFlags.Instance | BindingFlags.NonPublic);
-                targetText.SetValue(item, "Ó¢ÐÛ½û¶ÏÖ®½£");
+                targetText.SetValue(item, "Ó¢ï¿½Û½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½");
             }
         }
         //public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

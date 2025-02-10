@@ -446,8 +446,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override CustomVertexInfo[] CreateVertexs(Vector2 drawCen, float scaler, float startAngle, float endAngle, float alphaLight, ref int[] whenSkip)
         {
             if (controlState == 2 && !(Charged && Projectile.ai[1] > MaxTimeLeft * Factor - 1)) return base.CreateVertexs(drawCen, scaler, startAngle, endAngle, alphaLight, ref whenSkip);
-            List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
-            List<int> indexer = new List<int>();
+            List<CustomVertexInfo> bars = [];
+            List<int> indexer = [];
             foreach (var swoosh in leftSwooshes)
             {
                 if (swoosh != null && swoosh.Active)

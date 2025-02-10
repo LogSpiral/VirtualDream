@@ -121,7 +121,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         public UserInterface weaponRepairInterface;
         public WeaponRepairUI repairUI;
         public static WeaponRepairSystem Instance;
-        public Dictionary<int, WeaponRepairRecipe> recipes = new Dictionary<int, WeaponRepairRecipe>();
+        public Dictionary<int, WeaponRepairRecipe> recipes = [];
         public override void Load()
         {
             Instance = this;
@@ -174,7 +174,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
     }
     public class WeaponRepairRecipe
     {
-        public List<Item> ingredients = new List<Item>();
+        public List<Item> ingredients = [];
         public StarboundWeaponBase MainWeapon;
         public int ResultType = -1;
 
@@ -472,7 +472,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         public void SetUpElementList()
         {
             Elements.Clear();
-            if (recipes == null) recipes = new();
+            if (recipes == null) recipes = [];
             else recipes.Clear();
             Append(windOfTimeSlot);
             if (windOfTimeSlot._item.type != ModContent.ItemType<WindOfTime>())
@@ -493,8 +493,8 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 Append(button);
 
 
-                List<int> types = new List<int>();
-                Dictionary<int, StarboundWeaponBase> dict = new();
+                List<int> types = [];
+                Dictionary<int, StarboundWeaponBase> dict = [];
                 foreach (var item in Main.LocalPlayer.inventory)
                 {
                     if (item.ModItem is StarboundWeaponBase weapon && !types.Contains(item.type))
@@ -740,7 +740,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 spriteBatch.Draw(ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/timeArrow").Value, left + new Vector2(36, -4), Color.White);
                 var infos = from item in recipe.ingredients where true select (item.type, item.stack);
                 var types = from info in infos where true select info.type;
-                Dictionary<int, (int, int)> dict = new Dictionary<int, (int, int)>();
+                Dictionary<int, (int, int)> dict = [];
                 foreach (var info in infos)
                 {
                     dict.Add(info.type, (info.stack, 0));

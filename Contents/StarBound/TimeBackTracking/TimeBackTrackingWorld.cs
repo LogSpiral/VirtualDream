@@ -10,8 +10,8 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         public override int Width => 2100;
         public override string Name => "TimeBackTracking";//时间回溯世界
         public override WorldGenConfiguration Config => base.Config;
-        public override List<GenPass> Tasks => new List<GenPass>()
-        {
+        public override List<GenPass> Tasks =>
+        [
             new Terraria.GameContent.Generation.PassLegacy("TimeBack!!",
                 (progress,config)=>
                 {
@@ -88,7 +88,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 //}
                 }
                 )
-        };
+        ];
         public override bool NoPlayerSaving => base.NoPlayerSaving;
         public override bool NormalUpdates => true;
         public override bool ShouldSave => base.ShouldSave;
