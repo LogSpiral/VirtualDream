@@ -56,7 +56,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
 				projectile.tileCollide = false;
 				float num42 = 16f;
 				float num43 = 1.2f;
-				Vector2 vector2 = new Vector2(projectile.position.X + projectile.width * 0.5f, projectile.position.Y + projectile.height * 0.5f);
+				Vector2 vector2 = new(projectile.position.X + projectile.width * 0.5f, projectile.position.Y + projectile.height * 0.5f);
 				float num44 = Main.player[projectile.owner].position.X + Main.player[projectile.owner].width / 2 - vector2.X;
 				float num45 = Main.player[projectile.owner].position.Y + Main.player[projectile.owner].height / 2 - vector2.Y;
 				float num46 = (float)Math.Sqrt((double)(num44 * num44 + num45 * num45));
@@ -101,8 +101,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
 				}
 				if (Main.myPlayer == projectile.owner)
 				{
-					Rectangle rectangle = new Rectangle((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height);
-					Rectangle value2 = new Rectangle((int)Main.player[projectile.owner].position.X, (int)Main.player[projectile.owner].position.Y, Main.player[projectile.owner].width, Main.player[projectile.owner].height);
+					Rectangle rectangle = new((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height);
+					Rectangle value2 = new((int)Main.player[projectile.owner].position.X, (int)Main.player[projectile.owner].position.Y, Main.player[projectile.owner].width, Main.player[projectile.owner].height);
 					if (rectangle.Intersects(value2))
 					{
 						projectile.Kill();

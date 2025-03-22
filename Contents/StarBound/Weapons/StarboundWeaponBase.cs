@@ -26,7 +26,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
     /// </summary>
     public abstract class StarboundWeaponBase : ModItem
     {
-        public WeaponRepairRecipe GetEmptyRecipe() => new WeaponRepairRecipe(this);
+        public WeaponRepairRecipe GetEmptyRecipe() => new(this);
         public virtual WeaponRepairRecipe RepairRecipe() 
         {
             return GetEmptyRecipe();

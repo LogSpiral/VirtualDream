@@ -555,8 +555,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Rectangle rectangle = new Rectangle(0, 55 * (int)npc.frameCounter, 55, 55);
-            Rectangle rectangle1 = new Rectangle(0, Stage * 221, 221, 221);
+            Rectangle rectangle = new(0, 55 * (int)npc.frameCounter, 55, 55);
+            Rectangle rectangle1 = new(0, Stage * 221, 221, 221);
             const float size = 2f;
             if (Stage < 3)
             {

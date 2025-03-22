@@ -41,7 +41,7 @@ namespace VirtualDream.Contents.StarBound.Materials
         }
         public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
         {
-            Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
+            Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
             if (Main.drawToScreen)
             {
                 zero = Vector2.Zero;

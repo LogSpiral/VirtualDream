@@ -1773,7 +1773,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
-            Vector2[] key = new Vector2[] { new Vector2(0, -16), new Vector2(0, 16), new Vector2(96, -16), new Vector2(96, -24), new Vector2(112, 0), new Vector2(128, 0), new Vector2(96, 16), new Vector2(96, 24) };
+            Vector2[] key = new Vector2[] { new(0, -16), new(0, 16), new(96, -16), new(96, -24), new(112, 0), new(128, 0), new(96, 16), new(96, 24) };
             Vector2[] Bkey = key.CloneArray();
             //key.Mul(new Vector2(2f, 0.75f));
             //if (Main.expertMode)
@@ -2987,7 +2987,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             var pC = Main.screenPosition + new Vector2(960, 512) - projectile.Center;
             const float hZ = 3000;
             const float hW = 4000;
-            LoopArray<Vector4> pointList = new LoopArray<Vector4>(new Vector4[] { this[0], this[1], this[3], this[7], this[6], this[2], this[10], this[8], this[9], this[1], this[5], this[7], this[15], this[11], this[9], this[13], this[5], this[4], this[6], this[14], this[15], this[13], this[12], this[14], this[10], this[11], this[3], this[2], this[0], this[4], this[12], this[8] });
+            LoopArray<Vector4> pointList = new(new Vector4[] { this[0], this[1], this[3], this[7], this[6], this[2], this[10], this[8], this[9], this[1], this[5], this[7], this[15], this[11], this[9], this[13], this[5], this[4], this[6], this[14], this[15], this[13], this[12], this[14], this[10], this[11], this[3], this[2], this[0], this[4], this[12], this[8] });
             if (projectile.ai[0] < 240)
             {
                 float factor = projectile.ai[0] / 240f;
@@ -3488,7 +3488,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
 
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-            RasterizerState rasterizerState = new RasterizerState
+            RasterizerState rasterizerState = new()
             {
                 CullMode = CullMode.None
             };
@@ -3660,22 +3660,22 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             Vector3[] indexs = new Vector3[]
             {
-                new Vector3(0,1,15),
-                new Vector3(1,15,14),
-                new Vector3(1,2,14),
-                new Vector3(2,16,14),
-                new Vector3(2,3,5),
-                new Vector3(2,5,6),
-                new Vector3(2,6,16),
-                new Vector3(3,4,5),
-                new Vector3(6,7,9),
-                new Vector3(6,9,10),
-                new Vector3(6,16,10),
-                new Vector3(7,8,9),
-                new Vector3(10,16,14),
-                new Vector3(10,13,14),
-                new Vector3(10,11,13),
-                new Vector3(11,12,13)
+                new(0,1,15),
+                new(1,15,14),
+                new(1,2,14),
+                new(2,16,14),
+                new(2,3,5),
+                new(2,5,6),
+                new(2,6,16),
+                new(3,4,5),
+                new(6,7,9),
+                new(6,9,10),
+                new(6,16,10),
+                new(7,8,9),
+                new(10,16,14),
+                new(10,13,14),
+                new(10,11,13),
+                new(11,12,13)
             };
             //IllusionBoundExtensionMethods.DrawShaderTail
             vertexs[0].Position = new Vector2(1.5f, 0);
@@ -3794,7 +3794,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 spriteBatch.DrawEffectLine_StartAndEnd(lines, new Color(255, 51, 51) * fac, LogSpiralLibraryMod.AniTex[10].Value, 1, 1, 32 * (1 - fac), false);
             }
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-            RasterizerState rasterizerState = new RasterizerState
+            RasterizerState rasterizerState = new()
             {
                 CullMode = CullMode.None,
                 //FillMode = FillMode.WireFrame
@@ -4017,22 +4017,22 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             Vector3[] indexs = new Vector3[]
             {
-                new Vector3(0,1,15),
-                new Vector3(1,15,14),
-                new Vector3(1,2,14),
-                new Vector3(2,16,14),
-                new Vector3(2,3,5),
-                new Vector3(2,5,6),
-                new Vector3(2,6,16),
-                new Vector3(3,4,5),
-                new Vector3(6,7,9),
-                new Vector3(6,9,10),
-                new Vector3(6,16,10),
-                new Vector3(7,8,9),
-                new Vector3(10,16,14),
-                new Vector3(10,13,14),
-                new Vector3(10,11,13),
-                new Vector3(11,12,13)
+                new(0,1,15),
+                new(1,15,14),
+                new(1,2,14),
+                new(2,16,14),
+                new(2,3,5),
+                new(2,5,6),
+                new(2,6,16),
+                new(3,4,5),
+                new(6,7,9),
+                new(6,9,10),
+                new(6,16,10),
+                new(7,8,9),
+                new(10,16,14),
+                new(10,13,14),
+                new(10,11,13),
+                new(11,12,13)
             };
             //IllusionBoundExtensionMethods.DrawShaderTail
             vertexs[0].Position = new Vector2(1.5f, 0);
@@ -4167,7 +4167,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //    spriteBatch.DrawEffectLine_StartAndEnd(lines, new Color(255, 51, 51) * fac, 1, 1, 32 * (1 - fac), 10, false);
             //}
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
-            RasterizerState rasterizerState = new RasterizerState
+            RasterizerState rasterizerState = new()
             {
                 CullMode = CullMode.None,
                 //FillMode = FillMode.WireFrame

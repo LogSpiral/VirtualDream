@@ -45,7 +45,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override string Texture => base.Texture.Replace("BrokenProj", "Broken");
         public override Vector2 CollidingSize => base.CollidingSize * 2;
 
-        public override Vector2 CollidingCenter => new Vector2(projTex.Size().X / 3 - 16, 16);
+        public override Vector2 CollidingCenter => new(projTex.Size().X / 3 - 16, 16);
         public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-16, 12);
     }
     public class SolusKatana : StarboundWeaponBase
@@ -135,7 +135,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         public override float Factor => base.Factor;
         public override Vector2 CollidingSize => base.CollidingSize * 2;
         //public override Vector2 projCenter => base.projCenter + new Vector2(Player.direction * 16, -16);
-        public override Vector2 CollidingCenter => new Vector2(projTex.Size().X / 3 - 16, 16);
+        public override Vector2 CollidingCenter => new(projTex.Size().X / 3 - 16, 16);
         public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-16, 12);// + new Vector2(-12, 12)
         public override Color color => base.color;
         public override float MaxTimeLeft => (controlState == 2 ? this.UpgradeValue(7, 6, 5) : swooshTimeLeft);
@@ -555,8 +555,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             if (controlState == 2 && DrawLaserFire)
             {
                 Vector2 baseVec = (Rotation - MathHelper.PiOver2).ToRotationVector2();
-                Vector2 start = new Vector2(23 * baseVec.X - 20 * baseVec.Y, 23 * baseVec.Y + 20 * baseVec.X);
-                Vector2 end = new Vector2(70 * baseVec.X - 77 * baseVec.Y, 70 * baseVec.Y + 77 * baseVec.X);
+                Vector2 start = new(23 * baseVec.X - 20 * baseVec.Y, 23 * baseVec.Y + 20 * baseVec.X);
+                Vector2 end = new(70 * baseVec.X - 77 * baseVec.Y, 70 * baseVec.Y + 77 * baseVec.X);
                 Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(start + projCenter, Vector2.Normalize(end - start), LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[10].Value, (start - end).Length() * Factor, 30, texcoord: (0, 0, Factor, 1));
             }
             return base.PreDraw(ref lightColor);

@@ -73,8 +73,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
                 projectile.timeLeft = 2;
                 if (Main.myPlayer == projectile.owner && hit)
                 {
-                    Rectangle rectangle = new Rectangle((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height);
-                    Rectangle value2 = new Rectangle((int)Main.player[projectile.owner].position.X, (int)Main.player[projectile.owner].position.Y, Main.player[projectile.owner].width, Main.player[projectile.owner].height);
+                    Rectangle rectangle = new((int)projectile.position.X, (int)projectile.position.Y, projectile.width, projectile.height);
+                    Rectangle value2 = new((int)Main.player[projectile.owner].position.X, (int)Main.player[projectile.owner].position.Y, Main.player[projectile.owner].width, Main.player[projectile.owner].height);
                     if (rectangle.Intersects(value2))
                     {
                         projectile.Kill();

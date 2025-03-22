@@ -53,7 +53,7 @@ namespace VirtualDream.Utils
             var r2 = (target - pos).ToRotation() - vel.ToRotation();
             var r = r2 + rand(MathHelper.Pi / 4f);
             var unit = (vel.ToRotation() + r).ToRotationVector2();
-            Node rchild = new Node(r, node.size * 0.9f, node.length);
+            Node rchild = new(r, node.size * 0.9f, node.length);
             // 闪电树主节点（树干）
             node.children.Add(_build(rchild, pos + unit * node.length, unit, root));
             if (root)
@@ -64,7 +64,7 @@ namespace VirtualDream.Utils
                     {
                         r = rand(MathHelper.Pi / 3f);
                         unit = (vel.ToRotation() + r).ToRotationVector2();
-                        Node child = new Node(r, rand() * node.size * 0.6f, node.length * 0.6f);
+                        Node child = new(r, rand() * node.size * 0.6f, node.length * 0.6f);
                         node.children.Add(_build(child, pos + unit * node.length, unit, false));
                     }
                 }
@@ -285,7 +285,7 @@ namespace VirtualDream.Utils
             var r2 = (target - pos).ToRotation() - vel.ToRotation();
             var r = r2 + rand(MathHelper.Pi / 4f);
             var unit = (vel.ToRotation() + r).ToRotationVector2();
-            Node rchild = new Node(r, node.size * 0.9f, node.length);
+            Node rchild = new(r, node.size * 0.9f, node.length);
             // 闪电树主节点（树干）
             node.children.Add(_build(rchild, pos + unit * node.length, unit, root));
             if (root)
@@ -296,7 +296,7 @@ namespace VirtualDream.Utils
                     {
                         r = rand(MathHelper.Pi / 3f);
                         unit = (vel.ToRotation() + r).ToRotationVector2();
-                        Node child = new Node(r, rand() * node.size * 0.6f, node.length * 0.6f);
+                        Node child = new(r, rand() * node.size * 0.6f, node.length * 0.6f);
                         node.children.Add(_build(child, pos + unit * node.length, unit, false));
                     }
                 }

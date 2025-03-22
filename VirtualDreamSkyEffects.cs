@@ -243,11 +243,11 @@ namespace VirtualDream
                 return;
             }
             Vector2 value3 = Main.screenPosition + new Vector2(Main.screenWidth >> 1, Main.screenHeight >> 1);
-            Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
+            Rectangle rectangle = new(-1000, -1000, 4000, 4000);
             float scale = Math.Min(1f, (Main.screenPosition.Y - 1000f) / 1000f);
             for (int j = num; j < num2; j++)
             {
-                Vector2 vector = new Vector2(1f / this._pillars[j].Depth, 0.9f / this._pillars[j].Depth);
+                Vector2 vector = new(1f / this._pillars[j].Depth, 0.9f / this._pillars[j].Depth);
                 Vector2 vector2 = this._pillars[j].Position;
                 vector2 = (vector2 - value3) * vector + value3 - Main.screenPosition;
                 if (rectangle.Contains((int)vector2.X, (int)vector2.Y))
@@ -314,7 +314,7 @@ namespace VirtualDream
         private LightPillar[] _pillars;
 
         // Token: 0x04004061 RID: 16481
-        private UnifiedRandom _random = new UnifiedRandom();
+        private UnifiedRandom _random = new();
 
         // Token: 0x04004062 RID: 16482
         private Texture2D _planetTexture;
@@ -356,7 +356,7 @@ namespace VirtualDream
             public float StartX;
         }
 
-        private UnifiedRandom _random = new UnifiedRandom();
+        private UnifiedRandom _random = new();
         //private Asset<Texture2D> _planetTexture;
         //private Asset<Texture2D> _bgTexture;
         private Asset<Texture2D> _meteorTexture;
@@ -464,7 +464,7 @@ namespace VirtualDream
 
         }
 
-        public override Color OnTileColor(Color inColor) => new Color(Vector4.Lerp(inColor.ToVector4(), Vector4.One, _fadeOpacity * 0.5f));
+        public override Color OnTileColor(Color inColor) => new(Vector4.Lerp(inColor.ToVector4(), Vector4.One, _fadeOpacity * 0.5f));
 
         public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
         {
@@ -549,10 +549,10 @@ namespace VirtualDream
 
             float scale = Math.Min(1f, (Main.screenPosition.Y - 1000f) / 1000f);
             Vector2 value3 = Main.screenPosition + new Vector2(Main.screenWidth >> 1, Main.screenHeight >> 1);
-            Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
+            Rectangle rectangle = new(-1000, -1000, 4000, 4000);
             for (int j = num; j < num2; j++)
             {
-                Vector2 value4 = new Vector2(1f / _meteors[j].Depth, 0.9f / _meteors[j].Depth);
+                Vector2 value4 = new(1f / _meteors[j].Depth, 0.9f / _meteors[j].Depth);
                 Vector2 position = (_meteors[j].Position - value3) * value4 + value3 - Main.screenPosition;
                 int num3 = _meteors[j].FrameCounter / 3;
                 _meteors[j].FrameCounter = (_meteors[j].FrameCounter + 1) % 12;
@@ -684,12 +684,12 @@ namespace VirtualDream
             }
             float scale = Math.Min(1f, (Main.screenPosition.Y - 1000f) / 1000f);
             Vector2 value3 = Main.screenPosition + new Vector2(Main.screenWidth >> 1, Main.screenHeight >> 1);
-            Rectangle rectangle = new Rectangle(-1000, -1000, 4000, 4000);
+            Rectangle rectangle = new(-1000, -1000, 4000, 4000);
             for (int i = 0; i < this._bolts.Length; i++)
             {
                 if (this._bolts[i].IsAlive && this._bolts[i].Depth > minDepth && this._bolts[i].Depth < maxDepth)
                 {
-                    Vector2 vector = new Vector2(1f / this._bolts[i].Depth, 0.9f / this._bolts[i].Depth);
+                    Vector2 vector = new(1f / this._bolts[i].Depth, 0.9f / this._bolts[i].Depth);
                     Vector2 vector2 = (this._bolts[i].Position - value3) * vector + value3 - Main.screenPosition;
                     if (rectangle.Contains((int)vector2.X, (int)vector2.Y))
                     {
@@ -743,7 +743,7 @@ namespace VirtualDream
         }
 
         // Token: 0x040040AB RID: 16555
-        private UnifiedRandom _random = new UnifiedRandom();
+        private UnifiedRandom _random = new();
 
         // Token: 0x040040AC RID: 16556
         private Texture2D _planetTexture;

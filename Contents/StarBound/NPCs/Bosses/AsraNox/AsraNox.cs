@@ -158,7 +158,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 float num84 = num82 / 2f;
                 float scaleFactor3 = 12f + Main.rand.NextFloat() * 2f;
                 Vector2 vector34 = vector33 * scaleFactor3;
-                Vector2 vector35 = new Vector2(0f, 0f);
+                Vector2 vector35 = new(0f, 0f);
                 Vector2 vector36 = vector34;
                 int num85 = 0;
                 while (num85 < num84)
@@ -4084,7 +4084,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 //flag = true;
                 var width = MathHelper.Clamp(projectile.timeLeft / 30f, 0, 1) * 96;
                 var wf = 0.25f;
-                Vector2 unit2 = new Vector2(-unit.Y, unit.X);
+                Vector2 unit2 = new(-unit.Y, unit.X);
                 var start = projectile.Center;
                 (float x1, float y1, float x2, float y2) = (0, 0, 1, 1);
                 bars1[0] = new CustomVertexInfo(start + unit2 * width, new Vector3(x1, y1, 4));
@@ -4512,7 +4512,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 int v = 600;
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-                Terraria.DataStructures.DrawData data = new Terraria.DataStructures.DrawData(tex, projectile.Center + u * 12 - Main.screenPosition, new Rectangle(0, 0, 2 * v, 2 * v), Color.Lerp(Color.Orange, Color.White, timer) with { A = 0 }, 0, new Vector2(v), (projectile.timeLeft < 210 ? MathHelper.Lerp(0, 4, timer * timer) : MathHelper.Lerp(2, 0, (float)Math.Sqrt(timer))) * new Vector2(1.5f, 1), 0, 0);
+                Terraria.DataStructures.DrawData data = new(tex, projectile.Center + u * 12 - Main.screenPosition, new Rectangle(0, 0, 2 * v, 2 * v), Color.Lerp(Color.Orange, Color.White, timer) with { A = 0 }, 0, new Vector2(v), (projectile.timeLeft < 210 ? MathHelper.Lerp(0, 4, timer * timer) : MathHelper.Lerp(2, 0, (float)Math.Sqrt(timer))) * new Vector2(1.5f, 1), 0, 0);
                 Terraria.Graphics.Shaders.GameShaders.Misc["ForceField"].UseColor(new Vector3(timer.HillFactor2(1)));//
                 Terraria.Graphics.Shaders.GameShaders.Misc["ForceField"].Apply(data);
                 data.Draw(Main.spriteBatch);

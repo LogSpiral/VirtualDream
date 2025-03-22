@@ -163,7 +163,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         {
             // DisplayName.SetDefault("打拳辣");
         }
-        public virtual Vector2 hitBox => new Vector2(32);
+        public virtual Vector2 hitBox => new(32);
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             for (int n = 0; n < 2; n++)
@@ -434,7 +434,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
     }
     public class ClawGloveProj : GauntletsProj
     {
-        public override Vector2 hitBox => new Vector2(64, 32);
+        public override Vector2 hitBox => new(64, 32);
         public override float swooshSize => 2.5f;
         public override void SetStaticDefaults()
         {
@@ -450,7 +450,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
     }
     public class SupernovaGauntletProj : GauntletsProj
     {
-        public override Vector2 hitBox => new Vector2(64);
+        public override Vector2 hitBox => new(64);
         //public override float swooshSize => base.swooshSize;
         public override void SetStaticDefaults()
         {

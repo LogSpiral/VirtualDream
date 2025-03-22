@@ -1030,7 +1030,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             var spriteBatch = Main.spriteBatch;
             if (state == 0 || (state == 1 && !LogSpiralLibraryMod.CanUseRender))
             {
-                Vector2 scale = new Vector2(0.5f, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
+                Vector2 scale = new(0.5f, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
                 var _color = Main.hslToRgb(projectile.localAI[0] % 1, 1, 0.75f);
                 _color.A = 0;
                 var tex = VirtualDreamMod.GetTexture(Texture.Replace("AstralTear", "CrystalLight"), false);

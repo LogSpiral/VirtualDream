@@ -70,7 +70,7 @@ namespace VirtualDream
                 {
                     if ((int)projectile.ai[1] == 1)
                     {
-                        Vector2 scale = new Vector2(1, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
+                        Vector2 scale = new(1, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
                         var _color = Main.hslToRgb(projectile.localAI[0] % 1, 1, 0.75f);
                         var tex = VirtualDreamMod.GetTexture(projectile.ModProjectile.Texture.Replace("AstralTear", "CrystalLight"), false);
                         spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, _color * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);

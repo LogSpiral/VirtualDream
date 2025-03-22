@@ -285,25 +285,25 @@ namespace VirtualDream
         public const string AdamantiteBarRG = "VirtualDream:AdamantiteBar";
         public override void AddRecipeGroups()
         {
-            RecipeGroup group1 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ͭ��", new int[]
+            RecipeGroup group1 = new(() => Language.GetTextValue("LegacyMisc.37") + " ͭ��", new int[]
             {
                 ItemID.CopperBar,
                 ItemID.TinBar
             });
             RecipeGroup.RegisterGroup(CopperBarRG, group1);
-            RecipeGroup group2 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ����", new int[]
+            RecipeGroup group2 = new(() => Language.GetTextValue("LegacyMisc.37") + " ����", new int[]
             {
                 ItemID.SilverBar,
                 ItemID.TungstenBar
             });
             RecipeGroup.RegisterGroup(SilverBarRG, group2);
-            RecipeGroup group3 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ��", new int[]
+            RecipeGroup group3 = new(() => Language.GetTextValue("LegacyMisc.37") + " ��", new int[]
             {
                 ItemID.GoldBar,
                 ItemID.PlatinumBar
             });
             RecipeGroup.RegisterGroup(GoldBarRG, group3);
-            RecipeGroup group4 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ���", new int[]
+            RecipeGroup group4 = new(() => Language.GetTextValue("LegacyMisc.37") + " ���", new int[]
             {
                 ItemID.Torch,
                 ItemID.BlueTorch,
@@ -324,7 +324,7 @@ namespace VirtualDream
                 ItemID.YellowTorch,
             });
             RecipeGroup.RegisterGroup(TorchRG, group4);
-            RecipeGroup group5 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ����", new int[]
+            RecipeGroup group5 = new(() => Language.GetTextValue("LegacyMisc.37") + " ����", new int[]
             {
                 ItemID.BlackPaint,
                 ItemID.BluePaint,
@@ -358,19 +358,19 @@ namespace VirtualDream
                 ItemID.YellowPaint,
             });
             RecipeGroup.RegisterGroup(PaintRG, group5);
-            RecipeGroup group6 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ������", new int[]
+            RecipeGroup group6 = new(() => Language.GetTextValue("LegacyMisc.37") + " ������", new int[]
             {
                 ItemID.CobaltBar,
                 ItemID.PalladiumBar
             });
             RecipeGroup.RegisterGroup(CobaltRG, group6);
-            RecipeGroup group7 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ������", new int[]
+            RecipeGroup group7 = new(() => Language.GetTextValue("LegacyMisc.37") + " ������", new int[]
             {
                 ItemID.MythrilBar,
                 ItemID.OrichalcumBar
             });
             RecipeGroup.RegisterGroup(MythrilBarRG, group7);
-            RecipeGroup group8 = new RecipeGroup(() => Language.GetTextValue("LegacyMisc.37") + " ����", new int[]
+            RecipeGroup group8 = new(() => Language.GetTextValue("LegacyMisc.37") + " ����", new int[]
             {
                 ItemID.AdamantiteBar,
                 ItemID.TitaniumBar

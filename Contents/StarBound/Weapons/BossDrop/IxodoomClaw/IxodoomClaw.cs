@@ -39,7 +39,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         public override string Texture => base.Texture.Replace("BrokenProj", "Broken");
         public override Vector2 CollidingSize => base.CollidingSize * 2;
 
-        public override Vector2 CollidingCenter => new Vector2(projTex.Size().X / 3 - 16, 16);
+        public override Vector2 CollidingCenter => new(projTex.Size().X / 3 - 16, 16);
         public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-16, 12);
     }
     public class IxodoomClaw : StarboundWeaponBase
