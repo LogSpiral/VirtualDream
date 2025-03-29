@@ -40,7 +40,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         }
         public override bool? UseItem(Player player)
         {
-            if (player.itemAnimation == 1 && false)
+            if (player.itemAnimation == 1)
             {
                 chargeCount = 0;
                 if (SubworldLibrary.SubworldSystem.Current is TimeBackTrackingWorld world)

@@ -227,6 +227,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
             if (source is EntitySource_StarboundWeapon starboundWeapon)
             {
                 weapon = starboundWeapon.StarboundWeapon;
+                _sourceItem = weapon.Item;
             }
             if (source is EntitySource_ItemUse_WithAmmo _source)
             {

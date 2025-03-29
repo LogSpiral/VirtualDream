@@ -501,24 +501,26 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
                 npc.ai[0]++;
                 npc.ai[1]++;
-                if (npc.ai[0] % 20 == 0)
+                if (npc.ai[0] % 20 == 1)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorTinyLaser>(), 25 * damageScaler, 0, Main.myPlayer);
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorTinyLaser>(), 25 * damageScaler, 0, Main.myPlayer, (targetPlayer.Center - npc.Center).ToRotation(), 1);
                 }
-                if (npc.ai[0] % 40 == 0)
+                if (npc.ai[0] % 40 == 1)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, default, ModContent.ProjectileType<ErchiusHorrorTinyLaser>(), 25 * damageScaler, 0, Main.myPlayer, Main.rand.NextFloat(0, MathHelper.TwoPi), 1);
                 }
-                if (npc.ai[1] % 300 == 0)
+                if (npc.ai[1] % 300 == 1)
                 {
                     Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Normalize(targetPlayer.Center - npc.Center), ModContent.ProjectileType<ErchiusHorrorSparkLaser>(), 75 * damageScaler, 0, Main.myPlayer, (targetPlayer.Center - npc.Center).ToRotation()).frameCounter = npc.whoAmI;
                 }
-                npc.life -= 2;
+                npc.life -= 10;
+                Main.NewText(npc.life);
                 npc.checkDead();
             }
             oldLife = npc.life;
-            npc.friendly = Stage == 3;
+            npc.dontTakeDamage = Stage == 3;
+            //npc.friendly = false;// 
         }
         public Player targetPlayer
         {
@@ -879,7 +881,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //	Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         //}
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(r) * Matrix.CreateRotationX((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-r) * Matrix.CreateRotationX((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1181,7 +1183,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             return false;
         }
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (((v * size).ApplyMatrix(Matrix.CreateRotationX(((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi))) - new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ((projectile.ai[1] * MathHelper.TwoPi / 3))) + new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ(r));//Main.time////size *//* ModContent.GetInstance<IllusionConfigClient>().offSetSize
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (((v * size).ApplyMatrix(Matrix.CreateRotationX(((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi))) - new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ((projectile.ai[1] * MathHelper.TwoPi / 6))) + new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ(-r));//Main.time////size *//* ModContent.GetInstance<IllusionConfigClient>().offSetSize
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1439,7 +1441,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1597,7 +1599,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
@@ -1739,7 +1741,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //public Vector2 dirVec => new Vector2(projectile.ai[0], projectile.ai[1]);
         public Vector2 dirVec;
 
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(r) * Matrix.CreateRotationX((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-r) * Matrix.CreateRotationX((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
         public void UpdateTris(float factor)
         {
             var size = new Vector3(projectile.ai[1] * 0.5f, 96 * factor, 96 * factor);

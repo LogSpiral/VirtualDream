@@ -1,36 +1,23 @@
-
-<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\tModLoader.targets" />
-  <PropertyGroup>
-    <AssemblyName>VirtualDream</AssemblyName>
-    <LangVersion>latest</LangVersion>
-	  <Solaestas-UseAssetPath>false</Solaestas-UseAssetPath>
-
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="Contents\IllusionWorld\**" />
-    <Compile Remove="Contents\Storm\**" />
-    <EffectFile Remove="Contents\IllusionWorld\**" />
-    <EffectFile Remove="Contents\Storm\**" />
-    <EmbeddedResource Remove="Contents\IllusionWorld\**" />
-    <EmbeddedResource Remove="Contents\Storm\**" />
-    <ImageFile Remove="Contents\IllusionWorld\**" />
-    <ImageFile Remove="Contents\Storm\**" />
-    <None Remove="Contents\IllusionWorld\**" />
-    <None Remove="Contents\Storm\**" />
-    <ResourceFile Remove="Contents\IllusionWorld\**" />
-    <ResourceFile Remove="Contents\Storm\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.6.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LogSpiralLibrary\LogSpiralLibrary.csproj" />
-    <ProjectReference Include="..\SubworldLibrary\SubworldLibrary.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" />
-  </ItemGroup>
-
-	
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\tModLoader.targets" />
+	<PropertyGroup>
+		<AssemblyName>VirtualDream</AssemblyName>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.6.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Update="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1" />
+		<Publicize Include="ReLogic" />
+		<Publicize Include="MonoMod.RuntimeDetour" />
+		<Publicize Include="MonoMod.Utils" />
+	</ItemGroup>
+	<ItemGroup>
+		<AdditionalFiles Include="**/*.xml;**/*.xnb" Exclude="bin/**/*;obj/**/*" Pack="true" ModPath="%(Identity)" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\LogSpiralLibrary\LogSpiralLibrary.csproj" />
+	  <ProjectReference Include="..\SubworldLibrary\SubworldLibrary.csproj" />
+	</ItemGroup>
 </Project>

@@ -1005,8 +1005,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             useBloom = new BloomEffectInfo()
             {
                 threshold = 0,
-                intensity = this.UpgradeValue(0.15f, 0.25f, 0.25f, 0.35f),
-                range = this.UpgradeValue(false, false, true, true) ? MathHelper.Lerp(4, 12, Main.GlobalTimeWrappedHourly.CosFactor()) : 6,
+                intensity = this.UpgradeValue(0.15f, 0.25f, 0.25f, 0.35f) * 4.5f,
+                range = this.UpgradeValue(false, false, true, true) ? MathHelper.Lerp(4, 8, Main.GlobalTimeWrappedHourly.CosFactor()) : 6,
                 times = this.UpgradeValue(2, 3, 3, 4),
                 additive = true
                 //TODO Bloom可以不使用加法模式
@@ -1014,7 +1014,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             };
             //useMask = default;
             //useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSky_0"), new Vector2(960,560), Color.Cyan, Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
-            useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), Color.White, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
+
+
+            useMask = new MaskEffectInfo(VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3"), Color.Cyan, 0.1f, 0.11f, Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8, true, false);
         }
     }
     public class AstralTear : ModProjectile, IStarboundWeaponProjectile

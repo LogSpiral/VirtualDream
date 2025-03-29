@@ -151,7 +151,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
         }
         public override void RenderInfomation(ref BloomEffectInfo useBloom, ref AirDistortEffectInfo useDistort, ref MaskEffectInfo useMask)
         {
-            useBloom = new BloomEffectInfo(0f, .25f, 6f, 3, true);//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
+            useBloom = new BloomEffectInfo(0f, MathHelper.Lerp(1, 1.125f, Main.GlobalTimeWrappedHourly.CosFactor()), 3f, 3, true) with { useModeMK = true };//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
             useDistort = new AirDistortEffectInfo(1.5f);//  //controlState == 1 ? CurrentSwoosh.rotation : Rotation
         }
         public override Texture2D HeatMap

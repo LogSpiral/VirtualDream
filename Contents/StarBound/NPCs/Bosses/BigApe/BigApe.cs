@@ -2003,7 +2003,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.type = 140;
             return true;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int n = 0; n < 30; n++)
             {
@@ -2454,15 +2454,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                         projectile.hostile = !(projectile.timeLeft <= 60 || projectile.timeLeft >= 240);
                         var alpha1 = MathHelper.Clamp(150 - Math.Abs(150 - projectile.timeLeft), 0, 60) / 120f;
-                        DrawingMethods.DrawShaderTail(spriteBatch, projectile, LogSpiralLibraryMod.HeatMap[7].Value, LogSpiralLibraryMod.AniTex[2].Value, LogSpiralLibraryMod.AniTex[2].Value, 900, alpha: alpha1 * 2, additive: true);
+                        DrawingMethods.DrawShaderTail(spriteBatch, projectile, LogSpiralLibraryMod.HeatMap[7].Value, LogSpiralLibraryMod.AniTex[2].Value, LogSpiralLibraryMod.AniTex[2].Value, 900, alpha: alpha1 * 4, additive: false);
 
                         //DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 900, ShaderTailMainStyle.MiddleLine2, alpha: alpha1);
                         for (int n = 0; n < 4; n++)
                         {
-                            spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
+                            spriteBatch.Draw(hugeTex, projectile.Center + new Vector2(32 * alpha1, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 60f * MathHelper.Pi) - Main.screenPosition, null, Color.White with { A = 0 } * alpha1 * .5f, projectile.rotation, new Vector2(160), 1, 0, 0);
                         }
 
                         spriteBatch.Draw(hugeTex, projectile.Center - Main.screenPosition, null, Color.White with { A = 0 } * alpha1, projectile.rotation, new Vector2(160), 1, 0, 0);
+
                         break;
                     }
             }
@@ -2676,7 +2677,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     count *= 4;
                     spriteBatch.DrawPath
                     (
-                        t => pos[(int)(119 * t)],
+                        t => pos[Math.Clamp((int)((count * 4 - 1) * t), 0, Math.Min(count * 4 - 1, 1))],
                         t => t.ArrayLerp(Color.Blue, Color.Cyan, Color.White),
                         LogSpiralLibraryMod.EightTrigramsFurnaceEffect,
                         LogSpiralLibraryMod.BaseTex[8].Value,
@@ -2698,7 +2699,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 {
                     spriteBatch.DrawPath
                     (
-                        t => pos1[(int)(29 * t)],
+                        t => pos1[Math.Clamp((int)((count - 1) * t), 0, Math.Min(count - 1, 1))],
                         t => t.ArrayLerp(Color.Blue, Color.Cyan, Color.White),
                         LogSpiralLibraryMod.EightTrigramsFurnaceEffect,
                         LogSpiralLibraryMod.BaseTex[8].Value,
@@ -3758,7 +3759,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 tris[3 * n + 2] = vertexs[(int)index.Z];
             }
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone,null,Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(factor + .5f, 0, 1), projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.75f, 0.25f) * projectile.ai[0], 0, 0);
             spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(1 - factor, 0, 1), -projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.4f, 0.6f) * projectile.ai[0], 0, 0);
             if (projectile.timeLeft > 270 && projectile.frameCounter == 0)

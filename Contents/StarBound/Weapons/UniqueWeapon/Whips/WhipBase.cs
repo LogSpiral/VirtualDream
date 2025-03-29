@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mono.Cecil;
+using System;
 using Terraria.DataStructures;
 using Terraria.ID;
 
@@ -23,13 +24,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         //public IEntitySource source;
         //public int sourceItemType => weapon.Item.type;
         public Player Player => Main.player[projectile.owner];
-        public override void OnSpawn(IEntitySource _source)
-        {
-            //source = _source;
-            base.OnSpawn(_source);
-            WhipSettings(ref Projectile.WhipSettings.Segments, ref Projectile.WhipSettings.RangeMultiplier);
-            Projectile.WhipSettings.Segments = (int)(Projectile.WhipSettings.Segments * Projectile.WhipSettings.RangeMultiplier);
-        }
         public Projectile projectile => Projectile;
         public override void SetStaticDefaults()
         {
@@ -49,6 +43,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
         }
         public override void AI()
         {
+            if (projectile.ai[2] == 0) 
+            {
+                WhipSettings(ref Projectile.WhipSettings.Segments, ref Projectile.WhipSettings.RangeMultiplier);
+                Projectile.WhipSettings.Segments = (int)(Projectile.WhipSettings.Segments * Projectile.WhipSettings.RangeMultiplier);
+                projectile.ai[2] = 1;
+            }
             Player player = Main.player[Projectile.owner];
             Projectile.rotation = Projectile.velocity.ToRotation() + (float)Math.PI / 2f;
             Projectile.ai[0] += 1f;

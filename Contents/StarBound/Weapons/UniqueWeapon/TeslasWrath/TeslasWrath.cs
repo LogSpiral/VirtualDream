@@ -201,7 +201,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
             projectile.aiStyle = -1;
             projectile.extraUpdates = 3;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.NPCHit53, projectile.position);
             for (int n = -3; n < 4; n++)

@@ -19,8 +19,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             item.rare = ModContent.RarityType<BrokenRarity>();
             item.noUseGraphic = false;
             item.shootSpeed = 32f;
-            var _item = new Item(ItemID.PhoenixBlaster);
-            item.UseSound = _item.UseSound;
+            //var _item = new Item(ItemID.PhoenixBlaster);
+            //item.UseSound = _item.UseSound;
+            item.UseSound = MySoundID.Gun;
             item.channel = false;
 
             //item.UseSound = SoundID.Item41;
@@ -33,7 +34,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         public override bool CanConsumeAmmo(Item ammo, Player player) => true;
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) 
         {
-            Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity with { Y = 0 }, type, damage, knockback, player.whoAmI);
+            Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity , type, damage, knockback, player.whoAmI);
             return false;
         }
         public override WeaponRepairRecipe RepairRecipe()

@@ -3881,14 +3881,23 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 }
                 else
                 {
-                    if (timer < 30 || timer > 630)
-                        spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/ballAction_Real"), NPC.Center - Main.screenPosition, new Rectangle((330 - Math.Abs(timer - 330)) / 2 * 90, 0, 90, 86), drawColor, 0, new Vector2(45, 43), 1f + (330 - Math.Abs(timer - 330f)) / 30f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
+                    if (timer > 660)
+                    {
+                        spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/ballAction_Real"), NPC.Center - Main.screenPosition, new Rectangle(0, 0, 90, 86), drawColor, 0, new Vector2(45, 43), 1, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
+
+                    }
                     else
                     {
-                        var rotation = Main.projectile[(int)ai2].oldRot[0];
-                        spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall"), NPC.Center - Main.screenPosition, null, drawColor, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
-                        spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall_Glow"), NPC.Center - Main.screenPosition, null, Color.White, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
+                        if (timer < 30 || timer > 630)
+                            spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/ballAction_Real"), NPC.Center - Main.screenPosition, new Rectangle((330 - Math.Abs(timer - 330)) / 2 * 90, 0, 90, 86), drawColor, 0, new Vector2(45, 43), 1f + (330 - Math.Abs(timer - 330f)) / 30f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
+                        else
+                        {
+                            var rotation = Main.projectile[(int)ai2].oldRot[0];
+                            spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall"), NPC.Center - Main.screenPosition, null, drawColor, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
+                            spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall_Glow"), NPC.Center - Main.screenPosition, null, Color.White, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
+                        }
                     }
+
                 }
                 if ((nState % 6 == 1 && timer < 660) || ((nState % 6 == 4) && timer % 240 >= 180))
                 {
@@ -4450,7 +4459,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         }
 
         private VertexTriangle3List loti;
-        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX((r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi)));//Main.time
+        private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-projectile.ai[0]) * Matrix.CreateRotationX((r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi)));//Main.time
         public void UpdateTris(float factor)
         {
             var size = new Vector3(32, 96 * factor, 96 * factor);

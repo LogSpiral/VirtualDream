@@ -66,13 +66,13 @@ namespace VirtualDream
         {
             if (containsSlash)
             {
+                Texture2D tex = VirtualDreamMod.GetTexture(ModContent.GetInstance<AstralTear>().Texture.Replace("AstralTear", "CrystalLight"), false);
                 foreach (var projectile in astralTears)
                 {
                     if ((int)projectile.ai[1] == 1)
                     {
                         Vector2 scale = new(1, MathHelper.Clamp(projectile.velocity.Length() / 3f, 1, 10));
                         var _color = Main.hslToRgb(projectile.localAI[0] % 1, 1, 0.75f);
-                        var tex = VirtualDreamMod.GetTexture(projectile.ModProjectile.Texture.Replace("AstralTear", "CrystalLight"), false);
                         spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, _color * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);
                         spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, Color.White * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale, 0, 0);
                     }
@@ -133,13 +133,11 @@ namespace VirtualDream
                     }
                     #endregion
                     if (oculusTears.Count > 0)
-                    {
                         OculusTearsDrawing(oculusTears, graphicsDevice, render, spriteBatch, trans);
-                    }
+
                     if (astralTears.Count > 0)
-                    {
                         AstralTearsDrawing(astralTears, graphicsDevice, render, spriteBatch, trans);
-                    }
+
 
                 }
 
@@ -187,47 +185,6 @@ namespace VirtualDream
 
             if (VirtualDreamMod.bloomValue > 0)
                 UseBloom(graphicsDevice);
-            #region MyRegion
-            //#region Render
-            ////var gd = Main.graphics.GraphicsDevice;
-            ////先在自己的render上画这个弹幕
-            ////sb.End();
-            //graphicsDevice.SetRenderTarget(render);
-            //graphicsDevice.Clear(Color.Transparent);
-            //#endregion
-            //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Matrix.Identity);
-            //Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-            //Main.spriteBatch.End();
-            //#region render
-            ////然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
-            ////原版自带的screenTargetSwap就是一个可以使用的render，（原版用来连续上滤镜）
-            //graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
-            //graphicsDevice.Clear(Color.Transparent);
-            //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
-            //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
-            //IllusionBoundMod.Distort.CurrentTechnique.Passes[1].Apply();
-            //IllusionBoundModSystem.Distort.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前graphicsDevice.SetRenderTaRGet的不是这个render，否则会报错）
-            //                                                             //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
-            //IllusionBoundMod.Distort.Parameters["invAlpha"].SetValue(0.35f);
-            //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
-            //IllusionBoundMod.Distort.Parameters["tier2"].SetValue(0.30f);
-            //IllusionBoundMod.Distort.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)IllusionBoundMod.ModTime * 8);
-            //IllusionBoundMod.Distort.Parameters["maskGlowColor"].SetValue(Color.Red.ToVector4());//Color.Cyan.ToVector4()//default(Vector4)//Color.Cyan.ToVector4()//new Vector4(1, 0, 0.25f, 1)
-            //                                                                                      //IllusionBoundMod.Distort.Parameters["lightAsAlpha"].SetValue(true);
-            //                                                                                      //Main.NewText("!!!");
-            //IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(960, 560));//new Vector2(1280, 2758)//new Vector2(960,560)  64, 48
-
-            //Main.spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
-            //Main.spriteBatch.End();
-
-            ////最后在screenTarget上把刚刚的结果画上
-            //graphicsDevice.SetRenderTarget(Main.screenTarget);
-            //graphicsDevice.Clear(Color.Transparent);
-            //Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
-            //Main.spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-            //Main.spriteBatch.End();
-            //#endregion
-            #endregion
 
         }
         private static void GetMyDataOut(List<CustomVertexInfo> bars, List<Projectile> oculusTears, List<Projectile> astralTears, List<Projectile> solusKatanaFractal, List<CustomVertexInfo> bars_2, List<int> indexer, ref float? director, ref int timeLeft)
@@ -428,54 +385,54 @@ namespace VirtualDream
                     AirDistortEffect.Parameters["colorOffset"].SetValue(0);
                     AirDistortEffect.CurrentTechnique.Passes[1].Apply();//ApplyPass
 
+                    var gd = graphicsDevice;
+                    var sb = spriteBatch;
 
-                    spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//绘制原先屏幕内容
-                    graphicsDevice.SetRenderTarget(Main.screenTarget);
-                    graphicsDevice.Clear(Color.Transparent);
-                    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-
-                    RenderEffect.Parameters["offset"].SetValue(Main.ScreenSize.ToVector2());
-                    RenderEffect.Parameters["threshold"].SetValue(0f);
-                    RenderEffect.Parameters["range"].SetValue(6f);
-                    RenderEffect.Parameters["intensity"].SetValue(0.2f);
-
+                    gd.SetRenderTarget(Main.screenTargetSwap);
+                    gd.Clear(Color.Transparent);
+                    sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+                    RenderEffect.Parameters["screenScale"].SetValue(Main.ScreenSize.ToVector2());
+                    RenderEffect.Parameters["threshold"].SetValue(0);
+                    RenderEffect.Parameters["range"].SetValue(4);
+                    RenderEffect.Parameters["intensity"].SetValue(1.1f * 2.5f);
+                    RenderEffect.Parameters["uBloomAdditive"].SetValue(true);
                     for (int n = 0; n < 2; n++)
                     {
-                        graphicsDevice.SetRenderTarget(renderAirDistort);
-                        RenderEffect.Parameters["tex0"].SetValue(render);
-                        graphicsDevice.Clear(Color.Transparent);
-                        RenderEffect.CurrentTechnique.Passes[3].Apply();
-                        spriteBatch.Draw(render, Vector2.Zero, Color.White);
+                        gd.SetRenderTarget(Instance.Render_Swap);
+                        //RenderEffect.Parameters["tex0"].SetValue(render);
+                        gd.Clear(Color.Transparent);
+                        RenderEffect.CurrentTechnique.Passes[4].Apply();
+                        sb.Draw(n == 0 ? render : Instance.Render_Swap2, Vector2.Zero, Color.White);
 
 
 
-                        graphicsDevice.SetRenderTarget(render);
-                        RenderEffect.Parameters["tex0"].SetValue(renderAirDistort);
-                        graphicsDevice.Clear(Color.Transparent);
-                        RenderEffect.CurrentTechnique.Passes[2].Apply();
-                        spriteBatch.Draw(renderAirDistort, Vector2.Zero, Color.White);
+                        gd.SetRenderTarget(Instance.Render_Swap2);
+                        //RenderEffect.Parameters["tex0"].SetValue(Instance.Render_Swap);
+                        gd.Clear(Color.Transparent);
+                        RenderEffect.CurrentTechnique.Passes[4].Apply();
+                        sb.Draw(Instance.Render_Swap, Vector2.Zero, Color.White);
                     }
-                    //Distort.Parameters["position"].SetValue(new Vector2(0, 5f));
-                    //Distort.Parameters["ImageSize"].SetValue(new Vector2(0.707f) * -0.006f);//projectile.rotation.ToRotationVector2() * -0.006f
+                    gd.SetRenderTarget(Instance.Render_Swap);
+                    gd.Clear(Color.Transparent);
+                    //RenderEffect.Parameters["tex0"].SetValue(render);
+                    RenderEffect.CurrentTechnique.Passes[4].Apply();
+                    sb.Draw(Instance.Render_Swap2, Vector2.Zero, Color.White);
+                    gd.SetRenderTarget(Instance.Render_Swap2);
+                    gd.Clear(Color.Transparent);
+                    RenderEffect.CurrentTechnique.Passes[4].Apply();
+                    sb.Draw(Instance.Render_Swap, Vector2.Zero, Color.White);
+                    sb.End();
+                    Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
+                    gd.SetRenderTarget(Main.screenTarget);
+                    gd.Clear(Color.Transparent);
+                    sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
 
-                    //for (int n = 0; n < 1; n++)
-                    //{
-                    //graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
-                    //graphicsDevice.Clear(Color.Transparent);
-                    //Distort.CurrentTechnique.Passes[5].Apply();
-                    //spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
-
-                    //graphicsDevice.SetRenderTarget(Main.screenTarget);
-                    //graphicsDevice.Clear(Color.Transparent);
-                    //Distort.CurrentTechnique.Passes[4].Apply();
-                    //spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                    //}
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-                    graphicsDevice.SetRenderTarget(Main.screenTarget);
-                    spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
-                    spriteBatch.Draw(render, Vector2.Zero, Color.White);
+                    Main.instance.GraphicsDevice.BlendState = AllOne;
+                    sb.Draw(render, Vector2.Zero, Color.White);
+                    Main.instance.GraphicsDevice.BlendState = BlendState.Additive;
+                    sb.Draw(Instance.Render_Swap2, Vector2.Zero, Color.White);
+                    Main.instance.GraphicsDevice.BlendState = BlendState.AlphaBlend;
                 }
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
@@ -510,6 +467,10 @@ namespace VirtualDream
             graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
             graphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);//, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone
+            spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+
+            graphicsDevice.SetRenderTarget(Instance.Render_Swap);
+            graphicsDevice.Clear(Color.Transparent);
             Main.graphics.GraphicsDevice.Textures[1] = VirtualDreamMod.GetTexture("Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg");// Backgrounds/StarSky_0 Backgrounds/StarSkyv2  Contents/StarBound/Weapons/UniqueWeapon/OculusReaver/OculusReaverTearBkg
             RenderEffect.Parameters["tex0"].SetValue(render);//render可以当成贴图使用或者绘制。（前提是当前graphicsDevice.SetRenderTarget的不是这个render，否则会报错）
                                                              //IllusionBoundMod.Distort.Parameters["offset"].SetValue((u + v) * -0.002f * (1 - 2 * Math.Abs(0.5f - fac)) * IllusionSwooshConfigClient.instance.distortFactor);
@@ -525,15 +486,17 @@ namespace VirtualDream
 
             RenderEffect.CurrentTechnique.Passes[1].Apply();
 
-            spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
+            spriteBatch.Draw(render, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
 
             spriteBatch.End();
 
             //最后在screenTarget上把刚刚的结果画上
             graphicsDevice.SetRenderTarget(Main.screenTarget);
             graphicsDevice.Clear(Color.Transparent);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             spriteBatch.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+            Main.instance.GraphicsDevice.BlendState = BlendState.Additive;
+            spriteBatch.Draw(Instance.Render_Swap, Vector2.Zero, Color.White);
             spriteBatch.End();
             #endregion
         }
@@ -551,23 +514,60 @@ namespace VirtualDream
             graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
             graphicsDevice.Clear(Color.Transparent);
             sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+
+            graphicsDevice.SetRenderTarget(Instance.Render_Swap);
+            graphicsDevice.Clear(Color.Transparent);
+
             Main.graphics.GraphicsDevice.Textures[1] = VirtualDreamMod.GetTexture("Backgrounds/StarSkyv3");
             RenderEffect.Parameters["tex0"].SetValue(render);
             RenderEffect.Parameters["invAlpha"].SetValue(0.35f);
             RenderEffect.Parameters["lightAsAlpha"].SetValue(true);
             RenderEffect.Parameters["tier2"].SetValue(0.30f);
             RenderEffect.Parameters["position"].SetValue(Main.LocalPlayer.Center + new Vector2(0.707f) * (float)ModTime * 8);
-            RenderEffect.Parameters["maskGlowColor"].SetValue(Color.Cyan.ToVector4());
+            RenderEffect.Parameters["maskGlowColor"].SetValue(Color.SteelBlue.ToVector4());
             RenderEffect.Parameters["ImageSize"].SetValue(new Vector2(64, 48));
             RenderEffect.Parameters["inverse"].SetValue(false);
 
             RenderEffect.CurrentTechnique.Passes[1].Apply();
-            sb.Draw(Main.screenTarget, Vector2.Zero, Color.White);
+            sb.Draw(render, Vector2.Zero, Color.White);
+
+            graphicsDevice.SetRenderTarget(render);
+            graphicsDevice.Clear(Color.Transparent);
+            sb.Draw(Instance.Render_Swap, Vector2.Zero, Color.White);
+
+            graphicsDevice.SetRenderTarget(Instance.Render_Swap2);
+            graphicsDevice.Clear(Color.Transparent);
+            RenderEffect.Parameters["screenScale"].SetValue(Main.ScreenSize.ToVector2());
+            RenderEffect.Parameters["threshold"].SetValue(0);
+            RenderEffect.Parameters["range"].SetValue(MathHelper.Lerp(4, 8, Main.GlobalTimeWrappedHourly.CosFactor()));
+            RenderEffect.Parameters["intensity"].SetValue(2.75f);
+            RenderEffect.Parameters["uBloomAdditive"].SetValue(true);
+
+            RenderEffect.CurrentTechnique.Passes[4].Apply();
+            sb.Draw(Instance.Render_Swap, Vector2.Zero, Color.White);
+
+            graphicsDevice.SetRenderTarget(Instance.Render_Swap);
+            graphicsDevice.Clear(Color.Transparent);
+            sb.Draw(Instance.Render_Swap2, Vector2.Zero, Color.White);
+
+            graphicsDevice.SetRenderTarget(Instance.Render_Swap2);
+            graphicsDevice.Clear(Color.Transparent);
+            sb.Draw(Instance.Render_Swap, Vector2.Zero, Color.White);
+
+            graphicsDevice.SetRenderTarget(Instance.Render_Swap);
+            graphicsDevice.Clear(Color.Transparent);
+            sb.Draw(Instance.Render_Swap2, Vector2.Zero, Color.White);
+
             sb.End();
             graphicsDevice.SetRenderTarget(Main.screenTarget);
             graphicsDevice.Clear(Color.Transparent);
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+            sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
+            spriteBatch.Draw(render, Vector2.Zero, Color.White);
+            Main.instance.GraphicsDevice.BlendState = BlendState.Additive;
+            spriteBatch.Draw(Instance.Render_Swap, Vector2.Zero, Color.White);
+
             sb.End();
             #endregion
         }

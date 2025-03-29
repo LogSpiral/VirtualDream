@@ -357,7 +357,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                 target.AddBuff(189, 300);
             }
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int n = 0; n < 30; n++)
             {
