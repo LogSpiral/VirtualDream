@@ -14,9 +14,9 @@ using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
 
 namespace VirtualDream
 {
-    public class VirtualDreamRenderDrawing : RenderBasedDrawing
+    public class VirtualDreamRenderDrawing : IRenderBasedDrawing
     {
-        public override void CommonDrawingMethods(SpriteBatch spriteBatch)
+        public void CommonDrawingMethods(SpriteBatch spriteBatch)
         {
             List<CustomVertexInfo> bars = [];
             List<int> indexer = [];
@@ -100,7 +100,7 @@ namespace VirtualDream
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
         }
-        public override void RenderDrawingMethods(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, RenderTarget2D render, RenderTarget2D renderAirDistort)
+        public void RenderDrawingMethods(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, RenderTarget2D render, RenderTarget2D renderAirDistort)
         {
 
             if (!Main.drawToScreen)

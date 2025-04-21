@@ -1,4 +1,4 @@
-global using Microsoft.Xna.Framework;
+﻿global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
 global using Terraria;
 global using Terraria.Audio;
@@ -446,7 +446,7 @@ namespace VirtualDream
                 var item = new Item(n);
                 if (item.ModItem is StarboundWeaponBase weaponBase && weaponBase.State == WeaponState.Broken) types.Add(n);
             }
-            brokenWeaponTypes = types.ToArray();
+            brokenWeaponTypes = [.. types];
             base.PostSetupContent();
         }
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)

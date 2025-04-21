@@ -906,6 +906,15 @@ Mods: {
 					右键进入子世界_时之风
 					'''
 			}
+
+			BrokenBroadSword: {
+				DisplayName: 破裂的英雄之剑
+				Tooltip:
+					'''
+					一把不错的剑，但是状态很差。
+					此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]
+					'''
+			}
 		}
 
 		Buffs: {
@@ -1187,6 +1196,7 @@ Mods: {
 			// IxodoomClaw_BrokenProj.DisplayName: Ixodoom Claw_ Broken Proj
 			// SolusKatana_BrokenProj.DisplayName: Solus Katana_ Broken Proj
 			// AsuterosaberuDX_BrokenProj.DisplayName: Asuterosaberu D X_ Broken Proj
+			// BrokenBroadSwordProj.DisplayName: Broken Broad Sword Proj
 		}
 
 		NPCs: {
@@ -1230,6 +1240,11 @@ Mods: {
 			FeroziumOreTile.MapEntry: 菲洛合金矿
 			SolariumOreTile.MapEntry: 日耀石矿
 			VioliumOreTile.MapEntry: 维奥合金矿
+		}
+
+		MeleeAction: {
+			BrokenBroadSwordRotatingStorm.DisplayName: 回旋斩
+			// Category.Protector: Protector
 		}
 	}
 }

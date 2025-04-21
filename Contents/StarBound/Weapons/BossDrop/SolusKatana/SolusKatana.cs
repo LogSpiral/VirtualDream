@@ -480,8 +480,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 }
 
             }
-            whenSkip = indexer.ToArray();
-            return bars.ToArray();//base.CreateVertexs(drawCen, scaler, startAngle, endAngle, alphaLight).Union(bars)
+            whenSkip = [.. indexer];
+            return [.. bars];//base.CreateVertexs(drawCen, scaler, startAngle, endAngle, alphaLight).Union(bars)
         }
         public override bool WhenVertexDraw => controlState == 1 || base.WhenVertexDraw;
         public override void OnChargedShoot()

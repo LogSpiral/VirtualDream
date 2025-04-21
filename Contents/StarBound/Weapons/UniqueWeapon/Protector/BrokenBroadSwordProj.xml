@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Sequence name="BrokenBroadSwordProj" AuthorName="螺线" Description="破碎英雄之剑序列" FileName="BrokenBroadSwordProj" DisplayName="破碎英雄之剑" ModName="VirtualDream" createTime="638795335106397025" lastModifyDate="638795359447505444" passWord="" Finished="True">
+  <Group>
+    <Wraper condition="MouseLeft" IsSequence="True">
+      <Sequence>
+        <Group>
+          <Wraper>
+            <Action ModifyData="(1.00|1.00|1.00|1.00|0|1.00)" Cycle="1" mode="0" name="LogSpiralLibrary/SwooshInfo" />
+          </Wraper>
+        </Group>
+        <Group>
+          <Wraper>
+            <Action ModifyData="(1.00|1.00|1.00|1.00|0|1.00)" Cycle="1" name="LogSpiralLibrary/CutInfo" />
+          </Wraper>
+        </Group>
+        <Group>
+          <Wraper>
+            <Action ModifyData="(1.00|1.00|1.00|1.00|0|1.00)" Cycle="1" KValueRange="1.00" visualCentered="True" name="LogSpiralLibrary/StabInfo" />
+          </Wraper>
+        </Group>
+      </Sequence>
+    </Wraper>
+    <Wraper condition="MouseRight">
+      <Action ModifyData="(1.00|2.00|1.00|1.00|0|1.00)" Cycle="1" name="VirtualDream/BrokenBroadSwordRotatingStorm" />
+    </Wraper>
+  </Group>
+</Sequence>

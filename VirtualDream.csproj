@@ -17,6 +17,12 @@
 		<AdditionalFiles Include="**/*.xml;**/*.xnb" Exclude="bin/**/*;obj/**/*" Pack="true" ModPath="%(Identity)" />
 	</ItemGroup>
 	<ItemGroup>
+	  <AdditionalFiles Remove="Contents\StarBound\Weapons\UniqueWeapon\Protector\ProtectorsBroadswordEX.txt" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Compile Include="Contents\StarBound\Weapons\UniqueWeapon\Protector\ProtectorsBroadswordEX.txt" />
+	</ItemGroup>
+	<ItemGroup>
 	  <ProjectReference Include="..\LogSpiralLibrary\LogSpiralLibrary.csproj" />
 	  <ProjectReference Include="..\SubworldLibrary\SubworldLibrary.csproj" />
 	</ItemGroup>

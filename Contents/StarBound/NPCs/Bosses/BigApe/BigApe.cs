@@ -3411,7 +3411,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             const float heightW = 256;
             const float width = 4;
             var c = player.Center - Main.screenPosition;
-            var pC = Main.screenPosition + new Vector2(960, 512) - player.Center;
+            var pC = Main.screenPosition + Main.ScreenSize.ToVector2() * .5f - player.Center;
             //for (int n = 0; n < 15; n++) 
             //{
             //    var v = GetVector(n);
@@ -3496,7 +3496,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTransform"].SetValue(model * Main.GameViewMatrix.TransformationMatrix * projection);
+            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTransform"].SetValue(model  * projection);//* Main.GameViewMatrix.TransformationMatrix
             LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea");
             Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.BaseTex[8].Value;
@@ -3517,7 +3517,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, cs, 0, 2);
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
             return true;
         }
 

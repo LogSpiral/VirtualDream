@@ -1,0 +1,124 @@
+﻿/*using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using IllusionBoundMod.Utils;
+using System;
+using Terraria.ID;
+using System.Text.RegularExpressions;
+
+namespace IllusionBoundMod.Items.Weapons.UniqueWeapon.Protector
+{
+    public class ProtectorsBroadswordEX : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            Tooltip.SetDefault("可以在剑刃上充能，你想起了日炎刀。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            DisplayName.SetDefault("守护者之剑EX");
+        }
+        public int t = 0;
+        public bool pow = false;
+        public int[] ma = new int[1];
+        public override string Texture
+        {
+            get
+            {
+                if (pow)
+                {
+                    return "IllusionBoundMod/Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadswordPowEX";
+                }
+                else
+                {
+                    return "IllusionBoundMod/Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadswordEX";
+                }
+            }
+        }
+        public override void Update(ref float gravity, ref float maxFallSpeed)
+        {
+            t++;
+            Main.itemTexture[item.type] = ModContent.GetTexture(Texture);
+        }
+        public override void UpdateInventory(Player player)
+        {
+            t++;
+            Main.itemTexture[item.type] = ModContent.GetTexture(Texture);
+        }
+        public override void SetDefaults()
+        {
+            item.DamageType = DamageClass.Melee;
+            item.crit = 6;
+            item.width = 60;
+            item.height = 60;
+            item.useTime = 12;
+            item.useAnimation = 12;
+            item.knockBack = 10;
+            item.useStyle = ItemUseStyleID.Swing;
+            item.autoReuse = true;
+            item.value = 10000;
+            item.rare = MyRareID.Tier2;
+            item.damage = 400;
+        }
+        public override bool CanUseItem(Player player)
+        {
+            if (pow)
+            {
+                item.damage = 500;
+                item.useAnimation = 8;
+                item.useTime = 8;
+            }
+            else
+            {
+                item.damage = 400;
+                item.useAnimation = 12;
+                item.useTime = 12;
+            }
+            return true;
+        }
+        public override bool AltFunctionUse(Player player)
+        {
+            return t > 0;
+        }
+        public override void UseStyle(Player player)
+        {
+            if (!pow && player.altFunctionUse == 2 && t > 0)
+            {
+                pow = true;
+                for (int n = 0; n < 45; n++)
+                {
+                    Dust d = Dust.NewDustPerfect(player.Center, MyDustId.CyanBubble, new Vector2(Main.rand.NextFloat(2, 4), 0).RotatedBy(MathHelper.TwoPi / 30 * n), 0, Color.White, 1f);
+                    d.noGravity = true;
+                }
+                t = -45;
+            }
+            else if (pow && player.altFunctionUse == 2 && t > 0)
+            {
+                pow = false;
+                Projectile.NewProjectile(player.Center, new Vector2(32, 0).RotatedBy((Main.MouseWorld - player.Center).ToRotation()), mod.ProjectileType("ProtectorBlade"), (int)(item.damage * 2f * ma[0] / player.statManaMax2), item.knockBack, player.whoAmI);
+                for (int n = 0; n < 45; n++)
+                {
+                    Dust d = Dust.NewDustPerfect(player.Center, MyDustId.CyanBubble, new Vector2(Main.rand.NextFloat(2, 4), 0).RotatedBy(MathHelper.TwoPi / 30 * n), 0, Color.White, 1f);
+                    d.noGravity = true;
+                    t = -45;
+                }
+                player.statMana = 0;
+            }
+        }
+        public override void HoldItem(Player player)
+        {
+            if (player.statMana != 0)
+            {
+                ma[0] = player.statMana;
+            }
+            if (pow)
+            {
+                if (t % 2 == 0 && !player.CheckMana(2, true))
+                {
+                    pow = false;
+                }
+            }
+        }
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return Color.White;
+        }
+    }
+}*/

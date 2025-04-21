@@ -1,0 +1,1726 @@
+﻿using Terraria.ModLoader;
+using Terraria;
+using Microsoft.Xna.Framework;
+using VirtualDream.Utils;
+using System;
+using static Terraria.ModLoader.ModContent;
+using VirtualDream.Items.Others.Materials;
+using Terraria.ID;
+using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using Terraria.DataStructures;
+
+namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Protector
+{
+    //public class ProtectorsBroadsword : ModItem
+    //{
+    //    public override void SetStaticDefaults()
+    //    {
+    //        Tooltip.SetDefault("可以在剑刃上充能，你想起了日炎刀。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+    //        DisplayName.SetDefault("守护者之剑");
+    //    }
+    //    public int t = 0;
+    //    public bool pow = false;
+    //    public int[] ma = new int[1];
+    //    public override string Texture
+    //    {
+    //        get
+    //        {
+    //            if (pow)
+    //            {
+    //                return "IllusionBoundMod/Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadswordPow";
+    //            }
+    //            else
+    //            {
+    //                return "IllusionBoundMod/Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadsword";
+    //            }
+    //        }
+    //    }
+    //    public override void Update(ref float gravity, ref float maxFallSpeed)
+    //    {
+    //        t++;
+    //        Main.itemTexture[item.type] = ModContent.GetTexture(Texture);
+    //    }
+    //    public override void UpdateInventory(Player player)
+    //    {
+    //        t++;
+    //        Main.itemTexture[item.type] = ModContent.GetTexture(Texture);
+    //    }
+    //    public override void SetDefaults()
+    //    {
+    //        item.DamageType = DamageClass.Melee;
+    //        item.crit = 6;
+    //        item.width = 60;
+    //        item.height = 60;
+    //        item.useTime = 18;
+    //        item.useAnimation = 18;
+    //        item.knockBack = 10;
+    //        item.useStyle = ItemUseStyleID.Swing;
+    //        item.autoReuse = true;
+    //        item.value = 10000;
+    //        item.rare = MyRareID.Tier2;
+    //        item.damage = 280;
+    //    }
+    //    public override bool CanUseItem(Player player)
+    //    {
+    //        if (pow)
+    //        {
+    //            item.damage = 350;
+    //            item.useAnimation = 12;
+    //            item.useTime = 12;
+    //        }
+    //        else
+    //        {
+    //            item.damage = 280;
+    //            item.useAnimation = 18;
+    //            item.useTime = 18;
+    //        }
+    //        return true;
+    //    }
+    //    public override bool AltFunctionUse(Player player)
+    //    {
+    //        return t > 0;
+    //    }
+    //    public override void UseStyle(Player player)
+    //    {
+    //        if (!pow && player.altFunctionUse == 2 && t > 0)
+    //        {
+    //            pow = true;
+    //            for (int n = 0; n < 30; n++)
+    //            {
+    //                Dust d = Dust.NewDustPerfect(player.Center, MyDustId.CyanBubble, new Vector2(Main.rand.NextFloat(2, 4), 0).RotatedBy(MathHelper.TwoPi / 30 * n), 0, Color.White, 1f);
+    //                d.noGravity = true;
+    //            }
+    //            t = -60;
+    //        }
+    //        else if (pow && player.altFunctionUse == 2 && t > 0)
+    //        {
+    //            pow = false;
+    //            Projectile.NewProjectile(player.Center, new Vector2(32, 0).RotatedBy((Main.MouseWorld - player.Center).ToRotation()), mod.ProjectileType("ProtectorBlade"), (int)(item.damage * 1.5f * ma[0] / player.statManaMax2), item.knockBack, player.whoAmI);
+    //            for (int n = 0; n < 30; n++)
+    //            {
+    //                Dust d = Dust.NewDustPerfect(player.Center, MyDustId.CyanBubble, new Vector2(Main.rand.NextFloat(2,4), 0).RotatedBy(MathHelper.TwoPi / 30 * n), 0, Color.White, 1f);
+    //                d.noGravity = true;
+    //                t = -60;
+    //            }
+    //            player.statMana = 0;
+    //        }
+    //    }
+    //    public override void HoldItem(Player player)
+    //    {
+    //        if(player.statMana != 0)
+    //        {
+    //            ma[0] = player.statMana;
+    //        }
+    //        if (pow)
+    //        {
+    //            if(t % 2 == 0 &&!player.CheckMana(3, true))
+    //            {
+    //                pow = false;
+    //            }
+    //        }
+    //    }
+    //    public override void AddRecipes()
+    //    {
+    //        Recipe recipe1 = CreateRecipe();
+    //        recipe1.AddIngredient(mod.ItemType("BrokenBroadsword"));
+    //        recipe1.AddIngredient<Materials.StickOfRAM>(,10);
+    //        recipe1.AddIngredient<Materials.AncientEssence>(3000);
+    //        recipe1.AddIngredient(ItemID.LunarBar, 50);
+    //        recipe1.SetResult(this);
+    //        recipe1.AddRecipe();
+    //    }
+    //    public override Color? GetAlpha(Color lightColor)
+    //    {
+    //        return Color.White;
+    //    }
+    //}
+    public class ProtectorsShaderSwoosh
+    {
+        //public int timeLeft = 12;
+        public int timeLeftMax;
+        public int timeLeft;
+        public bool active = false;
+        public Vector2[] Pos = new Vector2[12];
+        public Vector2[] Poe = new Vector2[12];
+        public bool rot;
+        public void Update()
+        {
+            active = timeLeft > 0;
+            timeLeft -= active ? 1 : 0;
+        }
+    }
+    public class ProtectorsBroadPlayer : ModPlayer
+    {
+        Player player => Player;
+        public int usingProtectorsBroadSword = 0;
+        public bool usedProtectorsBroadSword = false;
+        public int waitingProtectorsBroadSword = 0;
+        public int protectorsBroadSwordTier = 0;
+        public const int MaxSwooshes = 18;
+        public int ShootBeam(IEntitySource source, float rad, int dmg, float speed = 16f)
+        {
+            int r = Main.rand.Next(2);
+            float r2 = Main.rand.NextFloat(0.5f, 2f);
+            return Projectile.NewProjectile(source, player.Center, rad.ToRotationVector2() * speed, ProjectileType<ProtectorsBroadSwordProjBeam>(), dmg, 5, player.whoAmI, Main.rand.NextFloat(0.1f, 0.3f) + r * r2 * 3f, -(2 * r - 1) * r2);
+        }
+        public int ShootBeam(IEntitySource source, Vector2 unit, int dmg, float speed = 16f)
+        {
+            int r = Main.rand.Next(2);
+            float r2 = Main.rand.NextFloat(0.5f, 2f);
+            return Projectile.NewProjectile(source, player.Center, Vector2.Normalize(unit) * speed, ProjectileType<ProtectorsBroadSwordProjBeam>(), dmg, 5, player.whoAmI, Main.rand.NextFloat(0.1f, 0.3f) + r * r2 * 3f, -(2 * r - 1) * r2);
+        }
+        public override void ResetEffects()
+        {
+            foreach (var sw in swooshes)
+            {
+                if (sw.active)
+                {
+                    sw.Update();
+                }
+            }
+        }
+        public ProtectorsShaderSwoosh[] swooshes = new ProtectorsShaderSwoosh[MaxSwooshes];
+        public int NewSwoosh(Vector2[] vector2s, Vector2[] vectors)
+        {
+            int num = -1;
+            int num2 = MaxSwooshes;
+            for (int i = 0; i < num2; i++)
+            {
+                if (!swooshes[i].active)
+                {
+                    num = i;
+                    break;
+                }
+            }
+            if (num == -1)
+            {
+                return MaxSwooshes;
+            }
+            ProtectorsShaderSwoosh shaderSwoosh = swooshes[num];
+            shaderSwoosh.active = true;
+            shaderSwoosh.timeLeft = vector2s.Length;
+            shaderSwoosh.timeLeftMax = vector2s.Length;
+            shaderSwoosh.Pos = new Vector2[vector2s.Length];
+            shaderSwoosh.Poe = new Vector2[vector2s.Length];
+            shaderSwoosh.rot = false;
+            for (int n = 0; n < vector2s.Length; n++)
+            {
+                shaderSwoosh.Pos[n] = vector2s[n];
+                shaderSwoosh.Poe[n] = vectors[n];
+            }
+            return num;
+        }
+        public int NewSwoosh(Vector2[] vector2s)
+        {
+            int num = -1;
+            int num2 = MaxSwooshes;
+            for (int i = 0; i < num2; i++)
+            {
+                if (!swooshes[i].active)
+                {
+                    num = i;
+                    break;
+                }
+            }
+            if (num == -1)
+            {
+                return MaxSwooshes;
+            }
+            ProtectorsShaderSwoosh shaderSwoosh = swooshes[num];
+            shaderSwoosh.active = true;
+            shaderSwoosh.timeLeft = vector2s.Length;
+            shaderSwoosh.timeLeftMax = vector2s.Length;
+            shaderSwoosh.Pos = new Vector2[vector2s.Length];
+            shaderSwoosh.rot = true;
+            for (int n = 0; n < vector2s.Length; n++)
+            {
+                shaderSwoosh.Pos[n] = vector2s[n];
+            }
+            return num;
+        }
+        //public static readonly PlayerLayer SwooshEffect = new PlayerLayer("IllusionBoundMod", "SwooshEffect", PlayerLayer.MiscEffectsFront, delegate (PlayerDrawInfo drawInfo)
+        //{
+        //    Player drawPlayer = drawInfo.drawPlayer;
+        //    ProtectorsBroadPlayer modPlayer = drawPlayer.GetModPlayer<ProtectorsBroadPlayer>();
+        //    SpriteBatch spriteBatch = Main.spriteBatch;
+        //    //spriteBatch.End();
+        //    //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+        //    //RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+        //    //var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+        //    //var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+        //    //IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+        //    //IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
+        //    //IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(0.5f, 1f, 0.75f).ToVector4());
+        //    //Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.MainColor[7];
+        //    //Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.MainShape[1];
+        //    //Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.MaskColor[6];
+        //    //Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+        //    //Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        //    //Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+        //    //IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+        //    //for (int n = 0; n < MaxSwooshes; n++)
+        //    //{
+        //    //    if (modPlayer.swooshes[n].active && modPlayer.swooshes[n].timeLeft >= 2)
+        //    //    {
+        //    //        List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+        //    //        for (int i = 0; i < modPlayer.swooshes[n].timeLeft; i++)
+        //    //        {
+        //    //            var factor = i / (modPlayer.swooshes[n].timeLeftMax - 1f) + (modPlayer.swooshes[n].timeLeftMax - modPlayer.swooshes[n].timeLeft) / (modPlayer.swooshes[n].timeLeftMax - 1f);
+        //    //            float w = 1 - factor;
+        //    //            bars.Add(new CustomVertexInfo(modPlayer.swooshes[n].Pos[i] + (modPlayer.swooshes[n].rot ? drawPlayer.Center : default), Color.White, new Vector3(factor, 1, w)));
+        //    //            bars.Add(new CustomVertexInfo(modPlayer.swooshes[n].rot ? drawPlayer.Center : modPlayer.swooshes[n].Poe[i], Color.White, new Vector3(factor, 0, w)));
+        //    //        }
+        //    //        List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+        //    //        if (bars.Count > 2)
+        //    //        {
+        //    //            for (int i = 0; i < bars.Count - 2; i += 2)
+        //    //            {
+        //    //                triangleList.Add(bars[i]);
+        //    //                triangleList.Add(bars[i + 2]);
+        //    //                triangleList.Add(bars[i + 1]);
+        //    //                triangleList.Add(bars[i + 1]);
+        //    //                triangleList.Add(bars[i + 2]);
+        //    //                triangleList.Add(bars[i + 3]);
+        //    //            }
+        //    //            Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
+        //    //        }
+        //    //    }
+        //    //}
+        //    //Main.graphics.GraphicsDevice.RasterizerState = originalState;
+        //    //spriteBatch.End();
+        //    //spriteBatch.Begin();
+        //    spriteBatch.End();
+        //    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+        //    RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+        //    var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+        //    var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+        //    IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+        //    IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
+        //    IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(0.5f, 1f, 0.75f).ToVector4());
+        //    Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.MainColor[7];
+        //    Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.MainShape[1];
+        //    Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.MaskColor[6];
+        //    Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+        //    Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+        //    Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+        //    IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+        //    for (int n = 0; n < MaxSwooshes; n++)
+        //    {
+        //        if (modPlayer.swooshes[n].active && modPlayer.swooshes[n].timeLeft >= 2 && !modPlayer.swooshes[n].rot)
+        //        {
+        //            List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+        //            for (int i = 0; i < modPlayer.swooshes[n].timeLeft; i++)
+        //            {
+        //                var factor = i / (modPlayer.swooshes[n].timeLeftMax - 1f) + (modPlayer.swooshes[n].timeLeftMax - modPlayer.swooshes[n].timeLeft) / (modPlayer.swooshes[n].timeLeftMax - 1f);
+        //                float w = 1 - factor;
+        //                bars.Add(new CustomVertexInfo(modPlayer.swooshes[n].Pos[i], Color.White, new Vector3(factor, 1, w)));
+        //                bars.Add(new CustomVertexInfo(modPlayer.swooshes[n].Poe[i], Color.White, new Vector3(factor, 0, w)));
+        //            }
+        //            List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+        //            if (bars.Count > 2)
+        //            {
+        //                for (int i = 0; i < bars.Count - 2; i += 2)
+        //                {
+        //                    triangleList.Add(bars[i]);
+        //                    triangleList.Add(bars[i + 2]);
+        //                    triangleList.Add(bars[i + 1]);
+        //                    triangleList.Add(bars[i + 1]);
+        //                    triangleList.Add(bars[i + 2]);
+        //                    triangleList.Add(bars[i + 3]);
+        //                }
+        //                Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
+        //            }
+        //        }
+        //    }
+        //    Main.graphics.GraphicsDevice.RasterizerState = originalState;
+        //    spriteBatch.End();
+        //    spriteBatch.Begin();
+        //});
+        public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
+        {
+            bool flag = false;
+            for (int n = 0; n < MaxSwooshes; n++)
+            {
+                flag |= swooshes[n].active;
+            }
+            if (!flag)
+            {
+                return;
+            }
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+            var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+            var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+            IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
+            IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(0.5f, 1f, 0.75f).ToVector4());
+            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.MainColor[7];
+            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.MainShape[1];
+            Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.MaskColor[6];
+            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+            IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+            for (int n = 0; n < MaxSwooshes; n++)
+            {
+                if (swooshes[n].active && swooshes[n].timeLeft >= 2 && !swooshes[n].rot)
+                {
+                    List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+                    //for (int i = 0; i < swooshes[n].timeLeft; i++)
+                    //{
+                    //    var factor = i / (swooshes[n].timeLeftMax - 1f) + (swooshes[n].timeLeftMax - swooshes[n].timeLeft) / (swooshes[n].timeLeftMax - 1f);
+                    //    float w = 1 - factor;
+                    //    bars.Add(new CustomVertexInfo(swooshes[n].Pos[i] + (swooshes[n].rot ? player.Center : default), Color.White, new Vector3(factor, 1, w)));
+                    //    bars.Add(new CustomVertexInfo(swooshes[n].rot ? player.Center : swooshes[n].Poe[i], Color.White, new Vector3(factor, 0, w)));
+                    //}
+                    for (int i = 0; i < swooshes[n].timeLeft; i++)
+                    {
+                        var factor = i / (swooshes[n].timeLeftMax - 1f) + (swooshes[n].timeLeftMax - swooshes[n].timeLeft) / (swooshes[n].timeLeftMax - 1f);
+                        float w = 1 - factor;
+                        bars.Add(new CustomVertexInfo(swooshes[n].Pos[i], Color.White, new Vector3(factor, 1, w)));
+                        bars.Add(new CustomVertexInfo(swooshes[n].Poe[i], Color.White, new Vector3(factor, 0, w)));
+                    }
+                    List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+                    if (bars.Count > 2)
+                    {
+                        for (int i = 0; i < bars.Count - 2; i += 2)
+                        {
+                            triangleList.Add(bars[i]);
+                            triangleList.Add(bars[i + 2]);
+                            triangleList.Add(bars[i + 1]);
+                            triangleList.Add(bars[i + 1]);
+                            triangleList.Add(bars[i + 2]);
+                            triangleList.Add(bars[i + 3]);
+                        }
+                        Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
+                    }
+                }
+            }
+            Main.graphics.GraphicsDevice.RasterizerState = originalState;
+            spriteBatch.End();
+            spriteBatch.Begin();
+
+            //SwooshEffect.visible = true;
+            //layers.Insert(0, SwooshEffect);
+
+            //layers.Add(SwooshEffect);
+        }
+        public ProtectorsBroadPlayer()
+        {
+            for (int n = 0; n < MaxSwooshes; n++)
+            {
+                swooshes[n] = new ProtectorsShaderSwoosh();
+            }
+        }
+    }
+    public class ProtectorsBroadSword : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            Tooltip.SetDefault("用这把修复了的英雄之剑守护你脚下那片圣洁的土地吧，有剑不用和无剑可用是两码事。\n这把剑若是用于侵略战争便是违背了初心呢。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            DisplayName.SetDefault("守护者之剑");
+        }
+        public override void SetDefaults()
+        {
+            item.DamageType = DamageClass.Melee;
+            item.crit = 6;
+            item.width = 60;
+            item.height = 60;
+            item.useTime = 18;
+            item.useAnimation = 18;
+            item.knockBack = 10;
+            item.useStyle = ItemUseStyleID.Swing;
+            item.autoReuse = true;
+            item.value = 10000;
+            item.rare = MyRareID.Tier2;
+            item.damage = 280;
+            item.shootSpeed = 1f;
+            item.shoot = ProjectileType<ProtectorsBroadSwordCharging>();
+        }
+        Item item => Item;
+        public override bool AltFunctionUse(Player player)
+        {
+            return player.ownedProjectileCounts[item.shoot] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProj>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProj>()] < 1;
+        }
+        public override bool CanUseItem(Player player)
+        {
+            item.noUseGraphic = player.altFunctionUse == 2 || !(player.ownedProjectileCounts[item.shoot] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProj>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProj>()] < 1);
+            return player.ownedProjectileCounts[item.shoot] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProj>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProj>()] < 1;
+        }
+        public override void HoldItem(Player player)
+        {
+            //item.noUseGraphic = player.altFunctionUse == 2 || !(player.ownedProjectileCounts[item.shoot] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProj>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProj>()] < 1);
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            return player.altFunctionUse == 2;
+        }
+        public override void AddRecipes()
+        {
+            Recipe recipe1 = CreateRecipe();
+            recipe1.AddIngredient<BrokenBroadSword>();
+            recipe1.AddIngredient<StickOfRAM>(10);
+            recipe1.AddIngredient<Materials.AncientEssence>(3000);
+            recipe1.AddIngredient(ItemID.LunarBar, 50);
+            recipe1.SetResult(this);
+            recipe1.AddRecipe();
+        }
+    }
+    public class ProtectorsBroadSwordCharging : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("充能中的守护者之剑");
+        }
+        Projectile projectile => Projectile;
+        public override void SetDefaults()
+        {
+            projectile.width = projectile.height = 1;
+            projectile.aiStyle = -1;
+            projectile.friendly = true;
+            projectile.penetrate = -1;
+            projectile.DamageType = DamageClass.Melee;
+            projectile.tileCollide = false;
+            projectile.timeLeft = 29;
+            projectile.ignoreWater = false;
+        }
+        private Player player => Main.player[projectile.owner];
+        public override void AI()
+        {
+            projectile.Center = player.Center;
+            player.heldProj = projectile.whoAmI;
+            player.itemTime = 2;
+            player.itemAnimation = 2;
+            projectile.light = (5 - projectile.timeLeft / 5) * 0.1f;
+            if (player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProj>()] > 0 || player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProj>()] > 0)
+            {
+                projectile.Kill();
+            }
+        }
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+        public override void Kill(int timeLeft)
+        {
+            if (player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProj>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProj>()] < 1)
+            {
+                Projectile.NewProjectile(projectile.GetSource_FromThis(), player.Center, default, ProjectileType<ProtectorsBroadSwordProj>(), projectile.damage, projectile.knockBack, projectile.owner);
+            }
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center - Main.screenPosition, new Rectangle(48 * (5 - projectile.timeLeft / 5), 0, 48, 128), projectile.GetAlpha(lightColor), 0, new Vector2(22, 96), 1f, 0, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadSwordCharging_G"), player.Center - Main.screenPosition, new Rectangle(48 * (5 - projectile.timeLeft / 5), 0, 48, 128), Color.White, 0, new Vector2(22, 96), 1f, 0, 0);
+            return false;
+        }
+    }
+    public class ProtectorsBroadSwordProj : ModProjectile
+    {
+        private List<Vector2> vector2s = new List<Vector2>();
+        private List<Vector2> vectors = new List<Vector2>();
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("守护者之剑");
+        }
+        private Player player => Main.player[projectile.owner];
+        private ProtectorsBroadPlayer swordPlayer => player.GetModPlayer<ProtectorsBroadPlayer>();
+        private bool Right;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            SpriteEffects spriteEffects;
+            const float Coefficient = 2f;
+            const float Length = 80f;
+            Texture2D texture2D = IllusionBoundMod.GetTexture("Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadSwordProj_G");
+            float k = (player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword * 3f / 2) / player.itemAnimationMax;
+            if (Right)
+            {
+                spriteEffects = SpriteEffects.None;
+                if (swordPlayer.usedProtectorsBroadSword)
+                {
+                    if (swordPlayer.protectorsBroadSwordTier == 1)
+                    {
+                        player.bodyFrame.Y = 56 * (4 - (int)((MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - (float)Math.Pow(player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword, 2) / (player.itemAnimationMax * player.itemAnimationMax))) / (MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8)) * 4));
+                        float r = MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - (float)Math.Pow(player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword, 2) / (player.itemAnimationMax * player.itemAnimationMax));
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center + new Vector2(-4, 4) - Main.screenPosition, null, projectile.GetAlpha(lightColor), r, new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, player.Center + new Vector2(-4, 4) - Main.screenPosition, null, Color.White, r, new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, r.ToRotationVector2() * Length + player.Center + new Vector2(-4, 4) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(r.ToRotationVector2() * Length + player.Center + new Vector2(-4, 4));
+                    }
+                    if (swordPlayer.protectorsBroadSwordTier == 2)
+                    {
+                        player.bodyFrame.Y = 1064;
+
+                        Vector2 vector = player.Center + new Vector2(-4, 4) + new Vector2(-1.414213562373095f * 1.732050807568877f, 1.414213562373095f) * Coefficient * k;
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, vector - Main.screenPosition, null, projectile.GetAlpha(lightColor), MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, vector - Main.screenPosition, null, Color.White, MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, vector + new Vector2(Length, 0) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(vector + MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k).ToRotationVector2() * Length);
+                    }
+                    if (swordPlayer.protectorsBroadSwordTier == 0)
+                    {
+                        player.bodyFrame.Y = 168;
+                        Vector2 vec1 = new Vector2(-1.414213562373095f * 1.732050807568877f, 1.414213562373095f);
+                        Vector2 vec2 = new Vector2(1.414213562373095f * 2f, 0);
+                        Vector2 adder = vec2 - vec1;
+                        Vector2 vector = player.Center + new Vector2(-4, 4) + new Vector2(-1.414213562373095f * 1.732050807568877f, 1.414213562373095f) * Coefficient + adder * Coefficient * k;
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, vector - Main.screenPosition, null, projectile.GetAlpha(lightColor), MathHelper.Lerp(-0.3926991f / 2, 0, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, vector - Main.screenPosition, null, Color.White, MathHelper.Lerp(-0.3926991f / 2, 0, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, vector + new Vector2(Length, 0) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(vector + MathHelper.Lerp(-0.3926991f / 2, 0, k).ToRotationVector2() * Length);
+                    }
+                    if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                        vectors.Add(player.Center);
+                }
+                else
+                {
+                    player.bodyFrame.Y = 0;
+                    spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center + new Vector2(-6, 6) - Main.screenPosition, null, projectile.GetAlpha(lightColor), MathHelper.Pi / 12, new Vector2(12, 20), 1f, spriteEffects, 0);
+                    spriteBatch.Draw(texture2D, player.Center + new Vector2(-6, 6) - Main.screenPosition, null, Color.White, MathHelper.Pi / 12, new Vector2(12, 20), 1f, spriteEffects, 0);
+                }
+            }
+            else
+            {
+                spriteEffects = SpriteEffects.FlipVertically;
+                if (swordPlayer.usedProtectorsBroadSword)
+                {
+                    if (swordPlayer.protectorsBroadSwordTier == 1)
+                    {
+                        player.bodyFrame.Y = 56 * (4 - (int)((MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - (float)Math.Pow(player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword, 2) / (player.itemAnimationMax * player.itemAnimationMax))) / (MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8)) * 4));
+                        float r = -MathHelper.Pi - (MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - (float)Math.Pow(player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword, 2) / (player.itemAnimationMax * player.itemAnimationMax)));
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center + new Vector2(4, 4) - Main.screenPosition, null, projectile.GetAlpha(lightColor), r, new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, player.Center + new Vector2(4, 4) - Main.screenPosition, null, Color.White, r, new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, r.ToRotationVector2() * Length + player.Center + new Vector2(4, 4) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(r.ToRotationVector2() * Length + player.Center + new Vector2(4, 4));
+                    }
+                    if (swordPlayer.protectorsBroadSwordTier == 2)
+                    {
+                        player.bodyFrame.Y = 1064;
+                        Vector2 vector = player.Center + new Vector2(4, 4) + new Vector2(1.414213562373095f * 1.732050807568877f, 1.414213562373095f) * Coefficient * k;
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, vector - Main.screenPosition, null, projectile.GetAlpha(lightColor), -MathHelper.Pi - MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, vector - Main.screenPosition, null, Color.White, -MathHelper.Pi - MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, vector - new Vector2(Length, 0) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(vector + (-MathHelper.Pi - MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k)).ToRotationVector2() * Length);
+                    }
+                    if (swordPlayer.protectorsBroadSwordTier == 0)
+                    {
+                        player.bodyFrame.Y = 168;
+                        Vector2 vec1 = new Vector2(1.414213562373095f * 1.732050807568877f, 1.414213562373095f);
+                        Vector2 vec2 = new Vector2(-1.414213562373095f * 2f, 0);
+                        Vector2 adder = vec2 - vec1;
+                        Vector2 vector = player.Center + new Vector2(4, 4) + new Vector2(1.414213562373095f * 1.732050807568877f, 1.414213562373095f) * Coefficient + adder * Coefficient * k;
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, vector - Main.screenPosition, null, projectile.GetAlpha(lightColor), -MathHelper.Pi - MathHelper.Lerp(-0.3926991f / 2, 0, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, vector - Main.screenPosition, null, Color.White, -MathHelper.Pi - MathHelper.Lerp(-0.3926991f / 2, 0, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, vector - new Vector2(Length, 0) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(vector + (-MathHelper.Pi - MathHelper.Lerp(-0.3926991f / 2, 0, k)).ToRotationVector2() * Length);
+                    }
+                    if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                        vectors.Add(player.Center);
+                }
+                else
+                {
+                    player.bodyFrame.Y = 0;
+                    spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center + new Vector2(6, 6) - Main.screenPosition, null, projectile.GetAlpha(lightColor), -MathHelper.Pi - MathHelper.Pi / 12, new Vector2(12, 20), 1f, spriteEffects, 0);
+                    spriteBatch.Draw(texture2D, player.Center + new Vector2(6, 6) - Main.screenPosition, null, Color.White, -MathHelper.Pi - MathHelper.Pi / 12, new Vector2(12, 20), 1f, spriteEffects, 0);
+                }
+            }
+            return false;
+        }
+        private Vector2[] Inverted(List<Vector2> vector2s)
+        {
+            int c = vector2s.Count / 2;
+            Vector2[] vec = new Vector2[c * 2 - 1];
+            for (int n = 0; n < c; n++)
+            {
+                vec[2 * n] = vector2s[(c - 1 - n) * 2];
+                if (n != c - 1)
+                    vec[2 * n + 1] = (vector2s[(c - 1 - n) * 2] + vector2s[(c - 2 - n) * 2]) * 0.5f;
+            }
+            return vec;
+        }
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            if (Right)
+            {
+                return targetHitbox.Intersects(new Rectangle((int)projectile.Center.X, (int)projectile.Center.Y - 96, 96, 128));
+            }
+            return targetHitbox.Intersects(new Rectangle((int)projectile.Center.X - 96, (int)projectile.Center.Y - 96, 96, 128));
+        }
+        Projectile projectile => Projectile;
+        public override void AI()
+        {
+            projectile.damage = player.GetWeaponDamage(player.HeldItem);
+            if (!player.active || player.inventory[player.selectedItem].type != ItemType<ProtectorsBroadSword>())
+            {
+                projectile.Kill();
+            }
+            if (hitCoolDown > 0)
+            {
+                projectile.friendly = false;
+                hitCoolDown--;
+            }
+            else if (swordPlayer.usingProtectorsBroadSword > 0)
+            {
+                projectile.friendly = true;
+            }
+            if (swordPlayer.usingProtectorsBroadSword > 0)
+            {
+                swordPlayer.usingProtectorsBroadSword--;
+            }
+            Right = player.direction == 1;
+            if (swordPlayer.usingProtectorsBroadSword == 0)
+            {
+                swordPlayer.waitingProtectorsBroadSword++;
+            }
+            if (swordPlayer.usingProtectorsBroadSword == 0 && swordPlayer.waitingProtectorsBroadSword == 1 && vector2s.Count > 2)
+            {
+                if (!Main.gamePaused && swordPlayer.protectorsBroadSwordTier == 1)
+                {
+                    //float r = MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - ((float)Math.Pow(player.itemAnimationMax, 2) / (player.itemAnimationMax * player.itemAnimationMax)));
+                    //float r = 0.3926991f + MathHelper.Pi / 18;
+                    float r = Right ? 0.3926991f : MathHelper.Pi - 0.3926991f;
+                    vector2s.Add(r.ToRotationVector2() * 80f + player.Center + new Vector2(4 * (Right ? -1 : 1), 4));
+                    vector2s.Add(r.ToRotationVector2() * 80f + player.Center + new Vector2(4 * (Right ? -1 : 1), 4));
+                    vectors.Add(player.Center);
+                    vectors.Add(player.Center);
+                }
+
+
+                swordPlayer.NewSwoosh(Inverted(vector2s), Inverted(vectors));
+                //swordPlayer.NewSwoosh(vector2s.ToArray(), vectors.ToArray());
+                vectors.Clear();
+                vector2s.Clear();
+                if (swordPlayer.usingProtectorsBroadSword == 0)
+                {
+                    float r = (Main.MouseWorld - player.Center).ToRotation();
+                    Main.projectile[swordPlayer.ShootBeam(projectile.GetSource_FromThis(), r, (int)(projectile.damage * 0.8f))].rotation = r;
+                }
+            }
+            if (swordPlayer.waitingProtectorsBroadSword >= 30 && swordPlayer.usedProtectorsBroadSword)
+            {
+                projectile.friendly = false;
+                swordPlayer.usedProtectorsBroadSword = false;
+                swordPlayer.protectorsBroadSwordTier = 0;
+                swordPlayer.waitingProtectorsBroadSword = 0;
+            }
+            if (Main.mouseLeft && swordPlayer.usingProtectorsBroadSword == 0)
+            {
+                player.direction = Math.Sign(Main.MouseWorld.X - player.Center.X);
+                swordPlayer.usedProtectorsBroadSword = true;
+                swordPlayer.waitingProtectorsBroadSword = 0;
+                if (swordPlayer.protectorsBroadSwordTier == 0)
+                {
+                    swordPlayer.protectorsBroadSwordTier = 1;
+                    swordPlayer.usingProtectorsBroadSword = player.itemAnimationMax;
+                }
+                else if (swordPlayer.protectorsBroadSwordTier == 1)
+                {
+                    swordPlayer.protectorsBroadSwordTier = 2;
+                    if ((int)(player.itemAnimationMax / 3f * 2) >= 1)
+                    {
+                        swordPlayer.usingProtectorsBroadSword = (int)(player.itemAnimationMax / 3f * 2);
+                    }
+                    else
+                    {
+                        swordPlayer.usingProtectorsBroadSword = 1;
+                    }
+                }
+                else if (swordPlayer.protectorsBroadSwordTier == 2)
+                {
+                    swordPlayer.protectorsBroadSwordTier = 0;
+                    if ((int)(player.itemAnimationMax / 3f * 2) >= 1)
+                    {
+                        swordPlayer.usingProtectorsBroadSword = (int)(player.itemAnimationMax / 3f * 2);
+                    }
+                    else
+                    {
+                        swordPlayer.usingProtectorsBroadSword = 1;
+                    }
+                }
+            }
+            if ((int)Main.time % 10 == 0 && !player.CheckMana(15, true))
+            {
+                projectile.Kill();
+            }
+            if (Main.mouseRight)
+            {
+                Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, default, ProjectileType<ProtectorsBroadSwordRotProj>(), projectile.damage, projectile.knockBack, projectile.owner);
+                projectile.Kill();
+            }
+            projectile.spriteDirection = player.direction;
+            projectile.direction = projectile.spriteDirection;
+            projectile.Center = player.Center;
+            projectile.timeLeft = 2;
+            player.heldProj = projectile.whoAmI;
+        }
+
+        public override void SetDefaults()
+        {
+            projectile.width = 1;
+            projectile.height = 1;
+            //projectile.alpha = 255;
+            projectile.aiStyle = -1;
+            projectile.friendly = false;
+            projectile.tileCollide = false;
+            projectile.DamageType = DamageClass.Melee;
+            projectile.penetrate = -1;
+            projectile.light = 0.5f;
+        }
+        private int hitCoolDown = 0;
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            hitCoolDown = 5;
+            target.immune[projectile.owner] = 0;
+        }
+    }
+    public class ProtectorsBroadSwordRotProj : ModProjectile
+    {
+        Projectile projectile => Projectile;
+
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("守护者之剑");
+        }
+        //private Vector2[] Inverted(List<Vector2> vector2s)
+        //{
+        //    int c = vector2s.Count;
+        //    Vector2[] vec = new Vector2[c];
+        //    for (int n = 0; n < c; n++)
+        //    {
+        //        vec[n] = vector2s[c - 1 - n];
+        //    }
+        //    return vec;
+        //}
+        private int Timer
+        {
+            get
+            {
+                return projectile.frameCounter;
+            }
+            set
+            {
+                projectile.frameCounter = value;
+            }
+        }
+        private int counter;
+        private int dir;
+        //private List<Vector2> vector2s = new List<Vector2>();
+        private float GetRot(int d) => -Math.Sign(d - 0.5f) * projectile.ai[d] + MathHelper.PiOver2;
+        private Player player => Main.player[projectile.owner];
+        private ProtectorsBroadPlayer swordPlayer => player.GetModPlayer<ProtectorsBroadPlayer>();
+        private int GetSpeed()
+        {
+            //我知道这里换一种方式会更快，但是暂时懒得动脑子（
+            if (Timer >= 420 && (player.name == "Protector" || player.name == "守护者"))
+            {
+                return 1;
+            }
+            else if (Timer >= 315)
+            {
+                return 2;
+            }
+            else if (Timer >= 225)
+            {
+                return 3;
+            }
+            else if (Timer >= 150)
+            {
+                return 4;
+            }
+            else if (Timer >= 90)
+            {
+                return 5;
+            }
+            else if (Timer >= 45)
+            {
+                return 6;
+            }
+            else if (Timer >= 15)
+            {
+                return 7;
+            }
+            else
+            {
+                return 8;
+            }
+        }
+        private Vector2[] GetVector()
+        {
+            float sumAngle = projectile.ai[0] + projectile.ai[1];
+            bool flag = sumAngle <= MathHelper.Pi;
+            float angle = flag ? sumAngle : MathHelper.TwoPi - sumAngle;
+            double c = Math.Cos(angle);
+            double k = 0.99 * Math.Sqrt((1 - c) / 2);
+            float a = (float)Math.Sqrt(1 / (1 - k * k));
+            Vector2 A = GetRot(dir).ToRotationVector2();//先前的
+            Vector2 B = GetRot((dir + 1) % 2).ToRotationVector2();//当前的
+            A.Y *= -1;
+            B.Y *= -1;
+            Vector2 u = (B - A) / 2f;
+            Vector2 P = (B + A) / 2f;
+            //Vector2 P = (float)Math.Sqrt((c + 1) / 2) / u.Length() * new Vector2(u.Y, -u.X);
+            const int timeL = ProtectorsBroadPlayer.MaxSwooshes;
+            Vector2[] Vecs = new Vector2[timeL];
+            for (int n = 0; n < timeL; n++)
+            {
+                float factor = n / (timeL - 1f);
+                Vecs[timeL - 1 - n] = new Vector2(u.Length() * (float)Math.Cos(factor * MathHelper.Pi), u.Length() / a * (float)Math.Sin(factor * MathHelper.Pi)).RotatedBy(u.ToRotation()) * 80f + P * 80f;
+                Vecs[timeL - 1 - n].Y *= -1;
+                //Dust.NewDustPerfect(Vecs[n] + player.Center, MyDustId.CyanBubble, default, 0, Color.White, factor).noGravity = true;
+            }
+            //for (int n = 0; n < 61; n++)
+            //{
+            //    float factor = 1 - n / 60f;
+            //    //Vecs[n] = ;
+            //    Dust.NewDustPerfect(new Vector2(u.Length() * (float)Math.Cos(factor * MathHelper.Pi), 1 / a * (float)Math.Sin(factor * MathHelper.Pi)).RotatedBy(u.ToRotation()) * 80f + P + player.Center, MyDustId.CyanBubble, default, 0, Color.White, factor).noGravity = true;
+            //}
+            return Vecs;
+        }
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            float point = 0f;
+            return counter <= 2 && Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center, GetRot(dir).ToRotationVector2() * 96f + projectile.Center, 24, ref point);
+        }
+        public override void AI()
+        {
+            Timer++;
+            counter++;
+            //if (SwordPlayer.swooshes[0].active) 
+            //{
+            //    Main.NewText(SwordPlayer.swooshes[0].Pos[0]);
+            //}
+            //vector2s.Add(player.Center);
+            if (counter >= GetSpeed() && Main.mouseRight)
+            {
+                if (!player.CheckMana(5, true))
+                {
+                    projectile.Kill();
+                }
+                SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
+                counter = 0;
+                projectile.ai[dir] = MathHelper.Clamp((float)IllusionBoundExtensionMethods.GaussianRandom(0.5, 0.2, WorldGen.genRand), 0.1f, 0.9f) * MathHelper.Pi;
+                Main.projectile[swordPlayer.ShootBeam(projectile.GetSource_FromThis(), GetRot(dir), (int)(projectile.damage * 0.8f), Main.rand.Next(12, 17))].rotation = GetRot(dir);
+                dir++;
+                dir %= 2;
+                //GetVector();
+                swordPlayer.NewSwoosh(GetVector());
+                //swordPlayer.NewSwoosh(GetVector(), Inverted(vector2s));
+            }
+            player.direction = dir;
+            bool flag = false;
+            foreach (var sw in swordPlayer.swooshes)
+            {
+                flag |= sw.active && sw.rot;
+            }
+            if (!Main.mouseRight && !flag)
+            {
+                projectile.Kill();
+            }
+            projectile.Center = player.Center;
+            projectile.timeLeft = 2;
+            player.ChangeDir(dir);
+            player.heldProj = projectile.whoAmI;
+            player.itemTime = 2;
+            player.itemAnimation = 2;
+            player.itemRotation = GetRot(dir);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            if (Main.mouseRight)
+            {
+                spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center - Main.screenPosition, null, projectile.GetAlpha(lightColor), GetRot(dir), new Vector2(13, 13), 1f, 0, 0);
+                spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadSwordProj_G"), player.Center - Main.screenPosition, null, Color.White, GetRot(dir), new Vector2(13, 13), 1f, 0, 0);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+            var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+            var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+            IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
+            IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(0.5f, 1f, 0.75f).ToVector4());
+            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.MainColor[7];
+            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.MainShape[1];
+            Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.MaskColor[6];
+            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+            IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+            for (int n = 0; n < ProtectorsBroadPlayer.MaxSwooshes; n++)
+            {
+                if (swordPlayer.swooshes[n].active && swordPlayer.swooshes[n].timeLeft >= 2 && swordPlayer.swooshes[n].rot)
+                {
+                    //SwordPlayer.swooshes[n].DrawShoosh();
+                    //if (timeLeft < 2)
+                    //{
+                    //    return;
+                    //}
+                    List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+                    for (int i = 0; i < swordPlayer.swooshes[n].timeLeft; i++)
+                    {
+                        //var factor = 1 - (i - 1) / 12f - (12 - SwordPlayer.swooshes[n].timeLeft) / 12f;
+                        //var normalDir = SwordPlayer.swooshes[n].Pos[i - 1] - SwordPlayer.swooshes[n].Pos[i];
+                        //normalDir = Vector2.Normalize(new Vector2(-normalDir.Y, normalDir.X));
+                        //float w = (float)(1 - Math.Pow(2 * factor - 1, 4));
+                        //bars.Add(new CustomVertexInfo(SwordPlayer.swooshes[n].Pos[i] + player.Center + normalDir * 16, Color.White, new Vector3(factor, 1, w)));
+                        //bars.Add(new CustomVertexInfo(SwordPlayer.swooshes[n].Pos[i] + player.Center + normalDir * -16, Color.White, new Vector3(factor, 0, w)));
+                        var factor = i / (ProtectorsBroadPlayer.MaxSwooshes - 1f) + (ProtectorsBroadPlayer.MaxSwooshes - swordPlayer.swooshes[n].timeLeft) / (ProtectorsBroadPlayer.MaxSwooshes - 1f);
+                        float w = (float)(1 - Math.Pow(2 * factor - 1, 4));
+                        bars.Add(new CustomVertexInfo(swordPlayer.swooshes[n].Pos[i] + player.Center, Color.White, new Vector3(factor, 1, w)));
+                        bars.Add(new CustomVertexInfo(player.Center, Color.White, new Vector3(factor, 0, w)));
+                    }
+                    List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+                    if (bars.Count > 2)
+                    {
+                        for (int i = 0; i < bars.Count - 2; i += 2)
+                        {
+                            triangleList.Add(bars[i]);
+                            triangleList.Add(bars[i + 2]);
+                            triangleList.Add(bars[i + 1]);
+                            triangleList.Add(bars[i + 1]);
+                            triangleList.Add(bars[i + 2]);
+                            triangleList.Add(bars[i + 3]);
+                        }
+                        Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
+                    }
+                }
+            }
+            Main.graphics.GraphicsDevice.RasterizerState = originalState;
+            spriteBatch.End();
+            spriteBatch.Begin();
+            return false;
+        }
+        public override void SetDefaults()
+        {
+            projectile.width = 1;
+            projectile.height = 1;
+            projectile.aiStyle = -1;
+            projectile.friendly = true;
+            projectile.tileCollide = false;
+            projectile.DamageType = DamageClass.Melee;
+            projectile.penetrate = -1;
+            projectile.light = 0.5f;
+        }
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.immune[projectile.owner] = GetSpeed();
+        }
+    }
+    public class ProtectorsBroadSwordEX : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            Tooltip.SetDefault("用这把修复了的英雄之剑守护你脚下那片圣洁的土地吧，有剑不用和无剑可用是两码事。\n这把剑若是用于侵略战争便是违背了初心呢。\n我希望有朝一日能看见这把剑不再染上任何鲜血。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
+            DisplayName.SetDefault("守护者之剑EX");
+        }
+        Item item => Item;
+        public override void SetDefaults()
+        {
+            item.DamageType = DamageClass.Melee;
+            item.crit = 10;
+            item.width = 69;
+            item.height = 69;
+            item.useTime = 14;
+            item.useAnimation = 14;
+            item.knockBack = 10;
+            item.useStyle = ItemUseStyleID.Swing;
+            item.autoReuse = true;
+            item.value = 10000;
+            item.rare = MyRareID.Tier3;
+            item.damage = 400;
+            item.shootSpeed = 1f;
+            item.shoot = ProjectileType<ProtectorsBroadSwordChargingEX>();
+        }
+        public override bool AltFunctionUse(Player player)
+        {
+            return player.ownedProjectileCounts[item.shoot] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProjEX>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProjEX>()] < 1;
+        }
+        public override bool CanUseItem(Player player)
+        {
+            item.noUseGraphic = player.altFunctionUse == 2 || !(player.ownedProjectileCounts[item.shoot] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProjEX>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProjEX>()] < 1);
+            return player.ownedProjectileCounts[item.shoot] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProjEX>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProjEX>()] < 1;
+        }
+        public override void HoldItem(Player player)
+        {
+            //item.noUseGraphic = player.altFunctionUse == 2 || !(player.ownedProjectileCounts[item.shoot] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProj>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProj>()] < 1);
+        }
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            return player.altFunctionUse == 2;
+        }
+    }
+    public class ProtectorsBroadSwordChargingEX : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("充能中的守护者之剑EX");
+        }
+        Projectile projectile => Projectile;
+        public override void SetDefaults()
+        {
+            projectile.width = projectile.height = 1;
+            projectile.aiStyle = -1;
+            projectile.friendly = true;
+            projectile.penetrate = -1;
+            projectile.DamageType = DamageClass.Melee;
+            projectile.tileCollide = false;
+            projectile.timeLeft = 29;
+            projectile.ignoreWater = false;
+        }
+        private Player player => Main.player[projectile.owner];
+        public override void AI()
+        {
+            projectile.Center = player.Center;
+            player.heldProj = projectile.whoAmI;
+            player.itemTime = 2;
+            player.itemAnimation = 2;
+            projectile.light = (5 - projectile.timeLeft / 5) * 0.1f;
+            if (player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProjEX>()] > 0 || player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProjEX>()] > 0)
+            {
+                projectile.Kill();
+            }
+        }
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+        public override void Kill(int timeLeft)
+        {
+            if (player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordProjEX>()] < 1 && player.ownedProjectileCounts[ProjectileType<ProtectorsBroadSwordRotProjEX>()] < 1)
+            {
+                Projectile.NewProjectile(projectile.GetSource_FromThis(), player.Center, default, ProjectileType<ProtectorsBroadSwordProjEX>(), projectile.damage, projectile.knockBack, projectile.owner);
+            }
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center - Main.screenPosition, new Rectangle(48 * (5 - projectile.timeLeft / 5), 0, 48, 128), projectile.GetAlpha(lightColor), 0, new Vector2(22, 100), 1f, 0, 0);
+            spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadSwordChargingEX_G"), player.Center - Main.screenPosition, new Rectangle(48 * (5 - projectile.timeLeft / 5), 0, 48, 128), Color.White, 0, new Vector2(22, 100), 1f, 0, 0);
+            return false;
+        }
+    }
+    public class ProtectorsBroadSwordProjEX : ModProjectile
+    {
+        private List<Vector2> vector2s = new List<Vector2>();
+        private List<Vector2> vectors = new List<Vector2>();
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("守护者之剑");
+        }
+        Projectile projectile => Projectile;
+
+        private Player player => Main.player[projectile.owner];
+        private ProtectorsBroadPlayer swordPlayer => player.GetModPlayer<ProtectorsBroadPlayer>();
+        private bool Right;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            SpriteEffects spriteEffects;
+            const float Coefficient = 2f;
+            const float Length = 92f;
+            Texture2D texture2D = IllusionBoundMod.GetTexture("Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadSwordProjEX_G");
+            float k = (player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword * 3f / 2) / player.itemAnimationMax;
+            if (Right)
+            {
+                spriteEffects = SpriteEffects.None;
+                if (swordPlayer.usedProtectorsBroadSword)
+                {
+                    if (swordPlayer.protectorsBroadSwordTier == 1)
+                    {
+                        player.bodyFrame.Y = 56 * (4 - (int)((MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - (float)Math.Pow(player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword, 2) / (player.itemAnimationMax * player.itemAnimationMax))) / (MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8)) * 4));
+                        float r = MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - (float)Math.Pow(player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword, 2) / (player.itemAnimationMax * player.itemAnimationMax));
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center + new Vector2(-4, 4) - Main.screenPosition, null, projectile.GetAlpha(lightColor), r, new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, player.Center + new Vector2(-4, 4) - Main.screenPosition, null, Color.White, r, new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, r.ToRotationVector2() * Length + player.Center + new Vector2(-4, 4) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(r.ToRotationVector2() * Length + player.Center + new Vector2(-4, 4));
+                    }
+                    if (swordPlayer.protectorsBroadSwordTier == 2)
+                    {
+                        player.bodyFrame.Y = 1064;
+
+                        Vector2 vector = player.Center + new Vector2(-4, 4) + new Vector2(-1.414213562373095f * 1.732050807568877f, 1.414213562373095f) * Coefficient * k;
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, vector - Main.screenPosition, null, projectile.GetAlpha(lightColor), MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, vector - Main.screenPosition, null, Color.White, MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, vector + new Vector2(Length, 0) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(vector + MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k).ToRotationVector2() * Length);
+                    }
+                    if (swordPlayer.protectorsBroadSwordTier == 0)
+                    {
+                        player.bodyFrame.Y = 168;
+                        Vector2 vec1 = new Vector2(-1.414213562373095f * 1.732050807568877f, 1.414213562373095f);
+                        Vector2 vec2 = new Vector2(1.414213562373095f * 2f, 0);
+                        Vector2 adder = vec2 - vec1;
+                        Vector2 vector = player.Center + new Vector2(-4, 4) + new Vector2(-1.414213562373095f * 1.732050807568877f, 1.414213562373095f) * Coefficient + adder * Coefficient * k;
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, vector - Main.screenPosition, null, projectile.GetAlpha(lightColor), MathHelper.Lerp(-0.3926991f / 2, 0, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, vector - Main.screenPosition, null, Color.White, MathHelper.Lerp(-0.3926991f / 2, 0, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, vector + new Vector2(Length, 0) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(vector + MathHelper.Lerp(-0.3926991f / 2, 0, k).ToRotationVector2() * Length);
+                    }
+                    if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                        vectors.Add(player.Center);
+                }
+                else
+                {
+                    player.bodyFrame.Y = 0;
+                    spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center + new Vector2(-6, 6) - Main.screenPosition, null, projectile.GetAlpha(lightColor), MathHelper.Pi / 12, new Vector2(12, 20), 1f, spriteEffects, 0);
+                    spriteBatch.Draw(texture2D, player.Center + new Vector2(-6, 6) - Main.screenPosition, null, Color.White, MathHelper.Pi / 12, new Vector2(12, 20), 1f, spriteEffects, 0);
+                }
+            }
+            else
+            {
+                spriteEffects = SpriteEffects.FlipVertically;
+                if (swordPlayer.usedProtectorsBroadSword)
+                {
+                    if (swordPlayer.protectorsBroadSwordTier == 1)
+                    {
+                        player.bodyFrame.Y = 56 * (4 - (int)((MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - (float)Math.Pow(player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword, 2) / (player.itemAnimationMax * player.itemAnimationMax))) / (MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8)) * 4));
+                        float r = -MathHelper.Pi - (MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - (float)Math.Pow(player.itemAnimationMax - swordPlayer.usingProtectorsBroadSword, 2) / (player.itemAnimationMax * player.itemAnimationMax)));
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center + new Vector2(4, 4) - Main.screenPosition, null, projectile.GetAlpha(lightColor), r, new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, player.Center + new Vector2(4, 4) - Main.screenPosition, null, Color.White, r, new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, r.ToRotationVector2() * Length + player.Center + new Vector2(4, 4) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(r.ToRotationVector2() * Length + player.Center + new Vector2(4, 4));
+                    }
+                    if (swordPlayer.protectorsBroadSwordTier == 2)
+                    {
+                        player.bodyFrame.Y = 1064;
+                        Vector2 vector = player.Center + new Vector2(4, 4) + new Vector2(1.414213562373095f * 1.732050807568877f, 1.414213562373095f) * Coefficient * k;
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, vector - Main.screenPosition, null, projectile.GetAlpha(lightColor), -MathHelper.Pi - MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, vector - Main.screenPosition, null, Color.White, -MathHelper.Pi - MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, vector - new Vector2(Length, 0) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(vector + (-MathHelper.Pi - MathHelper.Lerp(0.3926991f, -0.3926991f / 2, k)).ToRotationVector2() * Length);
+                    }
+                    if (swordPlayer.protectorsBroadSwordTier == 0)
+                    {
+                        player.bodyFrame.Y = 168;
+                        Vector2 vec1 = new Vector2(1.414213562373095f * 1.732050807568877f, 1.414213562373095f);
+                        Vector2 vec2 = new Vector2(-1.414213562373095f * 2f, 0);
+                        Vector2 adder = vec2 - vec1;
+                        Vector2 vector = player.Center + new Vector2(4, 4) + new Vector2(1.414213562373095f * 1.732050807568877f, 1.414213562373095f) * Coefficient + adder * Coefficient * k;
+                        spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, vector - Main.screenPosition, null, projectile.GetAlpha(lightColor), -MathHelper.Pi - MathHelper.Lerp(-0.3926991f / 2, 0, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        spriteBatch.Draw(texture2D, vector - Main.screenPosition, null, Color.White, -MathHelper.Pi - MathHelper.Lerp(-0.3926991f / 2, 0, k), new Vector2(12, 20), 1f, spriteEffects, 0);
+                        //spriteBatch.Draw(TextureAssets.MagicPixel.Value, vector - new Vector2(Length, 0) - Main.screenPosition, new Rectangle(0, 0, 1, 1), Color.Red, 0, new Vector2(1, 1) * 0.5f, 8f, 0, 0);
+                        if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                            vector2s.Add(vector + (-MathHelper.Pi - MathHelper.Lerp(-0.3926991f / 2, 0, k)).ToRotationVector2() * Length);
+                    }
+                    if (!Main.gamePaused && swordPlayer.waitingProtectorsBroadSword == 0)
+                        vectors.Add(player.Center);
+                }
+                else
+                {
+                    player.bodyFrame.Y = 0;
+                    spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center + new Vector2(6, 6) - Main.screenPosition, null, projectile.GetAlpha(lightColor), -MathHelper.Pi - MathHelper.Pi / 12, new Vector2(12, 20), 1f, spriteEffects, 0);
+                    spriteBatch.Draw(texture2D, player.Center + new Vector2(6, 6) - Main.screenPosition, null, Color.White, -MathHelper.Pi - MathHelper.Pi / 12, new Vector2(12, 20), 1f, spriteEffects, 0);
+                }
+            }
+            return false;
+        }
+        private Vector2[] Inverted(List<Vector2> vector2s)
+        {
+            int c = vector2s.Count / 2;
+            Vector2[] vec = new Vector2[c * 2 - 1];
+            for (int n = 0; n < c; n++)
+            {
+                vec[2 * n] = vector2s[(c - 1 - n) * 2];
+                if (n != c - 1)
+                    vec[2 * n + 1] = (vector2s[(c - 1 - n) * 2] + vector2s[(c - 2 - n) * 2]) * 0.5f;
+            }
+            return vec;
+        }
+        //public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        //{
+        //    if (Right)
+        //    {
+        //        return targetHitbox.Intersects(new Rectangle(projectile.Hitbox.X + 96, projectile.Hitbox.Y, projectile.Hitbox.Width / 2, projectile.Hitbox.Height));
+        //    }
+        //    return targetHitbox.Intersects(new Rectangle(projectile.Hitbox.X, projectile.Hitbox.Y, projectile.Hitbox.Width / 2, projectile.Hitbox.Height));
+        //}
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            if (Right)
+            {
+                return targetHitbox.Intersects(new Rectangle((int)projectile.Center.X, (int)projectile.Center.Y - 108, 108, 144));
+            }
+            return targetHitbox.Intersects(new Rectangle((int)projectile.Center.X - 108, (int)projectile.Center.Y - 108, 108, 144));
+        }
+        public override void AI()
+        {
+            projectile.damage = player.GetWeaponDamage(player.HeldItem);
+            if (!player.active || player.inventory[player.selectedItem].type != ItemType<ProtectorsBroadSwordEX>())
+            {
+                projectile.Kill();
+            }
+            if (hitCoolDown > 0)
+            {
+                projectile.friendly = false;
+                hitCoolDown--;
+            }
+            else if (swordPlayer.usingProtectorsBroadSword > 0)
+            {
+                projectile.friendly = true;
+            }
+            if (swordPlayer.usingProtectorsBroadSword > 0)
+            {
+                swordPlayer.usingProtectorsBroadSword--;
+            }
+            Right = player.direction == 1;
+            if (swordPlayer.usingProtectorsBroadSword == 0)
+            {
+                swordPlayer.waitingProtectorsBroadSword++;
+            }
+            if (swordPlayer.usingProtectorsBroadSword == 0 && swordPlayer.waitingProtectorsBroadSword == 1 && vector2s.Count > 2)
+            {
+                if (!Main.gamePaused && swordPlayer.protectorsBroadSwordTier == 1)
+                {
+                    //float r = MathHelper.Pi / 8 - (MathHelper.Pi / 6 * 5 + MathHelper.Pi / 8) * (1 - ((float)Math.Pow(player.itemAnimationMax, 2) / (player.itemAnimationMax * player.itemAnimationMax)));
+                    //float r = 0.3926991f + MathHelper.Pi / 18;
+                    float r = Right ? 0.3926991f : MathHelper.Pi - 0.3926991f;
+                    vector2s.Add(r.ToRotationVector2() * 92f + player.Center + new Vector2(4 * (Right ? -1 : 1), 4));
+                    vector2s.Add(r.ToRotationVector2() * 92f + player.Center + new Vector2(4 * (Right ? -1 : 1), 4));
+                    vectors.Add(player.Center);
+                    vectors.Add(player.Center);
+                }
+
+
+                swordPlayer.NewSwoosh(Inverted(vector2s), Inverted(vectors));
+                //swordPlayer.NewSwoosh(vector2s.ToArray(), vectors.ToArray());
+                vectors.Clear();
+                vector2s.Clear();
+                if (swordPlayer.usingProtectorsBroadSword == 0)
+                {
+                    float r = (Main.MouseWorld - player.Center).ToRotation();
+                    Main.projectile[swordPlayer.ShootBeam(projectile.GetSource_FromThis(), r, (int)(projectile.damage * 0.9f))].rotation = r;
+                }
+            }
+            if (swordPlayer.waitingProtectorsBroadSword >= 30 && swordPlayer.usedProtectorsBroadSword)
+            {
+                projectile.friendly = false;
+                swordPlayer.usedProtectorsBroadSword = false;
+                swordPlayer.protectorsBroadSwordTier = 0;
+                swordPlayer.waitingProtectorsBroadSword = 0;
+            }
+            if (Main.mouseLeft && swordPlayer.usingProtectorsBroadSword == 0)
+            {
+                player.direction = Math.Sign(Main.MouseWorld.X - player.Center.X);
+                swordPlayer.usedProtectorsBroadSword = true;
+                swordPlayer.waitingProtectorsBroadSword = 0;
+                if (swordPlayer.protectorsBroadSwordTier == 0)
+                {
+                    swordPlayer.protectorsBroadSwordTier = 1;
+                    swordPlayer.usingProtectorsBroadSword = player.itemAnimationMax;
+                }
+                else if (swordPlayer.protectorsBroadSwordTier == 1)
+                {
+                    swordPlayer.protectorsBroadSwordTier = 2;
+                    if ((int)(player.itemAnimationMax / 3f * 2) >= 1)
+                    {
+                        swordPlayer.usingProtectorsBroadSword = (int)(player.itemAnimationMax / 3f * 2);
+                    }
+                    else
+                    {
+                        swordPlayer.usingProtectorsBroadSword = 1;
+                    }
+                }
+                else if (swordPlayer.protectorsBroadSwordTier == 2)
+                {
+                    swordPlayer.protectorsBroadSwordTier = 0;
+                    if ((int)(player.itemAnimationMax / 3f * 2) >= 1)
+                    {
+                        swordPlayer.usingProtectorsBroadSword = (int)(player.itemAnimationMax / 3f * 2);
+                    }
+                    else
+                    {
+                        swordPlayer.usingProtectorsBroadSword = 1;
+                    }
+                }
+            }
+            if ((int)Main.time % 10 == 0 && !player.CheckMana(15, true))
+            {
+                projectile.Kill();
+            }
+            if (Main.mouseRight)
+            {
+                Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, default, ProjectileType<ProtectorsBroadSwordRotProjEX>(), projectile.damage, projectile.knockBack, projectile.owner);
+                projectile.Kill();
+            }
+            projectile.spriteDirection = player.direction;
+            projectile.direction = projectile.spriteDirection;
+            projectile.Center = player.Center;
+            projectile.timeLeft = 2;
+            player.heldProj = projectile.whoAmI;
+        }
+
+        public override void SetDefaults()
+        {
+            projectile.width = 92;
+            projectile.height = 42;
+            //projectile.alpha = 255;
+            projectile.aiStyle = -1;
+            projectile.friendly = false;
+            projectile.tileCollide = false;
+            projectile.DamageType = DamageClass.Melee;
+            projectile.penetrate = -1;
+            projectile.light = 0.5f;
+        }
+        private int hitCoolDown = 0;
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            hitCoolDown = 3;
+            target.immune[projectile.owner] = 0;
+        }
+    }
+    public class ProtectorsBroadSwordRotProjEX : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("守护者之剑");
+        }
+        Projectile projectile => Projectile;
+
+        //private Vector2[] Inverted(List<Vector2> vector2s)
+        //{
+        //    int c = vector2s.Count;
+        //    Vector2[] vec = new Vector2[c];
+        //    for (int n = 0; n < c; n++)
+        //    {
+        //        vec[n] = vector2s[c - 1 - n];
+        //    }
+        //    return vec;
+        //}
+        private int Timer
+        {
+            get
+            {
+                return projectile.frameCounter;
+            }
+            set
+            {
+                projectile.frameCounter = value;
+            }
+        }
+        private int counter;
+        private int dir;
+        //private List<Vector2> vector2s = new List<Vector2>();
+        private float GetRot(int d) => -Math.Sign(d - 0.5f) * projectile.ai[d] + MathHelper.PiOver2;
+        private Player player => Main.player[projectile.owner];
+        private ProtectorsBroadPlayer swordPlayer => player.GetModPlayer<ProtectorsBroadPlayer>();
+        private int GetSpeed()
+        {
+            //我知道这里换一种方式会更快，但是暂时懒得动脑子（
+            if (Timer >= 280 && (player.name == "Protector" || player.name == "守护者"))
+            {
+                return 1;
+            }
+            else if (Timer >= 210)
+            {
+                return 2;
+            }
+            else if (Timer >= 150)
+            {
+                return 3;
+            }
+            else if (Timer >= 100)
+            {
+                return 4;
+            }
+            else if (Timer >= 60)
+            {
+                return 5;
+            }
+            else if (Timer >= 30)
+            {
+                return 6;
+            }
+            else if (Timer >= 10)
+            {
+                return 7;
+            }
+            else
+            {
+                return 8;
+            }
+        }
+        private Vector2[] GetVector()
+        {
+            float sumAngle = projectile.ai[0] + projectile.ai[1];
+            bool flag = sumAngle <= MathHelper.Pi;
+            float angle = flag ? sumAngle : MathHelper.TwoPi - sumAngle;
+            double c = Math.Cos(angle);
+            double k = 0.99 * Math.Sqrt((1 - c) / 2);
+            float a = (float)Math.Sqrt(1 / (1 - k * k));
+            Vector2 A = GetRot(dir).ToRotationVector2();//先前的
+            Vector2 B = GetRot((dir + 1) % 2).ToRotationVector2();//当前的
+            A.Y *= -1;
+            B.Y *= -1;
+            Vector2 u = (B - A) / 2f;
+            Vector2 P = (B + A) / 2f;
+            //Vector2 P = (float)Math.Sqrt((c + 1) / 2) / u.Length() * new Vector2(u.Y, -u.X);
+            const int timeL = ProtectorsBroadPlayer.MaxSwooshes;
+            Vector2[] Vecs = new Vector2[timeL];
+            for (int n = 0; n < timeL; n++)
+            {
+                float factor = n / (timeL - 1f);
+                Vecs[timeL - 1 - n] = new Vector2(u.Length() * (float)Math.Cos(factor * MathHelper.Pi), u.Length() / a * (float)Math.Sin(factor * MathHelper.Pi)).RotatedBy(u.ToRotation()) * 92f + P * 92f;
+                Vecs[timeL - 1 - n].Y *= -1;
+                //Dust.NewDustPerfect(Vecs[n] + player.Center, MyDustId.CyanBubble, default, 0, Color.White, factor).noGravity = true;
+            }
+            //for (int n = 0; n < 61; n++)
+            //{
+            //    float factor = 1 - n / 60f;
+            //    //Vecs[n] = ;
+            //    Dust.NewDustPerfect(new Vector2(u.Length() * (float)Math.Cos(factor * MathHelper.Pi), 1 / a * (float)Math.Sin(factor * MathHelper.Pi)).RotatedBy(u.ToRotation()) * 80f + P + player.Center, MyDustId.CyanBubble, default, 0, Color.White, factor).noGravity = true;
+            //}
+            return Vecs;
+        }
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            float point = 0f;
+            return counter <= 2 && Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center, GetRot(dir).ToRotationVector2() * 110.4f + projectile.Center, 24, ref point);
+        }
+        public override void AI()
+        {
+            Timer++;
+            counter++;
+            //if (SwordPlayer.swooshes[0].active) 
+            //{
+            //    Main.NewText(SwordPlayer.swooshes[0].Pos[0]);
+            //}
+            //vector2s.Add(player.Center);
+            if (counter >= GetSpeed() && Main.mouseRight)
+            {
+                if (!player.CheckMana(5, true))
+                {
+                    projectile.Kill();
+                }
+                SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
+                counter = 0;
+                projectile.ai[dir] = MathHelper.Clamp((float)IllusionBoundExtensionMethods.GaussianRandom(0.5, 0.2, WorldGen.genRand), 0.1f, 0.9f) * MathHelper.Pi;
+                Main.projectile[swordPlayer.ShootBeam(projectile.GetSource_FromThis(), GetRot(dir), (int)(projectile.damage * 0.9f), Main.rand.Next(12, 17))].rotation = GetRot(dir);
+                dir++;
+                dir %= 2;
+                //GetVector();
+                swordPlayer.NewSwoosh(GetVector());
+                //swordPlayer.NewSwoosh(GetVector(), Inverted(vector2s));
+            }
+            player.direction = dir;
+            bool flag = false;
+            foreach (var sw in swordPlayer.swooshes)
+            {
+                flag |= sw.active && sw.rot;
+            }
+            if (!Main.mouseRight && !flag)
+            {
+                projectile.Kill();
+            }
+            projectile.Center = player.Center;
+            projectile.timeLeft = 2;
+            player.ChangeDir(dir);
+            player.heldProj = projectile.whoAmI;
+            player.itemTime = 2;
+            player.itemAnimation = 2;
+            player.itemRotation = GetRot(dir);
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+
+            if (Main.mouseRight)
+            {
+                spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, player.Center - Main.screenPosition, null, projectile.GetAlpha(lightColor), GetRot(dir), new Vector2(13, 13), 1f, 0, 0);
+                spriteBatch.Draw(IllusionBoundMod.GetTexture("Items/Weapons/UniqueWeapon/Protector/ProtectorsBroadSwordProjEX_G"), player.Center - Main.screenPosition, null, Color.White, GetRot(dir), new Vector2(13, 13), 1f, 0, 0);
+            }
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+            var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+            var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+            IllusionBoundMod.ColorfulEffect.Parameters["uTransform"].SetValue(model * projection);
+            IllusionBoundMod.ColorfulEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
+            IllusionBoundMod.ColorfulEffect.Parameters["defaultColor"].SetValue(Main.hslToRgb(0.5f, 1f, 0.75f).ToVector4());
+            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.MainColor[7];
+            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.MainShape[1];
+            Main.graphics.GraphicsDevice.Textures[2] = IllusionBoundMod.MaskColor[6];
+            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+            Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
+            IllusionBoundMod.ColorfulEffect.CurrentTechnique.Passes[0].Apply();
+            for (int n = 0; n < ProtectorsBroadPlayer.MaxSwooshes; n++)
+            {
+                if (swordPlayer.swooshes[n].active && swordPlayer.swooshes[n].timeLeft >= 2 && swordPlayer.swooshes[n].rot)
+                {
+                    //SwordPlayer.swooshes[n].DrawShoosh();
+                    //if (timeLeft < 2)
+                    //{
+                    //    return;
+                    //}
+                    List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
+                    for (int i = 0; i < swordPlayer.swooshes[n].timeLeft; i++)
+                    {
+                        //var factor = 1 - (i - 1) / 12f - (12 - SwordPlayer.swooshes[n].timeLeft) / 12f;
+                        //var normalDir = SwordPlayer.swooshes[n].Pos[i - 1] - SwordPlayer.swooshes[n].Pos[i];
+                        //normalDir = Vector2.Normalize(new Vector2(-normalDir.Y, normalDir.X));
+                        //float w = (float)(1 - Math.Pow(2 * factor - 1, 4));
+                        //bars.Add(new CustomVertexInfo(SwordPlayer.swooshes[n].Pos[i] + player.Center + normalDir * 16, Color.White, new Vector3(factor, 1, w)));
+                        //bars.Add(new CustomVertexInfo(SwordPlayer.swooshes[n].Pos[i] + player.Center + normalDir * -16, Color.White, new Vector3(factor, 0, w)));
+                        var factor = i / (ProtectorsBroadPlayer.MaxSwooshes - 1f) + (ProtectorsBroadPlayer.MaxSwooshes - swordPlayer.swooshes[n].timeLeft) / (ProtectorsBroadPlayer.MaxSwooshes - 1f);
+                        float w = (float)(1 - Math.Pow(2 * factor - 1, 4));
+                        bars.Add(new CustomVertexInfo(swordPlayer.swooshes[n].Pos[i] + player.Center, Color.White, new Vector3(factor, 1, w)));
+                        bars.Add(new CustomVertexInfo(player.Center, Color.White, new Vector3(factor, 0, w)));
+                    }
+                    List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+                    if (bars.Count > 2)
+                    {
+                        for (int i = 0; i < bars.Count - 2; i += 2)
+                        {
+                            triangleList.Add(bars[i]);
+                            triangleList.Add(bars[i + 2]);
+                            triangleList.Add(bars[i + 1]);
+                            triangleList.Add(bars[i + 1]);
+                            triangleList.Add(bars[i + 2]);
+                            triangleList.Add(bars[i + 3]);
+                        }
+                        Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
+                    }
+                }
+            }
+            Main.graphics.GraphicsDevice.RasterizerState = originalState;
+            spriteBatch.End();
+            spriteBatch.Begin();
+            return false;
+        }
+        public override void SetDefaults()
+        {
+            projectile.width = 1;
+            projectile.height = 1;
+            projectile.aiStyle = -1;
+            projectile.friendly = true;
+            projectile.tileCollide = false;
+            projectile.DamageType = DamageClass.Melee;
+            projectile.penetrate = -1;
+            projectile.light = 0.5f;
+        }
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.immune[projectile.owner] = GetSpeed();
+        }
+    }
+    public class ProtectorsBroadSwordProjBeam : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            DisplayName.SetDefault("守护者之刃剑气");
+        }
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            target.immune[projectile.owner] = 3;
+        }
+        Projectile projectile => Projectile;
+
+        public override void SetDefaults()
+        {
+            projectile.timeLeft = 60;
+            projectile.tileCollide = false;
+            projectile.aiStyle = -1;
+            projectile.extraUpdates = 2;
+            projectile.friendly = true;
+            projectile.height = 1;
+            projectile.width = 1;
+            projectile.DamageType = DamageClass.Melee;
+            projectile.penetrate = -1;
+        }
+        public override void AI()
+        {
+            projectile.ai[0] += 0.05f * projectile.ai[1];
+            //projectile.rotation = projectile.velocity.ToRotation();
+        }
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            return targetHitbox.Intersects(new Rectangle((int)projectile.Center.X - 32, (int)projectile.Center.Y - 32, 64, 64));
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
+            var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
+            var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
+            Effect effect = IllusionBoundMod.GetEffect("Effects/ShaderSwooshEffect");
+            effect.Parameters["uTransform"].SetValue(model * projection);
+            effect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
+            Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.MainShape[1];
+            Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.MaskColor[6];
+            Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.PointWrap;
+            Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.PointWrap;
+            effect.CurrentTechnique.Passes[0].Apply();
+            //CustomVertexInfo[] bars = new CustomVertexInfo[60];
+            //for (int i = 0; i < 30; i++)
+            //{
+            //    var factor = i / 29f;
+            //    float w = 1 - factor;
+            //    float x = (i / 14.5f - 1) * (float)Math.Sqrt(8 / projectile.ai[0]);
+            //    w *= 1.5f;
+            //    bars[2 * i] = new CustomVertexInfo(new Vector2(-projectile.ai[0] * x * x + 4, x).RotatedBy(projectile.rotation) * 16 + projectile.Center, Main.hslToRgb(0.5f, 1, 0.75f), new Vector3(factor, 1, w));
+            //    bars[2 * i + 1] = new CustomVertexInfo(new Vector2(-projectile.ai[0] / 2 * x * x, x).RotatedBy(projectile.rotation) * 16 + projectile.Center, Main.hslToRgb(0.5f, 1, 0.75f), new Vector3(factor, 0, w));
+            //}
+            //List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+            //for (int i = 0; i < 58; i += 2)
+            //{
+            //    triangleList.Add(bars[i]);
+            //    triangleList.Add(bars[i + 2]);
+            //    triangleList.Add(bars[i + 1]);
+            //    triangleList.Add(bars[i + 1]);
+            //    triangleList.Add(bars[i + 2]);
+            //    triangleList.Add(bars[i + 3]);
+            //}
+            CustomVertexInfo[] bars = new CustomVertexInfo[60];
+            for (int i = 0; i < 30; i++)
+            {
+                var factor = i / 29f;
+                float w = 1 - factor;
+                float x = (i / 14.5f - 1) * (float)Math.Sqrt(8 / projectile.ai[0]);
+                w *= 1.5f;
+                //Math.Abs(i / 14.5f - 1)
+                float k = 4 * i * (i - 29) / 841f + 1;
+                bars[2 * i] = new CustomVertexInfo(new Vector2(-projectile.ai[0] * x * x + 4, x).RotatedBy(projectile.rotation) * 16 + projectile.Center, Main.hslToRgb(0.5f, 1, 0.75f), new Vector3(k, 1, w * MathHelper.Clamp((300f - projectile.timeLeft) / 30f, 0, 1)));
+                bars[2 * i + 1] = new CustomVertexInfo(new Vector2(-projectile.ai[0] / 2 * x * x, x).RotatedBy(projectile.rotation) * 16 + projectile.Center, Main.hslToRgb(0.5f, 1, 0.75f), new Vector3(k, 0, w * MathHelper.Clamp((300f - projectile.timeLeft) / 30f, 0, 1)));
+            }
+            List<CustomVertexInfo> triangleList = new List<CustomVertexInfo>();
+            for (int i = 0; i < 58; i += 2)
+            {
+                triangleList.Add(bars[i]);
+                triangleList.Add(bars[i + 2]);
+                triangleList.Add(bars[i + 1]);
+                triangleList.Add(bars[i + 1]);
+                triangleList.Add(bars[i + 2]);
+                triangleList.Add(bars[i + 3]);
+            }
+            Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
+            Main.graphics.GraphicsDevice.RasterizerState = originalState;
+            spriteBatch.End();
+            spriteBatch.Begin();
+            return false;
+        }
+    }
+}
