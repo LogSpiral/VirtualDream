@@ -1,6 +1,8 @@
 ﻿using LogSpiralLibrary;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
+using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 using System;
 using System.Collections.Generic;
 using Terraria.ID;
@@ -109,7 +111,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
 
             if ((npc.Center - targetPlayer.Center).Length() > 1200f && npc.ai[0] == 0)
             {
-                OtherMethods.LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 480), MyDustId.PinkBubble);
+                MiscMethods.LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 480), MyDustId.PinkBubble);
                 npc.Center = targetPlayer.Center - new Vector2(0, 480);
                 for (int n = 0; n < 72; n++)
                 {
@@ -240,7 +242,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
                 npc.ai[0] = (int)npc.ai[0] / 900 * 900;
                 npc.ai[0] -= npc.ai[0] >= 900 ? 900 : 0;
-                OtherMethods.LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 240), MyDustId.PinkBubble);
+                MiscMethods.LinerDust(npc.Center, targetPlayer.Center - new Vector2(0, 240), MyDustId.PinkBubble);
                 npc.Center = targetPlayer.Center - new Vector2(0, 240);
                 for (int n = 0; n < 72; n++)
                 {
@@ -448,7 +450,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 {
                     tinyCrystalTimer++;
                 }
-                if (tinyCrystalTimer >= OtherMethods.HardmodeValue(1500, 1200, 900))
+                if (tinyCrystalTimer >= MiscMethods.HardmodeValue(1500, 1200, 900))
                 {
                     NewTinyCrystal();
                     tinyCrystalTimer = 0;

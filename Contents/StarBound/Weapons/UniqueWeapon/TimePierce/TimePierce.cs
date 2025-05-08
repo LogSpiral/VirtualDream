@@ -2,6 +2,7 @@
 using static Terraria.ModLoader.ModContent;
 using Terraria.DataStructures;
 using LogSpiralLibrary;
+using LogSpiralLibrary.CodeLibrary.Utilties;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
 {

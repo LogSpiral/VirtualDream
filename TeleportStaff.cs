@@ -1,4 +1,6 @@
-﻿using Terraria.ID;
+﻿using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
+using Terraria.ID;
 namespace VirtualDream
 {
     public class TeleportStaff : ModItem

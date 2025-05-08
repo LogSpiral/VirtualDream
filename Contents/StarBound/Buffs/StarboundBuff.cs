@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using LogSpiralLibrary.CodeLibrary.Utilties;
+using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Buffs
 {

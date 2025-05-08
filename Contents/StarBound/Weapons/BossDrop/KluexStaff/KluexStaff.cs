@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using VirtualDream.Contents.StarBound.Weapons.Broken;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
 using VirtualDream.Contents.StarBound.Materials;
+using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
 {

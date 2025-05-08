@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
+using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -112,7 +113,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
             Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, type, damage, knockback, player.whoAmI);
             return false;
         }
-        public virtual float UnitHealth => OtherMethods.HardmodeValue(1, 1.5f, 2f) * 50 * PeriodMultiplyer;
+        public virtual float UnitHealth => MiscMethods.HardmodeValue(1, 1.5f, 2f) * 50 * PeriodMultiplyer;
         public virtual float RealHurtCount => Math.Min(MaxLevel ? hurtCount : MathHelper.Clamp(hurtCount, 0, UpgradeNeed.hurt), (MaxLevel ? killCount : MathHelper.Clamp(killCount, 0, UpgradeNeed.kill)) * UnitHealth);
         public virtual bool MaxLevel => (byte)State % 3 == (BossDrop ? 2 : 1);
         public virtual bool UpgradeAvailable => hurtCount >= UpgradeNeed.hurt && killCount >= UpgradeNeed.kill;

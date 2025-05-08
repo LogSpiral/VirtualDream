@@ -11,12 +11,13 @@ using static Terraria.ModLoader.ModContent;
 using VirtualDream.Contents.StarBound.TimeBackTracking;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 
 namespace VirtualDream
 {
-    public class VirtualDreamRenderDrawing : IRenderBasedDrawing
+    public class VirtualDreamRenderDrawing : RenderBasedDrawing
     {
-        public void CommonDrawingMethods(SpriteBatch spriteBatch)
+        public override void CommonDrawingMethods(SpriteBatch spriteBatch)
         {
             List<CustomVertexInfo> bars = [];
             List<int> indexer = [];
@@ -100,7 +101,7 @@ namespace VirtualDream
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
         }
-        public void RenderDrawingMethods(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, RenderTarget2D render, RenderTarget2D renderAirDistort)
+        public override void RenderDrawingMethods(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, RenderTarget2D render, RenderTarget2D renderAirDistort)
         {
 
             if (!Main.drawToScreen)

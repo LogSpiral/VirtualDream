@@ -11,6 +11,7 @@ using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Contents.Me
 using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Core;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
 using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Contents.Melee.ExtendedMelee;
+using LogSpiralLibrary.CodeLibrary.Utilties;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Protector
 {
@@ -46,22 +47,19 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Protector
     {
         public override bool LabeledAsCompleted => true;
 
-        //public override string Texture => base.Texture.Replace("Proj", "");
-        public override StandardInfo StandardInfo => base.StandardInfo with
+        public override void InitializeStandardInfo(StandardInfo standardInfo, VertexDrawStandardInfo vertexStandard)
         {
-            standardColor = Color.Gray * .25f,
-            itemType = ModContent.ItemType<BrokenBroadSword>(),
-            vertexStandard = new()
-            {
-                active = true,
-                scaler = 105,
-                timeLeft = 15,
-                colorVec = new(0, 1, 0),
-                alphaFactor = 2f
-            },
-            standardRotation = 0,
-            standardOrigin = new Vector2(0.1f,0.5f)
-        };
+            standardInfo.standardColor = Color.Gray * .25f;
+            standardInfo.itemType = ModContent.ItemType<BrokenBroadSword>();
+            standardInfo.standardRotation = 0;
+            standardInfo.standardOrigin = new Vector2(0.1f, 0.5f);
+
+            vertexStandard.scaler = 105;
+            vertexStandard.timeLeft = 15;
+            vertexStandard.colorVec = new(0, 1, 0);
+            vertexStandard.alphaFactor = 2f;
+            base.InitializeStandardInfo(standardInfo, vertexStandard);
+        }
     }
     public class BrokenBroadSwordRotatingStorm : StormInfo
     {

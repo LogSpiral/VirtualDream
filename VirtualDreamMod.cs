@@ -27,14 +27,16 @@ using Terraria.WorldBuilding;
 using Terraria.IO;
 using Terraria.GameContent.ItemDropRules;
 using VirtualDream.Contents.StarBound.Materials;
+using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 
 namespace VirtualDream
 {
     public class VirtualDreamMod : Mod
     {
         public static float GlowLight => VirtualDreamSystem.glowLight;
-        public static double ModTime => LogSpiralLibrarySystem.ModTime;
-        public static double ModTime2 => LogSpiralLibrarySystem.ModTime2;
+        public static double ModTime => GlobalTimeSystem.GlobalTime;
+        public static double ModTime2 => GlobalTimeSystem.GlobalTimePaused;
 
         public static VirtualDreamMod Instance;
         public static Mod mod;
@@ -377,8 +379,8 @@ namespace VirtualDream
             });
             RecipeGroup.RegisterGroup(AdamantiteBarRG, group8);
         }
-        public static double ModTime => LogSpiralLibrarySystem.ModTime;
-        public static double ModTime2 => LogSpiralLibrarySystem.ModTime2;
+        public static double ModTime => GlobalTimeSystem.GlobalTime;
+        public static double ModTime2 => GlobalTimeSystem.GlobalTimePaused;
         public static float glowLight;
         public override void UpdateUI(GameTime gameTime)
         {

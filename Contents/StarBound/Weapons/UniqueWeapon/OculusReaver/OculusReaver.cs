@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
+using System;
 using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver

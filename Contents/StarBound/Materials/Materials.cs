@@ -1,4 +1,5 @@
-﻿using Terraria.ID;
+﻿using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
+using Terraria.ID;
 using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream.Contents.StarBound.Materials

@@ -1,4 +1,7 @@
 ﻿using LogSpiralLibrary;
+using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 using System;
 //using static VirtualDream.Contents.StarBound.Weapons.BossDrop.UpgradeWeaponExtension;
 using Terraria.DataStructures;

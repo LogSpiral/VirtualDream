@@ -8,6 +8,12 @@ using VirtualDream.Contents.StarBound.Materials;
 using VirtualDream.Contents.StarBound.Weapons.Broken;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
+using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing.RenderDrawingEffects;
+using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing.RenderDrawingContents;
+using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
+using Microsoft.Xna.Framework;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 {
@@ -149,10 +155,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
             indexOfGreyTex = this.UpgradeValue(1, 5, 7);
             useHeatMap = true;
         }
-        public override void RenderInfomation(ref BloomEffectInfo useBloom, ref AirDistortEffectInfo useDistort, ref MaskEffectInfo useMask)
+        public override void RenderInfomation(BloomEffect useBloom, AirDistortEffect useDistort, MaskEffect useMask)
         {
-            useBloom = new BloomEffectInfo(0f, MathHelper.Lerp(1, 1.125f, Main.GlobalTimeWrappedHourly.CosFactor()), 3f, 3, true) with { useModeMK = true };//(controlState == 1 && counter > 0 ? 1f : factor) * .25f//0.7f  //3f
-            useDistort = new AirDistortEffectInfo(1.5f);//  //controlState == 1 ? CurrentSwoosh.rotation : Rotation
+            useBloom.Threshold = .1f;
+            useBloom.Range = 3;
+            useBloom.Intensity = MathHelper.Lerp(1, 1.125f, Main.GlobalTimeWrappedHourly.CosFactor());
+            useBloom.Count = 3;
+            useBloom.Additive = true ;
+            useBloom.UseModeMK = true;
+
+            useDistort.Scaler = 1.5f;
+            useDistort.Intensity = 1.5f;
         }
         public override Texture2D HeatMap
         {

@@ -1,6 +1,8 @@
 ﻿using LogSpiralLibrary;
 using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
+using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -3005,7 +3007,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     {
                         for (int n = 0; n < 32; n++)
                         {
-                            OtherMethods.LinerDust((pointList[n] + new Vector4(8)) * i, (pointList[n + 1] + new Vector4(8)) * i, hZ, hW,
+                            MiscMethods.LinerDust((pointList[n] + new Vector4(8)) * i, (pointList[n + 1] + new Vector4(8)) * i, hZ, hW,
                                 d =>
                                 {
                                     d.noGravity = true;

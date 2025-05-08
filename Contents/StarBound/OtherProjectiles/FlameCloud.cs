@@ -1,4 +1,5 @@
-﻿using VirtualDream.Contents.StarBound.Weapons;
+﻿using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
+using VirtualDream.Contents.StarBound.Weapons;
 
 namespace VirtualDream.Contents.StarBound.OtherProjectiles
 {

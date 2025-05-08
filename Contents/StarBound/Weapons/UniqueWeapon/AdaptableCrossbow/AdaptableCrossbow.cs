@@ -3,6 +3,9 @@ using Terraria.DataStructures;
 using VirtualDream.Contents.StarBound.Materials;
 using System;
 using VirtualDream.Contents.StarBound.Buffs;
+using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
 {

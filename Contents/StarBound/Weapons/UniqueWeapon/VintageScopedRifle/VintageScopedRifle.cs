@@ -1,4 +1,7 @@
 ﻿using LogSpiralLibrary;
+using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 using System;
 using Terraria.DataStructures;
 using Terraria.ID;
