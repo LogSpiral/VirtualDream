@@ -1,17 +1,16 @@
 ﻿using LogSpiralLibrary;
+using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
 using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX;
 using VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver;
 using static LogSpiralLibrary.LogSpiralLibraryMod;
 using static Terraria.ModLoader.ModContent;
-using VirtualDream.Contents.StarBound.TimeBackTracking;
-using LogSpiralLibrary.CodeLibrary.DataStructures;
-using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
-using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 
 namespace VirtualDream
 {
@@ -26,12 +25,17 @@ namespace VirtualDream
             List<Projectile> astralTears = [];
             List<Projectile> solusKatanaFractal = [];
             var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
+
             #region 遍历查找
+
             float? dir = 0;
             int timeleft = 0;
             GetMyDataOut(bars, oculusTears, astralTears, solusKatanaFractal, null, indexer, ref dir, ref timeleft);
-            #endregion
+
+            #endregion 遍历查找
+
             #region 日炎刀合批
+
             if (bars.Count > 2 || solusKatanaFractal.Count > 0)
             {
                 var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
@@ -39,7 +43,9 @@ namespace VirtualDream
                 var resultMatrix = model * trans * projection;
                 SolarKatanaDrawing(solusKatanaFractal, indexer, null, null, null, spriteBatch, trans, resultMatrix, bars, null, dir, false);
             }
-            #endregion
+
+            #endregion 日炎刀合批
+
             if (oculusTears.Count > 0 || astralTears.Count > 0)
             {
                 //先在自己的render上画这个弹幕
@@ -49,6 +55,7 @@ namespace VirtualDream
                 spriteBatch.End();
             }
         }
+
         private static void OculusTearsDrawingContent(List<Projectile> oculusTears, SpriteBatch spriteBatch, Color color)
         {
             foreach (var projectile in oculusTears)
@@ -63,6 +70,7 @@ namespace VirtualDream
                 spriteBatch.Draw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, color, projectile.rotation, new Vector2(512), ((int)projectile.ai[1] == 3 ? 2.5f : 2f) * 46 / 512 * new Vector2(3, 1), 0, 0);//new Rectangle(240,240,92,92)
             }
         }
+
         private static void AstralTearsDrawingContent(List<Projectile> astralTears, SpriteBatch spriteBatch, bool containsSlash, Matrix trans)
         {
             if (containsSlash)
@@ -101,12 +109,11 @@ namespace VirtualDream
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
         }
+
         public override void RenderDrawingMethods(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice, RenderTarget2D render, RenderTarget2D renderAirDistort)
         {
-
             if (!Main.drawToScreen)
             {
-
                 List<CustomVertexInfo> bars = [];
                 List<CustomVertexInfo> bars_2 = [];
 
@@ -117,29 +124,34 @@ namespace VirtualDream
 
                 int timeLeft = -1919810;
                 float? director = null;
+
                 #region 遍历查找
+
                 GetMyDataOut(bars, oculusTears, astralTears, solusKatanaFractal, bars_2, indexer, ref director, ref timeLeft);
                 var trans = Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity;
 
-                #endregion
+                #endregion 遍历查找
+
                 if (bars.Count > 2 || oculusTears.Count > 0 || astralTears.Count > 0 || solusKatanaFractal.Count > 0)
                 {
                     var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
                     var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
                     var resultMatrix = model * trans * projection;
+
                     #region 日炎刀合批
+
                     if (bars.Count > 2 || solusKatanaFractal.Count > 0)
                     {
                         SolarKatanaDrawing(solusKatanaFractal, indexer, graphicsDevice, render, renderAirDistort, spriteBatch, trans, resultMatrix, bars, bars_2, director, true);
                     }
-                    #endregion
+
+                    #endregion 日炎刀合批
+
                     if (oculusTears.Count > 0)
                         OculusTearsDrawing(oculusTears, graphicsDevice, render, spriteBatch, trans);
 
                     if (astralTears.Count > 0)
                         AstralTearsDrawing(astralTears, graphicsDevice, render, spriteBatch, trans);
-
-
                 }
 
                 List<Projectile> windOfTimeProjs = [];
@@ -150,19 +162,27 @@ namespace VirtualDream
                         windOfTimeProjs.Add(proj);
                     }
                 }
+
                 #region MyRegion
+
                 var sb = Main.spriteBatch;
+
                 #region Render
+
                 graphicsDevice.SetRenderTarget(Instance.Render_Swap);
                 graphicsDevice.Clear(Color.Transparent);
-                #endregion
+
+                #endregion Render
+
                 sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
                 foreach (var wind in windOfTimeProjs)
                 {
                     sb.Draw(MagicZone[14].Value, wind.Center - Main.screenPosition, null, Color.White * ((1 - MathF.Cos(MathHelper.TwoPi * wind.timeLeft / 180f)) * .5f), (float)ModTime / 60f, new Vector2(200), (1 - wind.timeLeft / 180f) * 4, 0, 0);
                 }
                 sb.End();
+
                 #region render
+
                 graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
                 graphicsDevice.Clear(Color.Transparent);
                 sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
@@ -180,14 +200,16 @@ namespace VirtualDream
                 sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
                 sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
                 sb.End();
-                #endregion
-                #endregion
+
+                #endregion render
+
+                #endregion MyRegion
             }
 
             if (VirtualDreamMod.bloomValue > 0)
                 UseBloom(graphicsDevice);
-
         }
+
         private static void GetMyDataOut(List<CustomVertexInfo> bars, List<Projectile> oculusTears, List<Projectile> astralTears, List<Projectile> solusKatanaFractal, List<CustomVertexInfo> bars_2, List<int> indexer, ref float? director, ref int timeLeft)
         {
             foreach (var proj in Main.projectile)
@@ -215,7 +237,6 @@ namespace VirtualDream
                                 realColor.A = 0;
                                 bars.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
                                 bars_2?.Add(new CustomVertexInfo(swoosh.center, realColor, new Vector3(0, 0, 0.6f)));
-
                             }
                             indexer?.Add(bars.Count - 2);
 
@@ -225,7 +246,6 @@ namespace VirtualDream
                                 director = swoosh.direction;
                             }
                         }
-
                     }
                 }
                 if (proj.active && proj.type == ProjectileType<OculusReaverTear>()) oculusTears.Add(proj);
@@ -233,9 +253,9 @@ namespace VirtualDream
                 if (proj.active && (proj.type == ProjectileType<SolusKatanaFractal>() || proj.type == ProjectileType<SolusLevatine>())) solusKatanaFractal.Add(proj);
             }
         }
+
         private static void SolarKatanaDrawing(List<Projectile> solusKatanaFractal, List<int> indexer, GraphicsDevice graphicsDevice, RenderTarget2D render, RenderTarget2D renderAirDistort, SpriteBatch spriteBatch, Matrix trans, Matrix resultMatrix, List<CustomVertexInfo> bars, List<CustomVertexInfo> bars_2, float? director, bool useRender)
         {
-
             RasterizerState originalState = Main.graphics.GraphicsDevice.RasterizerState;
 
             SamplerState sampler = SamplerState.LinearWrap;
@@ -281,14 +301,12 @@ namespace VirtualDream
                         realColor.A = isLevatine ? realColor.A : (byte)0;
                         bars.Add(new CustomVertexInfo(projectile.oldPos[i], realColor * multiValue, new Vector3(0, 0, alphaLight)));
                         bars_2?.Add(bars[^1]);
-
                     }
                     indexer.Add(bars.Count - 2);
                 }
             }
             if (bars.Count > 2)
             {
-
                 CustomVertexInfo[] triangleList = new CustomVertexInfo[(bars.Count - 2) * 3];
                 for (int i = 0; i < bars.Count - 2; i += 2)
                 {
@@ -364,14 +382,11 @@ namespace VirtualDream
                     }
                     Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList, 0, bars.Count - 2);
 
-
                     spriteBatch.End();
                     graphicsDevice.SetRenderTarget(Main.screenTargetSwap);//将画布设置为这个
                     graphicsDevice.Clear(Color.Transparent);//清空
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                     //spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
-
-
 
                     //Vector2 direct = (instance.swooshFactorStyle == SwooshFactorStyle.每次开始时决定系数 ? modPlayer.kValue : ((modPlayer.kValue + modPlayer.kValueNext) * .5f)).ToRotationVector2() * -0.1f * fac.SymmetricalFactor2(0.5f, 0.2f) * instance.distortFactor;//(u + v)
                     //RenderEffect.Parameters["offset"].SetValue((director ?? MathHelper.PiOver4).ToRotationVector2() * -0.03f);//设置参数时间
@@ -404,8 +419,6 @@ namespace VirtualDream
                         gd.Clear(Color.Transparent);
                         RenderEffect.CurrentTechnique.Passes[4].Apply();
                         sb.Draw(n == 0 ? render : Instance.Render_Swap2, Vector2.Zero, Color.White);
-
-
 
                         gd.SetRenderTarget(Instance.Render_Swap2);
                         //RenderEffect.Parameters["tex0"].SetValue(Instance.Render_Swap);
@@ -443,26 +456,31 @@ namespace VirtualDream
                     {
                         (projectile.ModProjectile as SolusKatanaFractal)?.DrawSword();
                         (projectile.ModProjectile as SolusLevatine)?.DrawLaser();
-
                     }
                 }
                 spriteBatch.End();
             }
         }
+
         private static void OculusTearsDrawing(List<Projectile> oculusTears, GraphicsDevice graphicsDevice, RenderTarget2D render, SpriteBatch spriteBatch, Matrix trans)
         {
             #region Render
+
             //var gd = Main.graphics.GraphicsDevice;
             //先在自己的render上画这个弹幕
             //sb.End();
             graphicsDevice.SetRenderTarget(render);
             graphicsDevice.Clear(Color.Transparent);
-            #endregion
+
+            #endregion Render
+
             //sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);//Main.DefaultSamplerState//Main.GameViewMatrix.TransformationMatrix
             OculusTearsDrawingContent(oculusTears, spriteBatch, Color.White);
             spriteBatch.End();
+
             #region render
+
             //然后在随便一个render里绘制屏幕，并把上面那个带弹幕的render传进shader里对屏幕进行处理
             //原版自带的screenTargetSwap就是一个可以使用的render，（原版用来连续上滤镜）
             graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
@@ -499,19 +517,27 @@ namespace VirtualDream
             Main.instance.GraphicsDevice.BlendState = BlendState.Additive;
             spriteBatch.Draw(Instance.Render_Swap, Vector2.Zero, Color.White);
             spriteBatch.End();
-            #endregion
+
+            #endregion render
         }
+
         private static void AstralTearsDrawing(List<Projectile> astralTears, GraphicsDevice graphicsDevice, RenderTarget2D render, SpriteBatch spriteBatch, Matrix trans)
         {
             var sb = Main.spriteBatch;
+
             #region Render
+
             graphicsDevice.SetRenderTarget(render);
             graphicsDevice.Clear(Color.Transparent);
-            #endregion
+
+            #endregion Render
+
             sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicWrap, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
             AstralTearsDrawingContent(astralTears, spriteBatch, true, trans);
             sb.End();
+
             #region render
+
             graphicsDevice.SetRenderTarget(Main.screenTargetSwap);
             graphicsDevice.Clear(Color.Transparent);
             sb.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
@@ -570,8 +596,10 @@ namespace VirtualDream
             spriteBatch.Draw(Instance.Render_Swap, Vector2.Zero, Color.White);
 
             sb.End();
-            #endregion
+
+            #endregion render
         }
+
         private void UseBloom(GraphicsDevice graphicsDevice)
         {
             graphicsDevice.SetRenderTarget(Main.screenTargetSwap);

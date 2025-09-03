@@ -1,8 +1,6 @@
 ﻿using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
-using Mono.Cecil;
 using System;
-using Terraria.DataStructures;
 using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
@@ -10,6 +8,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
     public abstract class WhipBase_Item : StarboundWeaponBase
     {
         public abstract void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime);
+
         public override void SetDefaults()
         {
             int type = 841;
@@ -21,31 +20,39 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             Item.DefaultToWhip(type, damage, knockBack, shootSpeed, animationTime);
         }
     }
-    public abstract class WhipBase_Projectile : ModProjectile,IStarboundWeaponProjectile
+
+    public abstract class WhipBase_Projectile : ModProjectile, IStarboundWeaponProjectile
     {
         //public IEntitySource source;
         //public int sourceItemType => weapon.Item.type;
         public Player Player => Main.player[projectile.owner];
+
         public Projectile projectile => Projectile;
+
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.IsAWhip[Type] = true;
             // DisplayName.SetDefault("鞭");
         }
-        public virtual void WhipSettings(ref int segments, ref float rangeMultiplier) { }
+
+        public virtual void WhipSettings(ref int segments, ref float rangeMultiplier)
+        { }
+
         public override void SetDefaults()
         {
             Projectile.DefaultToWhip();
             projectile.aiStyle = -1;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             projectile.DrawWhip();
             return false;
         }
+
         public override void AI()
         {
-            if (projectile.ai[2] == 0) 
+            if (projectile.ai[2] == 0)
             {
                 WhipSettings(ref Projectile.WhipSettings.Segments, ref Projectile.WhipSettings.RangeMultiplier);
                 Projectile.WhipSettings.Segments = (int)(Projectile.WhipSettings.Segments * Projectile.WhipSettings.RangeMultiplier);
@@ -85,8 +92,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
                 AI_Other(num5);
             }
         }
+
         public virtual int DustType => MyDustId.BlackFlakes;
-        public virtual void AI_Other(float factor) 
+
+        public virtual void AI_Other(float factor)
         {
             if (Main.rand.NextFloat() < factor / 2f)
             {

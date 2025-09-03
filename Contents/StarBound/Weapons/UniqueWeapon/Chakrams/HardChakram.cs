@@ -12,6 +12,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             // DisplayName.SetDefault("硬环刃");
             // Tooltip.SetDefault("坚固，沉重，而残忍地有效。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -19,6 +20,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             item.shoot = ProjectileType<HardChakramProj>();
             item.height = item.width = 34;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -37,6 +39,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             recipe2.AddRecipe();
         }
     }
+
     public class HardChakramEX : HardChakram
     {
         public override void SetStaticDefaults()
@@ -44,21 +47,24 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             // DisplayName.SetDefault("硬环刃EX");
             // Tooltip.SetDefault("坚固，沉重，而残忍地有效。\n沉重到能够轻易地击飞对方。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
             item.damage = 400;
             item.rare = MyRareID.Tier3;
             item.value *= 5;
-
         }
+
         public override WeaponState State => WeaponState.False_EX;
 
         public override bool Extra => true;
+
         public override void AddRecipes()
         {
         }
     }
+
     public class HardChakramProj : ChakramBaseProjectile
     {
         public override void AI()
@@ -66,7 +72,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             if (Projectile.ai[0] == 1 && Projectile.timeLeft > 15)
             {
                 Projectile.rotation = (float)VirtualDreamSystem.ModTime;
-
 
                 var player = Main.player[Projectile.owner];
                 int dust = Projectile.ai[1] == 1 ? MyDustId.GoldMaterial : MyDustId.ThinBrown;
@@ -93,10 +98,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             else
                 base.AI();
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            if (target.CanBeChasedBy()) 
+            if (target.CanBeChasedBy())
             {
                 var vec = Projectile.oldPos[0] - Projectile.oldPos[1];
                 if (vec.Length() > 128) vec = Projectile.velocity;

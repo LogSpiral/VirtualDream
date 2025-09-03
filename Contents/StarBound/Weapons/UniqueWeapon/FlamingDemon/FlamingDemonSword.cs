@@ -12,6 +12,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
             // Tooltip.SetDefault("无穷的烈焰自它的剑锋中喷涌而出。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("炎岚之怒");
         }
+
         public Item item => Item;
 
         public override void SetDefaults()
@@ -33,10 +34,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
             item.shootSpeed = 1;
             item.damage = 250;
         }
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -59,14 +62,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
             }
             return player.ownedProjectileCounts[ModContent.ProjectileType<FlamingDemonSwordProj>()] < 1;
         }
+
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire, 300);
         }
+
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
             Dust.NewDust(hitbox.TopLeft(), hitbox.Width, hitbox.Height, MyDustId.Fire, 0, 0, 100, Color.White, 1.0f);
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -78,6 +84,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
             recipe1.AddRecipe();
         }
     }
+
     public class FlamingDemonSwordEX : FlamingDemonSword
     {
         public override WeaponState State => WeaponState.False_EX;
@@ -87,6 +94,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
             // Tooltip.SetDefault("无穷的烈焰自它的剑锋中喷涌而出。\n火焰更加猛烈，一切都将化为灰烬吧。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("炎岚之怒EX");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -97,13 +105,16 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
             item.rare = MyRareID.Tier3;
             item.damage = 400;
         }
+
         public override void AddRecipes()
         {
         }
     }
+
     public class FlamingDemonSwordProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {
         public override (int X, int Y) FrameMax => (6, 2);
+
         public override void OnCharging(bool left, bool right)
         {
             if (Charged && (int)Projectile.ai[0] % 5 == 0)
@@ -115,15 +126,19 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
                 else Projectile.Kill();
             }
         }
+
         public override bool UseLeft => false;
         public override bool UseRight => true;
+
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
             origin = new Vector2(18, 22);
             frame = texture.Frame(FrameMax.X, FrameMax.Y, (int)Projectile.ai[0] / 2 % 6, this.UpgradeValue(0, 1));
         }
+
         public override bool Charged => base.Charged;
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 76;
+
         public override float Factor
         {
             get

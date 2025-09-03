@@ -7,6 +7,7 @@ namespace VirtualDream.Contents.StarBound.Materials
     public abstract class Materials : ModItem
     {
         public Item item => Item;
+
         public override void SetDefaults()
         {
             item.width = 30;
@@ -16,6 +17,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             item.rare = ItemRarityID.Red;
             SetMaterialValues();
         }
+
         //protected string ItemName;
         //protected string Description;
         public override void SetStaticDefaults()
@@ -26,14 +28,16 @@ namespace VirtualDream.Contents.StarBound.Materials
             // DisplayName.SetDefault(ItemName);
             // Tooltip.SetDefault(Description);
         }
+
         public virtual void GetName(ref string ItemName, ref string Description)
         {
-
         }
+
         public virtual void SetMaterialValues()
         {
         }
     }
+
     public class LivingRoot : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -42,6 +46,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "一片被割断的进化植物物质。可以用于制作。";
         }
     }
+
     public class Leather : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -50,6 +55,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "一块皮革。";
         }
     }
+
     public class HardenedCarapace : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -58,6 +64,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "坚硬有机外壳的碎片。可以用于制作。";
         }
     }
+
     public class ErchiusCrystal : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -66,6 +73,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "一种用于给FTL引擎供能的水晶，至今还未完全理解它的原理。\n在星界边境中连物质枪都对它无可奈何纯粹是因为呵呵鱼开了副本保护（";
         }
     }
+
     public class CryonicExtract : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -74,6 +82,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "冰冷的有机化学品。可以用于制作。";
         }
     }
+
     public class PhaseMatter : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -82,6 +91,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "看起来几乎没有确定形态的物质。可以用于制作。";
         }
     }
+
     public class ScorchedCore : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -90,6 +100,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "生物火系能力的源泉。可以用于制作。";
         }
     }
+
     public class SharpenedClaw : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -98,6 +109,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "锋利的怪物爪。可以用于制作。";
         }
     }
+
     public class StaticCell : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -106,6 +118,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "一块充斥着电荷的细胞物质。可以用于制作。";
         }
     }
+
     public class StickOfRAM : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -114,6 +127,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "一个典型的通用计算机芯片。可以用于制作。";
         }
     }
+
     public class VenomSample : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -122,6 +136,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             Description = "挥发性有毒液体的样品。可以用于制作。";
         }
     }
+
     public class VioliumOre : Materials
     {
         public override void SetMaterialValues()
@@ -133,12 +148,14 @@ namespace VirtualDream.Contents.StarBound.Materials
             item.consumable = true;
             item.createTile = TileType<VioliumOreTile>();
         }
+
         public override void GetName(ref string ItemName, ref string Description)
         {
             ItemName = "维奥合金矿";
             Description = "维奥合金矿,可用于冶炼。";
         }
     }
+
     public class FeroziumOre : Materials
     {
         public override void SetMaterialValues()
@@ -150,12 +167,14 @@ namespace VirtualDream.Contents.StarBound.Materials
             item.consumable = true;
             item.createTile = TileType<FeroziumOreTile>();
         }
+
         public override void GetName(ref string ItemName, ref string Description)
         {
             ItemName = "菲洛合金矿";
             Description = "菲洛合金矿。可用于冶炼。";
         }
     }
+
     public class AegisaltOre : Materials
     {
         public override void SetMaterialValues()
@@ -167,12 +186,14 @@ namespace VirtualDream.Contents.StarBound.Materials
             item.consumable = true;
             item.createTile = TileType<AegisaltOreTile>();
         }
+
         public override void GetName(ref string ItemName, ref string Description)
         {
             ItemName = "霓磷盐矿";
             Description = "这是霓磷盐。可用于冶炼。";
         }
     }
+
     public class SolariumOre : Materials
     {
         public override void SetMaterialValues()
@@ -184,12 +205,14 @@ namespace VirtualDream.Contents.StarBound.Materials
             item.consumable = true;
             item.createTile = TileType<SolariumOreTile>();
         }
+
         public override void GetName(ref string ItemName, ref string Description)
         {
             ItemName = "日耀石矿";
             Description = "这就是日耀石。摸起来暖暖的。";
         }
     }
+
     public class RefinedViolium : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -197,6 +220,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             ItemName = "精炼维奥合金";
             Description = "精炼维奥合金矿石可以在冰冻星系的行星上发现。\n在击败月球领主后也会无端地出现在泰拉瑞亚的地下......";
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -206,6 +230,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             recipe.AddRecipe();
         }
     }
+
     public class RefinedFerozium : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -213,6 +238,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             ItemName = "精炼菲洛合金";
             Description = "精炼菲洛合金矿石可以在冰冻星系的行星上发现。\n在击败月球领主后也会无端地出现在泰拉瑞亚的地下......";
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -222,6 +248,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             recipe.AddRecipe();
         }
     }
+
     public class RefinedAegisalt : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -229,6 +256,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             ItemName = "精炼霓磷盐";
             Description = "精炼霓磷盐矿可以在冰冻星系的行星上发现。\n在击败月球领主后也会无端地出现在泰拉瑞亚的地下......";
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -238,6 +266,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             recipe.AddRecipe();
         }
     }
+
     public class SolariumStar : Materials
     {
         public override void GetName(ref string ItemName, ref string Description)
@@ -245,6 +274,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             ItemName = "精炼日耀石";
             Description = "精炼日耀石矿可以在灼热星系的行星上发现。\n在击败月球领主后也会无端地出现在泰拉瑞亚的地下......";
         }
+
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
@@ -254,9 +284,11 @@ namespace VirtualDream.Contents.StarBound.Materials
             recipe.AddRecipe();
         }
     }
+
     public class AncientEssence : ModItem
     {
-        Item item => Item;
+        private Item item => Item;
+
         public override void SetDefaults()
         {
             item.width = 26;
@@ -265,6 +297,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             item.rare = ItemRarityID.Purple;
             item.value = -1;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("远古精华");

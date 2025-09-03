@@ -9,7 +9,7 @@ using VirtualDream.Contents.StarBound.Weapons.Broken;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
 {
-    public class IxodoomClaw_Broken : IxodoomClaw 
+    public class IxodoomClaw_Broken : IxodoomClaw
     {
         public override void SetDefaults()
         {
@@ -19,8 +19,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             item.useTime = 45;
             item.rare = ModContent.RarityType<BrokenRarity>();
         }
+
         public override WeaponState State => WeaponState.Broken;
+
         public override bool AltFunctionUse(Player player) => false;
+
         public override WeaponRepairRecipe RepairRecipe()
         {
             var recipe = GetEmptyRecipe();
@@ -34,9 +37,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             return recipe;
         }
     }
+
     public class IxodoomClaw_BrokenProj : VertexHammerProj, IStarboundWeaponProjectile
     {
-
         public override float MaxTime => Player.itemAnimationMax;
         public override string Texture => base.Texture.Replace("BrokenProj", "Broken");
         public override Vector2 CollidingSize => base.CollidingSize * 2;
@@ -44,18 +47,22 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
         public override Vector2 CollidingCenter => new(projTex.Size().X / 3 - 16, 16);
         public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-16, 12);
     }
+
     public class IxodoomClaw : StarboundWeaponBase
     {
         public override WeaponRepairRecipe RepairRecipe()
         {
             return GetEmptyRecipe().AddIngredient<AncientEssence>(5000).SetResult<IxodoomClawEX>();
         }
+
         public override bool BossDrop => true;
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("强大的死亡主宰的断腿。这可以作为一个强大的武器。\n[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("死亡主宰爪");
         }
+
         public Item item => Item;
 
         public override void SetDefaults()
@@ -69,28 +76,34 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             item.useTime = 30;
             item.useAnimation = 30;
             item.knockBack = 6;
-            item.useStyle = 1;
+            item.useStyle = ItemUseStyleID.Swing;
             item.autoReuse = true;
             item.shoot = ModContent.ProjectileType<IxodoomClawProj>();
             item.shootSpeed = 1f;
             item.noUseGraphic = true;
             item.noMelee = true;
         }
+
         public override bool CanUseItem(Player player) => player.ownedProjectileCounts[item.shoot] < 1;
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
     }
+
     public class IxodoomClawEX : IxodoomClaw
     {
         public override WeaponRepairRecipe RepairRecipe() => GetEmptyRecipe();
+
         public override WeaponState State => WeaponState.False_EX;
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("强大的死亡主宰的断腿。这可以作为一个强大的武器。\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("死亡主宰爪EX");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -99,9 +112,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             item.rare = MyRareID.Tier2;
         }
     }
+
     public class IxodoomClawHT : IxodoomClaw
     {
         public override WeaponState State => WeaponState.False_UL;
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("强大的死亡主宰的断腿。这可以作为一个强大的武器。\n它的刀刃上附着着高度的剧毒\n[c/ff0000:温馨提示:不要对高血量怪物使用右键技能，怪物死了，你的电脑也卡死了（]\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
@@ -115,6 +130,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             item.crit = 50;
             item.rare = MyRareID.Tier3;
         }
+
         public override void HoldItem(Player player)
         {
             int d = MyDustId.PinkBubble;
@@ -126,22 +142,28 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             }
         }
     }
-    public class IxodoomClawProj : VertexHammerProj,IStarboundWeaponProjectile
+
+    public class IxodoomClawProj : VertexHammerProj, IStarboundWeaponProjectile
     {
         public override string HammerName => base.HammerName;
         public override float MaxTime => (controlState == 2 ? 2f : 1f) * this.UpgradeValue(30, 24, 18);
         public override float Factor => base.Factor;
         public override Vector2 CollidingSize => base.CollidingSize * 2;
+
         //public override Vector2 projCenter => base.projCenter + new Vector2(Player.direction * 16, -16);
         public override Vector2 CollidingCenter => base.CollidingCenter;//new Vector2(projTex.Size().X / 3 - 16, 16)
+
         public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-12, 12);
         public override Color color => base.color;
+
         public override Color VertexColor(float time) => default;
+
         public override float MaxTimeLeft => (controlState == 2 ? 0.75f : 1f) * this.UpgradeValue(10, 8, 7);
         public override float Rotation => base.Rotation;
 
         public override bool UseRight => true;
         public override (int X, int Y) FrameMax => (3, 1);
+
         public override void OnKill(int timeLeft)
         {
             int max = (int)(30 * Factor);
@@ -159,6 +181,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
             //}
             base.OnKill(timeLeft);
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
@@ -167,7 +190,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.IxodoomClaw
                 target.AddBuff(this.UpgradeValue(ModContent.BuffType<ToxicⅠ>(), ModContent.BuffType<ToxicⅡ>(), ModContent.BuffType<ToxicⅢ>()), this.UpgradeValue(600, 1200, 1800));
             }
         }
+
         public override Rectangle? frame => projTex.Frame(3, 1, this.UpgradeValue(0, 1, 2));
     }
-
 }

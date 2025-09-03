@@ -12,6 +12,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             // DisplayName.SetDefault("锯环刃");
             // Tooltip.SetDefault("遵循圣律的伐木僧们最喜欢的武器。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -19,8 +20,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             item.rare = MyRareID.Tier2;
             item.shoot = ProjectileType<SawChakramProj>();
             item.height = item.width = 34;
-
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -39,6 +40,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             recipe2.AddRecipe();
         }
     }
+
     public class SawChakramEX : SawChakram
     {
         public override void SetStaticDefaults()
@@ -46,6 +48,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             // DisplayName.SetDefault("锯环刃EX");
             // Tooltip.SetDefault("遵循圣律的伐木僧们最喜欢的武器。\n就用这个锯下那最没用的珍珠木吧。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -53,26 +56,29 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             item.damage = 400;
             item.rare = MyRareID.Tier3;
         }
+
         public override WeaponState State => WeaponState.False_EX;
 
         public override bool Extra => true;
+
         public override void AddRecipes()
         {
         }
     }
+
     public class SawChakramProj : ChakramBaseProjectile
     {
         public override void AI()
         {
             base.AI();
-            if (SpecialAttack) 
+            if (SpecialAttack)
             {
-                foreach (var npc in Main.npc) 
+                foreach (var npc in Main.npc)
                 {
-                    if (npc.CanBeChasedBy()) 
+                    if (npc.CanBeChasedBy())
                     {
                         float distance = (npc.Center - projectile.Center).Length();
-                        if (distance != default) 
+                        if (distance != default)
                         {
                             npc.velocity += (projectile.Center - npc.Center).SafeNormalize(default) * 64 / distance;
                         }
@@ -80,6 +86,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
                 }
             }
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             var unit = projectile.rotation.ToRotationVector2();
@@ -97,7 +104,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             if (projectile.velocity != default) projectile.timeLeft = 150;
             base.OnHitNPC(target, hit, damageDone);
         }
+
         public override bool hit => Projectile.velocity == default ? Projectile.timeLeft <= 30 : base.hit;
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             if (Projectile.velocity != default)

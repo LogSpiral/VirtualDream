@@ -11,7 +11,6 @@
 //    {
 //        public override void SetStaticDefaults()
 //        {
-
 //            Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(2, 6));
 //            Tooltip.SetDefault("这么鬼畜(划掉)强大的日炎刀，肯定不是由阿斯拉诺克斯制造\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
 //            DisplayName.SetDefault("日炎刀TheUndying");

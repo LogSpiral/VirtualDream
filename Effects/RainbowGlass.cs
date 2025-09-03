@@ -14,7 +14,6 @@
 //    {
 //        public RainbowScreenShaderData(string passName) : base(passName)
 //        {
-
 //        }
 //        public RainbowScreenShaderData(Ref<Effect> shader, string passName) : base(shader, passName)
 //        {

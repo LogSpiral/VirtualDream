@@ -12,12 +12,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             // DisplayName.SetDefault("环刃");
             // Tooltip.SetDefault("环刃大师能抓住它而不伤及手指。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
             item.damage = 275;
             item.shoot = ProjectileType<ChakramProj>();
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -36,6 +38,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             recipe2.AddRecipe();
         }
     }
+
     public class ChakramEX : Chakram
     {
         public override void SetStaticDefaults()
@@ -43,6 +46,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             // DisplayName.SetDefault("环刃EX");
             // Tooltip.SetDefault("环刃大师能抓住它而不伤及手指。\n更加猛烈地切割万物吧，包括使用者自身。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -51,19 +55,23 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             item.value *= 5;
             item.height = item.width = 30;
         }
+
         public override WeaponState State => WeaponState.False_EX;
 
         public override void AddRecipes()
         {
         }
+
         public override bool Extra => true;
     }
-    public class ChakramProj : ChakramBaseProjectile 
+
+    public class ChakramProj : ChakramBaseProjectile
     {
         public override void AI()
         {
             base.AI();
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);

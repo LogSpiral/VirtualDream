@@ -1,7 +1,7 @@
-﻿using Terraria.ID;
+﻿using LogSpiralLibrary.CodeLibrary.Utilties;
 using System;
 using Terraria.DataStructures;
-using LogSpiralLibrary.CodeLibrary.Utilties;
+using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
 {
@@ -11,12 +11,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
         {
             return true;
         }
+
         public Item item => Item;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("着蒸逝铬好冥自");
             // Tooltip.SetDefault("着蒸逝铬好苗竖");
         }
+
         public override void SetDefaults()
         {
             item.damage = 150;
@@ -36,17 +39,22 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             item.useTurn = true;
             item.noUseGraphic = true;
         }
+
         public override bool CanUseItem(Player player) => player.ownedProjectileCounts[item.shoot] < 1;
+
         public virtual bool Extra => false;
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, type, damage, knockback, player.whoAmI, player.altFunctionUse == 2 ? 1 : 0, Extra ? 1 : 0);
             return false;
         }
     }
+
     public abstract class ChakramBaseProjectile : ModProjectile, IStarboundWeaponProjectile
     {
         public Projectile projectile => Projectile;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("着蒸逝铬好冥自");
@@ -62,9 +70,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             projectile.penetrate = -1;
             projectile.tileCollide = true;
         }
+
         public virtual bool hit => projectile.timeLeft <= 150;
         public bool Extra => projectile.ai[1] == 1;
         public bool SpecialAttack => projectile.ai[0] == 1;
+
         public override void AI()
         {
             projectile.rotation = (float)VirtualDreamSystem.ModTime;
@@ -93,17 +103,20 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             projectile.oldPos[0] = projectile.Center;
             projectile.oldRot[0] = projectile.rotation;
         }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             projectile.timeLeft = 150;
             return false;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 3;
             projectile.timeLeft = 150;
             base.OnHitNPC(target, hit, damageDone);
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             float length = projectile.oldPos.Length;

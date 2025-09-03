@@ -10,6 +10,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         public override int Width => 2100;
         public override string Name => "TimeBackTracking";//时间回溯世界
         public override WorldGenConfiguration Config => base.Config;
+
         public override List<GenPass> Tasks =>
         [
             new Terraria.GameContent.Generation.PassLegacy("TimeBack!!",
@@ -37,7 +38,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                         for(int k =Height / 4 + currentOffset;k < Height / 8 * 3 + 60;k++)
                         {
                             //if(genRand.NextBool(5))continue;
-                            var tile = Main.tile[n,k];
+                            var tile = Framing.GetTileSafely(n, k);
                             tile.TileType = (k == Height / 4 + currentOffset) ?Terraria.ID.TileID.Grass: Terraria.ID.TileID.Dirt;
                             tile.HasTile = true;
                         }
@@ -45,22 +46,18 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                         for(int k =Height / 8 * 3 + currentOffset;k < Height;k++)
                         {
                             //if(genRand.NextBool(5))continue;
-                            var tile = Main.tile[n,k];
+                            var tile = Framing.GetTileSafely(n, k);
                             tile.TileType = Terraria.ID.TileID.Stone;
                             tile.HasTile = true;
                         }
                     }
                     offset= Main.spawnTileY;
                     offsetTarget = Main.spawnTileX;
-                    while(Main.tile[offsetTarget,offset].HasTile)
+                    while(Framing.GetTileSafely(offsetTarget,offset).HasTile)
                     {
                         offset--;
                     }
                     Main.spawnTileY = offset;
-
-
-
-
 
                 //                    float num845 = (float)(Width *Height) * 0.002f;
                 //for (int num846 = 0; (float)num846 < num845; num846++) {
@@ -89,25 +86,30 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 }
                 )
         ];
+
         public override bool NoPlayerSaving => base.NoPlayerSaving;
         public override bool NormalUpdates => true;
         public override bool ShouldSave => base.ShouldSave;
         public int timeLeft;
+
         public override void DrawMenu(GameTime gameTime)
         {
             //Main.spriteBatch.Draw(TextureAssets.Item[Terraria.ID.ItemID.Zenith].Value, new Rectangle(240, 240, 240, 240), Color.White);
             base.DrawMenu(gameTime);
         }
+
         public override void DrawSetup(GameTime gameTime)
         {
             //Main.spriteBatch.Draw(TextureAssets.Item[Terraria.ID.ItemID.FirstFractal].Value, new Rectangle(240, 240, 240, 240), Color.White);
             base.DrawSetup(gameTime);
         }
+
         public override bool GetLight(Tile tile, int x, int y, ref FastRandom rand, ref Vector3 color)
         {
             //color = Main.hslToRgb(Main.rand.NextFloat(0, 1), 1f, 0.75f).ToVector3();
             return base.GetLight(tile, x, y, ref rand, ref color);
         }
+
         public override void OnEnter()
         {
             timeLeft = 86400;
@@ -117,12 +119,13 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             base.OnEnter();
         }
+
         public override void OnExit()
         {
             base.OnExit();
         }
-
     }
+
     public class TimeBackTrackingBiome : ModBiome
     {
         // Select all the scenery
@@ -135,6 +138,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
         // Populate the Bestiary Filter
         public override string BestiaryIcon => base.BestiaryIcon;
+
         public override string BackgroundPath => base.BackgroundPath;
         public override Color? BackgroundColor => base.BackgroundColor;
         public override string MapBackground => BackgroundPath; // Re-uses Bestiary Background for Map Background
@@ -160,12 +164,14 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             //return b1 && b2 && b3;
             return SubworldLibrary.SubworldSystem.Current is TimeBackTrackingWorld;
         }
+
         public override void OnEnter(Player player)
         {
             SoundEngine.PlaySound(Terraria.ID.SoundID.Zombie104, Main.LocalPlayer.Center);
 
             base.OnEnter(player);
         }
+
         public override void OnLeave(Player player)
         {
             base.OnLeave(player);

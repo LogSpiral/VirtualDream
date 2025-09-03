@@ -12,6 +12,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             // DisplayName.SetDefault("火焰飞镖");
             // Tooltip.SetDefault("一个炎热的飞镖与熔火之心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -20,6 +21,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             item.shoot = ProjectileType<MoltenBoomerangProj>();
             item.height = item.width = 30;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -31,6 +33,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             recipe1.AddRecipe();
         }
     }
+
     public class MoltenBoomerangEX : MoltenBoomerang
     {
         public override void SetStaticDefaults()
@@ -38,6 +41,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             // DisplayName.SetDefault("火焰飞镖EX");
             // Tooltip.SetDefault("一个炎热的飞镖与熔火之心。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -45,19 +49,23 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             item.rare = MyRareID.Tier3;
             item.value *= 5;
         }
+
         public override WeaponState State => WeaponState.False_EX;
 
         public override bool Extra => true;
+
         public override void AddRecipes()
         {
         }
     }
-    public class MoltenBoomerangProj : BoomerangBaseProj 
+
+    public class MoltenBoomerangProj : BoomerangBaseProj
     {
         public override void AI()
         {
             base.AI();
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);

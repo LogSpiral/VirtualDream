@@ -1,5 +1,4 @@
 ﻿using LogSpiralLibrary;
-using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
 using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
@@ -7,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.ID;
 using VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana;
+
 namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 {
     [AutoloadBossHead]
@@ -42,7 +42,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             Music = MusicID.Boss2;
             if (!Main.gameMenu)
             {
-
                 visualPlayer = new Player();
                 visualPlayer.armor[1] = new Item(ItemID.HallowedPlateMail);
                 visualPlayer.armor[2] = new Item(ItemID.NebulaLeggings);
@@ -72,11 +71,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             solusKatanaFractal = ModContent.ProjectileType<SolusKatanaFractal>();
             base.SetDefaults();
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("阿斯拉诺克斯");
         }
-        void SetAI(float ai_0 = 0, float ai_1 = 0, float ai_2 = 0, float ai_3 = 0, float ai_4 = 0, float ai_5 = 0, float ai_6 = 0, float ai_7 = 0, float ai_8 = 0)
+
+        private void SetAI(float ai_0 = 0, float ai_1 = 0, float ai_2 = 0, float ai_3 = 0, float ai_4 = 0, float ai_5 = 0, float ai_6 = 0, float ai_7 = 0, float ai_8 = 0)
         {
             ai0 = ai_0;
             ai1 = ai_1;
@@ -88,6 +89,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             ai7 = ai_7;
             ai8 = ai_8;
         }
+
         public Player targetPlayer
         {
             get
@@ -110,31 +112,37 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 return target;
             }
         }
+
         public float ai0
         {
             get => NPC.ai[0];
             set => NPC.ai[0] = value;
         }
+
         public float ai1
         {
             get => NPC.ai[1];
             set => NPC.ai[1] = value;
         }
+
         public float ai2
         {
             get => NPC.ai[2];
             set => NPC.ai[2] = value;
         }
+
         public float ai3
         {
             get => NPC.ai[3];
             set => NPC.ai[3] = value;
         }
+
         public float ai4;
         public float ai5;
         public float ai6;
         public float ai7;
         public float ai8;
+
         private void SpawnFractal(Vector2 targetPosition, Vector2 offset = default, Vector2? dir = null)
         {
             //var value5 = targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960));
@@ -195,7 +203,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         //}
         public override void AI()
         {
-
             if (musics.Item1 != 0)
             {
                 Music = (byte)state < 7 || (byte)state > 18 ? musics.Item1 : musics.Item2;
@@ -213,6 +220,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             switch (state)
             {
                 #region 开始
+
                 case AsraNoxState.开始://TODO 开始
                     {
                         _0();
@@ -248,9 +256,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         _1_6();
                         break;
                     }
-                #endregion
+
+                #endregion 开始
 
                 #region 追灭
+
                 case AsraNoxState.陨日残阳_追灭://TODO 陨日残阳_追灭
                     {
                         _2_1();
@@ -281,9 +291,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         _2_6();
                         break;
                     }
-                #endregion
+
+                #endregion 追灭
 
                 #region 随机
+
                 case AsraNoxState.陨日残阳_随机://TODO 陨日残阳_随机
                     {
                         _3_1();
@@ -314,9 +326,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         _3_6();
                         break;
                     }
-                #endregion
+
+                #endregion 随机
 
                 #region 后撤
+
                 case AsraNoxState.陨日残阳_后撤://TODO 陨日残阳_后撤
                     {
                         _4_1();
@@ -347,10 +361,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         _4_6();
                         break;
                     }
-                    #endregion
 
+                    #endregion 后撤
             }
         }
+
         private void _0()
         {
             ai1++;
@@ -375,6 +390,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     }
                 }
         }
+
         private void _1_1()
         {
             var timer = (int)ai1;
@@ -407,7 +423,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 
             if (timer >= 40)
             {
-
                 const int timeMax = 20;
                 if (timer % timeMax == 0)
                 {
@@ -439,7 +454,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         proj.friendly = false;
                         proj.hostile = true;
                     }
-
                 }
             }
             if (timer < 40)
@@ -454,7 +468,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 SetAI(2);//2
                 return;
             }
+
             #region 旧冲刺，效果拉胯
+
             //const int timeMax = 20;
             //int counter = (int)ai1 % timeMax;
             //int direct = (int)ai1 / timeMax % 2;
@@ -480,15 +496,15 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             //visualPlayer.direction = direct == 1 ? 1 : -1;
             //visualPlayer.itemAnimation = 1;
             //visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, 0);
-            #endregion
 
+            #endregion 旧冲刺，效果拉胯
 
             NPC.oldPos[0] = NPC.oldPosition;
-            //visualPlayer.itemRotation = 
+            //visualPlayer.itemRotation =
         }
+
         private void _1_2()
         {
-
             if ((int)ai1 < 765)
                 NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X, targetPlayer.Center.Y - 400 + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.25f);
             else
@@ -578,8 +594,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             //    proj.friendly = false;
             //    proj.hostile = true;
             //}
-
         }
+
         private void _1_3()
         {
             int timer = (int)ai1;
@@ -777,7 +793,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 800 * visualPlayer.direction, targetPlayer.Center.Y - 400 * (float)Math.Sin(ai1 / 240 * MathHelper.TwoPi) + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
+
             #region 放弃的
+
             //if (counter < 180)
             //{
             //    if (counter % 60 == 0)
@@ -879,7 +897,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             //            goto mylabel;
             //        }
             //    }
-            //    if (counter == 200) 
+            //    if (counter == 200)
             //    {
             //        var target = targetPlayer.Center + (MathHelper.Pi / 6).ToRotationVector2() * 400;
             //        var projectile = Main.projectile[(int)ai5];
@@ -952,7 +970,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             //    }
 
             //}
-            #endregion
+
+            #endregion 放弃的
 
             ai1++;
             if (ai1 >= 720)
@@ -962,6 +981,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             NPC.oldPos[0] = NPC.oldPosition;
         }
+
         private void _1_4()
         {
             //240一次，三个阶段
@@ -974,6 +994,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             int stager = timer / 240;
 
             #region 流星生成
+
             if (timer % (36 - stager * 4) == 0)
             {
                 for (int n = 0; n < 4; n++)
@@ -984,15 +1005,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     proj.hostile = true;
                 }
             }
-            #endregion
+
+            #endregion 流星生成
 
             #region 初源生成
+
             if (timer % 40 == 0)
             {
                 SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + (Main.rand.NextBool(5 - stager) ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)));
             }
-            #endregion
 
+            #endregion 初源生成
 
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             if (counter < 120)
@@ -1063,8 +1086,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     ai5 = targetPlayer.Center.X;
                     ai6 = targetPlayer.Center.Y;
                     //Main.NewText((ai5, ai6));
-
-
                 }
                 if (counter >= 120)
                 {
@@ -1089,7 +1110,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
                     }
                 }
-
             }
             else
             {
@@ -1122,7 +1142,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 {
                     var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
                     ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-
                 }
                 if (counter < 220)
                 {
@@ -1194,6 +1213,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 return;
             }
         }
+
         private void _1_5()
         {
             //ai0状态 ai1计时 ai2 ai3控制发射弹幕 ai4 ai5记录玩家坐标 ai6 ai7记录起始位置 ai8记录旋转中心位置
@@ -1314,8 +1334,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         }
                     }
                 }
-
-
             }
 
             ai1++;
@@ -1325,8 +1343,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 SetAI(6);
                 return;
             }
-
         }
+
         private void _1_6()
         {
             //分三个阶段
@@ -1387,7 +1405,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         NPC.Center = Vector2.Lerp(NPC.Center, targetPlayer.Center + new Vector2(-visualPlayer.direction * 400, 320), 0.1f);
                     }
                     projectile.Center = projectile.oldPos[0] = NPC.Center + projectile.ai[0].ToRotationVector2() * 20 * new Vector2(.5f, 1) + new Vector2(0, 12);
-
                 }
                 else
                 {
@@ -1402,8 +1419,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         if ((targetPlayer.Center.X - NPC.Center.X) * ai3 < 0 && timer % 4 == 0)
                         {
                             #region 初源生成
+
                             SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f);
-                            #endregion
+
+                            #endregion 初源生成
                         }
                     }
                     else
@@ -1411,10 +1430,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         var rot = visualPlayer.compositeFrontArm.rotation;
                         visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Terraria.Utils.AngleLerp(rot, -MathHelper.PiOver2 * visualPlayer.direction, 0.05f));
                         NPC.Center = Vector2.Lerp(NPC.Center, targetPlayer.Center + new Vector2(-visualPlayer.direction * 256, -200), 0.1f);
-
                     }
                     projectile.Center = projectile.oldPos[0] = NPC.Center + new Vector2(visualPlayer.direction * 6, 16);
-
                 }
                 if (timer % 24 == 0 && timer % 240 > 30)
                 {
@@ -1441,7 +1458,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, solusKatanaFractal, 45, 4, Main.myPlayer, 0, 3);
                     Main.projectile[(int)ai4].extraUpdates = 0;
                     if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-
                 }
                 if (timer % 60 == 30)
                 {
@@ -1492,6 +1508,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             NPC.oldPos[0] = NPC.oldPosition;
         }
+
         private void _2_1()
         {
             var timer = (int)ai1;
@@ -1554,6 +1571,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             NPC.oldPos[0] = NPC.oldPosition;
         }
+
         private void _2_2()
         {
             if ((int)ai1 < 765)
@@ -1645,8 +1663,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             //    proj.friendly = false;
             //    proj.hostile = true;
             //}
-
         }
+
         private void _2_3()
         {
             int timer = (int)ai1;
@@ -1714,6 +1732,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             NPC.oldPos[0] = NPC.oldPosition;
         }
+
         private void _2_4()
         {
             //240一次，三个阶段
@@ -1726,6 +1745,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             int stager = timer / 240;
 
             #region 流星生成
+
             if (timer % (36 - stager * 4) == 0)
             {
                 for (int n = 0; n < 4; n++)
@@ -1736,15 +1756,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     proj.hostile = true;
                 }
             }
-            #endregion
+
+            #endregion 流星生成
 
             #region 初源生成
+
             if (timer % 40 == 0)
             {
                 SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + (Main.rand.NextBool(5 - stager) ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)), targetPlayer.velocity);
             }
-            #endregion
 
+            #endregion 初源生成
 
             visualPlayer.direction = AsraNoxSky.windDirection;
             if (counter < 120)
@@ -1815,8 +1837,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     ai5 = targetPlayer.Center.X;
                     ai6 = targetPlayer.Center.Y;
                     //Main.NewText((ai5, ai6));
-
-
                 }
                 if (counter >= 120)
                 {
@@ -1841,7 +1861,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
                     }
                 }
-
             }
             else
             {
@@ -1874,7 +1893,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 {
                     var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
                     ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-
                 }
                 if (counter < 220)
                 {
@@ -1946,6 +1964,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 return;
             }
         }
+
         private void _2_5()
         {
             //ai0状态 ai1计时 ai2 ai3控制发射弹幕 ai4 ai5记录玩家坐标 ai6 ai7记录起始位置 ai8记录旋转中心位置
@@ -2069,8 +2088,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         }
                     }
                 }
-
-
             }
 
             ai1++;
@@ -2081,6 +2098,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 return;
             }
         }
+
         private void _2_6()
         {
             var timer = (int)ai1 - 60;
@@ -2132,8 +2150,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     if ((targetPlayer.Center.X - NPC.Center.X) * ai3 < 0 && timer % 4 == 0)
                     {
                         #region 初源生成
+
                         SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f, targetPlayer.velocity);
-                        #endregion
+
+                        #endregion 初源生成
                     }
                 }
                 else
@@ -2141,8 +2161,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     var rot = visualPlayer.compositeFrontArm.rotation;
                     visualPlayer.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Terraria.Utils.AngleLerp(rot, -MathHelper.PiOver2 * visualPlayer.direction, 0.05f));
                     NPC.Center = Vector2.Lerp(NPC.Center, targetPlayer.Center + new Vector2(-visualPlayer.direction * 256, -200), 0.1f);
-
-
                 }
                 projectile.Center = projectile.oldPos[0] = NPC.Center + new Vector2(visualPlayer.direction * 6, 16);
                 if (timer % 24 == 0 && timer % 240 > 30)
@@ -2161,7 +2179,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 }
             }
 
-
             ai1++;
 
             if (ai1 >= 780)
@@ -2170,6 +2187,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 return;
             }
         }
+
         private void _3_1()
         {
             if (ai1 >= 660)
@@ -2242,7 +2260,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         proj.friendly = false;
                         proj.hostile = true;
                     }
-
                 }
             }
             if (timer < 40)
@@ -2254,6 +2271,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 
             NPC.oldPos[0] = NPC.oldPosition;
         }
+
         private void _3_2()
         {
             if (ai1 >= 780)
@@ -2355,7 +2373,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             ai1++;
 
-
             NPC.oldPos[0] = NPC.oldPosition;
 
             //if (counter <= 60 && counter >= 45 && counter % 3 == 0 && (int)ai1 < 720)
@@ -2364,8 +2381,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             //    proj.friendly = false;
             //    proj.hostile = true;
             //}
-
         }
+
         private void _3_3()
         {
             if (ai1 >= 720)
@@ -2564,11 +2581,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                             goto mylabel;
                         }
                     }
-
                 }
                 else if (timer >= 600)
                 {
-
                 }
             }
 
@@ -2577,6 +2592,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             ai1++;
             NPC.oldPos[0] = NPC.oldPosition;
         }
+
         private void _3_4()
         {
             if (ai1 >= 720)
@@ -2601,6 +2617,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             int stager = timer / 240;
 
             #region 流星生成
+
             if (timer % (36 - stager * 4) == 0)
             {
                 for (int n = 0; n < 5; n++)
@@ -2611,15 +2628,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     proj.hostile = true;
                 }
             }
-            #endregion
+
+            #endregion 流星生成
 
             #region 初源生成
+
             if (timer % 45 == 0)
             {
                 SpawnFractal(targetPlayer.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 1) * new Vector2(960, 540));
             }
-            #endregion
 
+            #endregion 初源生成
 
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             if (counter < 120)
@@ -2690,8 +2709,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     ai5 = targetPlayer.Center.X;
                     ai6 = targetPlayer.Center.Y;
                     //Main.NewText((ai5, ai6));
-
-
                 }
                 if (counter >= 120)
                 {
@@ -2716,7 +2733,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
                     }
                 }
-
             }
             else
             {
@@ -2756,7 +2772,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 {
                     var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
                     ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-
                 }
                 if (counter < 220)
                 {
@@ -2823,6 +2838,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             NPC.oldPos[0] = NPC.oldPosition;
             ai1++;
         }
+
         private void _3_5()
         {
             if (ai1 >= 660)
@@ -2958,12 +2974,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         }
                     }
                 }
-
-
             }
 
             ai1++;
         }
+
         private void _3_6()
         {
             if (ai1 >= 780)
@@ -3065,6 +3080,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             ai1++;
             NPC.oldPos[0] = NPC.oldPosition;
         }
+
         private void _4_1()
         {
             if (ai1 >= 660)
@@ -3130,6 +3146,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 
             NPC.oldPos[0] = NPC.oldPosition;
         }
+
         private void _4_2()
         {
             if (ai1 >= 780)
@@ -3215,7 +3232,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 }
             }
 
-
             NPC.oldPos[0] = NPC.oldPosition;
 
             //if (counter <= 60 && counter >= 45 && counter % 3 == 0 && (int)ai1 < 720)
@@ -3224,8 +3240,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             //    proj.friendly = false;
             //    proj.hostile = true;
             //}
-
         }
+
         private void _4_3()
         {
             if (ai1 >= 720)
@@ -3304,13 +3320,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                                     proj.friendly = false;
                                     proj.hostile = true;
                                 }
-
                             }
                         }
                     }
                 }
             }
-
 
             visualPlayer.direction = -AsraNoxSky.windDirection;
             NPC.Center = Vector2.Lerp(NPC.Center, new Vector2(targetPlayer.Center.X - 960 * visualPlayer.direction, targetPlayer.Center.Y + (float)Math.Sin(VirtualDreamSystem.ModTime2 / 180f * MathHelper.TwoPi) * 32), 0.05f);//
@@ -3318,6 +3332,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 
             NPC.oldPos[0] = NPC.oldPosition;
         }
+
         private void _4_4()
         {
             if (ai1 >= 720)
@@ -3337,6 +3352,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             int stager = timer / 240;
 
             #region 流星生成
+
             if (timer % (36 - stager * 4) == 0)
             {
                 for (int n = 0; n < 4; n++)
@@ -3347,15 +3363,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     proj.hostile = true;
                 }
             }
-            #endregion
+
+            #endregion 流星生成
 
             #region 初源生成
+
             if (timer % 20 == 0)
             {
                 SpawnFractal(targetPlayer.Center + targetPlayer.velocity * 20f + ((int)ai1 % 60 < ai1 / 13f ? default : Main.rand.NextVector2Unit() * Main.rand.NextFloat(Main.rand.NextFloat(0, 960), 960)), default, (Main.rand.NextFloat(-MathHelper.Pi / 24, MathHelper.Pi / 24) + (Main.rand.NextBool(2) ? -MathHelper.PiOver2 : MathHelper.PiOver2)).ToRotationVector2());
             }
-            #endregion
 
+            #endregion 初源生成
 
             visualPlayer.direction = Math.Sign(targetPlayer.Center.X - NPC.Center.X);
             if (counter < 120)
@@ -3426,8 +3444,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     ai5 = targetPlayer.Center.X;
                     ai6 = targetPlayer.Center.Y;
                     //Main.NewText((ai5, ai6));
-
-
                 }
                 if (counter >= 120)
                 {
@@ -3452,7 +3468,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         if (visualPlayer.direction == -1) projectile.oldRot[n] = MathHelper.Pi - projectile.oldRot[n];
                     }
                 }
-
             }
             else
             {
@@ -3485,7 +3500,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 {
                     var start = new Vector2(direct == 1 ? -1024 : 1024, 0) + new Vector2(ai4, ai5) + new Vector2(0, 1) * ai2;
                     ai6 = Projectile.NewProjectile(NPC.GetSource_FromAI(), start, new Vector2(direct == 1 ? 2048 : -2048, ai3), ModContent.ProjectileType<SolusDash>(), 45, 4, Main.myPlayer, start.X, start.Y);
-
                 }
                 if (counter < 220)
                 {
@@ -3551,8 +3565,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             NPC.oldPos[0] = NPC.oldPosition;
             ai1++;
-
         }
+
         private void _4_5()
         {
             if (ai1 >= 660)
@@ -3682,15 +3696,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         }
                     }
                 }
-
-
             }
 
             ai1++;
-
-
-
         }
+
         private void _4_6()
         {
             if (ai1 >= 780)
@@ -3766,7 +3776,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     ai4 = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, default, solusKatanaFractal, 45, 4, Main.myPlayer, 0, 3);
                     Main.projectile[(int)ai4].extraUpdates = 0;
                     if (Main.projectile[(int)ai4].ModProjectile is SolusKatanaFractal skf) skf.drawPlayer = visualPlayer;
-
                 }
                 if (timer % 60 == 30)
                 {
@@ -3806,16 +3815,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     }
                 }
 
-
                 //if (timer % 60 == 0)
                 //{
                 //    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(Main.rand.Next(-960, 960), 540), default, ModContent.ProjectileType<SolusUltraLaser>(), 80, 8, Main.myPlayer, 0, 0);
                 //}
             }
             ai1++;
-
-
         }
+
         private void PrepareToEscape(int starter)
         {
             //放弃了，本来想让音乐淡出然后重新播放的，但是我整不出
@@ -3838,8 +3845,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             ////}
             //
             SetAI(19);
-
         }
+
         private void TakeARest(int starter, int stateToSet)
         {
             ai1++;
@@ -3857,7 +3864,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 SetAI(stateToSet);
             }
         }
+
         public Player visualPlayer;
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //if (Main.gamePaused)
@@ -3886,7 +3895,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     if (timer > 660)
                     {
                         spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/ballAction_Real"), NPC.Center - Main.screenPosition, new Rectangle(0, 0, 90, 86), drawColor, 0, new Vector2(45, 43), 1, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
-
                     }
                     else
                     {
@@ -3899,7 +3907,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                             spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/AsraNox/SolusStormBall_Glow"), NPC.Center - Main.screenPosition, null, Color.White, rotation, new Vector2(10), 2f, visualPlayer.direction == -1 ? SpriteEffects.FlipHorizontally : 0, 0);
                         }
                     }
-
                 }
                 if ((nState % 6 == 1 && timer < 660) || ((nState % 6 == 4) && timer % 240 >= 180))
                 {
@@ -3948,7 +3955,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     Main.spriteBatch.Draw(TextureAssets.Extra[98].Value, fireCen, null, Color.Orange with { A = 0 } * alpha, rot + MathHelper.PiOver4 * 3, new Vector2(36), new Vector2(1, 4) * (.375f - sizeOffset), 0, 0);
                     Main.spriteBatch.Draw(TextureAssets.Extra[98].Value, fireCen, null, Color.White with { A = 0 } * alpha, rot, new Vector2(36), new Vector2(1, 4) * (.375f + sizeOffset), 0, 0);
                     Main.spriteBatch.Draw(TextureAssets.Extra[98].Value, fireCen, null, Color.White with { A = 0 } * alpha, rot + MathHelper.PiOver2, new Vector2(36), new Vector2(1, 4) * (.375f + sizeOffset), 0, 0);
-
                 }
                 if (state == AsraNoxState.破晓之光)
                 {
@@ -4000,12 +4006,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             return false;
         }
     }
+
     public enum AsraNoxState
     {
         //专家以上难度全程流星雨(不是
 
         //时符
         开始,//弹幕量逐渐提升，而后本体出现                                  -0:07
+
         陨日残阳,//无双风神，但是最后三击会预判玩家而后穿刺                  -0:18
         初源日炎,//本体隐去，分身使用日炎风格初源峰巅，最后本体天降正义(不是 -0:31
         星恒飞刃,//妖梦非符式奇偶狙+白莲二符收尾                             -0:43
@@ -4015,6 +4023,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 
         //追灭状态下全程强风场，随着不同攻击模式改变风场，半时符
         陨日残阳_追灭,//无双风神，但是全程预判冲刺
+
         初源日炎_追灭,//半定向冲刺
         星恒飞刃_追灭,//妖梦非符式奇偶狙
         日曜星流_追灭,//陨日残阳+初源日炎
@@ -4024,22 +4033,24 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         //70%血量进入，如果未低于70%则停留在追灭
         //风场停止，参考开始状态，弹幕难度提升，时间持久，随机性增加
         陨日残阳_随机,//无双风神，但是最后五击或者中途随机会预判玩家而后穿刺
+
         初源日炎_随机,//本体隐去，分身使用日炎风格初源峰巅，范围覆盖全屏，天降正义后生成一堆
         星恒飞刃_随机,//妖梦非符式奇偶狙+白莲二符
         日曜星流_随机,//陨日残阳+初源日炎
         太阳风暴_随机,//式神「蓝」，但是频率更高
         破晓之光_随机,//莱瓦汀,但是全程挥动+自机狙
 
-
         //最后30%血量  bgm先暂停后重新开始
         //风场重开且全程固定方向，世界右半部开始则向左......                        阶段血量相关
         陨日残阳_后撤,//无双风神，但是是闪飞然后水平向弹幕                          30-25
+
         初源日炎_后撤,//本体隐去，分身使用日炎风格初源峰巅，但是是纵向弹幕干扰移动  25-20
         星恒飞刃_后撤,//妖梦非符式奇偶狙，但是增加散狙                              20-15
         日曜星流_后撤,//闪飞后 水平干扰纵向干扰兼具                                 15-10
         太阳风暴_后撤,//上下版边冲撞以发出大量滞留弹幕                              10-05
         破晓之光_后撤,//参考月总大激光(x                                            05-00
     }
+
     //TODO 阿斯拉诺克斯
     //8.22 完成大致结构设计
     //8.23 计划完成各招数大致设计
@@ -4050,14 +4061,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
     //8.28 最后的优化修改
     public class SolusDash : ModProjectile
     {
-        Projectile projectile => Projectile;
+        private Projectile projectile => Projectile;
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float point = 0f;
             return projHitbox.Intersects(targetHitbox) || Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center, projectile.Center + projectile.velocity.SafeNormalize(default) * 70, 10, ref point);
-
         }
+
         public override string Texture => base.Texture.Replace("Dash", "KatanaFractal");
+
         public override void SetDefaults()
         {
             projectile.width = 32;
@@ -4074,7 +4087,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             projectile.timeLeft = 80;
             ProjectileID.Sets.DrawScreenCheckFluff[projectile.type] = 3000;
         }
+
         public override bool ShouldUpdatePosition() => false;
+
         public override bool PreDraw(ref Color lightColor)
         {
             //bool flag = false;
@@ -4103,7 +4118,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 bars1[2] = new CustomVertexInfo(start + length * unit + unit2 * width * wf, new Vector3(x2, y1, 0));
                 bars1[3] = new CustomVertexInfo(start + length * unit - unit2 * width * wf, new Vector3(x2, y2, 0));
                 bars1[4] = new CustomVertexInfo(start + length * unit, new Vector3(x2, (y2 + y1) * .5f, 0));
-
 
                 //List<CustomVertexInfo> triangleList1 = new List<CustomVertexInfo>();
                 if (bars1.Length > 2)
@@ -4153,15 +4167,18 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             //Main.spriteBatch.DrawLine(projectile.Center + projectile.velocity * .5f - projectile.velocity.SafeNormalize(default) * 16, projectile.velocity.SafeNormalize(default) * 16, flag ? Color.Cyan : Color.Purple, 16, true, -Main.screenPosition);
             return false;
         }
+
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             overPlayers.Add(index);
         }
     }
+
     public class SolusKatanaFractal : ModProjectile
     {
-        Projectile projectile => Projectile;
+        private Projectile projectile => Projectile;
         public Player drawPlayer;
+
         public override void SetDefaults()
         {
             projectile.width = 32;
@@ -4181,6 +4198,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             //ProjectileID.Sets.TrailingMode[projectile.type] = 0;
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 60;
         }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float point = 0f;
@@ -4190,6 +4208,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             return projHitbox.Intersects(targetHitbox) || Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.oldPos[0], projectile.oldPos[0] + projectile.oldRot[0].ToRotationVector2() * 70, 10, ref point);
         }
+
         public float BeginAlpha
         {
             get
@@ -4199,6 +4218,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 return projectile.localAI[0] >= timeToLate ? 1 : projectile.localAI[0] / timeToLate;
             }
         }
+
         public void GetInfos(out float timeToFly, out float timeToLate, out float rotator)
         {
             switch ((int)projectile.ai[1])
@@ -4208,21 +4228,25 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     timeToFly = timeToLate = 120;
                     rotator = projectile.ai[0];
                     break;
+
                 case 1:
                     timeToFly = 20;
                     timeToLate = 0;
                     rotator = 0;
                     break;
+
                 case 2:
                     timeToFly = 60;
                     timeToLate = 0;
                     rotator = 0;
                     break;
+
                 case 3:
                     timeToFly = 30;
                     timeToLate = 0;
                     rotator = 0;
                     break;
+
                 case 4:
                     timeToFly = 120;
                     timeToLate = 60;
@@ -4230,6 +4254,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     break;
             }
         }
+
         public override void AI()
         {
             GetInfos(out float timeToFly, out float timeToLate, out float rotator);
@@ -4324,7 +4349,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 //            npc.ai[0] != 23
                 //            )
                 //        {
-
                 //            for (int n = 59; n > 3; n--)
                 //            {
                 //                projectile.oldPos[n] = projectile.oldPos[n - 4];
@@ -4346,7 +4370,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             updateOldDataMyself = true;
         }
+
         public bool updateOldDataMyself;
+
         public override bool PreDraw(ref Color lightColor)
         {
             //Main.spriteBatch.DrawLine(projectile.Center, Main.LocalPlayer.Center, Color.Orange * .5f, 8, false, -Main.screenPosition);
@@ -4422,15 +4448,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                         Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
                         Main.PlayerRenderer.DrawPlayer(Main.Camera, player, player.position, 0f, player.fullRotationOrigin, 0.5f);
                         Main.spriteBatch.End();
-
                     }
                     catch
                     {
                     }
                 }
-
             }
         }
+
         public void DrawSword()
         {
             SpriteEffects spriteEffects = projectile.ai[0] > 0 ? 0 : SpriteEffects.FlipHorizontally;
@@ -4444,11 +4469,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             Main.spriteBatch.Draw(texture2D4, projectile.oldPos[0] - Main.screenPosition, null, color84, rot, origin, 1, spriteEffects, 0);
         }
     }
+
     public class SolusLevatine : ModProjectile
     {
         public override string Texture => base.Texture.Replace("Levatine", "KatanaFractal");
 
         public Projectile projectile => Projectile;
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (projectile.timeLeft > 300)
@@ -4461,7 +4488,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
         }
 
         private VertexTriangle3List loti;
+
         private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-projectile.ai[0]) * Matrix.CreateRotationX((r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi)));//Main.time
+
         public void UpdateTris(float factor)
         {
             var size = new Vector3(32, 96 * factor, 96 * factor);
@@ -4488,6 +4517,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 }
             }
         }
+
         public void NewTris(float height)
         {
             VertexTriangle3[] tris = new VertexTriangle3[4];
@@ -4512,6 +4542,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             loti.tris = tris;
             loti.height = height;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             if (projectile.timeLeft > 195)
@@ -4532,6 +4563,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             return false;
         }
+
         public void DrawLaser()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -4544,15 +4576,18 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);
         }
+
         public override bool ShouldUpdatePosition()
         {
             return false;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("日炎「破晓之光」");
             ProjectileID.Sets.TrailCacheLength[Type] = 60;
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -4564,6 +4599,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             projectile.timeLeft = 240;
             projectile.penetrate = -1;
         }
+
         public override void AI()
         {
             if (projectile.timeLeft == 210)
@@ -4572,11 +4608,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
         }
     }
+
     public class SolusUltraLaser : ModProjectile
     {
         public override string Texture => base.Texture.Replace("UltraLaser", "KatanaFractal");
 
-        Projectile projectile => Projectile;
+        private Projectile projectile => Projectile;
+
         public override void SetDefaults()
         {
             projectile.width = 10;
@@ -4593,13 +4631,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             projectile.light = 0.5f;
             projectile.aiStyle = -1;
         }
+
         private float Time
         {
             get { return projectile.ai[0]; }
             set { projectile.ai[0] = value; }
         }
+
         private Vector2[] posG = new Vector2[120];
         private Vector2[] posP = new Vector2[120];
+
         private Vector2 GetVec(Vector2 vec)
         {
             switch ((int)projectile.ai[1] % 2)
@@ -4607,12 +4648,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 case 0:
                     vec.X *= -1;
                     return vec;
+
                 case 1:
                     vec.Y *= -1;
                     return vec;
             }
             return vec;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Effect effect = LogSpiralLibraryMod.ShaderSwooshEffect;
@@ -4708,17 +4751,18 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
 
                 Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(projectile.Center, ((projectile.ai[1] - 1) * MathHelper.PiOver2).ToRotationVector2(), LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[10].Value, 2400 * factor, 128 * (60f - projectile.timeLeft).HillFactor2(60), texcoord: (0, 0, factor, 1));
 
-
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
             return false;
         }
+
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immuneTime = 10;
             target.immune = true;
         }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             for (int i = 0; i < 30; i++)
@@ -4747,6 +4791,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             }
             return false;
         }
+
         public override void AI()
         {
             Time++;
@@ -4790,6 +4835,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     posP[n] = posP[0];
                 }
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("日炎「杀意的百合」");

@@ -10,24 +10,26 @@ using VirtualDream.Contents.StarBound.Weapons.Broken;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifle
 {
-    public class VintageScopedRifle_Broken : StarboundWeaponBase 
+    public class VintageScopedRifle_Broken : StarboundWeaponBase
     {
         public override WeaponState State => WeaponState.Broken;
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (type == ProjectileID.Bullet) type = ProjectileID.BulletHighVelocity;
             Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, type, damage, knockback, player.whoAmI);
             return false;
         }
+
         public override void SetDefaults()
         {
-            Item.useStyle = 5;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.useAnimation = 36;
             Item.useTime = 36;
             Item.crit += 25;
             Item.width = 68;
             Item.height = 24;
-            Item.shoot = 10;
+            Item.shoot = ProjectileID.PurificationPowder;
             Item.useAmmo = AmmoID.Bullet;
             Item.UseSound = SoundID.Item40;
             Item.damage = 40;
@@ -36,8 +38,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             Item.knockBack = 8f;
             Item.DamageType = DamageClass.Ranged;
             Item.rare = ModContent.RarityType<BrokenRarity>();
-
         }
+
         public override WeaponRepairRecipe RepairRecipe()
         {
             var recipe = GetEmptyRecipe();
@@ -50,6 +52,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             return recipe;
         }
     }
+
     public class VintageScopedRifle : StarboundWeaponBase
     {
         public override WeaponRepairRecipe RepairRecipe()
@@ -59,12 +62,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             recipe.SetResult<VintageScopedRifleEX>();
             return recipe;
         }
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("老当益壮，这把枪所打出的子弹能轻易击穿钢板。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("老式狙击步枪");
         }
+
         public Item item => Item;
+
         public override void SetDefaults()
         {
             item.damage = 300;
@@ -86,18 +92,23 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             item.value = Item.sellPrice(platinum: 3);
             item.knockBack = 7f;
         }
+
         public override void ModifyManaCost(Player player, ref float reduce, ref float mult) => reduce = player.ownedProjectileCounts[item.shoot] > 0 && player.controlUseTile ? reduce : 0;
+
         public override bool CanConsumeAmmo(Item ammo, Player player) => player.ownedProjectileCounts[item.shoot] > 0;
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             //(hurtCount, killCount) = UpgradeNeed;
             Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, item.shoot, damage, knockback, player.whoAmI);
             return false;
         }
+
         //public override void AddRecipes()
         //{
         //    Recipe recipe = CreateRecipe();
@@ -110,17 +121,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
         //    recipe.AddRecipe();
         //}
     }
+
     public class VintageScopedRifleEX : VintageScopedRifle
     {
         public override void AddRecipes()
         {
         }
+
         public override WeaponState State => WeaponState.False_EX;
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("老当益壮，这把枪所打出的子弹能轻易击穿钢板。\n不对，不只是钢板，就是一米厚的夜明板也能轻易击穿。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("老式狙击步枪EX");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -133,21 +148,26 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             item.knockBack = 9f;
         }
     }
-    public class VintageScopedRifleProj : RangedHeldProjectile,IStarboundWeaponProjectile
+
+    public class VintageScopedRifleProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {
         public override Vector2 HeldCenter => base.HeldCenter + Projectile.velocity * new Vector2(4, 8);// + Vector2.Normalize(Main.screenPosition - Player.Center) * 4 + new Vector2(0, 8)//Main.MouseWorld - Player.Center
 
         public override bool UseRight => true;
+
         //BossDropWeaponProj<DragonheadPistol, DragonheadPistolEX, DragonheadPistolOD>, IBossDropWeaponProj<DragonheadPistol, DragonheadPistolEX, DragonheadPistolOD>
         public override void SetDefaults()
         {
             base.SetDefaults();
             Projectile.DamageType = DamageClass.Ranged;
         }
+
         public override void OnCharging(bool left, bool right)
         {
         }
+
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 50 + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X) * Player.direction * 8;
+
         public override void OnRelease(bool charged, bool left)
         {
             if (controlState < 3 && Player.PickAmmo(((IStarboundWeaponProjectile)this).sourceItem, out int bulletType, out float speed, out int damage, out float knockBack, out int _))
@@ -162,6 +182,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
                 }
             }
         }
+
         public override float Factor
         {
             get
@@ -169,6 +190,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
                 return MathHelper.Clamp(Projectile.ai[0] / this.UpgradeValue(30f, 24f), 0, 1);
             }
         }
+
         public override void PostDraw(Color lightColor)
         {
             var shift = Projectile.ai[0] - this.UpgradeValue(30f, 24f);
@@ -179,12 +201,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             var unit = Vector2.Normalize(Projectile.velocity);
             if (controlState == 1)
             {
-                var tile = Main.tile[(int)Vec.X / 16, (int)Vec.Y / 16];
+                var tile = Framing.GetTileSafely((int)Vec.X / 16, (int)Vec.Y / 16);
                 while ((!tile.HasTile || !Main.tileSolid[tile.TileType]) && length < 1024)
                 {
                     length += 8;
                     Vec = ShootCenter + unit * length;
-                    tile = Main.tile[(int)Vec.X / 16, (int)Vec.Y / 16];
+                    tile = Framing.GetTileSafely((int)Vec.X / 16, (int)Vec.Y / 16);
                 }
             }
             else length = 1024;
@@ -203,7 +225,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
                 }
             }
         }
+
         public override (int X, int Y) FrameMax => (1, 2);
+
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
             frame = texture.Frame(FrameMax.X, FrameMax.Y, 0, this.UpgradeValue(0, 1));
@@ -216,13 +240,16 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             origin = new Vector2(20, 18);
         }
     }
+
     public class PiercingBullet : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("穿甲弹");
         }
+
         public Projectile projectile => Projectile;
+
         public override void SetDefaults()
         {
             ProjectileID.Sets.TrailingMode[projectile.type] = 1;
@@ -238,6 +265,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             projectile.aiStyle = -1;
             projectile.light = .5f;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 0;
@@ -247,6 +275,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             }
             base.OnHitNPC(target, hit, damageDone);
         }
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             projectile.velocity = oldVelocity;
@@ -257,6 +286,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             }
             return false;
         }
+
         public override void AI()
         {
             if (projectile.velocity != Vector2.Zero)
@@ -264,13 +294,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
                 projectile.rotation = projectile.velocity.ToRotation();
             }
             projectile.velocity *= 1.02f;
-
         }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float point = 0;
             return projHitbox.Intersects(targetHitbox) || Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center, projectile.Center + projectile.velocity * 2, 10, ref point);
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;

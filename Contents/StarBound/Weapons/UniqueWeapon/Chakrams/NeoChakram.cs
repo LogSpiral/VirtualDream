@@ -13,16 +13,19 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             // DisplayName.SetDefault("新型环刃");
             // Tooltip.SetDefault("毁灭性的能量正发出噼啪声。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
             item.damage = 225;
             item.shoot = ProjectileType<NeoChakramProj>();
         }
+
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             velocity = (Main.MouseWorld - player.Center) / 30f;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -41,6 +44,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             recipe2.AddRecipe();
         }
     }
+
     public class NeoChakramEX : NeoChakram
     {
         public override void SetStaticDefaults()
@@ -48,6 +52,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             // DisplayName.SetDefault("环刃EX");
             // Tooltip.SetDefault("毁灭性的能量正发出噼啪声。\n锁定目标，光束打击！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override WeaponState State => WeaponState.False_EX;
 
         public override void SetDefaults()
@@ -56,13 +61,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             item.damage = 350;
             item.rare = MyRareID.Tier3;
             item.value *= 5;
-
         }
+
         public override bool Extra => true;
+
         public override void AddRecipes()
         {
         }
     }
+
     public class NeoChakramProj : ChakramBaseProjectile
     {
         public override void AI()
@@ -100,7 +107,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
                         Main.player[Projectile.owner].ApplyDamageToNPC(target, (int)(Projectile.damage * Main.rand.NextFloat(0.85f, 1.15f) * (crit ? 1 : .5f)), projectile.knockBack, Math.Sign(target.Center.X - projectile.Center.X), crit);
                         for (int n = 0; n < 2; n++)
                         {
-
                             var pos = unit * 17 + projectile.Center;
                             Vector2 lastPos = default;
                             for (int i = 0; i < 15; i++)
@@ -120,8 +126,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
                                     dust.noGravity = true;
                                     dust.velocity = default;
                                 }
-
-
                             }
                             //unit = new Vector2(-unit.Y, unit.X);
                             unit = -unit;
@@ -131,12 +135,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             }
             base.AI();
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 3;
             base.OnHitNPC(target, hit, damageDone);
         }
+
         public override bool hit => Projectile.timeLeft <= 30;
+
         public override bool ShouldUpdatePosition()
         {
             return Projectile.timeLeft > 150 || Projectile.timeLeft <= 30;

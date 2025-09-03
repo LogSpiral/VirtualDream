@@ -10,13 +10,14 @@ namespace VirtualDream
 
         public float poisionLifeCostPerSecond;
         public float lifeCostCount;
+
         public override void PostUpdate()
         {
             oldLifeMax = Player.statLifeMax2;
         }
+
         public override void ResetEffects()
         {
-
             screenShakeStrength = 0;
             if (poisionLifeCostPerSecond > 0)
             {
@@ -40,10 +41,12 @@ namespace VirtualDream
             Player.statLife -= lifeCost;
             poisionLifeCostPerSecond = 0;
         }
+
         public override void ModifyScreenPosition()
         {
             if (screenShakeStrength > 0) Main.screenPosition += screenShakeStrength * Main.rand.NextFloat(0, 1) * Main.rand.NextVector2Unit();
         }
+
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
             //Main.spriteBatch.DrawString(FontAssets.MouseText.Value, Player.luck.ToString(), Player.Center + new Vector2(0,-56) - Main.screenPosition, Color.White);
@@ -57,13 +60,11 @@ namespace VirtualDream
         }
     }
 
-
     //public class trydrawFlame : PlayerDrawLayer
     //{
     //    int k = 0;
     //    public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
     //    {
-
     //        return base.GetDefaultVisibility(drawInfo);
     //    }
     //    public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Torso);
@@ -112,12 +113,10 @@ namespace VirtualDream
     //    public int[] frame;
     //    MyArray<drawFlameInfo> dF = new MyArray<drawFlameInfo> { array = new drawFlameInfo[100] };
 
-
     //    public override void FrameEffects()
     //    {
     //        if (Main.myPlayer == Player.whoAmI)
     //        {
-
     //            for (int i = 0; i < 100; i++)
     //            {
     //                int index = i;
@@ -201,7 +200,7 @@ namespace VirtualDream
     //                        DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
     //                }
     //            }*/
-    //            for (int n = 0; n < dF.array.Length; n++) 
+    //            for (int n = 0; n < dF.array.Length; n++)
     //            {
     //                if (dF[n].active) 绘制火焰(dF[n]);
     //            }
@@ -249,7 +248,6 @@ namespace VirtualDream
     //            this.Position = Position;
     //        }
     //    };
-
 
     //}
 }

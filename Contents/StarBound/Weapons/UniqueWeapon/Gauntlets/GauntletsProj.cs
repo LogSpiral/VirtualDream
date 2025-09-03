@@ -9,6 +9,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
     public abstract class Gauntlets : StarboundWeaponBase
     {
         public Item item => Item;
+
         public override void SetDefaults()
         {
             item.damage = 50;
@@ -22,7 +23,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             item.noMelee = true;
             item.noUseGraphic = true;
             item.autoReuse = true;
-            item.rare = 10;
+            item.rare = ItemRarityID.Red;
             //item.rare = ItemRarityID.Purple;
             //item.UseSound = SoundID.Item1;
             //item.useStyle = ItemUseStyleID.Swing;
@@ -39,7 +40,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             //item.value = Item.sellPrice(0, 20, 0, 0);
             //item.autoReuse = true;
         }
+
         public virtual int projType => Mod.Find<ModProjectile>(GetType().Name + "Proj").Type;
+
         public override void HoldItem(Player player)
         {
             if (player.whoAmI == Main.myPlayer)
@@ -51,6 +54,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
         }
     }
+
     public abstract class GauntletsProj : ModProjectile, IStarboundWeaponProjectile
     {
         public Projectile projectile => Projectile;
@@ -59,17 +63,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         public Texture2D projTex => TextureAssets.Projectile[projectile.type].Value;
         public int LeftTimer => (int)projectile.ai[0];
         public int RightTimer => (int)projectile.ai[1];
+
         public int Counter
         {
             get => projectile.frameCounter;
             set { projectile.frameCounter = value; }
         }
+
         public int LastState
         {
             get => projectile.frame;
             set { projectile.frame = value; }
         }
+
         public virtual int itemType => Mod.Find<ModItem>(GetType().Name.Replace("Proj", "")).Type;
+
         public virtual float GetFactor(int index)
         {
             float factor = MathHelper.Clamp(owner.itemAnimationMax + 3 - projectile.ai[index], 0, owner.itemAnimationMax);
@@ -86,11 +94,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
 
             return factor;
         }
+
         public virtual void SpecialAttack()
         {
-
         }
+
         public virtual bool WhenSA => Counter == 3 && (int)projectile.ai[(LastState + Counter) % 2] > 3;
+
         public Vector2 ProjCenter(int index)
         {
             if (index < 0 || index > 1) throw new Exception("超范围辣我囸你先人");
@@ -107,6 +117,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             return owner.Center + Offset * new Vector2(owner.direction, 1);
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.whoAmI] = owner.itemAnimationMax / 4;//3
@@ -114,7 +125,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
                 target.velocity += (target.Center - owner.Center).SafeNormalize(default) * (float)Math.Sqrt(KnockBackValue / 4f) * 4f;//4f
             base.OnHitNPC(target, hit, damageDone);
         }
+
         public virtual float KnockBackValue => owner.GetWeaponKnockback(owner.HeldItem, owner.HeldItem.knockBack);
+
         public override void AI()
         {
             if (owner.HeldItem.type != itemType) projectile.Kill();
@@ -150,6 +163,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             projectile.ai[1] -= projectile.ai[1] > 0 ? 1 : 0;
             projectile.Center = owner.Center;
         }
+
         public override void SetDefaults()
         {
             projectile.width = 2;
@@ -160,11 +174,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             projectile.DamageType = DamageClass.Melee;
             projectile.penetrate = -1;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("打拳辣");
         }
+
         public virtual Vector2 hitBox => new(32);
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             for (int n = 0; n < 2; n++)
@@ -173,6 +190,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             return false;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -186,14 +204,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             return false;
         }
+
         public const string GaunletsPath = "Contents/StarBound/Weapons/UniqueWeapon/Gauntlets/";
         public virtual (Texture2D tex, int frames) SwooshTex => (VirtualDreamMod.GetTexture(GaunletsPath + "physicalswoosh"), 3);
         public virtual float swooshSize => 3f;
+
         public virtual void DrawSwoosh(SpriteBatch spriteBatch, Vector2 projCen, float factor, int index)
         {
             //Main.NewText((int)(factor * 3f));
             spriteBatch.Draw(SwooshTex.tex, projCen - Main.screenPosition + new Vector2(4f * owner.direction, 0), SwooshTex.tex.Frame(SwooshTex.frames, 1, (int)MathHelper.Clamp(factor * SwooshTex.frames, 0, SwooshTex.frames - 1), 0), owner.GetColor() * swooshAlpha, 0, SwooshTex.tex.Frame(SwooshTex.frames).Size() * .5f, swooshSize, (owner.direction == 1 ? 0 : SpriteEffects.FlipHorizontally) ^ (index == 0 ? 0 : SpriteEffects.FlipVertically), 0);//.75f * (float)(0.5f - 0.5f * Math.Cos(factor * factor))
         }
+
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             Main.instance.DrawCacheProjsOverWiresUI.Add(index);
@@ -202,21 +223,22 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             //drawCacheProjsBehindNPCsAndTiles.Remove(index);
         }
     }
+
     public class BoxingGlove : Gauntlets
     {
-
         public override void SetDefaults()
         {
             base.SetDefaults();
             item.useTime = item.useAnimation = 8;
-
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("拳击手套");
             // Tooltip.SetDefault("现在你可以成为一个竞争者\n终结技：崩拳");
         }
     }
+
     public class Gauntlet : Gauntlets
     {
         public override void SetDefaults()
@@ -225,36 +247,42 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             item.damage = 180;
             item.knockBack += 3f;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("决斗拳套");
             // Tooltip.SetDefault("按Q发起一场决斗\n终结技：升龙拳");
         }
     }
+
     public class StunGlove : Gauntlets
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("电击拳套");
             // Tooltip.SetDefault("非常有效。\n终结技：雷光爪");
         }
     }
+
     public class VineFist : Gauntlets
     {
         public override void SetDefaults()
         {
             base.SetDefaults();
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("藤蔓拳套");
             // Tooltip.SetDefault("释放自然的力量。\n终结技：鞭藤");
         }
     }
+
     public class ClawGlove : Gauntlets
     {
         public override void SetDefaults()
@@ -263,12 +291,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             item.damage = 220;
             item.knockBack += 2f;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("狼爪");
             // Tooltip.SetDefault("不够坚硬，但依然很酷。\n终结技：疾冲裂伤");
         }
     }
+
     public class SupernovaGauntlet : Gauntlets
     {
         public override void SetDefaults()
@@ -278,12 +308,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             item.damage = 250;
             item.knockBack += 8f;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("超新星护手");
             // Tooltip.SetDefault("具有一颗超新星力量的手套。\n终结技：突进");
         }
     }
+
     public class BoxingGloveProj : GauntletsProj
     {
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -313,38 +345,47 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             target.immune[projectile.whoAmI] = 1;
         }
+
         public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "powerpunchswoosh"), 4) : base.SwooshTex;
         public override Vector2 hitBox => WhenSA ? new Vector2(64) : base.hitBox;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("拳击手套");
         }
     }
+
     public class GauntletProj : GauntletsProj
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("决斗拳套");
         }
+
         public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "uppercutswoosh"), 4) : base.SwooshTex;
         public override Vector2 hitBox => WhenSA ? new Vector2(80) : base.hitBox;
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
             if (WhenSA && target.CanBeChasedBy()) target.velocity.Y -= 16;
         }
+
         public override void DrawSwoosh(SpriteBatch spriteBatch, Vector2 projCen, float factor, int index)
         {
             spriteBatch.Draw(SwooshTex.tex, projCen - Main.screenPosition + new Vector2(4f * owner.direction, 0), SwooshTex.tex.Frame(SwooshTex.frames, 1, (int)MathHelper.Clamp(factor * SwooshTex.frames, 0, SwooshTex.frames - 1), 0), owner.GetColor() * swooshAlpha, 0, SwooshTex.tex.Frame(SwooshTex.frames).Size() * .5f, swooshSize, owner.direction == 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
         }
     }
+
     public class StunGloveProj : GauntletsProj
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("电击拳套");
         }
+
         public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "thunderpunchswoosh"), 4) : (VirtualDreamMod.GetTexture(GaunletsPath + "electricswoosh"), 4);
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (!WhenSA)
@@ -364,14 +405,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             return false;
         }
+
         public override float swooshSize => WhenSA ? 2f : base.swooshSize;
     }
+
     public class VineFistProj : GauntletsProj
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("藤蔓拳套");
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             //int index = -1;
@@ -396,7 +440,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
                     spriteBatch.Draw(projTex, projCen - Main.screenPosition, new Rectangle((int)MathHelper.Clamp(GetFactor(n) * 4, 0, 3) * 48, 16 * n, 48, 16), owner.GetColor(), 0, new Vector2(8), 2f, owner.direction == 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
                 }
             }
-            //if (WhenSA) 
+            //if (WhenSA)
             //{
             //    index++;
             //    index %= 2;
@@ -406,6 +450,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             //}
             return false;
         }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (!WhenSA)
@@ -425,6 +470,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             }
             return false;
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<Buffs.ToxicⅠ>(), 30);
@@ -433,37 +479,44 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             base.OnHitNPC(target, hit, damageDone);
         }
     }
+
     public class ClawGloveProj : GauntletsProj
     {
         public override Vector2 hitBox => new(64, 32);
         public override float swooshSize => 2.5f;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("狼爪");
         }
+
         public override void SpecialAttack()
         {
             owner.immune = true;
             if (Math.Abs(owner.velocity.X) < 32)
                 owner.velocity += new Vector2(owner.direction, 0);
         }
+
         public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "dashswoosh"), 4) : (VirtualDreamMod.GetTexture(GaunletsPath + "clawswoosh"), 3);
     }
+
     public class SupernovaGauntletProj : GauntletsProj
     {
         public override Vector2 hitBox => new(64);
+
         //public override float swooshSize => base.swooshSize;
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("超新星护手");
         }
+
         public override void SpecialAttack()
         {
             owner.immune = true;
             if (Math.Abs(owner.velocity.X) < 48)
                 owner.velocity += new Vector2(owner.direction * 1.5f, 0);
         }
-        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "novapunch"), 1) : (VirtualDreamMod.GetTexture(GaunletsPath + "bigphysicalswoosh"), 3);
 
+        public override (Texture2D tex, int frames) SwooshTex => WhenSA ? (VirtualDreamMod.GetTexture(GaunletsPath + "novapunch"), 1) : (VirtualDreamMod.GetTexture(GaunletsPath + "bigphysicalswoosh"), 3);
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using Terraria.Graphics.Shaders;
+﻿using Terraria.Graphics.Shaders;
 
 namespace VirtualDream.Effects
 {
@@ -9,6 +8,7 @@ namespace VirtualDream.Effects
         public IllusionScreenShaderData(string passName) : base(passName)
         {
         }
+
         public IllusionScreenShaderData(Ref<Effect> shader, string passName) : base(shader, passName)
         {
         }

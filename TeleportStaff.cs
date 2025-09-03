@@ -1,17 +1,21 @@
 ﻿using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
 using Terraria.ID;
+
 namespace VirtualDream
 {
     public class TeleportStaff : ModItem
     {
         public override string Texture => "Terraria/Images/Item_" + ItemID.RubyStaff;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("传送法杖");
             // Tooltip.SetDefault("走你\n右键进入子世界_时之风");
         }
-        Item item => Item;
+
+        private Item item => Item;
+
         public override void SetDefaults()
         {
             //item.CloneDefaults(ItemID.Zenith);
@@ -22,7 +26,7 @@ namespace VirtualDream
             item.useTime = 24;
             item.useAnimation = 24;
             item.knockBack = 6;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.autoReuse = true;
             item.shoot = ModContent.ProjectileType<TeleportStaffProj>();
             item.noUseGraphic = true;
@@ -31,10 +35,12 @@ namespace VirtualDream
             item.shootSpeed = 1f;
             item.UseSound = SoundID.Item13;
         }
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+
         //public int myValue { get; private set; }
         //private bool GetZenithTarget(Vector2 searchCenter, float maxDistance, out int npcTargetIndex)
         //{
@@ -104,11 +110,12 @@ namespace VirtualDream
         //    Projectile.NewProjectile(source,player.Center, _velocity, type, damage, knockback, player.whoAmI, ai5, (float)num167);
         //    return false;
         //}
-
     }
+
     public class TeleportStaffProj : RangedHeldProjectile
     {
         public override float Factor => MathHelper.Clamp(Projectile.ai[0] / 30, 0, 1);
+
         public override void OnCharging(bool left, bool right)
         {
             for (int n = 0; n < Factor * 30; n++)
@@ -119,29 +126,33 @@ namespace VirtualDream
                 }
             }
         }
+
         public override string Texture => "Terraria/Images/Item_" + ItemID.RubyStaff;//"VirtualDream/Contents/StarBound/Weapons/BossDrop/KluexStaff/KluexStaffPH";//"Terraria/Images/Item_" + ItemID.RubyStaff
+
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
             texture = TextureAssets.Item[ItemID.RubyStaff].Value;
             base.GetDrawInfos(ref texture, ref center, ref frame, ref color, ref rotation, ref origin, ref scale, ref spriteEffects);
         }
+
         public override bool UseRight => true;
+
         public override void OnRelease(bool charged, bool left)
         {
-            if (charged) 
+            if (charged)
             {
                 if (left)
                 {
                     Player.Teleport(Main.MouseWorld, 1);
                     //Main.NewText((Main.maxTilesX, Main.maxTilesY));
                 }
-                else 
+                else
                 {
                     if (SubworldLibrary.SubworldSystem.Current != null)
                     {
                         SubworldLibrary.SubworldSystem.Exit();
                     }
-                    else 
+                    else
                     {
                         SubworldLibrary.SubworldSystem.Enter<Contents.StarBound.TimeBackTracking.TimeBackTrackingWorld>();
                     }

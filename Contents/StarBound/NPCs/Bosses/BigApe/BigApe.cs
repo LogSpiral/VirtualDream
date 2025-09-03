@@ -1,5 +1,4 @@
 ﻿using LogSpiralLibrary;
-using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
 using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
@@ -9,7 +8,6 @@ using System.Linq;
 using Terraria.ID;
 
 using static VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe.BigApeTools;
-
 
 namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 {
@@ -28,11 +26,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
     {
         private NPC npc => NPC;
         public int[] indexOfProjector = new int[] { -1, -1, -1, -1 };
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("大猿人");
             NPCID.Sets.MustAlwaysDraw[npc.type] = true;
         }
+
         public override void SetDefaults()
         {
             npc.width = 224;
@@ -54,8 +54,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //ModLoader.t
             Music = ModLoader.TryGetMod("VirtualDreamMusic", out Mod music) ? MusicLoader.GetMusicSlot(music, "Assets/Music/StrawberryCrisis") : MusicID.Boss3;
             //MusicPriority = MusicPriority.BossHigh;
-
         }
+
         public override bool PreAI()
         {
             if (targetPlayer == null)
@@ -65,9 +65,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             return true;
         }
+
         public BigApeAttackMode attackMode;
+
         //public BigApeEyeMode EyeMode => attackMode.GetEyeGlow();
         public int stage = 0;
+
         //private void NewProjector(bool LifeMax = false)
         //{
         //    for (int n = 0; n < 4; n++)
@@ -96,7 +99,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         //    }
         //    Tile myTile = new Tile();
         //    (int, int) whoami = default;
-        //    for (int n = 0; n < Main.maxTilesX; n++) 
+        //    for (int n = 0; n < Main.maxTilesX; n++)
         //    {
         //        for (int i = 0; i < Main.maxTilesY; i++)
         //        {
@@ -109,7 +112,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             get => (int)npc.frameCounter;
             set => npc.frameCounter = value;
         }
+
         public float[] randomChance = new float[] { 100, 100, 100, 100, 100, 100, 100, 100, 100 };
+
         public override void AI()
         {
             if (targetPlayer == null || !targetPlayer.active)
@@ -130,6 +135,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 DeathStage();
             }
         }
+
         public void FrameChanger(int maxTime, bool IsLaser = true, int timeuse = -1)
         {
             var adder = IsLaser ? 0 : -4;
@@ -158,6 +164,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 FrameCounter = 0;
             }
         }
+
         public void PreAttackAniStage()
         {
             //FrameCounter += (FrameCounter < 43 && Main.GameUpdateCount % 4 == 0) ? 1 : 0;
@@ -258,19 +265,19 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //    ValueOfAttackType[3] *= .5f;
             //}
         }
+
         public void AttackStage()
         {
             //FrameCounter += Main.GameUpdateCount % 10 == 0 ? 1 : 0;
-            ////switch (attackMode) 
+            ////switch (attackMode)
             ////{
             ////	case BigApeAttackMode.None: FrameCounter %= 4;break;
             ////	case BigApeAttackMode.AfterAttack:if (FrameCounter >= 15) { FrameCounter = 0;attackMode = BigApeAttackMode.None; }break;
             ////}
-            //if (attackMode == BigApeAttackMode.AfterAttack) 
+            //if (attackMode == BigApeAttackMode.AfterAttack)
             //{
-
             //}
-            //else switch (EyeMode) 
+            //else switch (EyeMode)
             //{
             //	case 0: FrameCounter %= 4; break;
             //}
@@ -292,6 +299,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                     }
                     break;
+
                 case BigApeAttackMode.AfterAttack:
                     {
                         FrameCounter += Main.GameUpdateCount % 10 == 0 ? 1 : 0;
@@ -302,6 +310,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                     }
                     break;
+
                 case BigApeAttackMode.Charge: Charge(); break;
                 case BigApeAttackMode.HomingMissiles: HomingMissiles(); break;
                 case BigApeAttackMode.LaserFists: LaserFists(); break;
@@ -323,6 +332,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //    }
             //}
         }
+
         public void DeathStage()
         {
             if (Main.GameUpdateCount % 6 == 0)
@@ -340,17 +350,19 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             //Main.NewText(FrameCounter);
         }
+
         public override void OnKill()
         {
             Main.NewText("!!!你做到了!!!");
-
         }
+
         public override void BossLoot(ref string name, ref int potionType)
         {
             //name = "究极绝对" + name;
             //potionType = ModContent.ItemType<StrawberryCrystal>();
             //base.BossLoot(ref name, ref potionType);
         }
+
         public void Charge()
         {
             //randomChance.v0++;
@@ -378,7 +390,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //if (factor >= 0.5f && (int)npc.ai[0] % 8 < 3)
             //foreach (int n in new int[] { -1, 1 })
             //{
-            //    for (int i = 0; i < 4; i++) 
+            //    for (int i = 0; i < 4; i++)
             //    {
             //        Projectile.NewProjectile(npc.Center + new Vector2(-66 * n, -18), (MathHelper.PiOver2 * i + npc.ai[0] / 60 * MathHelper.Pi * n).ToRotationVector2() * 4, ModContent.ProjectileType<LightPellet>(), 10, 0, Main.myPlayer);
             //    }
@@ -431,6 +443,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 FrameCounter = 12;
             }
         }
+
         public void HomingMissiles()
         {
             if (npc.ai[0] == 0)
@@ -483,6 +496,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 FrameCounter = 12;
             }
         }
+
         public void LaserFists()
         {
             FrameChanger(1020, false);
@@ -527,7 +541,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             Projectile.NewProjectile(npc.GetSource_FromAI(), targetPlayer.Center + new Vector2(Main.rand.NextFloat(-960, 960) - 480, -Main.rand.NextFloat(480, 560)), new Vector2(Main.rand.NextFloat(4, 8), 6) * 1.5f, type, 35, 0, Main.myPlayer);
                         }
                     }
-
                 }
                 else
                 {
@@ -546,7 +559,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     }
                     else if (counter % c == 0 && (counter < 900 - 2 * c || stage == 2 || stage == 3))
                     {
-
                         //var vec = targetPlayer.Center + new Vector2(Main.rand.NextFloat(-960, 960) - 480, -Main.rand.NextFloat(480, 560));
                         //Projectile.NewProjectile(vec, Vector2.Normalize(targetPlayer.Center - vec) * 3f + Main.rand.NextVector2Unit(), type, 120, 0, Main.myPlayer, 3);
                         Projectile.NewProjectile(npc.GetSource_FromAI(), targetPlayer.Center + new Vector2(960, 0) - new Vector2(144), new Vector2(-1, 0), type, 50, 5, Main.myPlayer, 3);
@@ -556,7 +568,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             Projectile.NewProjectile(npc.GetSource_FromAI(), targetPlayer.Center + new Vector2(0, 960) - new Vector2(144), new Vector2(0, -1), type, 50, 5, Main.myPlayer, 3);
                             Projectile.NewProjectile(npc.GetSource_FromAI(), targetPlayer.Center + new Vector2(0, -960) - new Vector2(144), new Vector2(0, 1), type, 50, 5, Main.myPlayer, 3);
                         }
-
                     }
                 }
                 if (!Terraria.Utils.CenteredRectangle(npc.Center, new Vector2(1920)).Contains(targetPlayer.Center.ToPoint()) && counter % 60 == 0)
@@ -585,12 +596,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 attackMode = BigApeAttackMode.AfterAttack;
                 FrameCounter = 12;
             }
-            //if ((int)npc.ai[0] % 10 == 0) 
+            //if ((int)npc.ai[0] % 10 == 0)
             //{
             //    Projectile.NewProjectileDirect(npc.Center, default, ModContent.ProjectileType<EnergyFist>(), 120, 4, Main.myPlayer, 1).frame = npc.whoAmI;
             //}
-
         }
+
         public void LaserDaggers()
         {
             if (npc.ai[0] == 0)
@@ -638,7 +649,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         //    Projectile.NewProjectile(cen, Vector2.Normalize(target + u - cen) * 32, ModContent.ProjectileType<LightDagger>(), 35, 0, Main.myPlayer);
                         //}
                         Projectile.NewProjectileDirect(npc.GetSource_FromAI(), cen, Vector2.Normalize(target + (stage != 4 ? u : u * .5f) - cen) * 32, ModContent.ProjectileType<LightDagger>(), 35, 0, Main.myPlayer).timeLeft = 45;
-
                     }
                     if (stage == 4 && (int)npc.ai[0] % (int)(MathHelper.Clamp(f2 * 2, 0.2f, 0.8f) * 10) == 1)
                     {
@@ -680,6 +690,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 FrameCounter = 12;
             }
         }
+
         public void LaserSpray()
         {
             if (npc.ai[0] == 0)
@@ -738,7 +749,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             }
                         }
                     }
-
                 }
                 //if ((int)npc.ai[0] % 60 == 0)
                 //{
@@ -822,6 +832,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 FrameCounter = 12;
             }
         }
+
         public void LaserCross()
         {
             if (stage < 3)
@@ -871,7 +882,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             Projectile.NewProjectileDirect(npc.GetSource_FromAI(), owner.Center, vec * 16, ModContent.ProjectileType<ApeBossMissile>(), 50, 0, Main.myPlayer).localAI[0] = 1;
                             break;
                         }
-
                     }
                 }
                 if ((int)npc.ai[0] >= 840)
@@ -917,6 +927,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 FrameCounter = 12;
             }
         }
+
         public void BulletHell()
         {
             //Main.NewText("??");
@@ -986,7 +997,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //{
             //    if (timer == period / 10 * 4)
             //    {
-
             //    }
             //}
             FrameChanger(period);
@@ -1030,6 +1040,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //    FrameCounter = 12;
             //}
         }
+
         public void Tesseract()
         {
             if (npc.ai[0] == 0)
@@ -1049,9 +1060,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             npc.ai[0]++;
             if (npc.ai[0] >= 1140)
             {
-                //foreach (var p in Main.projectile) 
+                //foreach (var p in Main.projectile)
                 //{
-                //    if (p.type == ModContent.ProjectileType<LaserTesseract>()) 
+                //    if (p.type == ModContent.ProjectileType<LaserTesseract>())
                 //    {
                 //        p.ai[0] = 960;
                 //    }
@@ -1064,6 +1075,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 FrameCounter = 12;
             }
         }
+
         public void ProfessorStrawberry_Old()
         {
             FrameChanger(1800);
@@ -1111,7 +1123,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + (4 / 3 * theta + MathHelper.TwoPi / 6 * n + theta / 12).ToRotationVector2() * 1024 * (float)Math.Sin(theta), default, ModContent.ProjectileType<StrawberryCross>(), 50, 2, Main.myPlayer, 1f, npc.whoAmI);
                         }
                         //Projectile.NewProjectile(npc.Center + (8 * theta).ToRotationVector2() * 1024 * (float)Math.Sin(6 * theta), default, ModContent.ProjectileType<StrawberryCross>(), 50, 2, Main.myPlayer, 1f, npc.whoAmI);
-
                     }
                     if ((int)npc.ai[0] % 60 == 0)
                     {
@@ -1138,7 +1149,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + new Vector2(-1024 + 512 * n, fac.Lerp(-960, 960)), default, ModContent.ProjectileType<StrawberryCross_PS>(), 50, 2, Main.myPlayer, 2.5f, npc.whoAmI);
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + new Vector2(-768 + 512 * n, (960 + fac * 1920) % 1920 - 960), default, ModContent.ProjectileType<StrawberryCross_PS>(), 50, 2, Main.myPlayer, 2.5f, npc.whoAmI);
                         }
-
                     }
                 }
                 else
@@ -1162,7 +1172,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                     }
                 }
-                //if ((int)npc.ai[0] % 300 == 0) 
+                //if ((int)npc.ai[0] % 300 == 0)
                 //{
                 //    Projectile.NewProjectile(npc.Center, default, ModContent.ProjectileType<BigApeVectorField>(), 30, 0, Main.myPlayer);
 
@@ -1175,7 +1185,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
             npc.ai[0]++;
 
-
             if ((int)npc.ai[0] >= 1800)
             {
                 npc.ai[0] = 0;
@@ -1186,6 +1195,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 FrameCounter = 12;
             }
         }
+
         public void ProfessorStrawberry()
         {
             FrameChanger(1920);
@@ -1267,7 +1277,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + (4 / 3 * theta + MathHelper.TwoPi / 6 * n + theta / 12).ToRotationVector2() * 1024 * (float)Math.Sin(theta), default, ModContent.ProjectileType<StrawberryCross>(), 50, 2, Main.myPlayer, 1f, npc.whoAmI);
                         }
                         //Projectile.NewProjectile(npc.Center + (8 * theta).ToRotationVector2() * 1024 * (float)Math.Sin(6 * theta), default, ModContent.ProjectileType<StrawberryCross>(), 50, 2, Main.myPlayer, 1f, npc.whoAmI);
-
                     }
                     if ((int)npc.ai[0] % 60 == 0)
                     {
@@ -1284,7 +1293,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                     }
                 }
-                //if ((int)npc.ai[0] % 300 == 0) 
+                //if ((int)npc.ai[0] % 300 == 0)
                 //{
                 //    Projectile.NewProjectile(npc.Center, default, ModContent.ProjectileType<BigApeVectorField>(), 30, 0, Main.myPlayer);
 
@@ -1297,7 +1306,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
             npc.ai[0]++;
 
-
             if ((int)npc.ai[0] >= 1920)
             {
                 npc.ai[0] = 0;
@@ -1308,6 +1316,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 FrameCounter = 12;
             }
         }
+
         public Player targetPlayer
         {
             get
@@ -1327,6 +1336,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 return target;
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //Stopwatch sw = new Stopwatch();
@@ -1371,7 +1381,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             var u = targetPlayer.velocity / (targetPlayer.velocity.Length() / 128f + 1);
             spriteBatch.Draw(scftex, targetPlayer.Center + v - Main.screenPosition - u, null, Color.White, 0, new Vector2(32, 72), 3, 0, 0);
             Rectangle rectangle;
-            //switch (attackMode) 
+            //switch (attackMode)
             //{
             //    case 0:
             //    case BigApeAttackMode.AfterAttack:
@@ -1467,10 +1477,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 }
             }
         }
+
         //void Draw_Stage2(SpriteBatch spriteBatch) { }
         //void Draw_Stage3(SpriteBatch spriteBatch) { }
         //void Draw_Stage4(SpriteBatch spriteBatch) { }
     }
+
     //public class BigApeProjector : ModNPC
     //{
     //    public override void SetStaticDefaults()
@@ -1506,7 +1518,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
     //    }
     //    public override bool PreDraw(SpriteBatch spriteBatch, Color drawColor)
     //    {
-
     //        return false;
     //    }
     //}
@@ -1526,7 +1537,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         //    //    new Vector3(1, -1, 5).ApplyMatrix(m).Projectile(20),
         //    //    new Vector3(-1, 1, 5).ApplyMatrix(m).Projectile(20),
         //    //    new Vector3(-1, -1, 5).ApplyMatrix(m).Projectile(20));
-        //    //if (!Main.gamePaused) 
+        //    //if (!Main.gamePaused)
         //    //{
         //    //    var v = new Vector2(theta % TwoPi, s);
         //    //    Main.NewText(v);
@@ -1562,6 +1573,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //Main.NewText("草生");
             return false;
         }
+
         //public float Size => (float)Math.Cos(theta) * 0.57f + 1.21f;
         //public void DrawSelf(SpriteBatch spriteBatch, float size = 0)
         //{
@@ -1572,6 +1584,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         {
             // DisplayName.SetDefault("大猿人投影仪");
         }
+
         public override void SetDefaults()
         {
             npc.Center = Owner.Center;
@@ -1589,6 +1602,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 npc.buffImmune[i] = true;
             }
         }
+
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (npc.life <= 0)
@@ -1630,7 +1644,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                                 counter++;
                             }
                         }
-
                     }
                     modOwner.FrameCounter = counter == -3 ? 0 : 12;
                     modOwner.stage++;
@@ -1647,6 +1660,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, default, 140, 0, 0, Main.myPlayer).Kill();
             }
         }
+
         public override void AI()
         {
             npc.Center = Owner.Center + theta.ToRotationVector2() * 256;
@@ -1665,6 +1679,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
         }
     }
+
     public enum BigApeAttackMode
     {
         None,
@@ -1679,26 +1694,33 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         Tesseract,
         ProfessorStrawberry
     }
+
     public abstract class BigApeProj : ModProjectile
     {
         public Projectile projectile => Projectile;
+
         public virtual bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             return false;
         }
-        public sealed override bool PreDraw(ref Color lightColor)
+
+        public override sealed bool PreDraw(ref Color lightColor)
         {
             return PreDraw(Main.spriteBatch, lightColor);
         }
+
         public Texture2D projTex => TextureAssets.Projectile[projectile.type].Value;
+
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immuneTime = 10;
         }
     }
+
     public class LightDagger_Charge : BigApeProj
     {
         public override string Texture => "VirtualDream/" + ApePath + "MirrorAttack";
+
         public override void SetDefaults()
         {
             projectile.hostile = true;
@@ -1713,14 +1735,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.light = 0.2f;
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 30;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("激光匕首");
         }
+
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
         }
+
         public override void AI()
         {
             if (projectile.timeLeft == 120)
@@ -1745,11 +1770,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
             //    }
 
-            //if (projectile.timeLeft % 40 == 0) 
+            //if (projectile.timeLeft % 40 == 0)
             //{
             //    var vec = projectile.rotation.ToRotationVector2() * 32f;
             //    vec = new Vector2(-vec.Y, vec.X);
-            //    for (int n = 0; n < 2; n++) 
+            //    for (int n = 0; n < 2; n++)
             //    {
             //        Projectile.NewProjectile(projectile.Center, vec, ModContent.ProjectileType<LightDagger>(), 35, 0, Main.myPlayer, 1);
             //        vec = -vec;
@@ -1764,10 +1789,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.oldPos[0] = projectile.Center + projectile.rotation.ToRotationVector2() * 256 * (3 + projectile.frame * .5f);
             projectile.oldRot[0] = projectile.rotation;
         }
+
         public void DrawLightSword(Color projColor, Vector2 size, float light, bool autoAdditive = true)
         {
             DrawLightSword(projColor, size, light, projectile.Center, projectile.rotation, autoAdditive);
         }
+
         public static void DrawLightSword(Color projColor, Vector2 size, float light, Vector2 center, float rotation, bool autoAdditive = true)
         {
             if (autoAdditive)
@@ -1827,7 +1854,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.SamplerStates[2] = SamplerState.PointWrap;
             effect.CurrentTechnique.Passes[0].Apply();
             Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangles, 0, 9);
+
             #region 你瞅啥
+
             //if (projectile.localAI[0] >= 60)
             //{
             //    List<CustomVertexInfo> bars = new List<CustomVertexInfo>();
@@ -1855,7 +1884,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //    }
             //    Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
             //}
-            #endregion
+
+            #endregion 你瞅啥
 
             Main.graphics.GraphicsDevice.RasterizerState = originalState;
             if (autoAdditive)
@@ -1864,6 +1894,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             try
@@ -1973,12 +2004,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             return false;
         }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float point = 0;
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center, projectile.Center + projectile.rotation.ToRotationVector2() * 256f * (1 + projectile.frame * .5f), 24, ref point) && projectile.timeLeft >= 15 && projectile.timeLeft < 105;// || Terraria.Utils.CenteredRectangle(projectile.oldPos[0], new Vector2(8)).Intersects(targetHitbox)
         }
     }
+
     public class ApeBossMissile : BigApeProj
     {
         public override void SetDefaults()
@@ -1996,15 +2029,18 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.aiStyle = -1;
             //ProjectileID.Sets.TrailCacheLength[projectile.type] = 30;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("大猿人导弹");
         }
+
         public override bool PreKill(int timeLeft)
         {
             projectile.type = 140;
             return true;
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int n = 0; n < 30; n++)
@@ -2013,7 +2049,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, ModContent.ProjectileType<ApeBossMissileExp>(), 10, 0, Main.myPlayer).hostile = true;
         }
+
         public Vector2 targetPos => projectile.frameCounter > 0 ? new Vector2(projectile.ai[0], projectile.ai[1]) : default;
+
         public override void AI()
         {
             Lighting.AddLight((int)((projectile.position.X + projectile.width / 2) / 16f), (int)((projectile.position.Y + projectile.height / 2) / 16f), 78f / 255f, 139f / 255f, 240f / 255f);
@@ -2120,6 +2158,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.oldPos[0] = projectile.Center;
             projectile.oldRot[0] = projectile.rotation;
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             DrawingMethods.DrawShaderTail(spriteBatch, projectile, LogSpiralLibraryMod.HeatMap[7].Value, LogSpiralLibraryMod.AniTex[2].Value, LogSpiralLibraryMod.BaseTex[12].Value, 20);
@@ -2134,21 +2173,24 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             return false;
         }
-
     }
+
     public class ApeBossMissileExp : BigApeProj
     {
         public override string Texture => "VirtualDream/" + ApePath + "strawberry_7";
         protected float Size = 1;
         protected float Alpha = 1;
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             return (targetHitbox.Center.ToVector2() - projectile.Center).Length() <= (55 * Size + 16);
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("大猿人导弹");
         }
+
         public override void SetDefaults()
         {
             projectile.width = projectile.height = 1;
@@ -2160,10 +2202,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.tileCollide = false;
             projectile.ignoreWater = true;
         }
+
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.immuneTime = 8;
         }
+
         public override void AI()
         {
             //Player player = Main.player[projectile.owner];
@@ -2172,6 +2216,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Size = (float)Math.Sqrt(projectile.ai[0]);
             Alpha = (float)Math.Sin(Math.Pow(projectile.ai[0] / 6 - 1, 2) * MathHelper.Pi);
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<Items.Weapons.UniqueWeapon.ElectronHugeJadeBullet>()].Value, projectile.Center - Main.screenPosition, null, Color.White * Alpha, 0, new Vector2(128, 128), Size * .5f, SpriteEffects.None, 0);
@@ -2180,6 +2225,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             return false;
         }
     }
+
     public class EnergyFist : BigApeProj
     {
         public override void SetDefaults()
@@ -2196,18 +2242,20 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.penetrate = -1;
             projectile.scale = 1f;
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 40;
-
         }
 
         private Vector2 spawnPos;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能量拳");
         }
+
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
         }
+
         public override void AI()
         {
             if (projectile.velocity != Vector2.Zero)
@@ -2250,7 +2298,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         }
                 }
                 spawnPos = projectile.Center;
-
             }
             switch ((int)projectile.ai[0])
             {
@@ -2326,11 +2373,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                                     projectile.alpha = 30;
                                 }
                             }
-
-
                         }
 
-                        //for (int n = 0; n < 10; n++) 
+                        //for (int n = 0; n < 10; n++)
                         //{
                         //    var vec = Vector2.Normalize(projectile.velocity);
                         //    Dust.NewDustPerfect(projectile.Center + vec * -160 + new Vector2(-vec.Y, vec.X) * Main.rand.NextFloat(-160, 160), MyDustId.CyanBubble, projectile.velocity, 255 - (int)(MathHelper.Clamp(projectile.timeLeft / 60, 0, 1) * 255), Color.White, 3f).noGravity = true;
@@ -2349,7 +2394,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         if (projectile.velocity.LengthSquared() < 576f)
                         {
                             projectile.velocity *= 1.05f;
-
                         }
                         break;
                     }
@@ -2361,8 +2405,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             projectile.oldPos[0] = projectile.Center - Vector2.Normalize(projectile.velocity) * 0.75f;// * projectile.width / 2
             projectile.oldRot[0] = projectile.rotation;
-
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             Texture2D hugeTex = VirtualDreamMod.GetTexture(ApePath + "EnergyFistHuge");
@@ -2388,7 +2432,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
                         //    //DrawItSelf(spriteBatch, new Vector2(4 - 4 * projectile.timeLeft / 60f, 0).RotatedBy(PiOver2 * n + projectile.timeLeft / 30f * Pi), alpha);
                         //}
-                        //else 
+                        //else
                         //{
                         //    //Texture2D projectileTexture = TextureAssets.Projectile[projectile.type].Value;
                         //    //int frameHeight = projectileTexture.Height / Main.projFrames[projectile.type];
@@ -2444,9 +2488,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             }
                             //try
                             //{
-
                             //}
-                            //catch (Exception e) 
+                            //catch (Exception e)
                             //{
                             //    Main.NewText(e);
                             //    Main.NewText(spawnPos);
@@ -2471,14 +2514,15 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             return false;
         }
-
     }
+
     public class LightPellet : BigApeProj
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能量光团");
         }
+
         public override void SetDefaults()
         {
             projectile.hostile = true;
@@ -2492,6 +2536,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.aiStyle = -1;
             projectile.light = 0.2f;
         }
+
         public override void AI()
         {
             if (projectile.timeLeft == 300)
@@ -2514,6 +2559,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.oldPos[0] = projectile.Center;
             projectile.oldRot[0] = projectile.rotation;
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             if (projectile.timeLeft <= 60)
@@ -2557,12 +2603,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             return false;
         }
     }
+
     public class LightDagger : BigApeProj
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("光之匕首");
         }
+
         public override void SetDefaults()
         {
             projectile.hostile = true;
@@ -2577,10 +2625,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.light = 0.2f;
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 30;
         }
+
         public Player target => Main.player[projectile.frameCounter];
+
         public override void AI()
         {
-
             switch ((int)projectile.ai[0])
             {
                 case 0:
@@ -2642,6 +2691,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     }
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             //spriteBatch.End();
@@ -2721,22 +2771,28 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             return false;
         }
     }
+
     public class LightDagger_2 : BigApeProj
     {
         public override string Texture => "VirtualDream/" + ApePath + "LightDagger";
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("光之匕首");
         }
+
         public float attackFac => MathHelper.Clamp(300 - Math.Abs(300 - projectile.timeLeft), 0, 120) / 120f;
         public bool attackAble => projectile.timeLeft >= 120 && projectile.timeLeft <= 480;
+
         public Vector2 GetVec(int t, int n, int i) => ((t / 300f * projectile.localAI[0] * MathHelper.TwoPi + MathHelper.Pi / 3 * n) * (i % 2 * 2 - 1)).ToRotationVector2() * 256 * attackFac * i + projectile.Center;
+
         public Vector2 this[int n, int i] => GetVec(projectile.timeLeft, n, i);
+
         //{
-        //    get 
+        //    get
         //    {
         //        Main.NewText("!!!");
-        //        return 
+        //        return
         //    }
         //}
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -2760,6 +2816,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             return false;
         }
+
         public override void SetDefaults()
         {
             projectile.hostile = true;
@@ -2773,8 +2830,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.aiStyle = -1;
             projectile.light = 0.2f;
         }
+
         public NPC owner => Main.npc[projectile.frameCounter];
         public Player target => Main.player[projectile.frame];
+
         public override void AI()
         {
             if (owner == null || !owner.active || owner.type != ModContent.NPCType<BigApe>())
@@ -2813,7 +2872,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                                 Projectile.NewProjectile(projectile.GetSource_FromThis(), target.Center + (MathHelper.PiOver4 * n).ToRotationVector2() * 256 + new Vector2(-v.Y, v.X) * 64, v * 32, ModContent.ProjectileType<LightDagger>(), 35, 0, Main.myPlayer, 1);
                             }
                         }
-
                     }
                     while (projectile.ai[1] > 200)
                     {
@@ -2828,6 +2886,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 }
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             for (int n = 0; n < 6; n++)
@@ -2852,6 +2911,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             return false;
         }
     }
+
     public class LaserTesseract : BigApeProj
     {
         public override string Texture => "VirtualDream/" + ApePath + "LightDagger";
@@ -2860,6 +2920,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         {
             // DisplayName.SetDefault("超立方体");
         }
+
         public override void SetDefaults()
         {
             projectile.hostile = true;
@@ -2873,11 +2934,15 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.aiStyle = -1;
             projectile.light = 0.2f;
         }
+
         public Vector2[] edgePoints;
         public double t => ((projectile.timeLeft) / 360.0) * MathHelper.Pi;////projectile.ai[0] / 60f * MathHelper.TwoPi//projectile.ai[0] > 240 ? (projectile.ai[0] > 300 ? projectile.ai[0] / 540f * MathHelper.TwoPi - MathHelper.Pi : MathHelper.Pi / 32400 * (projectile.ai[0] - 240) * (projectile.ai[0] - 240)) : 0;
+
         //projectile.ai[0] > 240 ? (projectile.ai[0] > 300 ? projectile.ai[0] / 540f * MathHelper.TwoPi - MathHelper.Pi : MathHelper.Pi / 32400 * (projectile.ai[0] - 240)* (projectile.ai[0] - 240)):0;
         public Vector2 tarCenter => Main.player[(int)projectile.ai[1]].Center;
+
         public Vector2 ownCenter => Main.npc[projectile.frameCounter].Center;
+
         public override void AI()
         {
             projectile.ai[0]++;
@@ -2885,7 +2950,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.Center = ownCenter;
             //Main.NewText(tarCenter);
         }
+
         #region 旧的绘制函数
+
         //public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         //{
         //    //Vector4[] pointList = new Vector4[] { this[0], this[1], this[3], this[7], this[6], this[14], this[10], this[11], this[15] };
@@ -2983,7 +3050,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         //    //spriteBatch.DrawLine(projectile.Center, new Vector2(256, 0), Color.White, 4, true, -Main.screenPosition);
         //    return false;
         //}
-        #endregion
+
+        #endregion 旧的绘制函数
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             var c = projectile.Center - Main.screenPosition;
@@ -3019,7 +3088,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     var cen = new Vector2(-66 * i, -18);
                     spriteBatch.DrawLine(new Vector4(cen, 0, 0), (p + new Vector4(8)) * i, color, hZ, hW, 4 * (1 - factor), false, c, pC);
                 }
-
             }
             else
             {
@@ -3032,8 +3100,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
                 try
                 {
-
-                    //if (Math.Abs((float)Math.Sin(t)) <= 0.994f && Math.Abs((float)Math.Cos(t)) <= 0.994f && Math.Abs((float)Math.Sin(t)) >= 0.01f && Math.Abs((float)Math.Cos(t)) >= 0.01f) 
+                    //if (Math.Abs((float)Math.Sin(t)) <= 0.994f && Math.Abs((float)Math.Cos(t)) <= 0.994f && Math.Abs((float)Math.Sin(t)) >= 0.01f && Math.Abs((float)Math.Cos(t)) >= 0.01f)
                     //{
                     //    #region Outside
                     //    if (!Main.gamePaused)
@@ -3055,7 +3122,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                     //    ////Vector2[] targetPoints = new Vector2[4];
                     //    ////foreach (var vec in edgePoints)
                     //    ////{
-                    //    ////    if (vec.X < left) 
+                    //    ////    if (vec.X < left)
                     //    ////    {
                     //    ////        left = vec.X;
                     //    ////        targetPoints[0] = vec;
@@ -3235,6 +3302,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             return false;
         }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             //var c = projectile.Center - Main.screenPosition;
@@ -3261,6 +3329,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             return false;
         }
+
         public Matrix Transform
         {
             get
@@ -3269,7 +3338,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 var c = (float)Math.Cos(_t);
                 var s = (float)Math.Sin(_t);
                 //int offset = 0;
-                //while (Math.Abs(c) >= 0.95f || Math.Abs(s) >= 0.95f) 
+                //while (Math.Abs(c) >= 0.95f || Math.Abs(s) >= 0.95f)
                 //{
                 //    offset++;
                 //    _t = (projectile.timeLeft + offset) / 360.0 * MathHelper.Pi;
@@ -3294,11 +3363,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 );
             }
         }
+
         public Vector4 this[int index] => (new Vector4(index / 8 % 2, index / 4 % 2, index / 2 % 2, index % 2) * 2 - new Vector4(1)).ApplyMatrix(Transform) * 384;
     }
+
     public class StrawberryCrystal : ModItem
     {
         public override string Texture => "VirtualDream/" + ApePath + "strawberry_7";
+
         public override void SetDefaults()
         {
             item.width = 43;
@@ -3311,22 +3383,25 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             item.autoReuse = true;
             //item.shoot = ModContent.ProjectileType<StrawberryCross>();
         }
+
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             velocity = default;
             position = Main.MouseWorld;
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
         }
+
         //public VertexTriangle3_RigidList vt3rl;
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("召唤 大猿人");//测试物品\n消灭鼠标附近4格以内的NPC
             // DisplayName.SetDefault("草莓水晶");
         }
+
         //public readonly static Vector4[] vertexs = new Vector4[16];
         public StrawberryCrystal()
         {
-            //for (int n = 0; n < vertexs.Length; n++) 
+            //for (int n = 0; n < vertexs.Length; n++)
             //{
             //    vertexs[n] = GetVector(n);
             //}
@@ -3335,6 +3410,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //vtr2.vertexs[0] = new Vector3(1, 1, 1);
             //vt3rl = new VertexTriangle3_RigidList(2000, vtr, vtr2);
         }
+
         public override void HoldStyle(Player player, Rectangle rectangle)
         {
             for (int n = 0; n < 15; n++)
@@ -3342,7 +3418,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 Dust.NewDustPerfect(Main.MouseWorld + (MathHelper.TwoPi / 15 * n + Main.GameUpdateCount / 60).ToRotationVector2() * 64, MyDustId.RedBubble).noGravity = true;
             }
         }
-        //private static Vector4 GetVector(int index) 
+
+        //private static Vector4 GetVector(int index)
         //{
         //    return new Vector4(index / 8, index / 4 % 2, index / 2 % 2, index % 2) * 2 - Vector4.One;
         //}
@@ -3401,6 +3478,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         //    return Main.rand.Next(min, max);
         //}
         private Player player => Main.LocalPlayer;//Main.player[item.owner]
+
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             //Main.NewText("!!!");
@@ -3414,7 +3492,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             const float width = 4;
             var c = player.Center - Main.screenPosition;
             var pC = Main.screenPosition + Main.ScreenSize.ToVector2() * .5f - player.Center;
-            //for (int n = 0; n < 15; n++) 
+            //for (int n = 0; n < 15; n++)
             //{
             //    var v = GetVector(n);
             //    if ((int)v.W == -1) spriteBatch.DrawLine(v, new Vector4(0, 0, 0, 2), Color.White, heightZ, heightW, width, true);
@@ -3461,7 +3539,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //    );
             //spriteBatch.Draw3DPlane(IllusionBoundMod.ShaderSwoosh, IllusionBoundMod.GetTexture(Path + "StrawBerryArea"), IllusionBoundMod.MaskColor[6], vt3rl);
 
-
             var rotation = (float)VirtualDreamMod.ModTime / 60 * MathHelper.Pi;
             var sin = (float)Math.Sin(rotation);
             var cos = (float)Math.Cos(rotation);
@@ -3498,7 +3575,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             Main.graphics.GraphicsDevice.RasterizerState = rasterizerState;
             var projection = Matrix.CreateOrthographicOffCenter(0, Main.screenWidth, Main.screenHeight, 0, 0, 1);
             var model = Matrix.CreateTranslation(new Vector3(-Main.screenPosition.X, -Main.screenPosition.Y, 0));
-            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTransform"].SetValue(model  * projection);//* Main.GameViewMatrix.TransformationMatrix
+            LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTransform"].SetValue(model * projection);//* Main.GameViewMatrix.TransformationMatrix
             LogSpiralLibraryMod.ShaderSwooshEffect.Parameters["uTime"].SetValue(-(float)Main.time * 0.03f);
             Main.graphics.GraphicsDevice.Textures[0] = VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea");
             Main.graphics.GraphicsDevice.Textures[1] = LogSpiralLibraryMod.BaseTex[8].Value;
@@ -3524,6 +3601,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
 
         private Item item => Item;
+
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
             const float heightZ = 512;
@@ -3588,6 +3666,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         //    }
         //}
     }
+
     //public class StrawberryCrystal_1 : ModItem
     //{
     //    public override string Texture => "VirtualDream" + Path + "strawberry_7";
@@ -3608,7 +3687,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
     //    public override bool UseItem(Player player)
     //    {
     //        var tileInfo = new Tile[Main.maxTilesX, Main.maxTilesY];
-    //        for (int i = 0; i < Main.maxTilesX; i++) 
+    //        for (int i = 0; i < Main.maxTilesX; i++)
     //        {
     //            for (int j = 0; j < Main.maxTilesY; j++)
     //            {
@@ -3625,9 +3704,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
     //        }
     //        return true;
     //    }
-    //    //public class TileInfo : Tile 
+    //    //public class TileInfo : Tile
     //    //{
-
     //    //}
     //}
     public class StrawberryCross : BigApeProj
@@ -3651,6 +3729,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             rectangle.Y += (int)(48 * projectile.ai[0] * fac);
             return rectangle.Intersects(targetHitbox);
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             //Main.NewText("!!!");
@@ -3733,17 +3812,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 else if (new int[] { 7, 8, 9 }.Contains(n))
                 {
                     vertexs[n].Position.X = MathHelper.Lerp(-0.5f, vertexs[n].Position.X, factor);
-
                 }
                 else if (new int[] { 3, 4, 5 }.Contains(n))
                 {
                     vertexs[n].Position.Y = MathHelper.Lerp(0.5f, vertexs[n].Position.Y, factor);
-
                 }
                 else if (new int[] { 11, 12, 13 }.Contains(n))
                 {
                     vertexs[n].Position.Y = MathHelper.Lerp(-0.5f, vertexs[n].Position.Y, factor);
-
                 }
                 vertexs[n].Position *= 32 * projectile.ai[0];
                 vertexs[n].Position.Y *= -1;
@@ -3761,7 +3837,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 tris[3 * n + 2] = vertexs[(int)index.Z];
             }
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone,null,Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(factor + .5f, 0, 1), projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.75f, 0.25f) * projectile.ai[0], 0, 0);
             spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(1 - factor, 0, 1), -projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.4f, 0.6f) * projectile.ai[0], 0, 0);
             if (projectile.timeLeft > 270 && projectile.frameCounter == 0)
@@ -3770,7 +3846,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 var fac = (300 - projectile.timeLeft) / 30f;
                 for (int n = 0; n < 2; n++)
                 {
-                    //if (n == -1) 
+                    //if (n == -1)
                     //{
                     //    break;
                     //}
@@ -3786,7 +3862,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 var fac = (255 - projectile.timeLeft) / 15f;
                 for (int n = 0; n < 2; n++)
                 {
-                    //if (n == -1) 
+                    //if (n == -1)
                     //{
                     //    break;
                     //}
@@ -3828,6 +3904,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
+
         public override void AI()
         {
             if (projectile.frame == 0)
@@ -3844,6 +3921,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 SoundEngine.PlaySound(SoundID.Item12, projectile.Center);
             }
         }
+
         public override void SetDefaults()
         {
             projectile.hostile = true;
@@ -3858,15 +3936,18 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.light = 0.2f;
             base.SetDefaults();
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("十字激光");
         }
     }
+
     public class StrawberryLaser : BigApeProj
     {
         //Bug 2
         public override string Texture => "VirtualDream/" + ApePath + "strawberry_7";
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float point = 0f;
@@ -3874,7 +3955,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         }
 
         private VertexTriangle3List loti;
+
         private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+
         public void UpdateTris(float factor)
         {
             var size = new Vector3(20, 48 * factor, 48 * factor);
@@ -3897,6 +3980,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 }
             }
         }
+
         public void NewTris(float height)
         {
             VertexTriangle3[] tris = new VertexTriangle3[2];
@@ -3918,6 +4002,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             loti.tris = tris;
             loti.height = height;
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             var factor = (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 300f));
@@ -3933,10 +4018,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         {
             return false;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("四次元阳离子激光");
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -3948,6 +4035,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.timeLeft = 300;
             projectile.penetrate = -1;
         }
+
         public override void AI()
         {
             switch ((int)projectile.ai[1])
@@ -3990,6 +4078,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
         }
     }
+
     public class StrawberryCross_PS : BigApeProj
     {
         //Bug 2-1
@@ -4007,6 +4096,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             rectangle.Y += (int)(48 * projectile.ai[0] * fac);
             return rectangle.Intersects(targetHitbox);
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             //Main.NewText("!!!");
@@ -4090,17 +4180,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 else if (new int[] { 7, 8, 9 }.Contains(n))
                 {
                     vertexs[n].Position.X = MathHelper.Lerp(-0.5f, vertexs[n].Position.X, factor);
-
                 }
                 else if (new int[] { 3, 4, 5 }.Contains(n))
                 {
                     vertexs[n].Position.Y = MathHelper.Lerp(0.5f, vertexs[n].Position.Y, factor);
-
                 }
                 else if (new int[] { 11, 12, 13 }.Contains(n))
                 {
                     vertexs[n].Position.Y = MathHelper.Lerp(-0.5f, vertexs[n].Position.Y, factor);
-
                 }
                 vertexs[n].Position *= 32 * projectile.ai[0];
                 vertexs[n].Position.Y *= -1;
@@ -4121,7 +4208,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
             spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * factor, projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.75f, 0.25f), 0, 0);
             spriteBatch.Draw(VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea"), projectile.Center - Main.screenPosition, null, new Color(255, 51, 51) * MathHelper.Clamp(factor * 2, 0, 1), -projectile.timeLeft / 60f * MathHelper.TwoPi, VirtualDreamMod.GetTexture(ApePath + "StrawBerryArea").Size() * .5f, factor.Lerp(0.4f, 0.6f), 0, 0);
-            //if (projectile.timeLeft > 60) 
+            //if (projectile.timeLeft > 60)
             //{
             //    (Vector2, Vector2)[] lines = new (Vector2, Vector2)[2];
             //    var fac = (120 - projectile.timeLeft) / 60f;
@@ -4139,7 +4226,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //    var fac = (300 - projectile.timeLeft) / 30f;
             //    for (int n = 0; n < 2; n++)
             //    {
-            //        //if (n == -1) 
+            //        //if (n == -1)
             //        //{
             //        //    break;
             //        //}
@@ -4159,7 +4246,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             //    var fac = (255 - projectile.timeLeft) / 15f;
             //    for (int n = 0; n < 2; n++)
             //    {
-            //        //if (n == -1) 
+            //        //if (n == -1)
             //        //{
             //        //    break;
             //        //}
@@ -4201,9 +4288,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
+
         public override void AI()
         {
         }
+
         public override void SetDefaults()
         {
             projectile.hostile = true;
@@ -4218,17 +4307,20 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.light = 0.2f;
             base.SetDefaults();
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("十字激光");
         }
     }
+
     public enum BigApeEyeMode
     {
         None,
         Normal,
         Laser
     }
+
     //public class BigApeSurfaceBgStyle : ModSurfaceBgStyle
     //{
     //    public override bool ChooseBgStyle()
@@ -4299,13 +4391,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
     {
         //Bug 2-2
         public override string Texture => "VirtualDream/" + ApePath + "strawberry_9";
+
         public Vector2 baseOfX;
         public Vector2 baseOfY;
         public Texture2D VectorTex => TextureAssets.Projectile[projectile.type].Value;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("大猿人向量场");
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -4316,6 +4411,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             projectile.timeLeft = 300;
             projectile.penetrate = -1;
         }
+
         private Player targetPlayer
         {
             get
@@ -4335,10 +4431,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 return target;
             }
         }
+
         private static Vector2 GetVec(Vector2 vec, float length)
         {
             return Vector2.Normalize(vec) * MathHelper.Clamp(vec.Length(), 0, length);
         }
+
         public override void AI()
         {
             if (projectile.timeLeft > 180)
@@ -4355,6 +4453,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 }
             }
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             var al = MathHelper.Clamp((300 - projectile.timeLeft) / 30f, 0, 1);
@@ -4372,6 +4471,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             return false;
         }
     }
+
     public class VectorFieldCone : BigApeProj
     {
         //public Effect effect;
@@ -4381,6 +4481,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
         private Projectile owner => Main.projectile[(int)projectile.ai[0]];
 
         private BigApeVectorField tap => owner.ModProjectile as BigApeVectorField;
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             var effect = LogSpiralLibraryMod.ShaderSwooshEffect;
@@ -4418,7 +4519,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
 
                 if (bars.Count > 2)
                 {
-
                     //// 按照顺序连接三角形
                     //triangleList.Add(bars[0]);
                     //var vertex = new CustomVertexInfo((bars[0].Position + bars[1].Position) * 0.5f + Vector2.Normalize(projectile.velocity) * 30, Color.White,
@@ -4435,7 +4535,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                         triangleList.Add(bars[i + 2]);
                         triangleList.Add(bars[i + 3]);
                     }
-
 
                     spriteBatch.End();
                     spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
@@ -4466,7 +4565,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
     	}*/
                     effect.CurrentTechnique.Passes[0].Apply();
 
-
                     Main.graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, triangleList.ToArray(), 0, triangleList.Count / 3);
 
                     Main.graphics.GraphicsDevice.RasterizerState = originalState;
@@ -4476,6 +4574,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             return false;
         }
+
         public override void PostAI()
         {
             Vector2 value1 = Main.player[projectile.owner].position - Main.player[projectile.owner].oldPosition;
@@ -4491,6 +4590,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             projectile.oldPos[0] = projectile.position;
         }
+
         public override void AI()
         {
             if (tap != null)
@@ -4501,10 +4601,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             }
             base.AI();
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("向量场锥刺");
         }
+
         public override void SetDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 30;

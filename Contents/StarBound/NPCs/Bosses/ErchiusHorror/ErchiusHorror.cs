@@ -1,5 +1,4 @@
 ﻿using LogSpiralLibrary;
-using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
 using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
@@ -12,24 +11,30 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
     public static class ErchiusHorrorTools
     {
         public static Effect QuadraticLaserEffect;
+
         static ErchiusHorrorTools()
         {
             QuadraticLaserEffect = LogSpiralLibraryMod.EightTrigramsFurnaceEffect;
         }
+
         public const string Path = "VirtualDream/Contents/StarBound/NPCs/Bosses/ErchiusHorror/";
     }
+
     [AutoloadBossHead]
     public class ErchiusHorror : ModNPC
     {
         private NPC npc => NPC;
+
         public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.Item27, npc.Center);
         }
+
         public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.Item27, npc.Center);
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源煞魔");
@@ -56,6 +61,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             Music = ModLoader.TryGetMod("VirtualDreamMusic", out Mod music) ? MusicLoader.GetMusicSlot(music, "Assets/Music/CasketOfStar") : MusicID.Boss5;
             //musicPriority = MusicPriority.BossHigh;
         }
+
         public override bool PreAI()
         {
             if (targetPlayer == null)
@@ -65,6 +71,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             return true;
         }
+
         private int Stage
         {
             get
@@ -87,10 +94,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
             }
         }
+
         private int oldAiStyle;
         private int[] indexOfTinyCrystal = new int[] { -1, -1, -1, -1 };
         private int oldLife;
         private int tinyCrystalTimer;
+
         public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
         {
             if (Stage == 1 && npc.ai[2] > 0)
@@ -104,6 +113,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private const int damageScaler = 1;
+
         private void AttackMode_0()
         {
             //事过渡模式哦
@@ -128,13 +138,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             //	npc.velocity.X = 0;
             //}
             npc.ai[0]++;
-            //if (npc.ai[0] % 12 == 0) 
+            //if (npc.ai[0] % 12 == 0)
             //{
             //	if (npc.ai[0] <= 60)
             //	{
             //		npc.frameCounter++;
             //	}
-            //	else 
+            //	else
             //	{
             //		npc.frameCounter--;
             //	}
@@ -165,14 +175,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
                 //npc.ai[3] = 2;
             }
-
         }
+
         private void AttackMode_1()
         {
             //事旋转激光哦
             if ((int)npc.ai[0] % 150 == 0)
             {
-                //				if (npc.ai[1] + Main.rand.Next(4) >= 6) 
+                //				if (npc.ai[1] + Main.rand.Next(4) >= 6)
                 if (npc.ai[1] + Main.rand.Next(3) >= 4)
                 {
                     SetAI();
@@ -201,6 +211,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             npc.ai[0]++;
         }
+
         private void AttackMode_2()
         {
             if ((int)npc.ai[0] % 900 == 0)
@@ -250,6 +261,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
             }
         }
+
         private void AttackMode_3()
         {
             //事旋转激光二号哦
@@ -294,6 +306,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             //}
             npc.ai[0]++;
         }
+
         private void AttackMode_4()
         {
             //事平行四边形激光网哦
@@ -342,6 +355,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             npc.ai[0]++;
         }
+
         private void AttackMode_5()
         {
             //事极限火花哦
@@ -370,6 +384,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             npc.ai[0]++;
         }
+
         private void NewTinyCrystal(bool LifeMax = false)
         {
             for (int n = 0; n < 4; n++)
@@ -397,17 +412,19 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 Main.npc[indexOfTinyCrystal[n]].Center = npc.Center + (MathHelper.PiOver2 * n + MathHelper.PiOver4).ToRotationVector2() * 640;
             }
         }
+
         //public ErchiusHorror()
         //{
         //    npc.life = (int)(npc.lifeMax * 0.25f);
         //}
-        void SetAI()
+        private void SetAI()
         {
             for (int n = 0; n < 4; n++)
             {
                 if (n != 2) npc.ai[n] = 0;
             }
         }
+
         public override void AI()
         {
             if (targetPlayer == null || !targetPlayer.active)
@@ -522,8 +539,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             oldLife = npc.life;
             npc.dontTakeDamage = Stage == 3;
-            //npc.friendly = false;// 
+            //npc.friendly = false;//
         }
+
         public Player targetPlayer
         {
             get
@@ -543,6 +561,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 return target;
             }
         }
+
         public override void OnKill()
         {
             for (int k = 1; k <= 6; k++)
@@ -557,6 +576,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             //}
             SoundEngine.PlaySound(SoundID.Zombie104, npc.Center);
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Rectangle rectangle = new(0, 55 * (int)npc.frameCounter, 55, 55);
@@ -564,7 +584,6 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             const float size = 2f;
             if (Stage < 3)
             {
-
                 spriteBatch.Draw(TextureAssets.Npc[npc.type].Value, npc.Center - Main.screenPosition, rectangle, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(55, 55) * 0.5f, size, 0, 0);
                 spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Eye"), npc.Center + Vector2.Normalize(targetPlayer.Center - npc.Center) * ((targetPlayer.Center - npc.Center).Length() * 7.5f / ((targetPlayer.Center - npc.Center).Length() + 1)) - Main.screenPosition, rectangle, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(55, 55) * 0.5f, size, 0, 0);
                 spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/NPCs/Bosses/ErchiusHorror/ErchiusHorror_Body"), npc.Center - Main.screenPosition, rectangle1, Lighting.GetColor((int)npc.Center.X / 16, (int)npc.Center.Y / 16), 0, new Vector2(221, 221) * 0.5f, size, 0, 0);
@@ -593,13 +612,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             return false;
         }
     }
+
     public class TinyErchiusCrystal : ModNPC
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源煞魔小型水晶");
         }
+
         private NPC ownerNPC => Main.npc[(int)npc.ai[1]];
+
         //private ErchiusHorror ownerModNPC => (ErchiusHorror)ownerNPC.modNPC;
         public override void SetDefaults()
         {
@@ -615,14 +637,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             npc.lifeMax = 10000; //00
             npc.friendly = false;
         }
+
         public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.Item27, npc.Center);
         }
+
         public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.Item27, npc.Center);
         }
+
         public override bool? CanBeHitByItem(Player player, Item item)
         {
             if (Main.expertMode)
@@ -631,6 +656,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             return ownerNPC.life >= ownerNPC.lifeMax / 4 || (player.Center - npc.Center).Length() < 640;
         }
+
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
             if (!projectile.friendly)
@@ -645,6 +671,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private NPC npc => NPC;
+
         public override void OnKill()
         {
             for (int n = 0; n < 24; n++)
@@ -657,6 +684,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             ownerNPC.ai[2]--;
         }
+
         public override void AI()
         {
             npc.ai[0]++;
@@ -718,24 +746,29 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             return false;
         }
     }
+
     //下面的激光是重制版的，未重制的在副本文件
     public abstract class ErchiusProj : ModProjectile
     {
         public Projectile projectile => Projectile;
+
         public virtual bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             return false;
         }
-        public sealed override bool PreDraw(ref Color lightColor)
+
+        public override sealed bool PreDraw(ref Color lightColor)
         {
             return PreDraw(Main.spriteBatch, lightColor);
         }
+
         public Texture2D projTex => TextureAssets.Projectile[Type].Value;
         //public override void OnHitPlayer(Player target, int damage, bool crit)
         //{
         //    target.immuneTime = 10;
         //}
     }
+
     public class ErcuiusHorrorLightJade : ErchiusProj
     {
         public override void SetStaticDefaults()
@@ -744,7 +777,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 10;
             base.SetStaticDefaults();
         }
+
         public override string Texture => "Terraria/Images/Item_0";
+
         public override void SetDefaults()
         {
             projectile.timeLeft = 300;
@@ -756,12 +791,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             projectile.penetrate = -1;
             base.SetDefaults();
         }
+
         public override void AI()
         {
             //Alpha = ((float)projectile.timeLeft).SymmetricalFactor(150, 150f);
             projectile.velocity *= 1.01f;
             base.AI();
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             spriteBatch.End();
@@ -776,6 +813,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             return false;
         }
     }
+
     public class ErcuiusHorrorSimpleProjs : ErchiusProj
     {
         public override void SetDefaults()
@@ -789,17 +827,21 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             projectile.penetrate = -1;
             base.SetDefaults();
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             spriteBatch.Draw(TextureAssets.Projectile[Type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[Type].Frame(3, 1, state), Color.White, projectile.rotation, new Vector2(16), 1f, 0, 0);
             return false;
         }
-        int state => (int)Projectile.ai[0];
-        bool setedValue
+
+        private int state => (int)Projectile.ai[0];
+
+        private bool setedValue
         {
             get => (int)projectile.ai[1] != 0;
             set => projectile.ai[1] = value ? 1 : 0;
         }
+
         public override void AI()
         {
             switch (state)
@@ -852,6 +894,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             base.AI();
         }
+
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
             if (state == 2)
@@ -859,6 +902,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             base.ModifyDamageHitbox(ref hitbox);
         }
     }
+
     public class ErchiusHorrorRotLaser : ErchiusProj
     {
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -883,11 +927,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         //	Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         //}
         private VertexTriangle3List loti;
+
         private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-r) * Matrix.CreateRotationX((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
-            //NormalAttackType != 1 || 
+            //NormalAttackType != 1 ||
             //loti.offset = Main.screenPosition + new Vector2(960, 560);
             var size = new Vector3(200, 96 * factor, 96 * factor);
             loti.offset = projectile.Center;
@@ -912,6 +958,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
             }
         }
+
         public void NewTris(float height)
         {
             VertexTriangle3[] tris = new VertexTriangle3[12];
@@ -936,6 +983,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             loti.tris = tris;
             loti.height = height;
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             var set = new (Vector2 start, Vector2 unit)[6];
@@ -953,14 +1001,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);//IllusionBoundMod.GetTexture(BigApe.BigApeTools.ApePath+"StrawBerryArea")//IllusionBoundMod.MagicZone[2]
             return false;
         }
+
         public override bool ShouldUpdatePosition()
         {
             return false;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源煞魔旋转激光");
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -972,6 +1023,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             projectile.timeLeft = 210;
             projectile.penetrate = -1;
         }
+
         public override void AI()
         {
             projectile.ai[0] += MathHelper.Pi / 180 / 3 * Math.Sign(projectile.ai[1]);
@@ -981,8 +1033,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             //if (owner.type != ModContent.NPCType<ErchiusHorror>() || !owner.active || owner.ai[3] != 1) projectile.Kill();
         }
+
         public NPC owner => Main.npc[projectile.frameCounter];
     }
+
     public class ErchiusHorrorAggregateLaser : ErchiusProj
     {
         private Player targetPlayer
@@ -1004,6 +1058,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 return target;
             }
         }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (projectile.ai[1] < 60 || targetPlayer == null)
@@ -1035,6 +1090,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             return false;
         }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             spriteBatch.End();
@@ -1130,14 +1186,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
+
         public override bool ShouldUpdatePosition()
         {
             return false;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源煞魔聚合激光");
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -1149,6 +1208,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             projectile.friendly = false;
             projectile.penetrate = -1;
         }
+
         public override void AI()
         {
             if (projectile.ai[1] >= 60)
@@ -1164,9 +1224,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
         }
     }
+
     public class ErchiusHorrorRotStopLaser : ErchiusProj
     {
         public NPC owner => Main.npc[projectile.frameCounter];
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (projectile.timeLeft > 30)
@@ -1184,13 +1246,16 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             return false;
         }
+
         private VertexTriangle3List loti;
+
         private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (((v * size).ApplyMatrix(Matrix.CreateRotationX(((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi))) - new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ((projectile.ai[1] * MathHelper.TwoPi / 6))) + new Vector3(200, 0, 0)).ApplyMatrix(Matrix.CreateRotationZ(-r));//Main.time////size *//* ModContent.GetInstance<IllusionConfigClient>().offSetSize
+
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
 
-            //NormalAttackType != 1 || 
+            //NormalAttackType != 1 ||
             //loti.offset = Main.screenPosition + new Vector2(960, 560);
             var size = new Vector3(200, 64 * factor, 64 * factor);
             loti.offset = projectile.Center;
@@ -1215,6 +1280,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
             }
         }
+
         public void NewTris(float height)
         {
             VertexTriangle3[] tris = new VertexTriangle3[12];
@@ -1239,6 +1305,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             loti.tris = tris;
             loti.height = height;
         }
+
         //public ErchiusHorrorRotStopLaser()
         //{
         //    loti = new VertexTriangle3List(2000, projectile.Center);
@@ -1265,14 +1332,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);
             return false;
         }
+
         public override bool ShouldUpdatePosition()
         {
             return false;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源煞魔旋转激光");
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -1284,6 +1354,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             projectile.timeLeft = 150;
             projectile.penetrate = -1;
         }
+
         public override void AI()
         {
             if (projectile.timeLeft > 30)
@@ -1297,14 +1368,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             //if (owner.type != ModContent.NPCType<ErchiusHorror>() || !owner.active || owner.ai[3] != 3) projectile.Kill();
         }
     }
+
     public class ErchiusHorrorMartixLaser : ErchiusProj
     {
         private Vector2 baseOfX;
         private Vector2 baseOfY;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源煞魔平行四边形激光");
         }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (projectile.timeLeft > 210)
@@ -1334,6 +1408,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             return false;
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -1345,6 +1420,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             projectile.timeLeft = 480;
             projectile.penetrate = -1;
         }
+
         private Player targetPlayer
         {
             get
@@ -1364,13 +1440,14 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 return target;
             }
         }
+
         private Vector2 GetVec(Vector2 vec, float length)
         {
             return Vector2.Normalize(vec) * MathHelper.Clamp(vec.Length(), 0, length);
         }
+
         public override void AI()
         {
-
             if (projectile.timeLeft > 360)
             {
                 //baseOfX = GetVec(targetPlayer.Center - projectile.Center, 256f);
@@ -1391,7 +1468,9 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 projectile.Kill();
             }
         }
+
         public NPC owner => Main.npc[projectile.frameCounter];
+
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             if (projectile.timeLeft > 210)
@@ -1420,6 +1499,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             return false;
         }
     }
+
     public class ErchiusHorrorSparkLaser : ErchiusProj
     {
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -1428,10 +1508,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             {
                 return false;
             }
-            //for (int n = -1; n <= 1; n++) 
+            //for (int n = -1; n <= 1; n++)
             //{
             //	float point = 0f;
-            //	if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center + (MathHelper.Pi / 24 * n + projectile.ai[0]).ToRotationVector2() * 30f, projectile.velocity.RotatedBy(MathHelper.Pi / 24 * n) * 3200f + projectile.Center, 96 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 300f)), ref point)) 
+            //	if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), projectile.Center + (MathHelper.Pi / 24 * n + projectile.ai[0]).ToRotationVector2() * 30f, projectile.velocity.RotatedBy(MathHelper.Pi / 24 * n) * 3200f + projectile.Center, 96 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 300f)), ref point))
             //	{
             //		return true;
             //	}
@@ -1443,11 +1523,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private VertexTriangle3List loti;
+
         private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
-            //NormalAttackType != 1 || 
+            //NormalAttackType != 1 ||
             //loti.offset = Main.screenPosition + new Vector2(960, 560);
             var size = new Vector3(128, 96 * factor, 96 * factor);
             loti.offset = projectile.Center;
@@ -1474,6 +1556,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
             }
         }
+
         public void NewTris(float height)
         {
             VertexTriangle3[] tris = new VertexTriangle3[4];
@@ -1498,6 +1581,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             loti.tris = tris;
             loti.height = height;
         }
+
         //public ErchiusHorrorSparkLaser()
         //{
         //    loti = new VertexTriangle3List(2000, projectile.Center);
@@ -1518,7 +1602,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             var width = projectile.timeLeft <= 300 ? 1200f * factor : 16f;//4.47213f * 16 * 4 * factor * 4 + 16f//1600f * factor
             var u = projectile.ai[0].ToRotationVector2();
 
-            //if (projectile.timeLeft <= 300) 
+            //if (projectile.timeLeft <= 300)
             //{
             //	float point = 0f;
             //	if (Collision.CheckAABBvLineCollision(targetPlayer.Hitbox.TopLeft(), targetPlayer.Hitbox.Size(), projectile.Center + u * 30f, u * 3200f + projectile.Center, 120 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 300f)), ref point))
@@ -1527,21 +1611,23 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             //	}
             //}
 
-
             spriteBatch.DrawQuadraticLaser_PassNormal(projectile.Center + u * 30, u, Main.hslToRgb(0.8f, 1, 0.75f), LogSpiralLibraryMod.AniTex[10].Value, 3200 * MathHelper.Clamp(360 - projectile.timeLeft, 0, 30) / 30f, width);
             UpdateTris(factor);
             spriteBatch.Draw3DPlane(LogSpiralLibraryMod.ShaderSwooshEffect, VirtualDreamMod.GetTexture(BigApe.BigApeTools.ApePath + "StrawBerryArea"), LogSpiralLibraryMod.BaseTex[8].Value, loti);
 
             return false;
         }
+
         public override bool ShouldUpdatePosition()
         {
             return false;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源煞魔极限火花");
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -1553,6 +1639,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             projectile.timeLeft = 360;
             projectile.penetrate = -1;
         }
+
         public override void AI()
         {
             if (projectile.timeLeft <= 300)
@@ -1566,6 +1653,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             //if (owner.type != ModContent.NPCType<ErchiusHorror>() || !owner.active || owner.ai[3] != 5) projectile.Kill();
         }
+
         public NPC owner => Main.npc[projectile.frameCounter];
 
         public Player targetPlayer
@@ -1588,6 +1676,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
         }
     }
+
     public class ErchiusHorrorTinyLaser : ErchiusProj
     {
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -1601,11 +1690,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private VertexTriangle3List loti;
+
         private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-projectile.ai[0]) * Matrix.CreateRotationX(r * (float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+
         public void UpdateTris(float factor)
         {
             //if (Main.gamePaused) return;
-            //NormalAttackType != 1 || 
+            //NormalAttackType != 1 ||
             //loti.offset = Main.screenPosition + new Vector2(960, 560);
             var size = new Vector3(20, 48 * factor, 48 * factor);
             loti.offset = projectile.Center;
@@ -1627,6 +1718,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
             }
         }
+
         public void NewTris(float height)
         {
             VertexTriangle3[] tris = new VertexTriangle3[2];
@@ -1648,6 +1740,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             loti.tris = tris;
             loti.height = height;
         }
+
         //public ErchiusHorrorTinyLaser()
         //{
         //    loti = new VertexTriangle3List(2000, projectile.Center);
@@ -1669,10 +1762,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         {
             return false;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源煞魔小型火花");
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -1684,6 +1779,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             projectile.timeLeft = 90;
             projectile.penetrate = -1;
         }
+
         public override void AI()
         {
             if (projectile.ai[1] == 1)
@@ -1701,6 +1797,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 SoundEngine.PlaySound(SoundID.Item12, projectile.Center);
             }
         }
+
         public Player targetPlayer
         {
             get
@@ -1721,9 +1818,11 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
         }
     }
+
     public class ErchiusHorrorTimeVoyagerLaser : ErchiusProj
     {
         public override string Texture => ErchiusHorrorTools.Path + "ErchiusHorrorAggregateLaser";
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             if (projectile.timeLeft > 60)
@@ -1740,10 +1839,12 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
         }
 
         private VertexTriangle3List loti;
+
         //public Vector2 dirVec => new Vector2(projectile.ai[0], projectile.ai[1]);
         public Vector2 dirVec;
 
         private Vector3 GetVec(Vector3 v, Vector3 size, float r) => (size * v).ApplyMatrix(Matrix.CreateRotationZ(-r) * Matrix.CreateRotationX((float)VirtualDreamMod.ModTime / 300f * MathHelper.TwoPi));//Main.time
+
         public void UpdateTris(float factor)
         {
             var size = new Vector3(projectile.ai[1] * 0.5f, 96 * factor, 96 * factor);
@@ -1769,6 +1870,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
                 }
             }
         }
+
         public void NewTris(float height)
         {
             VertexTriangle3[] tris = new VertexTriangle3[4];
@@ -1793,6 +1895,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             loti.tris = tris;
             loti.height = height;
         }
+
         //public ErchiusHorrorTimeVoyagerLaser()
         //{
         //    loti = new VertexTriangle3List(2000, projectile.Center);
@@ -1809,14 +1912,17 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
 
             return false;
         }
+
         public override bool ShouldUpdatePosition()
         {
             return false;
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("能源煞魔激光");
         }
+
         public override void SetDefaults()
         {
             projectile.tileCollide = false;
@@ -1828,6 +1934,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             projectile.timeLeft = 90;
             projectile.penetrate = -1;
         }
+
         public override void AI()
         {
             if (projectile.timeLeft == 90)
@@ -1841,6 +1948,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.ErchiusHorror
             }
             //if (owner.type != ModContent.NPCType<ErchiusHorror>() || !owner.active || owner.ai[3] != 2) projectile.Kill();
         }
+
         public NPC owner => Main.npc[projectile.frameCounter];
     }
 }

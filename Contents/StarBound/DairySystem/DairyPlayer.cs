@@ -8,6 +8,7 @@ namespace VirtualDream.Contents.StarBound.DairySystem
         {
             base.LoadData(tag);
         }
+
         public override void SaveData(TagCompound tag)
         {
             base.SaveData(tag);

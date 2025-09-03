@@ -12,6 +12,7 @@ namespace VirtualDream.Utils
         {
             public float rad, size, length;
             public List<Node> children;
+
             public Node(float rad, float size, float length)
             {
                 this.rad = rad;
@@ -20,18 +21,20 @@ namespace VirtualDream.Utils
                 this.children = [];
             }
         };
+
         private Node root;
         private UnifiedRandom random;
+
         public LightTree(UnifiedRandom random)
         {
             cnt = 0;
             root = null;
             this.random = random;
         }
+
         private Vector2 target;
         private int cnt;
         private List<Vector2> keyPoints;
-
 
         public void Generate(Vector2 pos, Vector2 vel, Vector2 target)
         {
@@ -42,6 +45,7 @@ namespace VirtualDream.Utils
             root = _build(root, pos, vel, true);
             // Main.NewText($"生成了一个{cnt}个节点的树状结构");
         }
+
         private Node _build(Node node, Vector2 pos, Vector2 vel, bool root)
         {
             keyPoints.Add(pos);
@@ -72,6 +76,7 @@ namespace VirtualDream.Utils
             }
             return node;
         }
+
         //private Node _build2(Node node, Vector2 pos, Vector2 vel, bool isMain, Vector2 target) {
         //    cnt++;
         //    keyPoints.Add(pos);
@@ -92,7 +97,6 @@ namespace VirtualDream.Utils
         //    }
         //    return node;
         //}
-
 
         //private Node _build(Node node, Vector2 pos, Vector2 vel, bool root) {
         //    keyPoints.Add(pos);
@@ -116,9 +120,6 @@ namespace VirtualDream.Utils
         //    }
         //    return node;
         //}
-
-
-
 
         private float rand()
         {
@@ -165,6 +166,7 @@ namespace VirtualDream.Utils
         {
             _dust(pos, vel, root);
         }
+
         private void _draw(SpriteBatch sb, Vector2 pos, Vector2 vel, Node node, Color c, float factor)
         {
             // 树枝实际的方向向量
@@ -236,12 +238,14 @@ namespace VirtualDream.Utils
             return false;
         }
     }
+
     public class LightTreeTeslaUtils
     {
         private class Node
         {
             public float rad, size, length;
             public List<Node> children;
+
             public Node(float rad, float size, float length)
             {
                 this.rad = rad;
@@ -250,9 +254,11 @@ namespace VirtualDream.Utils
                 this.children = [];
             }
         };
+
         private Node root;
         private double random;
         private float randomr;
+
         public LightTreeTeslaUtils(double random, float randomr)
         {
             cnt = 0;
@@ -260,10 +266,10 @@ namespace VirtualDream.Utils
             this.random = random;
             this.randomr = randomr;
         }
+
         private Vector2 target;
         private int cnt;
         private List<Vector2> keyPoints;
-
 
         public void Generate(Vector2 pos, Vector2 vel, Vector2 target)
         {
@@ -274,6 +280,7 @@ namespace VirtualDream.Utils
             root = _build(root, pos, vel, true);
             // Main.NewText($"生成了一个{cnt}个节点的树状结构");
         }
+
         private Node _build(Node node, Vector2 pos, Vector2 vel, bool root)
         {
             keyPoints.Add(pos);
@@ -304,6 +311,7 @@ namespace VirtualDream.Utils
             }
             return node;
         }
+
         private float rand()
         {
             double u = -2 * Math.Log(random);
@@ -315,6 +323,7 @@ namespace VirtualDream.Utils
         {
             return randomr * range;
         }
+
         public void Draw(SpriteBatch sb, Vector2 pos, Vector2 vel)
         {
             sb.End();
@@ -439,7 +448,6 @@ namespace VirtualDream.Utils
 //        private Vector2 target;
 //        private int cnt;
 //        private List<Vector2> keyPoints;
-
 
 //        public void Generate(Vector2 pos, Vector2 vel, Vector2 target) {
 //            keyPoints = new List<Vector2>();

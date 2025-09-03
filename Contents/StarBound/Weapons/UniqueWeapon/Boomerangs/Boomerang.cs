@@ -21,6 +21,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             item.shoot = ProjectileType<BoomerangProj>();
             item.height = item.width = 30;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -32,6 +33,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             recipe1.AddRecipe();
         }
     }
+
     public class BoomerangEX : Boomerang
     {
         public override void SetStaticDefaults()
@@ -39,7 +41,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             // DisplayName.SetDefault("飞镖EX");
             // Tooltip.SetDefault("最先进的微推进器保证它总是能够返回。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override WeaponState State => WeaponState.False_EX;
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -47,17 +51,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             item.rare = MyRareID.Tier3;
             item.value *= 5;
         }
+
         public override bool Extra => true;
+
         public override void AddRecipes()
         {
         }
     }
-    public class BoomerangProj : BoomerangBaseProj 
+
+    public class BoomerangProj : BoomerangBaseProj
     {
         public override void AI()
         {
             base.AI();
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);

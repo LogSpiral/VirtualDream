@@ -1,11 +1,11 @@
-﻿using Terraria.ID;
-using System.Collections.Generic;
-using VirtualDream.Contents.StarBound.Weapons.Broken;
-using VirtualDream.Contents.StarBound.TimeBackTracking;
-using VirtualDream.Contents.StarBound.Materials;
-using LogSpiralLibrary.CodeLibrary.Utilties;
+﻿using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
 using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
+using System.Collections.Generic;
+using Terraria.ID;
+using VirtualDream.Contents.StarBound.Materials;
+using VirtualDream.Contents.StarBound.TimeBackTracking;
+using VirtualDream.Contents.StarBound.Weapons.Broken;
 
 namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
 {
@@ -21,15 +21,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             item.noUseGraphic = false;
             item.shootSpeed = 16;
         }
+
         public override WeaponState State => WeaponState.Broken;
+
         public override void ModifyManaCost(Player player, ref float reduce, ref float mult)
         {
         }
+
         public override bool CanUseItem(Player player) => true;
+
         public override bool AltFunctionUse(Player player) => false;
+
         public override void HoldItem(Player player)
         {
         }
+
         public override WeaponRepairRecipe RepairRecipe()
         {
             WeaponRepairRecipe recipe = GetEmptyRecipe();
@@ -46,28 +52,35 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
 
             return recipe;
         }
+
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(-16, 0);
         }
     }
+
     public class KluexStaff : StarboundWeaponBase
     {
         public override WeaponRepairRecipe RepairRecipe()
         {
             return GetEmptyRecipe().AddIngredient<AncientEssence>(5000).SetResult<KluexStaffEX>();
         }
+
         public override bool BossDrop => true;
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("克鲁西斯法杖");
             // Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             //Item.staff[item.type] = true;
         }
+
         public Item item => Item;
+
         public override void ModifyManaCost(Player player, ref float reduce, ref float mult) => reduce = player.ownedProjectileCounts[item.shoot] > 0 ? reduce : 0;
 
         public override bool CanUseItem(Player player) => player.ownedProjectileCounts[item.shoot] < 1;
+
         public override void SetDefaults()
         {
             item.rare = MyRareID.Tier1;
@@ -80,7 +93,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             item.useTime = 24;
             item.useAnimation = 24;
             item.knockBack = 6;
-            item.useStyle = 5;
+            item.useStyle = ItemUseStyleID.Shoot;
             item.autoReuse = true;
             item.shoot = ModContent.ProjectileType<KluexStaffProj>();
             item.noUseGraphic = true;
@@ -89,25 +102,31 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             item.shootSpeed = 1f;
             item.UseSound = SoundID.Item13;
         }
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+
         public override void HoldItem(Player player)
         {
             Dust dust = Dust.NewDustPerfect(Main.MouseWorld, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f);
             dust.noGravity = true;
         }
     }
+
     public class KluexStaffEX : KluexStaff
     {
         public override WeaponRepairRecipe RepairRecipe() => GetEmptyRecipe();
+
         public override WeaponState State => WeaponState.False_EX;
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("克鲁西斯法杖EX");
         }
+
         //private static float Time = 0;
         //private static float X = 0;
         //private static float Y = 0;
@@ -124,6 +143,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             item.width = 46;
             item.height = 88;
         }
+
         public override void HoldItem(Player player)
         {
             //Time += MathHelper.Pi / 60;
@@ -140,6 +160,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             //dust2.noGravity = true;
             //dust3.noGravity = true;
         }
+
         //public override void UseStyle(Player player, Rectangle rectangle)
         //{
         //    if (Main.mouseRight)
@@ -173,22 +194,24 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         //    }
         //}
     }
+
     public class KluexStaffPH : KluexStaff
     {
         public override WeaponState State => WeaponState.False_UL;
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("这根强大的法杖可以支持挥动着它的战士\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n纯粹幻象赤色水晶凝聚跃动着的能量，充斥着整根法杖，又聚焦于一点\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//你知道......什么叫自机狙吗？！(已经被万恶的阿汪削弱(?)了)
             // DisplayName.SetDefault("克鲁西斯法杖PH");
             //Item.staff[item.type] = true;
         }
+
         //public int Time2;
         //public int Timex;
         //public int TimeR;
 
         public override void SetDefaults()
         {
-
             base.SetDefaults();
             item.damage = 400;
             item.crit = 50;
@@ -197,6 +220,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             item.width = 46;
             item.height = 94;
         }
+
         public override void HoldItem(Player player)
         {
             var vec = ((float)VirtualDreamMod.ModTime2 * 0.05f).ToRotationVector2() * new Vector2(5, 3) * 32;
@@ -225,6 +249,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             //dust8.noGravity = true;
             //dust9.noGravity = true;
         }
+
         //public override void UseStyle(Player player, Rectangle rectangle)
         //{
         //    if (Main.mouseRight)
@@ -260,15 +285,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         //    }
         //}
     }
+
     public class KluexStaffProj : RangedHeldProjectile, IStarboundWeaponProjectile
     {
         //TODO 右键单点BUG修复
 
         //BossDropWeaponProj<DragonheadPistol, DragonheadPistolEX, DragonheadPistolOD>, IBossDropWeaponProj<DragonheadPistol, DragonheadPistolEX, DragonheadPistolOD>
         public int plasmaBallCount;
+
         public int plasmaBallMax;
         public override (int X, int Y) FrameMax => (20, 3);
         public override bool UseRight => true;
+
         public override void OnCharging(bool left, bool right)
         {
             if (left)
@@ -282,12 +310,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                         case 0:
                             Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld, default, type, 0, 6, Player.whoAmI, plasmaBallCount);
                             break;
+
                         case 1:
                             vec = ((float)VirtualDreamSystem.ModTime2).ToRotationVector2() * 32;
                             Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld + vec, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
                             Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld - vec, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
                             Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld, new Vector2(0, 0), type, 0, 6, Player.whoAmI, plasmaBallCount);
                             break;
+
                         case 2:
                             vec = ((float)VirtualDreamMod.ModTime2 * 0.05f).ToRotationVector2() * new Vector2(5, 3) * 32;
                             for (int n = 0; n < 4; n++)
@@ -301,12 +331,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                     plasmaBallCount++;
                     plasmaBallMax = plasmaBallCount;
                     SoundEngine.PlaySound(SoundID.Item15);
-
                 }
-
             }
         }
+
         public override Vector2 ShootCenter => base.ShootCenter + Projectile.velocity * 42 + new Vector2(Projectile.velocity.Y, -Projectile.velocity.X * Player.direction) * 7;
+
         public override void OnRelease(bool charged, bool left)
         {
             if (left)
@@ -332,9 +362,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                         }
                         if (count > 0) SoundEngine.PlaySound(SoundID.Item68);
                         plasmaBallCount--;
-
                     }
-
                 }
                 //if (plasmaBallCount == 0)
                 //{
@@ -358,7 +386,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                 //        }
                 //    }
 
-
                 //}
             }
             else
@@ -369,7 +396,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                     Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Main.MouseWorld, default, ModContent.ProjectileType<KluexZone>(), 0, 0, Projectile.owner, this.UpgradeValue(1, 2, 3));
                     SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
                 }
-
             }
             if (plasmaBallCount == 0)
             {
@@ -388,12 +414,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                         {
                             proj.ai[1] = 1;
                             Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), proj.Center, Vector2.Normalize(Main.MouseWorld - proj.Center) * 32, ModContent.ProjectileType<KluexPlasmaCrystal>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), 6, Player.whoAmI, plasmaBallCount);
-
                         }
                     }
                 }
             }
         }
+
         public override float Factor
         {
             get
@@ -401,7 +427,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                 return plasmaBallCount < 0 ? Projectile.ai[0] / this.UpgradeValue(15, 12, 9) : MathHelper.Clamp(Projectile.ai[0] / this.UpgradeValue(60f, 48f, 36f), 0, 1);
             }
         }
+
         public override bool Charged => Projectile.ai[1] == 0 ? plasmaBallCount == 0 && base.Charged : base.Charged;
+
         public override void GetDrawInfos(ref Texture2D texture, ref Vector2 center, ref Rectangle? frame, ref Color color, ref float rotation, ref Vector2 origin, ref float scale, ref SpriteEffects spriteEffects)
         {
             frame = texture.Frame(20, 3, plasmaBallCount < 0 ? (19 - (int)(Factor * 3)) : (Factor < 1 ? (int)(Factor * 12) : (int)(VirtualDreamSystem.ModTime / 4) % 5 + 12), this.UpgradeValue(0, 1, 2));
@@ -409,13 +437,16 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             scale = 2;
         }
     }
+
     public class KluexPlasmaBall : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("克鲁西斯等离子体球");
         }
-        Projectile projectile => Projectile;
+
+        private Projectile projectile => Projectile;
+
         public override void SetDefaults()
         {
             projectile.DamageType = DamageClass.Magic;
@@ -432,23 +463,26 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             projectile.rotation = (Main.MouseWorld - projectile.Center).ToRotation();
             if (projectile.ai[1] == 0) projectile.timeLeft = 11;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
-            if (projectile.ai[1] == 0)//projectile.timeLeft > 10 || 
+            if (projectile.ai[1] == 0)//projectile.timeLeft > 10 ||
                 Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 8, 0, (int)VirtualDreamSystem.ModTime / 2 % 8), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(1, 0.125f), 2f, 0, 0);
             else
                 Main.EntitySpriteDraw(VirtualDreamMod.GetTexture(Texture.Replace("KluexPlasmaBall", "KluexBall"), false), projectile.Center - Main.screenPosition, new Rectangle(0, (10 - projectile.timeLeft) / 2 * 78, 78, 78), Color.White, 0, new Vector2(39), 1f, 0, 0);
 
             return false;
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return Color.White;
         }
     }
+
     public class KluexPlasmaCrystal : ModProjectile, IStarboundWeaponProjectile
     {
-        Projectile projectile => Projectile;
+        private Projectile projectile => Projectile;
 
         public override void SetStaticDefaults()
         {
@@ -469,6 +503,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             projectile.penetrate = 1;
             projectile.light = 1f;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D projectileTexture = TextureAssets.Projectile[projectile.type].Value;
@@ -480,6 +515,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             Main.spriteBatch.Draw(projectileTexture, projectile.Center - Main.screenPosition, projectileTexture.Frame(1, 4, 0, (int)VirtualDreamMod.ModTime / 2 % 4, 0), Color.White, projectile.rotation, new Vector2(14, 8), 2f, SpriteEffects.None, 0f);
             return false;
         }
+
         public override void AI()
         {
             if (projectile.velocity != Vector2.Zero)
@@ -487,6 +523,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                 projectile.rotation = projectile.velocity.ToRotation();
             }
         }
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 15; i++)
@@ -502,7 +539,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             SoundEngine.PlaySound(SoundID.Item27, projectile.Center);
         }
 
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(24, 3600);
@@ -513,13 +549,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             return Color.White;
         }
     }
+
     public class KluexZone : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("克鲁西斯与狂暴的境界");
         }
-        Projectile projectile => Projectile;
+
+        private Projectile projectile => Projectile;
 
         public override void SetDefaults()
         {
@@ -536,6 +574,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             //projectile.alpha = 255;
             projectile.hide = true;
         }
+
         public override bool PreDraw(ref Color lightColor)
         {
             var frame = (int)VirtualDreamSystem.ModTime / 4 % 12 + 4;
@@ -545,10 +584,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(4, 5, frame % 4, frame / 4), Color.White * .5f, 0, new Vector2(52), ((projectile.ai[0] - 1) / 2f).Lerp(1, 2) * 2, 0, 0);
             return false;
         }
+
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             Main.instance.DrawCacheProjsOverWiresUI.Add(index);
         }
+
         //public float t;
         //public int n = 0;
         public override void AI()
@@ -568,11 +609,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
                 }
             }
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(255 - projectile.alpha, 255 - projectile.alpha, 255 - projectile.alpha, 255 - projectile.alpha);
         }
     }
+
     public class KluexRage1 : ModBuff
     {
         public override void SetStaticDefaults()
@@ -580,6 +623,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             // DisplayName.SetDefault("克鲁西斯狂暴Ⅰ");
             // Description.SetDefault("野蛮。");
         }
+
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetDamage(DamageClass.Generic) += 0.5f;
@@ -588,6 +632,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             player.specialistDamage += 0.5f;
         }
     }
+
     public class KluexRage2 : ModBuff
     {
         public override void SetStaticDefaults()
@@ -595,6 +640,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             // DisplayName.SetDefault("克鲁西斯狂暴Ⅱ");
             // Description.SetDefault("太野蛮了。");
         }
+
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetDamage(DamageClass.Generic) += 1f;
@@ -603,6 +649,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             player.specialistDamage += 1f;
         }
     }
+
     public class KluexRage3 : ModBuff
     {
         public override void SetStaticDefaults()
@@ -610,6 +657,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             // DisplayName.SetDefault("克鲁西斯狂暴Ⅲ");
             // Description.SetDefault("野蛮至极！");
         }
+
         public override void Update(Player player, ref int buffIndex)
         {
             player.GetDamage(DamageClass.Generic) += 1.5f;

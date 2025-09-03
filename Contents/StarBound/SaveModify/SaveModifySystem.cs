@@ -12,10 +12,12 @@ namespace VirtualDream.Contents.StarBound.SaveModify
             public Vector2 velocity;
             public int life;
             public int mana;
+
             public TagCompound ToTag()
             {
                 return new TagCompound() { ["position"] = position, ["velocity"] = velocity, ["life"] = life, ["mana"] = mana };
             }
+
             public PlrData(TagCompound tag)
             {
                 position = tag.Get<Vector2>("position");
@@ -24,6 +26,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 mana = tag.Get<int>("mana");
             }
         }
+
         public static Dictionary<int, PlrData> plrSaver = [];
         public static bool loadingData;
         public static TagCompound[] itemData = new TagCompound[400];
@@ -31,6 +34,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
         public static TagCompound[] projectileData = new TagCompound[1000];
         public static Dictionary<int, Action<ModProjectile, TagCompound>> projectileSaver;
         public static Dictionary<int, Action<ModProjectile, TagCompound>> projectileLoader;
+
         public static void LoadNPC(NPC npc, TagCompound tag)
         {
             if (tag.TryGet("type", out int type))
@@ -65,6 +69,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
             //npc.localAI = tag.Get<float[]>("localAI");
             npc.active = true;
         }
+
         public static void LoadProjectile(Projectile proj, TagCompound tag)
         {
             if (tag.TryGet("type", out int type))
@@ -107,6 +112,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 proj.localAI[n] = tag.GetFloat("localAI" + n);
             proj.active = true;
         }
+
         public static TagCompound NPCData(NPC npc)
         {
             var result = new TagCompound();
@@ -138,6 +144,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 result.Add("localAI" + n, npc.localAI[n]);
             return result;
         }
+
         public static TagCompound ProjectileData(Projectile projectile)
         {
             var result = new TagCompound();
@@ -153,7 +160,6 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                     func.Invoke(projectile.ModProjectile, modData);
                     result.Add("ModProjectileData", modData);
                 }
-
             }
             result.Add("position", projectile.position);
             result.Add("velocity", projectile.velocity);
@@ -175,10 +181,13 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 result.Add("localAI" + n, projectile.localAI[n]);
             return result;
         }
+
         public override void SaveWorldData(TagCompound tag)
         {
             tag.Add("uniqueID", uniqueID);
+
             #region Player
+
             var plr = Main.LocalPlayer;
             var IDCode = plr.GetModPlayer<SaveModifyPlayer>().uniqueID;
             var data = new PlrData() with { position = plr.position, velocity = plr.velocity, life = plr.statLife, mana = plr.statMana };
@@ -190,8 +199,11 @@ namespace VirtualDream.Contents.StarBound.SaveModify
             {
                 tag.Add("plrdata" + IDCode, data.ToTag());
             }
-            #endregion
+
+            #endregion Player
+
             #region Item
+
             for (int n = 0; n < Main.maxItems; n++)
             {
                 var item = Main.item[n];
@@ -203,8 +215,11 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                     //Console.WriteLine((n, item.Name));
                 }
             }
-            #endregion
+
+            #endregion Item
+
             #region NPC
+
             int counter = 0;
             foreach (var npc in Main.npc)
             {
@@ -214,8 +229,11 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 }
                 counter++;
             }
-            #endregion
+
+            #endregion NPC
+
             #region Projectile
+
             counter = 0;
             foreach (var proj in Main.projectile)
             {
@@ -225,8 +243,10 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 }
                 counter++;
             }
-            #endregion
+
+            #endregion Projectile
         }
+
         public override void LoadWorldData(TagCompound tag)
         {
             if (tag.TryGet("uniqueID", out int id))
@@ -235,7 +255,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
             }
             else
             {
-                //IOrderedEnumerable<WorldFileData> orderedEnumerable = 
+                //IOrderedEnumerable<WorldFileData> orderedEnumerable =
                 //new List<WorldFileData>(Main.WorldList)
                 //.OrderByDescending(CanWorldBePlayed)
                 //.ThenByDescending((WorldFileData x) => x.IsFavorite)
@@ -243,7 +263,9 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 //.ThenBy((WorldFileData x) => x.GetFileName());
                 uniqueID = Main.rand.Next(int.MaxValue);
             }
+
             #region Player
+
             plrSaver.Clear();
             foreach (var file in Main.PlayerList)
             {
@@ -254,8 +276,11 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 }
             }
             loadingData = true;
-            #endregion
+
+            #endregion Player
+
             #region Item
+
             for (int n = 0; n < Main.maxItems; n++)
             {
                 if (tag.TryGet("item_" + n, out TagCompound data))
@@ -268,8 +293,11 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                     itemData[n] = null;
                 }
             }
-            #endregion
+
+            #endregion Item
+
             #region NPC
+
             for (int n = 0; n < Main.maxNPCs; n++)
             {
                 if (tag.TryGet("npc_" + n, out TagCompound data))
@@ -281,8 +309,11 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                     npcData[n] = null;
                 }
             }
-            #endregion
+
+            #endregion NPC
+
             #region Projectile
+
             for (int n = 0; n < Main.maxItems; n++)
             {
                 if (tag.TryGet("proj_" + n, out TagCompound data))
@@ -295,25 +326,32 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                     projectileData[n] = null;
                 }
             }
-            #endregion
+
+            #endregion Projectile
         }
+
         public override void OnWorldLoad()
         {
             uniqueID = -1;
         }
+
         public override void OnWorldUnload()
         {
             uniqueID = -1;
         }
+
         internal int uniqueID;
     }
+
     public class SaveModifyPlayer : ModPlayer
     {
         internal int uniqueID = -1;
+
         public override void SaveData(TagCompound tag)
         {
             tag.Add("uniqueID", uniqueID);
         }
+
         public override void LoadData(TagCompound tag)
         {
             if (tag.TryGet("uniqueID", out int id))
@@ -326,6 +364,7 @@ namespace VirtualDream.Contents.StarBound.SaveModify
             }
             if (uniqueID == -1) uniqueID = Main.rand.Next(int.MaxValue);
         }
+
         public override void ResetEffects()
         {
             if (Player.whoAmI >= 0 && Player.whoAmI < 256 && !Main.gameMenu)
@@ -364,14 +403,13 @@ namespace VirtualDream.Contents.StarBound.SaveModify
                 }
                 //Main.NewText(SaveModifySystem.PlrName);
             }
-
-
         }
+
         public override void OnEnterWorld()
         {
-
         }
     }
+
     //public class SaveModifyGlobalNPC : GlobalNPC
     //{
     //    static bool SaveIt<T>(TagCompound tag, object obj, string name)

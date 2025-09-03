@@ -1,17 +1,7 @@
-﻿using Terraria.ModLoader;
-using Terraria;
-using Microsoft.Xna.Framework;
-using VirtualDream.Utils;
-using System;
-using Terraria.ID;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using Terraria.DataStructures;
-using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Contents.Melee;
-using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Core;
-using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
+﻿using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Contents.Melee;
 using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Contents.Melee.ExtendedMelee;
 using LogSpiralLibrary.CodeLibrary.Utilties;
+using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Protector
 {
@@ -38,11 +28,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Protector
             Item.rare = MyRareID.Tier1;
             Item.damage = 50;
         }
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
     }
+
     public class BrokenBroadSwordProj : MeleeSequenceProj
     {
         public override bool LabeledAsCompleted => true;
@@ -61,6 +53,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Protector
             base.InitializeStandardInfo(standardInfo, vertexStandard);
         }
     }
+
     public class BrokenBroadSwordRotatingStorm : StormInfo
     {
         public override string Category => "Protector";

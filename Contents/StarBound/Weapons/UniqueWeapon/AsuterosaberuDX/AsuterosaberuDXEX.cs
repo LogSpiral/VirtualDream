@@ -7,5 +7,4 @@
 
 //namespace IllusionBoundMod.Items.Weapons.UniqueWeapon
 //{
-
 //}

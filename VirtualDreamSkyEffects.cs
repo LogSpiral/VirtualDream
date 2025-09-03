@@ -1,6 +1,6 @@
 ﻿using LogSpiralLibrary;
-using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 using ReLogic.Content;
 using System;
 using Terraria.Graphics.Effects;
@@ -141,6 +141,7 @@ namespace VirtualDream
             SkyManager.Instance["VirtualDream:AsraNoxSky"] = new AsraNoxSky();
             SkyManager.Instance["VirtualDream:BigApeSky"] = new BigApeSky();
         }
+
         public override void ResetEffects()
         {
             //for (int n = 0; n < 200; n++) if (Main.npc[n].type == Terraria.ID.NPCID.WallofFlesh) Main.npc[n].active = false;
@@ -176,6 +177,7 @@ namespace VirtualDream
             }
         }
     }
+
     public class ErchiusHorrorSky : CustomSky
     {
         public static bool SkyActive;
@@ -344,9 +346,9 @@ namespace VirtualDream
             public float Depth;
         }
     }
+
     public class AsraNoxSky : CustomSky
     {
-
         private struct Meteor
         {
             public Vector2 Position;
@@ -357,9 +359,11 @@ namespace VirtualDream
         }
 
         private UnifiedRandom _random = new();
+
         //private Asset<Texture2D> _planetTexture;
         //private Asset<Texture2D> _bgTexture;
         private Asset<Texture2D> _meteorTexture;
+
         private bool _isActive;
         public static bool SkyActive;
 
@@ -367,6 +371,7 @@ namespace VirtualDream
         private float _fadeOpacity;
         public static bool windToLeft;
         public static int windDirection => windToLeft ? -1 : 1;
+
         public override void OnLoad()
         {
             //_planetTexture = Main.Assets.Request<Texture2D>("Images/Misc/SolarSky/Planet");
@@ -380,6 +385,7 @@ namespace VirtualDream
         public static float currentWindSpeed;
         public static float timerOfWind;
         public static int windDirectionCounter;
+
         public override void Update(GameTime gameTime)
         {
             if (_isActive)
@@ -388,7 +394,7 @@ namespace VirtualDream
                 _fadeOpacity = Math.Max(0f, _fadeOpacity - 0.01f);
 
             //float num = 1200f;
-            //switch (tier) 
+            //switch (tier)
             //{
             //    case 0: num = 0;break;
             //    case 1: case 3: num = 1200; break;
@@ -442,7 +448,6 @@ namespace VirtualDream
                 {
                     windToLeft = true;
                     windDirectionCounter = 0;
-
                 }
                 else if (tier == 2 && windDirectionCounter >= 1800)
                 {
@@ -461,7 +466,6 @@ namespace VirtualDream
                     Main.windSpeedCurrent = currentWindSpeed;
                 }
             }
-
         }
 
         public override Color OnTileColor(Color inColor) => new(Vector4.Lerp(inColor.ToVector4(), Vector4.One, _fadeOpacity * 0.5f));
@@ -606,6 +610,7 @@ namespace VirtualDream
             return true;
         }
     }
+
     public class BigApeSky : CustomSky
     {
         // Token: 0x060024DD RID: 9437 RVA: 0x0048067C File Offset: 0x0047E87C
@@ -784,6 +789,7 @@ namespace VirtualDream
             // Token: 0x040040B7 RID: 16567
             public bool IsAlive;
         }
+
         public static bool SkyActive;
     }
 }

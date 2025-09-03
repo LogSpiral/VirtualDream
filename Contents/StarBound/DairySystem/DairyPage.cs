@@ -4,9 +4,9 @@
     {
         public Texture2D texture;
         public string text;
+
         public void Draw()
         {
-
         }
     }
 }

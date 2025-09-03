@@ -12,17 +12,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             // Tooltip.SetDefault("以附有巨毒的长藤作为鞭子。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("藤鞭");
         }
+
         public Item item => Item;
+
         public override void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime)
         {
             type = ModContent.ProjectileType<VineWhipProj>();
             damage = 125;
             item.rare = MyRareID.Tier2;
         }
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -37,6 +41,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             }
             return true;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -48,25 +53,29 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             recipe1.AddRecipe();
         }
     }
+
     public class VineWhipEX : VineWhip
     {
-
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("以附有巨毒的长藤作为鞭子。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("藤鞭EX");
         }
+
         public override void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime)
         {
             base.WhipInfo(ref type, ref damage, ref knockBack, ref shootSpeed, ref animationTime);
             damage = 250;
             item.rare = MyRareID.Tier3;
         }
+
         public override WeaponState State => WeaponState.False_EX;
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -82,6 +91,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             return true;
         }
     }
+
     public class VineWhipProj : WhipBase_Projectile
     {
         public override void WhipSettings(ref int segments, ref float rangeMultiplier)
@@ -89,12 +99,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             if (Player.altFunctionUse == 2) rangeMultiplier *= 1.5f;
             rangeMultiplier *= this.UpgradeValue(1.25f, 1.5f, 1f);
         }
+
         public override int DustType => MyDustId.GreenGrass;
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<ToxicⅠ>(), 180);
             base.OnHitNPC(target, hit, damageDone);
         }
+
         //public T UpgradeValue<T>(T normal, T extra, T defaultValue = default)
         //{
         //    //if (source is EntitySource_ItemUse eisource)

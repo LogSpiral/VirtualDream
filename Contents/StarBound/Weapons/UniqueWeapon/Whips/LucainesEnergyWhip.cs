@@ -1,8 +1,8 @@
-﻿using Terraria.ID;
-using Terraria.DataStructures;
-using VirtualDream.Contents.StarBound.Buffs;
-using LogSpiralLibrary.CodeLibrary.Utilties;
+﻿using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
+using Terraria.DataStructures;
+using Terraria.ID;
+using VirtualDream.Contents.StarBound.Buffs;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
 {
@@ -13,6 +13,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             // Tooltip.SetDefault("一根由纯能量制成的鞭子，裂开吧！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("鲁卡恩的能量鞭");
         }
+
         public override void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime)
         {
             type = ModContent.ProjectileType<LucainesEnergyWhipProj>();
@@ -20,7 +21,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             damage = 200;
             item.rare = MyRareID.Tier2;
         }
+
         public Item item => Item;
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             if (player.altFunctionUse == 2 && player.CheckMana(50, true))
@@ -29,10 +32,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             }
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -47,6 +52,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             }
             return true;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -58,6 +64,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             recipe1.AddRecipe();
         }
     }
+
     public class LucainesEnergyWhipEX : LucainesEnergyWhip
     {
         public override void SetStaticDefaults()
@@ -65,16 +72,20 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             // Tooltip.SetDefault("一根由纯能量制成的鞭子，裂开吧！\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("鲁卡恩的能量鞭");
         }
+
         public override void WhipInfo(ref int type, ref int damage, ref float knockBack, ref float shootSpeed, ref int animationTime)
         {
             base.WhipInfo(ref type, ref damage, ref knockBack, ref shootSpeed, ref animationTime);
             damage = 400;
             item.rare = MyRareID.Tier3;
         }
+
         public override WeaponState State => WeaponState.False_EX;
+
         public override void AddRecipes()
         {
         }
+
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -90,6 +101,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             return true;
         }
     }
+
     public class LucainesEnergyWhipProj : WhipBase_Projectile, IStarboundWeaponProjectile
     {
         public override void WhipSettings(ref int segments, ref float rangeMultiplier)
@@ -97,10 +109,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             if (Player.altFunctionUse == 2) rangeMultiplier *= 1.5f;
             rangeMultiplier *= this.UpgradeValue(1.25f, 1.5f, 1f);
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<Electrified>(), 180);
         }
+
         //public T UpgradeValue<T>(T normal, T extra, T defaultValue = default)
         //{
         //    //if (source is EntitySource_ItemUse eisource)
@@ -125,6 +139,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             }
         }
     }
+
     public class LucainesEnergyWhipShock : ModProjectile
     {
         public override void SetStaticDefaults()
@@ -132,7 +147,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             // DisplayName.SetDefault("鲁卡恩能量珠");
             Main.projFrames[projectile.type] = 11;
         }
-        Projectile projectile => Projectile;
+
+        private Projectile projectile => Projectile;
+
         public override void SetDefaults()
         {
             projectile.width = 80;
@@ -146,6 +163,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             projectile.penetrate = -1;
             projectile.light = 0.5f;
         }
+
         public override void AI()
         {
             projectile.frameCounter++;
@@ -157,11 +175,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Whips
             projectile.velocity *= 0.925f;
             projectile.alpha = 255 - (int)((1 - projectile.timeLeft / 60f).HillFactor2() * 255);
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 5;
             base.OnHitNPC(target, hit, damageDone);
         }
+
         public override Color? GetAlpha(Color lightColor)
         {
             return new Color(255 - projectile.alpha, 255 - projectile.alpha, 255 - projectile.alpha, 255 - projectile.alpha);

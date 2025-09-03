@@ -52,7 +52,7 @@
 //            //int n = 8;
 //            int d = MyDustId.PinkBubble;
 //            float W = (3.1415926f / 180) * Time;
-//            for (int n = 0; n < 8; n++) 
+//            for (int n = 0; n < 8; n++)
 //            {
 //                Dust dust1 = Terraria.Dust.NewDustPerfect(player.Center + (0.5f * 7 * W + MathHelper.TwoPi * n / 8).ToRotationVector2() * (float)(Math.Tan(4 * W) / Math.Sin(4 * W) + 8) * 25, d, new Vector2(0f, 0f), 0, Color.White, 1.5f);
 //                dust1.noGravity = true;

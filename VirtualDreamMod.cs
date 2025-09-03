@@ -5,30 +5,28 @@ global using Terraria.Audio;
 global using Terraria.GameContent;
 global using Terraria.ModLoader;
 global using VirtualDream.Utils;
-global using LogSpiralLibrary.CodeLibrary;
+using LogSpiralLibrary;
+using LogSpiralLibrary.CodeLibrary.Utilties;
+using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
 using System;
 using System.Collections.Generic;
 //using VirtualDream.Tiles.StormZone;
 //using VirtualDream.NPCs.StormZone;
 using System.Reflection;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI.Chat;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
+using Terraria.IO;
 using Terraria.Localization;
 //using VirtualDream.UI.Spectre;
 //using VirtualDream.UI;
 using Terraria.UI.Chat;
-using VirtualDream.Effects;
-
-using static Terraria.ModLoader.ModContent;
-using LogSpiralLibrary;
-using VirtualDream.Contents.StarBound.Weapons;
 using Terraria.WorldBuilding;
-using Terraria.IO;
-using Terraria.GameContent.ItemDropRules;
 using VirtualDream.Contents.StarBound.Materials;
-using LogSpiralLibrary.CodeLibrary.Utilties;
-using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
+using VirtualDream.Contents.StarBound.Weapons;
+using VirtualDream.Effects;
+using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream
 {
@@ -42,13 +40,16 @@ namespace VirtualDream
         public static Mod mod;
         public static float lightConst;
         public static ElectricTriangle[] electricTriangle = new ElectricTriangle[100];
+
         public static Effect GetEffect(string path, bool autoModName = true) => Request<Effect>((autoModName ? "VirtualDream/" : "") + path, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+
         public static Texture2D GetTexture(string path, bool autoModName = true) => Request<Texture2D>((autoModName ? "VirtualDream/" : "") + path, ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
+
         public override void Load()
         {
             mod = this;
             Instance = this;
-            if (Main.netMode == NetmodeID.Server) return;
+            if (Main.dedServ) return;
             var effect = GetEffect("Effects/IllusionBoundScreenGlass");
             foreach (var pass in effect.CurrentTechnique.Passes)
             {
@@ -57,6 +58,7 @@ namespace VirtualDream
             }
             //On_UnifiedRandom.Next_int_int += UnifiedRandom_Next_int_int;
         }
+
         /// <summary>
         /// �û�
         /// </summary>
@@ -72,7 +74,7 @@ namespace VirtualDream
         /// <param name="hoveredSnippet"></param>
         /// <param name="maxWidth"></param>
         /// <param name="ignoreColors"></param>
-        /// <returns></returns> 
+        /// <returns></returns>
         private Vector2 MoreMoreHeart(Terraria.UI.Chat.On_ChatManager.orig_DrawColorCodedString_SpriteBatch_DynamicSpriteFont_TextSnippetArray_Vector2_Color_float_Vector2_Vector2_refInt32_float_bool orig, SpriteBatch spriteBatch, ReLogic.Graphics.DynamicSpriteFont font, TextSnippet[] snippets, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, out int hoveredSnippet, float maxWidth, bool ignoreColors)
         {
             string date = DateTime.Now.ToShortDateString();
@@ -92,10 +94,12 @@ namespace VirtualDream
             }
 
             return orig.Invoke(spriteBatch, font, result, position, baseColor, rotation, origin, baseScale, out hoveredSnippet, maxWidth, ignoreColors);
-
         }
+
         #region TestCodes
+
         public static byte[] musicBuffer;
+
         private void MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer(Terraria.Audio.On_MP3AudioTrack.orig_ReadAheadPutAChunkIntoTheBuffer orig, MP3AudioTrack self)
         {
             //if (NPC.AnyNPCs(ModContent.NPCType<AsraNox>()) && Main.gamePaused && Main.audioSystem is LegacyAudioSystem audioSystem)
@@ -107,7 +111,6 @@ namespace VirtualDream
             //}
             //else
             //{
-
             //}
             orig.Invoke(self);
             //var fieldInfo = typeof(MP3AudioTrack).GetField("_mp3Stream", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -141,6 +144,7 @@ namespace VirtualDream
             //Main.NewText($"Mp3Length���º�:{mp3str.Position}");
             //Main.NewText($"Mp3Length��ֵ:{mp3str.Position - position}");
         }
+
         //private void MP3AudioTrack_ReadAheadPutAChunkIntoTheBuffer(On.Terraria.Audio.MP3AudioTrack.orig_ReadAheadPutAChunkIntoTheBuffer orig, MP3AudioTrack self)
         //{
         //    var fieldInfo = typeof(MP3AudioTrack).GetField("_mp3Stream", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -248,12 +252,14 @@ namespace VirtualDream
             var value = orig.Invoke(self, maxValue);
             return value;// >= maxValue / 2 ? maxValue - 1 : 0
         }
-        #endregion
+
+        #endregion TestCodes
 
         public override void Unload()
         {
             Instance = null;
         }
+
         public static Effect Bloom;
         public static float bloomValue;
         public static Effect ColorfulEffect;
@@ -261,6 +267,7 @@ namespace VirtualDream
         public static Effect ShaderSwoosh;
         public static Effect OriginEffect;
         public static Effect TextureEffect;
+
         public override void PostSetupContent()
         {
             //TODO ���������
@@ -271,6 +278,7 @@ namespace VirtualDream
             Bloom = GetEffect("Effects/Bloom1");
         }
     }
+
     /// <summary>
     /// ��������
     /// <br>������������֮ǰ�޼�����Ǳߵ��䷽������˾���</br>
@@ -285,6 +293,7 @@ namespace VirtualDream
         public const string CobaltRG = "VirtualDream:CobaltBar";
         public const string MythrilBarRG = "VirtualDream:MythrilBar";
         public const string AdamantiteBarRG = "VirtualDream:AdamantiteBar";
+
         public override void AddRecipeGroups()
         {
             RecipeGroup group1 = new(() => Language.GetTextValue("LegacyMisc.37") + " ͭ��", new int[]
@@ -379,9 +388,11 @@ namespace VirtualDream
             });
             RecipeGroup.RegisterGroup(AdamantiteBarRG, group8);
         }
+
         public static double ModTime => GlobalTimeSystem.GlobalTime;
         public static double ModTime2 => GlobalTimeSystem.GlobalTimePaused;
         public static float glowLight;
+
         public override void UpdateUI(GameTime gameTime)
         {
             if (!Main.gamePaused)
@@ -393,6 +404,7 @@ namespace VirtualDream
             }
             glowLight = ((float)Math.Sin(ModTime * MathHelper.TwoPi / 120) + 1) / 2;
         }
+
         public override void PreUpdateEntities()
         {
             //ControlScreenShader("VirtualDream:Magnifying", MagnifyingGlassActive);
@@ -406,6 +418,7 @@ namespace VirtualDream
             //ControlScreenShader("VirtualDream:Zenith", ZenithGlassActive);
             //ControlScreenShader("VirtualDream:ContrastDown", ContrastDownGlassActive);
         }
+
         private void ControlScreenShader(string name, bool state)
         {
             if ((!Filters.Scene[name]?.IsActive() ?? false) && state)
@@ -417,6 +430,7 @@ namespace VirtualDream
                 Filters.Scene.Deactivate(name);
             }
         }
+
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
         }
@@ -431,6 +445,7 @@ namespace VirtualDream
             On_WorldGen.SpawnThingsFromPot += VirtualDream_BrokenWeaponFromPot;
             base.Load();
         }
+
         private void VirtualDream_BrokenWeaponFromPot(On_WorldGen.orig_SpawnThingsFromPot orig, int i, int j, int x2, int y2, int style)
         {
             if ((int)Player.GetClosestRollLuck(i, j, 200) == 0f)
@@ -440,6 +455,7 @@ namespace VirtualDream
             }
             orig.Invoke(i, j, x2, y2, style);
         }
+
         public override void PostSetupContent()
         {
             List<int> types = [];
@@ -451,6 +467,7 @@ namespace VirtualDream
             brokenWeaponTypes = [.. types];
             base.PostSetupContent();
         }
+
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
             // Because world generation is like layering several images on top of each other, we need to do some steps between the original world generation steps.
@@ -466,11 +483,11 @@ namespace VirtualDream
                 tasks.Insert(ShiniesIndex + 1, new StarBoundBrokenWeaponPass());
             }
         }
-        class StarBoundBrokenWeaponPass : GenPass
+
+        private class StarBoundBrokenWeaponPass : GenPass
         {
             public StarBoundBrokenWeaponPass() : base("StarBoundBrokenWeaponFromChestAddition", 300)
             {
-
             }
 
             public override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
@@ -486,26 +503,30 @@ namespace VirtualDream
             }
         }
 
-        class StarBoundBrokenWeaponDrop : GlobalNPC
+        private class StarBoundBrokenWeaponDrop : GlobalNPC
         {
-            class MaterialDropCondition : IItemDropRuleCondition
+            private class MaterialDropCondition : IItemDropRuleCondition
             {
-                Func<Player, bool> _condition;
-                string _description;
+                private Func<Player, bool> _condition;
+                private string _description;
+
                 public MaterialDropCondition(Func<Player, bool> condition, string description)
                 {
                     _condition = condition;
                     _description = description ?? "";
                 }
+
                 public bool CanDrop(DropAttemptInfo info) => NPC.downedMoonlord && !info.npc.friendly && info.npc.value > 0f && (_condition?.Invoke(info.player) ?? false);
 
                 public bool CanShowItemDropInUI() => true;
 
                 public string GetConditionDescription() => _description;
             }
+
             public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
             {
                 #region �ϳɲ���
+
                 (Func<Player, bool>, int, string)[] datas = new (Func<Player, bool>, int, string)[]
                 {
                             (player => player.ZoneSnow, ItemType<CryonicExtract>(),"ѩ�طǳ���"),
@@ -523,27 +544,35 @@ namespace VirtualDream
                 {
                     npcLoot.Add(ItemDropRule.ByCondition(new MaterialDropCondition(data.Item1, data.Item3), data.Item2, 20));
                 }
-                #endregion
+
+                #endregion �ϳɲ���
 
                 #region ��������
+
                 npcLoot.Add(ItemDropRule.OneFromOptions(npc.boss ? 30 : 1000, brokenWeaponTypes));
-                #endregion
+
+                #endregion ��������
+
                 base.ModifyNPCLoot(npc, npcLoot);
             }
         }
     }
+
     public class ElectricTriangle
     {
         public Vector2 position;
         public Vector2 velocity;
+
         //public int timeMax;
         public int cycle;
+
         public int timeLeft = -1;
         public int dustType;
         public float rotation;
         public float size;
         public float dustSclaer;
         public bool Active => timeLeft > -1;
+
         public static int NewElectricTriangle(Vector2 position, float rotation = 0, float size = 16, Vector2 velocity = default, int cycle = 15, int timeLeft = 30, float dustScaler = .5f, int? dustType = null)
         {
             int index = -1;
@@ -583,6 +612,7 @@ namespace VirtualDream
             }
             return index;
         }
+
         public void Update()
         {
             if (timeLeft < 0) return;
@@ -593,6 +623,7 @@ namespace VirtualDream
             position += velocity;
         }
     }
+
     public class IllusionBoundGlobalItem : GlobalItem
     {
         public override void SetDefaults(Item item)
@@ -603,6 +634,7 @@ namespace VirtualDream
                 targetText.SetValue(item, "Ӣ�۽���֮��");
             }
         }
+
         //public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         //{
         //    TooltipLine tooltipLine = tooltips.FirstOrDefault((TooltipLine x) => x.Name == "ItemName" && x.Mod == "Terraria");
@@ -616,6 +648,7 @@ namespace VirtualDream
         //    }
         //}
     }
+
     //public class MaterialsDrop : GlobalNPC
     //{
     //    public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
@@ -662,4 +695,3 @@ namespace VirtualDream
     //    }
     //}
 }
-

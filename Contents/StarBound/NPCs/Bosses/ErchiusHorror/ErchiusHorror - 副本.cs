@@ -133,13 +133,13 @@
 //            //	npc.velocity.X = 0;
 //            //}
 //            npc.ai[0]++;
-//            //if (npc.ai[0] % 12 == 0) 
+//            //if (npc.ai[0] % 12 == 0)
 //            //{
 //            //	if (npc.ai[0] <= 60)
 //            //	{
 //            //		npc.frameCounter++;
 //            //	}
-//            //	else 
+//            //	else
 //            //	{
 //            //		npc.frameCounter--;
 //            //	}
@@ -176,7 +176,7 @@
 //            //事旋转激光哦
 //            if ((int)npc.ai[0] % 150 == 0)
 //            {
-//                //				if (npc.ai[1] + Main.rand.Next(4) >= 6) 
+//                //				if (npc.ai[1] + Main.rand.Next(4) >= 6)
 //                if (npc.ai[1] + Main.rand.Next(3) >= 4)
 //                {
 //                    npc.ai = new float[] { 0, 0, npc.ai[2], 0 };
@@ -231,7 +231,7 @@
 //            }
 //            //if ((int)npc.ai[0] % 10 == 0)
 //            //{
-//            //	for (int n = 0; n < 3; n++) 
+//            //	for (int n = 0; n < 3; n++)
 //            //	{
 //            //		Projectile.NewProjectile(npc.Center, Vector2.Normalize(targetPlayer.Center - npc.Center).RotatedBy(-MathHelper.Pi / 3 * (1 - npc.ai[0] / 60f)) * 4 * (n + 1), ModContent.ProjectileType<Fairy.ConeBullet>(), 35, 2, Main.myPlayer, 5, 1);
 //            //		Projectile.NewProjectile(npc.Center, Vector2.Normalize(targetPlayer.Center - npc.Center).RotatedBy(MathHelper.Pi / 3 * (1 - npc.ai[0] / 60f)) * 4 * (n + 1), ModContent.ProjectileType<Fairy.ConeBullet>(), 35, 2, Main.myPlayer, 5, 1);
@@ -885,7 +885,7 @@
 //        //		spriteBatch.End();
 //        //		spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone);
 //        //		float width = projectile.timeLeft <= 180 ? 24 * (float)Math.Sin(MathHelper.Pi * Math.Sqrt(1 - projectile.timeLeft / 180f)) : 4f;
-//        //		for (int n = 0; n < 6; n++) 
+//        //		for (int n = 0; n < 6; n++)
 //        //		{
 //        //			spriteBatch.Draw(Main.projectileTexture[ModContent.ProjectileType<Fairy.LightJadeBullet>()], projectile.Center + projectile.velocity.RotatedBy(MathHelper.TwoPi / 6 * n) * 200 - Main.screenPosition, new Rectangle(64, 0, 32, 32), Color.White, 0, new Vector2(16, 16), 2f * width / 24, 0, 0);
 //        //		}
@@ -1377,7 +1377,6 @@
 //        }
 //        public override void AI()
 //        {
-
 //            if (projectile.timeLeft > 180)
 //            {
 //                baseOfX = GetVec(targetPlayer.Center - projectile.Center, 256f);
@@ -1391,7 +1390,7 @@
 //                SoundEngine.PlaySound(SoundID.Item, projectile.Center, 13);
 //            }
 //            projectile.hostile = projectile.timeLeft <= 30;
-//            //if (projectile.timeLeft <= 30 && projectile.timeLeft % 5 == 0) 
+//            //if (projectile.timeLeft <= 30 && projectile.timeLeft % 5 == 0)
 //            //{
 //            //	Vector2 startVec = projectile.Center - 5 * baseOfY;
 //            //	Vector2 endVec = projectile.Center + 5 * baseOfY;

@@ -1,8 +1,8 @@
-﻿using Terraria.ID;
-using static Terraria.ModLoader.ModContent;
-using Terraria.DataStructures;
-using LogSpiralLibrary;
+﻿using LogSpiralLibrary;
 using LogSpiralLibrary.CodeLibrary.Utilties;
+using Terraria.DataStructures;
+using Terraria.ID;
+using static Terraria.ModLoader.ModContent;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
 {
@@ -13,7 +13,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
             // Tooltip.SetDefault("斩断那呼啸的时之风。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("刺穿时间(未完成)");
         }
+
         public Item item => Item;
+
         public override void SetDefaults()
         {
             item.damage = 175;
@@ -28,6 +30,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
             item.autoReuse = true;
             item.value = Item.sellPrice(0, 10);
         }
+
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.GetGlobalNPC<TimePierceStopNPC>().stopCount = (int)(hit.Damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
@@ -40,6 +43,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
             }
             //player.GetModPlayer<TimePierceStopPlayer>().stopCount += (int)(damage * Main.rand.NextFloat(0.85f, 1.15f) * .2f);
         }
+
         public override bool AltFunctionUse(Player player) => true;
 
         //public override bool AltFunctionUse(Player player)
@@ -47,6 +51,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
         //    return player.ownedProjectileCounts[ProjectileType<TimePierceProj>()] < 1;
         //}
     }
+
     public class TimePierceEX : TimePierce
     {
         public override void SetStaticDefaults()
@@ -65,11 +70,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
             item.useAnimation = 10;
             item.value = Item.sellPrice(0, 50);
         }
+
         public override WeaponState State => WeaponState.False_EX;
+
         public override void AddRecipes()
         {
         }
     }
+
     //public class TimePierceProj : VertexHammerProj
     //{
     //    public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
@@ -97,14 +105,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
                 return false;
             }
         }
+
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) => NotStop;
+
         public override bool CanHitNPC(NPC npc, NPC target)/* tModPorter Suggestion: Return true instead of null */ => NotStop;
+
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (NotStop) return;
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
+
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (NotStop) return true;
@@ -117,13 +129,16 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
             ColorChange.CurrentTechnique.Passes[0].Apply();
             return true;
         }
-        Effect colorChange;
-        Effect ColorChange => colorChange ??= Request<Effect>("VirtualDream/Effects/ColorChange").Value;
+
+        private Effect colorChange;
+        private Effect ColorChange => colorChange ??= Request<Effect>("VirtualDream/Effects/ColorChange").Value;
     }
+
     public class TimePierceStopPlayer : ModPlayer
     {
         public int stopCount;
         public bool NotStop => stopCount <= 0;
+
         public override bool PreItemCheck()
         {
             stopCount--;
@@ -134,16 +149,25 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
                 return false;
             }
         }
+
         public override bool? CanAutoReuseItem(Item item) => NotStop;
+
         public override bool CanBuyItem(NPC vendor, Item[] shopInventory, Item item) => NotStop;
+
         public override bool? CanCatchNPC(NPC target, Item item) => NotStop;
+
         public override bool CanConsumeAmmo(Item weapon, Item ammo) => NotStop;
+
         public override bool? CanConsumeBait(Item bait) => NotStop;
+
         //public override bool? CanHitNPC(Item item, NPC target) => NotStop;
         //public override bool CanHitPvp(Item item, Player target) => NotStop;
         public override bool CanSellItem(NPC vendor, Item[] shopInventory, Item item) => NotStop;
+
         public override bool CanShoot(Item item) => NotStop;
+
         public override bool CanUseItem(Item item) => NotStop;
+
         public override void PreUpdateMovement()
         {
             if (!NotStop)
@@ -152,6 +176,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TimePierce
                 Player.velocity.X = 0;
             }
         }
+
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
             if (NotStop || Main.gameMenu) return;

@@ -15,7 +15,7 @@
 //    {
 //        public Player Player { get; }
 //    }
-//    public static class UpgradeWeaponExtension 
+//    public static class UpgradeWeaponExtension
 //    {
 //        public static T UpgradeValue<T, Normal, Extra, Ultra>(IBossDropWeaponProj<Normal, Extra, Ultra> proj, T normal, T extra, T ultra, T defaultValue = default) where Normal : ModItem where Extra : ModItem where Ultra : ModItem
 //        {

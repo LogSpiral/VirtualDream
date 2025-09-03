@@ -1,13 +1,14 @@
 ﻿namespace VirtualDream.Utils
 {
     public delegate T FactorFunction<T>(float fac);
+
     //public struct Quaternion
     //{
     //	public float r;
     //	public float i;
     //	public float j;
     //	public float k;
-    //	public Matrix Transform 
+    //	public Matrix Transform
     //	=> new Matrix
     //		(
     //		    r,-i,-j,-k,
@@ -17,20 +18,20 @@
     //		);
     //	public float LengthSquare() => r * r + i * i + j * j + k * k;
     //	public float Length => (float)Math.Sqrt(LengthSquare());
-    //	public Quaternion Conjugate() 
+    //	public Quaternion Conjugate()
     //	{
     //		var (s,v) = ToScalerAndVector();
     //		return new Quaternion(s, -v);
     //	}
-    //	public Quaternion Inverse() 
+    //	public Quaternion Inverse()
     //	{
     //		return Conjugate() / LengthSquare();
     //	}
-    //	public Vector4 ToVector4() 
+    //	public Vector4 ToVector4()
     //	{
     //		return new Vector4(r, i, j, k);
     //	}
-    //	public (float scaler, Vector3 vector) ToScalerAndVector() 
+    //	public (float scaler, Vector3 vector) ToScalerAndVector()
     //	{
     //		return (r, new Vector3(i, j, k));
     //	}
@@ -101,9 +102,8 @@
     //		height = _height;
     //		tris = _tris;
     //	}
-    //	public void ApplyMatrix() 
+    //	public void ApplyMatrix()
     //	{
-
     //	}
     //	public Vector2 Projectile(Vector3 vector) => height / (height - vector.Z) * (new Vector2(vector.X, vector.Y) - Main.screenPosition - new Vector2(960, 560)) + Main.screenPosition + new Vector2(960, 560);
     //	public CustomVertexInfo[] ToVertexInfo()
@@ -131,7 +131,7 @@
     //	public readonly Vector3[] vertexs;
     //	public readonly Color[] colors;
     //	public static Vector2 Projectile(Vector3 vector) => height / (height - vector.Z) * (new Vector2(vector.X, vector.Y) - Main.screenPosition - new Vector2(960, 560)) + Main.screenPosition + new Vector2(960, 560);
-    //	//public Matrix Transform 
+    //	//public Matrix Transform
     //	//{
     //	//	get
     //	//	{
@@ -150,7 +150,7 @@
     //	//}
     //	//public Func<Quaternion, Quaternion> transform;
     //	public Matrix transform;
-    //	public void Update(params Vector3[] newPositions) 
+    //	public void Update(params Vector3[] newPositions)
     //	{
     //		rotation += velocity;
     //		transform = director.CreateRotationTransform(rotation);
@@ -171,15 +171,15 @@
     //		rotation += velocity;
     //		transform = director.CreateRotationTransform(rotation);
     //		director = Vector3.Normalize(director) * scaler;
-    //		for (int n = 0; n < Math.Min(newPositions.Length, 3); n++) 
+    //		for (int n = 0; n < Math.Min(newPositions.Length, 3); n++)
     //		{
     //			positions[n] = newPositions[n];
     //		}
     //	}
-    //	public CustomVertexInfo this[int index] 
+    //	public CustomVertexInfo this[int index]
     //	{
     //		get => index > 3 || index < 0 ? default : new CustomVertexInfo(Projectile(positions[index].ApplyMatrix(transform) + center), colors[index], vertexs[index]);
-    //		set 
+    //		set
     //		{
     //			//positon不能写入
     //			colors[index] = value.Color;
@@ -242,7 +242,7 @@
     //		velocity = _velocity;
     //		director = Vector3.Normalize(_director) * scaler;
     //		transformer = default;
-    //		for (int n = 0; n < 3; n++) 
+    //		for (int n = 0; n < 3; n++)
     //		{
     //			positions[n] = _pisitions[n];
     //		}
@@ -260,6 +260,7 @@
     public class LoopArray<T>
     {
         public T[] array;
+
         public virtual T this[int index]
         {
             get
@@ -291,16 +292,20 @@
                 array[index] = value;
             }
         }
+
         public int Length => array.Length;
+
         public LoopArray(T[] _array)
         {
             array = _array;
         }
+
         public static implicit operator T[](LoopArray<T> myArray)
         {
             return myArray.array;
         }
-        //public static explicit operator T[](LoopArray<T> myArray) 
+
+        //public static explicit operator T[](LoopArray<T> myArray)
         //{
         //	return myArray.array;
         //}

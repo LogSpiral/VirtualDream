@@ -35,10 +35,11 @@ namespace VirtualDream.Contents.StarBound.Materials
             MineResist = 6f;
             MinPick = 255;
         }
+
         public virtual void GetInfo(ref int type, ref string typeName, ref Color color)
         {
-
         }
+
         public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
         {
             Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
@@ -46,10 +47,11 @@ namespace VirtualDream.Contents.StarBound.Materials
             {
                 zero = Vector2.Zero;
             }
-            Tile tile = Main.tile[i, j];
+            Tile tile = Framing.GetTileSafely(i, j);
             spriteBatch.Draw(VirtualDreamMod.GetTexture("Contents/StarBound/Materials/" + GetType().Name + "_Glow"), new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, 16), Color.White * VirtualDreamMod.GlowLight * 2f, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
     }
+
     public class VioliumOreTile : StarboundOre
     {
         public override void GetInfo(ref int type, ref string typeName, ref Color color)
@@ -59,6 +61,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             color = new Color(187, 71, 255);
         }
     }
+
     public class FeroziumOreTile : StarboundOre
     {
         public override void GetInfo(ref int type, ref string typeName, ref Color color)
@@ -68,6 +71,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             color = new Color(83, 172, 177);
         }
     }
+
     public class AegisaltOreTile : StarboundOre
     {
         public override void GetInfo(ref int type, ref string typeName, ref Color color)
@@ -77,6 +81,7 @@ namespace VirtualDream.Contents.StarBound.Materials
             color = new Color(136, 168, 38);
         }
     }
+
     public class SolariumOreTile : StarboundOre
     {
         public override void GetInfo(ref int type, ref string typeName, ref Color color)
@@ -86,11 +91,11 @@ namespace VirtualDream.Contents.StarBound.Materials
             color = new Color(210, 128, 0);
         }
     }
+
     public class MoonLordOreSpawner : GlobalNPC
     {
         public static void SpawnOre(int type, double pinlv, float depth, float depthMax, bool hell = false, int insteadType = 0)
         {
-
             for (int i = 0; i < (int)((Main.maxTilesX * Main.maxTilesY) * pinlv); i++)
             {
                 int x = WorldGen.genRand.Next(0, Main.maxTilesX);
@@ -108,14 +113,14 @@ namespace VirtualDream.Contents.StarBound.Materials
 						WorldGen.OreRunner(tilesX, tilesY, WorldGen.genRand.Next(5, 8), WorldGen.genRand.Next(3, 7), (ushort)type);
 					}
 				}
-				else 
+				else
 				{*/
                 WorldGen.OreRunner(x, y, WorldGen.genRand.Next(5, 8), WorldGen.genRand.Next(3, 7), (ushort)type);
                 //}
             }
-
         }
-        /*public static void SpawnSolariumOre() 
+
+        /*public static void SpawnSolariumOre()
 		{
 			int? x = null;
 			int? y = null;
@@ -124,7 +129,7 @@ namespace VirtualDream.Contents.StarBound.Materials
 				for (int k = Main.maxTilesY - 200; k < Main.maxTilesY; k++)
 				{
 					int r = WorldGen.genRand.Next(50);
-					if (r == 0 && Main.tile[i, k].type == TileID.Ash) 
+					if (r == 0 && Main.tile[i, k].type == TileID.Ash)
 					{
 						Main.tile[i, k].type = (ushort)TileType<SolariumOreTile>();
 						x = i;
@@ -138,12 +143,12 @@ namespace VirtualDream.Contents.StarBound.Materials
 					}
 					if (x != null && y != null)
 					{
-						for (int u = -1; u < 1; u++) 
+						for (int u = -1; u < 1; u++)
 						{
 							for (int v = -1; u < 1; v++)
 							{
 								int r2 = Main.rand.Next(2);
-								if (r2 == 0) 
+								if (r2 == 0)
 								{
 									Main.tile[(int)x + i,(int)y + k].type = (ushort)TileType<SolariumOreTile>();
 								}
@@ -152,8 +157,8 @@ namespace VirtualDream.Contents.StarBound.Materials
 					}
 				}
 			}
-
 		}*/
+
         public override void OnKill(NPC npc)
         {
             if (npc.type == NPCID.MoonLordCore && !NPC.downedMoonlord)

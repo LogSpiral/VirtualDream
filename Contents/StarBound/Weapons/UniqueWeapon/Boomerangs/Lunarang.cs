@@ -21,6 +21,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             item.shoot = ProjectileType<LunarangProj>();
             item.height = item.width = 28;
         }
+
         public override void AddRecipes()
         {
             Recipe recipe1 = CreateRecipe();
@@ -32,6 +33,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             recipe1.AddRecipe();
         }
     }
+
     public class LunarangEX : Lunarang
     {
         public override void SetStaticDefaults()
@@ -39,6 +41,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             // DisplayName.SetDefault("月镖EX");
             // Tooltip.SetDefault("那不是月亮。\n碎月\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
         }
+
         public override WeaponState State => WeaponState.False_EX;
 
         public override void SetDefaults()
@@ -48,17 +51,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Boomerangs
             item.rare = MyRareID.Tier3;
             item.value *= 5;
         }
+
         public override bool Extra => true;
+
         public override void AddRecipes()
         {
         }
     }
-    public class LunarangProj : BoomerangBaseProj 
+
+    public class LunarangProj : BoomerangBaseProj
     {
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
         }
+
         public override void AI()
         {
             base.AI();

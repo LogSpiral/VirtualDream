@@ -1,5 +1,4 @@
 ﻿using LogSpiralLibrary;
-using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing.RenderDrawingEffects;
 using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
@@ -26,7 +25,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //        {
     //            //var f = Filters.Scene["Sandstorm"].GetShader().Shader.Parameters;
     //            ////int n;
-    //            ////for (n = 0; n < f.Count; n++) 
+    //            ////for (n = 0; n < f.Count; n++)
     //            ////{
     //            ////    if (f[n].GetHashCode() == f["uImageSize2"].GetHashCode()) break;
     //            ////}
@@ -277,7 +276,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                        var v2 = new Vector2(-xScaler2 * (cos2 + sin2), sin2 - cos2).RotatedBy(rotator2);
     //                        var newVec = u2 + v2;
     //                        var alphaLight = 0.6f;
-    //                        var _f = 6 * f / (3 * f + 1);//f;// 
+    //                        var _f = 6 * f / (3 * f + 1);//f;//
     //                        _f = MathHelper.Clamp(_f, 0, 1);
     //                        realColor.A = (byte)(_f * 255);//.MultiplyRGBA(new Color(1,1,1,_f))
     //                        bars.Add(new CustomVertexInfo(drawCen + newVec, realColor, new Vector3(1 - f, 1, alphaLight)));//(3 * f - 4) / (4 * f - 3)//快乐连顶点
@@ -300,7 +299,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                            triangleList.Add(bars[i + 3]);
     //                        }
 
-
     //                        var render = IllusionBoundMod.Instance.render;
     //                        var gd = Main.graphics.GraphicsDevice;
     //                        var sb = Main.spriteBatch;
@@ -317,17 +315,15 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                        IllusionBoundMod.ShaderSwooshEX.Parameters["airFactor"].SetValue(1f);
     //                        IllusionBoundMod.ShaderSwooshEX.Parameters["gather"].SetValue(IllusionSwooshConfigClient.instance.gather);
 
-
     //                        Main.graphics.GraphicsDevice.Textures[0] = IllusionBoundMod.GetTexture("Images/BaseTex_" + IllusionSwooshConfigClient.instance.ImageIndex);//字面意义，base那个是不会随时间动的，ani那个会动//BaseTex
     //                        Main.graphics.GraphicsDevice.Textures[1] = IllusionBoundMod.GetTexture("Images/AniTex");
     //                        Main.graphics.GraphicsDevice.Textures[2] = itemTex;
-    //                        //if (IllusionSwooshConfigClient.instance.swooshColorType == SwooshColorType.函数生成热度图) 
+    //                        //if (IllusionSwooshConfigClient.instance.swooshColorType == SwooshColorType.函数生成热度图)
     //                        //{
     //                        //    var colorBar = new Texture2D(Main.graphics.GraphicsDevice,300,60);
     //                        //    colorBar.SetData<Color>();
     //                        //    Main.graphics.GraphicsDevice.Textures[3] = colorBar;
     //                        //}
-
 
     //                        Main.graphics.GraphicsDevice.SamplerStates[0] = sampler;
     //                        Main.graphics.GraphicsDevice.SamplerStates[1] = sampler;
@@ -363,7 +359,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                        sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
     //                        //sb.End();
 
-
     //                        //Main.spriteBatch.Begin(SpriteSortMode.Immediate, alphaBlend ? BlendState.NonPremultiplied : BlendState.Additive, sampler, DepthStencilState.Default, RasterizerState.CullNone, null, trans);
     //                        //sb.Draw(render, Vector2.Zero, Color.White);
 
@@ -373,13 +368,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                        //Main.graphics.GraphicsDevice.Textures[0] = GetTexture("IllusionBoundMod/Images/BaseTex_7");//字面意义，base那个是不会随时间动的，ani那个会动//BaseTex
     //                        //Main.graphics.GraphicsDevice.Textures[1] = GetTexture("IllusionBoundMod/Images/AniTex");
     //                        //Main.graphics.GraphicsDevice.Textures[2] = itemTex;
-    //                        ////if (IllusionSwooshConfigClient.instance.swooshColorType == SwooshColorType.函数生成热度图) 
+    //                        ////if (IllusionSwooshConfigClient.instance.swooshColorType == SwooshColorType.函数生成热度图)
     //                        ////{
     //                        ////    var colorBar = new Texture2D(Main.graphics.GraphicsDevice,300,60);
     //                        ////    colorBar.SetData<Color>();
     //                        ////    Main.graphics.GraphicsDevice.Textures[3] = colorBar;
     //                        ////}
-
 
     //                        //Main.graphics.GraphicsDevice.SamplerStates[0] = SamplerState.AnisotropicClamp;
     //                        //Main.graphics.GraphicsDevice.SamplerStates[1] = SamplerState.AnisotropicClamp;
@@ -472,7 +466,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //            }
     //            catch
     //            {
-
     //            }
     //        }
     //        Vector2[] oldPlayerPos = new Vector2[30];
@@ -504,7 +497,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
 
     //                    projectile.rotation = vec.ToRotation();
     //                }
-
 
     //                //var theta = ((float)Math.Pow(fac, 2)).Lerp(MathHelper.Pi / 8 * 3, -MathHelper.PiOver2 - MathHelper.Pi / 8) * rotVel;
     //                var theta = (-MathHelper.PiOver2 - MathHelper.Pi / 8 - MathHelper.Pi / 8 * 3) * (float)Math.Pow(fac, 2) * rotVel * 2 + MathHelper.Pi / 8 * 3;
@@ -556,7 +548,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                    {
     //                        var f = (i + 1f) / nl;
     //                        var alphaLight = 0.6f;
-    //                        var _f = 6 * f / (3 * f + 1);//f;// 
+    //                        var _f = 6 * f / (3 * f + 1);//f;//
     //                        _f = MathHelper.Clamp(_f, 0, 1);
     //                        realColor.A = (byte)(_f * 255);//.MultiplyRGBA(new Color(1,1,1,_f))
     //                        bars.Add(new CustomVertexInfo(oldpos[nl - 1 - i], realColor, new Vector3(1 - f, 1, alphaLight)));//(3 * f - 4) / (4 * f - 3)//快乐连顶点
@@ -643,7 +635,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //            }
     //            catch
     //            {
-
     //            }
     //        }
     //        public override bool PreDraw(ref Color lightColor)
@@ -677,7 +668,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
 
     //            switch (state)
     //            {
-
     //                case 0:
     //                case 1:
     //                    {
@@ -710,7 +700,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                            IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)
     //                        }
 
-
     //                        spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
     //                        spriteBatch.End();
 
@@ -728,7 +717,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //                            spriteBatch.End();
     //                            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
     //                        }
-
 
     //                        break;
     //                    }
@@ -846,9 +834,8 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
     //    //public class AsuterosaberuDXSwooshEX : AsuterosaberuDXSwoosh
     //    //{
     //    //}
-    //    public class AsuterosaberuDXPlayer : ModPlayer 
+    //    public class AsuterosaberuDXPlayer : ModPlayer
     //    {
-
     //    }
     public class AsuterosaberuDX_Broken : AsuterosaberuDX
     {
@@ -870,7 +857,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             recipe.SetResult<AsuterosaberuDX>();
             return recipe;
         }
+
         public override WeaponState State => WeaponState.Broken;
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -880,20 +869,20 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             item.useAnimation = 30;
             item.shoot = ModContent.ProjectileType<AsuterosaberuDX_BrokenProj>();
             item.rare = ModContent.RarityType<BrokenRarity>();
-
         }
+
         public override bool AltFunctionUse(Player player) => false;
     }
+
     public class AsuterosaberuDX_BrokenProj : SolusKatana_BrokenProj
     {
         public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref int passCount)
         {
-
-
             base.VertexInfomation(ref additive, ref indexOfGreyTex, ref endAngle, ref useHeatMap, ref passCount);
             additive = true;
             indexOfGreyTex = 5;
         }
+
         public override void RenderInfomation(BloomEffect useBloom, AirDistortEffect useDistort, MaskEffect useMask)
         {
             useBloom.Intensity = .25f;
@@ -908,9 +897,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             useMask.Offset = Player.Center + new Vector2(0.707f) * (float)VirtualDreamMod.ModTime * 8;
             useMask.LightAsAlpha = true;
             useMask.Inverse = false;
-
         }
     }
+
     public class AsuterosaberuDX : StarboundWeaponBase
     {
         public override void SetStaticDefaults()
@@ -918,7 +907,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             // Tooltip.SetDefault("彩虹色的剑刃锋利到能够劈开空间\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("天文军刀豪华版");
         }
+
         public Item item => Item;
+
         public override void SetDefaults()
         {
             item.damage = 100;
@@ -930,23 +921,27 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             item.useTime = 24;
             item.useAnimation = 24;
             item.knockBack = 8;
-            item.useStyle = 1;
+            item.useStyle = ItemUseStyleID.Swing;
             item.autoReuse = true;
             item.shoot = ModContent.ProjectileType<AsuterosaberuDXProj>();
             item.shootSpeed = 1f;
             item.noUseGraphic = true;
             item.noMelee = true;
         }
+
         public override bool AltFunctionUse(Player player) => true;
     }
+
     public class AsuterosaberuDXEX : AsuterosaberuDX
     {
         public override WeaponState State => WeaponState.False_EX;
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("彩虹色的剑刃锋利到能够劈开空间\n破碎吧，属于空间的秩序\n 它在接受了远古精华的纯化后，拥有了更为强大的纯粹的力量。\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//\n[c / 9933cc: X:cos(3T) * sin((5T) + 5) Y: sin(3T) * sin((5T) + 5)]
             // DisplayName.SetDefault("天文军刀豪华版EX");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -956,18 +951,22 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             item.useTime = 18;
             item.useAnimation = 18;
         }
+
         public override void AddRecipes()
         {
         }
     }
+
     public class AsuterosaberuCSM : AsuterosaberuDXEX
     {
         public override WeaponState State => WeaponState.True;
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("源生纯粹七元霓辉空间水晶所铸造的利刃，也许它是斩断了空间逃离了原本的世界来到这里？\n此物品魔改自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");//\n[c / 9933cc: X:cos(3T) * sin((5T) + 5) Y: sin(3T) * sin((5T) + 5)]
             // DisplayName.SetDefault("天文军刀CSM");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -975,34 +974,39 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             item.width = item.height = 94;
         }
     }
+
     public class AsuterosaberuDXProj : SolusKatanaProj
     {
         public override Texture2D HeatMap => LogSpiralLibraryMod.HeatMap[1].Value;
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[Projectile.owner] = (controlState == 2 || Projectile.ai[1] > 0) ? this.UpgradeValue(6, 5, 4) : (int)MathHelper.Clamp(MaxTime - 3, 3, 10);
             base.OnHitNPC(target, hit, damageDone);
         }
+
         public override string Texture => base.Texture;//"VirtualDream/Contents/StarBound/Weapons/UniqueWeapon/AsuterosaberuDX/AsuterosaberuDX"
         public override bool DrawLaserFire => false;
+
         public override void OnChargedShoot()
         {
             if (!Player.CheckMana(this.UpgradeValue(75, 90, 80), true)) return;
             SoundEngine.PlaySound(SoundID.Item60, Projectile.position);
             Vector2 unit = (Main.MouseWorld - Player.Center).SafeNormalize(default);
-            //for (int n = 0; n < 4; n++) 
+            //for (int n = 0; n < 4; n++)
             //{
             //    Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), projectile.damage / 9, projectile.knockBack, projectile.owner, 0, UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
             //    unit = new Vector2(-unit.Y, unit.X);
             //}
 
             Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Player.Center + unit * 64, default, ModContent.ProjectileType<AstralTear>(), Projectile.damage / 9, Projectile.knockBack, Projectile.owner, 0, this.UpgradeValue(2, 3, 3)).rotation = unit.ToRotation();// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
-
         }
+
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("天文军刀豪华版");
         }
+
         public override void VertexInfomation(ref bool additive, ref int indexOfGreyTex, ref float endAngle, ref bool useHeatMap, ref int passCount)
         {
             base.VertexInfomation(ref additive, ref indexOfGreyTex, ref endAngle, ref useHeatMap, ref passCount);
@@ -1026,14 +1030,16 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             useMask.Inverse = false;
         }
     }
+
     public class AstralTear : ModProjectile, IStarboundWeaponProjectile
     {
-
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("星辉裂空");
         }
-        Projectile projectile => Projectile;
+
+        private Projectile projectile => Projectile;
+
         public override bool PreDraw(ref Color lightColor)
         {
             var spriteBatch = Main.spriteBatch;
@@ -1046,10 +1052,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
                 spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, _color * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale * 1.5f, 0, 0);
                 spriteBatch.Draw(tex, projectile.Center - Main.screenPosition, null, new Color(1f, 1f, 1f, 0f) * projectile.ai[0].SymmetricalFactor(7.5f, 7.5f), projectile.rotation - MathHelper.PiOver2, new Vector2(36), scale, 0, 0);
             }
+
             #region MyRegion
+
             //switch (state)
             //{
-
             //    case 0:
             //    case 1:
             //        {
@@ -1082,7 +1089,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //                IllusionBoundMod.Distort.Parameters["ImageSize"].SetValue(new Vector2(64, 48));//new Vector2(1280, 2758)//new Vector2(960,560)
             //            }
 
-
             //            spriteBatch.Draw(Main.screenTarget, Vector2.Zero, Color.White);//ModContent.GetTexture("IllusionBoundMod/Backgrounds/StarSky_1")
             //            spriteBatch.End();
 
@@ -1100,7 +1106,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //                spriteBatch.End();
             //                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             //            }
-
 
             //            break;
             //        }
@@ -1150,9 +1155,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             //            break;
             //        }
             //}
-            #endregion
+
+            #endregion MyRegion
+
             return false;
         }
+
         public override void SetDefaults()
         {
             projectile.width = 90;
@@ -1164,17 +1172,19 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
             projectile.ignoreWater = true;
             projectile.penetrate = -1;
             projectile.tileCollide = false;
-
         }
+
         public override bool ShouldUpdatePosition() => false;
-        int state => (int)projectile.ai[1];
-        NPC target => projectile.frame == 0 ? null : Main.npc[projectile.frame - 1];
+
+        private int state => (int)projectile.ai[1];
+        private NPC target => projectile.frame == 0 ? null : Main.npc[projectile.frame - 1];
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 3;
             base.OnHitNPC(target, hit, damageDone);
-
         }
+
         public override void AI()
         {
             projectile.ai[0]++;
@@ -1213,7 +1223,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AsuterosaberuDX
                                     break;
                                 }
                                 //if (n > (state == 3 ? 8 : 5)) break;
-
                             }
                         }
                         if (projectile.ai[0] > 300) projectile.Kill();

@@ -1,5 +1,4 @@
 ﻿using LogSpiralLibrary;
-using LogSpiralLibrary.CodeLibrary.DataStructures;
 using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing.ComplexPanel;
 using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
@@ -25,12 +24,14 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
     {
         public override string Texture => base.Texture;//"Terraria/Images/Item_" + ItemID.PlatinumWatch
         public int chargeCount;
+
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             var tip = new TooltipLine(Mod, "Charge", $"目前已经充能了{chargeCount} / 8");
             tip.OverrideColor = Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f);
             tooltips.Add(tip);
         }
+
         public override void SetDefaults()
         {
             Item.width = Item.height = 36;
@@ -41,6 +42,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             Item.accessory = true;
             Item.UseSound = new SoundStyle("VirtualDream/Assets/Sound/shotgun_reload_clip3");
         }
+
         public override bool? UseItem(Player player)
         {
             if (player.itemAnimation == 1)
@@ -58,10 +60,12 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             //Main.NewText("!!");
             return base.UseItem(player);
         }
+
         public override bool CanUseItem(Player player)
         {
             return chargeCount == 8 || player.itemAnimation > 0;//
         }
+
         public override void UpdateInventory(Player player)
         {
             //chargeCount = 8;
@@ -71,34 +75,37 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             if ((int)Main.time == 0 && Main.dayTime && chargeCount < 8)
             {
                 chargeCount++;
-
             }
         }
+
         public override void HoldStyle(Player player, Rectangle heldItemFrame)
         {
             player.itemLocation += new Vector2(-6 * player.direction, -4);
             player.itemRotation += -MathHelper.Pi / 6 * player.direction;
             base.HoldStyle(player, heldItemFrame);
         }
+
         public override void Update(ref float gravity, ref float maxFallSpeed)
         {
             if ((int)Main.time == 0 && Main.dayTime && chargeCount < 8)
             {
                 chargeCount++;
             }
-
         }
+
         public override void LoadData(TagCompound tag)
         {
             chargeCount = tag.GetInt("chargeCount");
             base.LoadData(tag);
         }
+
         public override void SaveData(TagCompound tag)
         {
             tag.Add("chargeCount", chargeCount);
             base.SaveData(tag);
         }
     }
+
     public class WindOfTimeStand : ModItem
     {
         public override void SetStaticDefaults()
@@ -114,17 +121,20 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             Item.maxStack = 99;
             Item.rare = ItemRarityID.Purple;
         }
+
         public override void AddRecipes()
         {
             base.AddRecipes();
         }
     }
+
     public class WeaponRepairSystem : ModSystem
     {
         public UserInterface weaponRepairInterface;
         public WeaponRepairUI repairUI;
         public static WeaponRepairSystem Instance;
         public Dictionary<int, WeaponRepairRecipe> recipes = [];
+
         public override void Load()
         {
             Instance = this;
@@ -134,6 +144,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             weaponRepairInterface.SetState(repairUI);
             base.Load();
         }
+
         public override void Unload()
         {
             Instance = null;
@@ -141,6 +152,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             weaponRepairInterface = null;
             base.Unload();
         }
+
         public override void UpdateUI(GameTime gameTime)
         {
             if (WeaponRepairUI.Visible || WeaponRepairUI.timer > 0)
@@ -148,6 +160,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 weaponRepairInterface?.Update(gameTime);
             base.UpdateUI(gameTime);
         }
+
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
             //寻找一个名字为Vanilla: Mouse Text的绘制层，也就是绘制鼠标字体的那一层，并且返回那一层的索引
@@ -175,6 +188,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             base.ModifyInterfaceLayers(layers);
         }
     }
+
     public class WeaponRepairRecipe
     {
         public List<Item> ingredients = [];
@@ -182,7 +196,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         public int ResultType = -1;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="weaponBase">主武器</param>
         /// <param name="_ingredients">其它材料，只关注类型和数量</param>
@@ -191,31 +205,39 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             MainWeapon = weaponBase;
             ingredients = _ingredients;
         }
+
         public WeaponRepairRecipe(StarboundWeaponBase weaponBase)
         {
             MainWeapon = weaponBase;
         }
+
         public WeaponRepairRecipe(int resultType)
         {
             ResultType = resultType;
         }
+
         public WeaponRepairRecipe AddIngredient(Item item)
         {
             ingredients.Add(item);
             return this;
         }
+
         public WeaponRepairRecipe AddIngredient(int type, int stack = 1) => AddIngredient(new Item(type, stack));
+
         public WeaponRepairRecipe AddIngredient<T>(int stack = 1) where T : ModItem => AddIngredient(ModContent.ItemType<T>(), stack);
+
         public WeaponRepairRecipe AddResult(int resultType)
         {
             ResultType = resultType;
             return this;
         }
+
         public WeaponRepairRecipe SetResult<T>() where T : StarboundWeaponBase
         {
             ResultType = ModContent.ItemType<T>();
             return this;
         }
+
         public void Register()
         {
             if (ResultType == -1)
@@ -225,10 +247,12 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             WeaponRepairSystem.Instance.recipes.Add(MainWeapon.Type, this);
         }
     }
+
     public class WeaponRepairUI : UIState
     {
         public static bool Visible { get; private set; }
         public static int timer;
+
         /// <summary>
         /// 缩放修复（这公式自己测的，没有游戏依据）
         /// 将屏幕坐标转换为UI坐标
@@ -242,8 +266,10 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             vector.Y = (int)(vector.Y / Main.UIScale) + (int)(oppositeY * (Main.GameZoomTarget - 1f));
             return new(vector.X, vector.Y);
         }
+
         public WindOfTimeStandData standData;
         public static Vector2 MouseScreenUI => TransformToUIPosition(Main.MouseScreen);
+
         public void Open(WindOfTimeStandData data)
         {
             Visible = true;
@@ -263,6 +289,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             BasePanel.Top.Set(Offset.Y - 128, 0f);
             BasePanel.Recalculate();
         }
+
         public void Close()
         {
             Visible = false;
@@ -275,8 +302,10 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             if (BasePanel.button != null)
                 BasePanel.button.recipe = null;
         }
+
         public bool CacheSetupElements; // 缓存，在下一帧Setup
         public WeaponRepairPanel BasePanel;
+
         public override void Update(GameTime gameTime)
         {
             if (CacheSetupElements)
@@ -307,13 +336,11 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             }
             base.Update(gameTime);
         }
+
         public override void OnInitialize()
         {
-            #region 贴图加载
-
-            #endregion
-
             #region 面板初始化
+
             BasePanel = new WeaponRepairPanel()
             {
                 Top = StyleDimension.FromPixels(256f),
@@ -323,8 +350,10 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             BasePanel.SetSize(512, 256).SetPadding(12f);
             BasePanel.Draggable = true;
             Append(BasePanel);
-            #endregion
+
+            #endregion 面板初始化
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             int oldType = BasePanel.windOfTimeSlot._item.type;
@@ -341,26 +370,30 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 }
                 else
                     Close();
-
             }
         }
     }
+
     public class WeaponRepairPanel : UIElement
     {
         public WindOfTimeRecipeIcon currentRecipe;
+
         /// <summary>
         /// 是否可拖动
         /// </summary>
         public bool Draggable;
+
         public bool Dragging;
         public Vector2 Offset;
         public float border;
         public bool CalculateBorder;
+
         /// <summary>
         /// <br>动画插值</br>
         /// <br>决定ui的大小和透明度之类</br>
         /// </summary>
         public float factor;
+
         public WeaponRepairPanel(float border = 3, bool CalculateBorder = true)
         {
             SetPadding(10f);
@@ -369,15 +402,18 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             OnLeftMouseDown += DragStart;
             OnLeftMouseUp += DragEnd;
         }
+
         public override void OnActivate()
         {
             base.OnActivate();
         }
+
         public override void Recalculate()
         {
             base.Recalculate();
             //panelInfo.destination = GetDimensions().ToRectangle();
         }
+
         public override void DrawSelf(SpriteBatch spriteBatch)
         {
             CalculatedStyle dimenstions = GetDimensions();
@@ -386,7 +422,9 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             {
                 rect = Terraria.Utils.CenteredRectangle(rect.Center.ToVector2(), rect.Size() + new Vector2(border * 2));
             }
+
             #region MagicZone
+
             /*var graphicDevice = Main.instance.GraphicsDevice;
             SamplerState samplerState = graphicDevice.SamplerStates[0];
             DepthStencilState depthState = graphicDevice.DepthStencilState;
@@ -401,7 +439,6 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             //foreach (var button in Buttons)
             //{
-
             //    spriteBatch.Draw(panelText, button.GetDimensions().Center(), null, Color.White, Main.GlobalTimeWrappedHourly * .5f, new Vector2(118), .5f * factor, 0, 0);
             //}
             //var elemplr = Main.LocalPlayer.GetModPlayer<ElementPlayer>();
@@ -409,7 +446,9 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, samplerState, depthState, rasterizerState, null, Main.UIScaleMatrix);*/
-            #endregion
+
+            #endregion MagicZone
+
             ComplexPanelInfo panelInfo = new();
             panelInfo.destination = Terraria.Utils.CenteredRectangle(Vector2.Lerp(rect.Top(), rect.Center(), factor), rect.Size() * new Vector2(1, factor));
             panelInfo.StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value;
@@ -423,6 +462,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             panelInfo.backgroundColor = Color.Lerp(Color.Purple, Color.Pink, MathF.Sin(Main.GlobalTimeWrappedHourly) * .5f + .5f) * .5f;
             panelInfo.DrawComplexPanel(spriteBatch);
         }
+
         // 可拖动界面
         private void DragStart(UIMouseEvent evt, UIElement listeningElement)
         {
@@ -440,6 +480,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         {
             Dragging = false;
         }
+
         public override void OnInitialize()
         {
             WindOfTimeItemSlot windOfTimeItemSlot = windOfTimeSlot = new WindOfTimeItemSlot(new Item());
@@ -448,10 +489,8 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             //Elements.Add(windOfTimeItemSlot);
             Append(windOfTimeItemSlot);
-
-
-
         }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -459,7 +498,6 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             {
                 Main.LocalPlayer.mouseInterface = true;
                 //panelInfo.mainColor = KeepOrigin ? CoolerUIPanel.BackgroundDefaultUnselectedColor : Color.White;
-
             }
             if (Dragging)
             {
@@ -469,9 +507,11 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 OnDrag?.Invoke(this);
             }
         }
+
         public WindOfTimeButton button;
         public WindOfTimeItemSlot windOfTimeSlot;
         public List<WindOfTimeRecipeIcon> recipes;
+
         public void SetUpElementList()
         {
             Elements.Clear();
@@ -494,7 +534,6 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                     _button.Height.Set(48, 0);
                 }
                 Append(button);
-
 
                 List<int> types = [];
                 Dictionary<int, StarboundWeaponBase> dict = [];
@@ -552,17 +591,21 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             }
 
             Recalculate();
-        }  
+        }
+
         public event ElementEvent OnDrag;
     }
+
     public class WindOfTimeItemSlot : UIElement
     {
         public Item _item;
+
         /// <summary>
         /// 0-1为物品框展开
         /// 1-2为物品框展开光效
         /// </summary>
         public float factor;
+
         public WindOfTimeItemSlot(Item item)
         {
             _item = item;
@@ -585,7 +628,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             }
         }
 
-       public override void DrawSelf(SpriteBatch spriteBatch)
+        public override void DrawSelf(SpriteBatch spriteBatch)
         {
             HandleItemSlotLogic();
             Item inv = _item;
@@ -630,7 +673,6 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
                 ////foreach (var button in Buttons)
                 ////{
-
                 ////    spriteBatch.Draw(panelText, button.GetDimensions().Center(), null, Color.White, Main.GlobalTimeWrappedHourly * .5f, new Vector2(118), .5f * factor, 0, 0);
                 ////}
                 ////var elemplr = Main.LocalPlayer.GetModPlayer<ElementPlayer>();
@@ -640,12 +682,10 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, samplerState, depthState, rasterizerState, null, Main.UIScaleMatrix);
                 //#endregion
 
-
                 if (IsMouseHovering && inv.type != ModContent.ItemType<WindOfTime>())
                 {
                     ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, "请放入<正确>的物品以激活基座", Main.MouseScreen + Main.rand.NextVector2Unit(), Color.Purple, 0, default, new Vector2(1f), 100, Main.rand.NextFloat(2, 4));
                 }
-
             }
             _factor = factor.SymmetricalFactor(1, 1);
             panelInfo = new ComplexPanelInfo();
@@ -654,22 +694,27 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             panelInfo.DrawComplexPanel(spriteBatch);
         }
     }
+
     public enum RepairRecipeState
     {
         /// <summary>
         /// 两个都不够
         /// </summary>
         Both,
+
         /// <summary>
         /// 主武器未达成修复/升级条件
         /// </summary>
         MainWeaponUnavailable,
+
         /// <summary>
         /// 原料缺少
         /// </summary>
         LackOfIngredient,
+
         JustDoIt
     }
+
     public class WindOfTimeRecipeIcon : UIElement
     {
         public bool active;
@@ -678,6 +723,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
         public float factor2;
         public Item[] items;
         public RepairRecipeState state;
+
         public WindOfTimeRecipeIcon(WeaponRepairRecipe repairRecipe)
         {
             recipe = repairRecipe;
@@ -689,6 +735,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             Width.Set(32 + 96 + repairRecipe.ingredients.Count * 48, 0f);
             Height.Set(32f, 0f);
         }
+
         private void HandleItemSlotLogic(int index)
         {
             if (IsMouseHovering && factor > 1 && index != -1)
@@ -702,10 +749,13 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 items[index] = inv;
             }
         }
+
         public override void DrawSelf(SpriteBatch spriteBatch)
         {
             int _state = 0;
+
             #region 底板
+
             ComplexPanelInfo panelInfo = new();
             panelInfo.destination = GetDimensions().ToRectangle();
             panelInfo.destination.Height = (int)(panelInfo.destination.Height * MathHelper.Clamp(factor, 0, 1));
@@ -725,8 +775,11 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             panelInfo.destination.X += 80;
             panelInfo.DrawComplexPanel(spriteBatch);
-            #endregion
+
+            #endregion 底板
+
             #region 物品
+
             if (factor > 1)
             {
                 int index = -1;
@@ -788,8 +841,11 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                     _state += 1;
                 HandleItemSlotLogic(index);
             }
-            #endregion
+
+            #endregion 物品
+
             #region 底板二号
+
             ComplexPanelInfo panelInfo2 = new();
             panelInfo2.destination = GetDimensions().ToRectangle();
             panelInfo2.StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value;
@@ -805,18 +861,23 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             panelInfo2.destination.X += 80;
             panelInfo2.DrawComplexPanel(spriteBatch);
-            #endregion
+
+            #endregion 底板二号
+
             state = (RepairRecipeState)_state;
         }
     }
+
     public class WindOfTimeButton : UIElement
     {
         public WindOfTimeRecipeIcon recipe;
         public float factor;
+
         public WindOfTimeButton(ref WindOfTimeRecipeIcon repairRecipe)
         {
             recipe = repairRecipe;
         }
+
         public override void DrawSelf(SpriteBatch spriteBatch)
         {
             CalculatedStyle dimenstions = GetDimensions();
@@ -853,6 +914,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             base.DrawSelf(spriteBatch);
         }
+
         public override void LeftClick(UIMouseEvent evt)
         {
             if (recipe == null)
@@ -863,7 +925,6 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             {
                 if (recipe.state == RepairRecipeState.JustDoIt)
                 {
-
                     SoundEngine.PlaySound(SoundID.Zombie104);
                     //foreach (var item in recipe.recipe.ingredients)
                     //{
@@ -876,7 +937,6 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                     (proj.ModProjectile as WindOfTimeReactionProj).recipeItemInfo = (Item[])recipe.items.Clone();
 
                     WeaponRepairSystem.Instance.repairUI.Close();
-
                 }
                 else
                 {
@@ -887,15 +947,18 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             base.LeftClick(evt);
         }
     }
+
     public class WindOfTimeReactionProj : ModProjectile
     {
         public Item[] recipeItemInfo;
+
         public override void SetDefaults()
         {
             Projectile.timeLeft = 180;
 
             base.SetDefaults();
         }
+
         public override void AI()
         {
             //Dust.NewDustPerfect(Projectile.Center, DustID.PurpleTorch, Main.rand.NextVector2Unit());//糊弄一下(乐
@@ -911,7 +974,9 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             }
             base.AI();
         }
+
         public override string Texture => "Terraria/Images/Item_0";
+
         public override bool PreDraw(ref Color lightColor)
         {
             //if (Main.gamePaused) Projectile.Update(Projectile.whoAmI);
@@ -939,6 +1004,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             return false;
         }
     }
+
     public class WindOfTimeStandTile : ModTile
     {
         public override void SetStaticDefaults()
@@ -966,10 +1032,12 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             ModContent.GetInstance<WindOfTimeTileEntity>().Kill(i, j);
             //Item.NewItem(new EntitySource_TileBreak(i, j), i * 16, j * 16, 32, 32, ModContent.ItemType<WindOfTimeStand>());
         }
+
         public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings)
         {
             return true;
         }
+
         public override bool RightClick(int i, int j)
         {
             if (TileMethods.TryGetTileEntityAs<WindOfTimeTileEntity>(i, j, out var entity))
@@ -985,7 +1053,6 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                     else
                         WeaponRepairSystem.Instance.repairUI.Close();
                 }
-
             }
             else
             {
@@ -995,6 +1062,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             }
             return false;
         }
+
         public override void MouseOver(int i, int j)
         {
             Player localPlayer = Main.LocalPlayer;
@@ -1003,14 +1071,15 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             localPlayer.cursorItemIconID = ModContent.ItemType<WindOfTime>();
             base.MouseOver(i, j);
         }
+
         public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
         {
             base.DrawEffects(i, j, spriteBatch, ref drawData);
         }
+
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
-
-            if (TileMethods.GetTopLeftTileInMultitile(i, j) == new Point16(i, j) && TileMethods.TryGetTileEntityAs<WindOfTimeTileEntity>(i, j, out var entity) && entity.data.item.type != 0)
+            if (TileMethods.GetTopLeftTileInMultitile(i, j) == new Point16(i, j) && TileMethods.TryGetTileEntityAs<WindOfTimeTileEntity>(i, j, out var entity) && entity.data.item.type != ItemID.None)
             {
                 Vector2 zero = new(Main.offScreenRange, Main.offScreenRange);
                 if (Main.drawToScreen)
@@ -1019,7 +1088,9 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 }
                 Color color = Lighting.GetColor(i, j);
                 Vector2 position = new Point(i + 2, j + 1).ToWorldCoordinates() + new Vector2(0, -64) - Main.screenPosition + zero + new Vector2(0, MathF.Cos((float)LogSpiralLibraryMod.ModTime / 60f) * 16);
+
                 #region MagicZone
+
                 if (entity.data.item.type == ModContent.ItemType<WindOfTime>())
                 {
                     var factor2 = 0.5f;
@@ -1028,17 +1099,19 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                     DepthStencilState depthState = graphicDevice.DepthStencilState;
                     RasterizerState rasterizerState = graphicDevice.RasterizerState;
 
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, depthState, rasterizerState, null, Matrix.Identity);
+                    //spriteBatch.End();
+                    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, depthState, rasterizerState, null, Matrix.Identity);
                     //spriteBatch.Draw(ModContent.Request<Texture2D>("StoneOfThePhilosophers/UI/ElementPanel").Value, rect, Color.White);
-                    var panelText = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/WindOfTimePanel").Value;
+                    //var panelText = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/WindOfTimePanel").Value;
+                    var panelText = ModAsset.WindOfTimePanel_Premultiplied.Value;
                     spriteBatch.Draw(panelText, position, null, color, MathHelper.Pi, new Vector2(256), 1f * factor2 * .5f, 0, 0);
                     spriteBatch.Draw(panelText, position, null, color * .5f, (float)LogSpiralLibraryMod.ModTime / 60f, new Vector2(256), 1.5f * factor2 * .5f, 0, 0);
                     spriteBatch.Draw(panelText, position, null, color * .75f, -(float)LogSpiralLibraryMod.ModTime / 30f, new Vector2(256), 1.25f * factor2 * .5f, 0, 0);
+
                     #region GiveUP
+
                     //foreach (var button in Buttons)
                     //{
-
                     //    spriteBatch.Draw(panelText, button.GetDimensions().Center(), null, Color.White, Main.GlobalTimeWrappedHourly * .5f, new Vector2(118), .5f * factor, 0, 0);
                     //}
                     //var elemplr = Main.LocalPlayer.GetModPlayer<ElementPlayer>();
@@ -1053,33 +1126,39 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                     //LogSpiralLibraryMod.TransformEffectEX.Parameters["factor2"].SetValue((float)LogSpiralLibraryMod.ModTime / 30f);
                     //LogSpiralLibraryMod.TransformEffectEX.CurrentTechnique.Passes[7].Apply();
                     //spriteBatch.Draw(TextureAssets.Projectile[ModContent.ProjectileType<OculusReaverTear>()].Value, position, null, Color.Purple, 0, new Vector2(512), 2f * 46 / 512 * new Vector2(1, 1), 0, 0);//new Rectangle(240,240,92,92)
-                    #endregion
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, samplerState, depthState, rasterizerState, null, Matrix.Identity);
 
+                    #endregion GiveUP
+
+                    //spriteBatch.End();
+                    //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, samplerState, depthState, rasterizerState, null, Matrix.Identity);
                 }
 
-                #endregion
+                #endregion MagicZone
+
                 Main.DrawItemIcon(spriteBatch, entity.data.item, position, color, 144);
             }
 
             return base.PreDraw(i, j, spriteBatch);
         }
     }
+
     public class WindOfTimeTileEntity : LModTileEntity<WindOfTimeStandTile>
     {
         public override Point16 Origin => new(2, 1);
         public WindOfTimeStandData data;
         public bool Active => data != null && data.item.type == ModContent.ItemType<WindOfTime>();
+
         public override void SaveData(TagCompound tag)
         {
             tag.Add("tilePosition", data.tilePosition.ToVector2());
             tag.Add("item", ItemIO.Save(data.item));
         }
+
         public override void LoadData(TagCompound tag)
         {
             data = new WindOfTimeStandData(tag.Get<Vector2>("tilePosition").ToPoint(), ItemIO.Load(tag.GetCompound("item")));
         }
+
         public override int Hook_AfterPlacement(int i, int j, int type, int style, int direction, int alternate)
         {
             int n = base.Hook_AfterPlacement(i, j, type, style, direction, alternate);
@@ -1088,10 +1167,12 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             return n;
         }
     }
+
     public class WindOfTimeStandData
     {
         public Point tilePosition;
         public Item item;
+
         public WindOfTimeStandData(Point position, Item _item)
         {
             tilePosition = position;

@@ -18,6 +18,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
         True_UL,
         Broken
     }
+
     /// <summary>
     /// 星界边境成长型武器对应的基类
     /// 以下是需要经常重写的属性
@@ -28,15 +29,18 @@ namespace VirtualDream.Contents.StarBound.Weapons
     public abstract class StarboundWeaponBase : ModItem
     {
         public WeaponRepairRecipe GetEmptyRecipe() => new(this);
-        public virtual WeaponRepairRecipe RepairRecipe() 
+
+        public virtual WeaponRepairRecipe RepairRecipe()
         {
             return GetEmptyRecipe();
         }
+
         public override void AddRecipes()
         {
             RepairRecipe().Register();
             base.AddRecipes();
         }
+
         public Player owner
         {
             get
@@ -50,6 +54,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
                 return null;
             }
         }
+
         public const float defaultBrokenHurt = 4500f;
         public const int defaultBrokenKill = 100;
 
@@ -69,12 +74,15 @@ namespace VirtualDream.Contents.StarBound.Weapons
         public int killCount;
         public virtual WeaponState State => WeaponState.False;
         public virtual bool BossDrop => false;
+
         public EntitySource_StarboundWeapon GetSource_StarboundWeapon() => new(this);
+
         public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         {
             if (Mod.HasAsset((Texture + "_Glow").Replace("VirtualDream/", "")))
                 spriteBatch.Draw(VirtualDreamMod.GetTexture(Texture + "_Glow", false), Item.Center - Main.screenPosition, null, Color.White, rotation, VirtualDreamMod.GetTexture(Texture + "_Glow", false).Size() * .5f, scale, 0, 0);
         }
+
         public virtual (float hurt, int kill) UpgradeNeed => State switch
         {
             WeaponState.Broken => DefaultBroken,
@@ -83,8 +91,10 @@ namespace VirtualDream.Contents.StarBound.Weapons
             WeaponState.False_UL or WeaponState.True_UL => DefaultUltra,
             _ => (0, 0)
         };
+
         public virtual float DamageFactor => 100000;
         public virtual float CritFactor => 10000;
+
         public virtual float PeriodMultiplyer
         {
             get
@@ -106,37 +116,43 @@ namespace VirtualDream.Contents.StarBound.Weapons
                     0 or 3 or _ => 25,
                 };
             }
-
         }
+
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             Projectile.NewProjectile(GetSource_StarboundWeapon(), position, velocity, type, damage, knockback, player.whoAmI);
             return false;
         }
+
         public virtual float UnitHealth => MiscMethods.HardmodeValue(1, 1.5f, 2f) * 50 * PeriodMultiplyer;
         public virtual float RealHurtCount => Math.Min(MaxLevel ? hurtCount : MathHelper.Clamp(hurtCount, 0, UpgradeNeed.hurt), (MaxLevel ? killCount : MathHelper.Clamp(killCount, 0, UpgradeNeed.kill)) * UnitHealth);
         public virtual bool MaxLevel => (byte)State % 3 == (BossDrop ? 2 : 1);
         public virtual bool UpgradeAvailable => hurtCount >= UpgradeNeed.hurt && killCount >= UpgradeNeed.kill;
+
         public override void LoadData(TagCompound tag)
         {
             hurtCount = tag.GetFloat("hurtCount");
             killCount = tag.GetInt("killCount");
             base.LoadData(tag);
         }
+
         public override void SaveData(TagCompound tag)
         {
             tag.Add("hurtCount", hurtCount);
             tag.Add("killCount", killCount);
             base.SaveData(tag);
         }
+
         public override void ModifyWeaponCrit(Player player, ref float crit)
         {
             crit *= 2 - 1 / (RealHurtCount / CritFactor + 1);
         }
+
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
         {
             damage *= MathF.Log(RealHurtCount + MathF.E * DamageFactor) - MathF.Log(DamageFactor);
         }
+
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             var hurtTip = new TooltipLine(Mod, "Hurt!", $"目前这把武器已经造成了{hurtCount}点伤害");
@@ -166,6 +182,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
             }
         }
     }
+
     public static class StarboundWeaponExtension
     {
         /// <summary>
@@ -208,6 +225,7 @@ namespace VirtualDream.Contents.StarBound.Weapons
                 return default;
             }
         }
+
         /// <summary>
         /// 参考以下下标|状态表
         /// <br>0 赝品   | 赝品</br>
@@ -220,9 +238,11 @@ namespace VirtualDream.Contents.StarBound.Weapons
         /// </summary>
         public static T UpgradeValue<T>(this IStarboundWeaponProjectile weaponProj, params T[] values) => UpgradeValue(weaponProj.weapon, values);
     }
+
     public class StarboundGlobalProjectile : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
+
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
             if (source is EntitySource_StarboundWeapon starboundWeapon)
@@ -236,7 +256,9 @@ namespace VirtualDream.Contents.StarBound.Weapons
             }
             base.OnSpawn(projectile, source);
         }
+
         public StarboundWeaponBase weapon;
+
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (weapon != null)
@@ -248,11 +270,13 @@ namespace VirtualDream.Contents.StarBound.Weapons
                 }
                 weapon.hurtCount += hit.Damage;
             }
-            base.OnHitNPC(projectile, target, hit,damageDone);
+            base.OnHitNPC(projectile, target, hit, damageDone);
         }
+
         private Item _sourceItem;
         public Item sourceItem => _sourceItem ?? weapon.Item;
     }
+
     ///// <summary>
     ///// 星界边境成长型武器弹幕对应的基类
     ///// 已弃用
@@ -321,15 +345,17 @@ namespace VirtualDream.Contents.StarBound.Weapons
     //    public Item sourceItem => _sourceItem ?? weapon.Item;
     //    public Player Player => Main.player[Projectile.owner];
     //}
-    public interface IStarboundWeaponProjectile 
+    public interface IStarboundWeaponProjectile
     {
         public Projectile Projectile { get; }
         public StarboundGlobalProjectile StarBoundProjectile => Projectile.GetGlobalProjectile<StarboundGlobalProjectile>();
         public Item sourceItem => StarBoundProjectile.sourceItem;
         public StarboundWeaponBase weapon => StarBoundProjectile.weapon;
+
         public T UpgradeValue<T>(params T[] values) => weapon.UpgradeValue(values);
     }
-    //public class StarboundRangedHeldProjectile : RangedHeldProjectile 
+
+    //public class StarboundRangedHeldProjectile : RangedHeldProjectile
     //{
     //    public StarboundGlobalProjectile StarBoundProjectile => Projectile.GetGlobalProjectile<StarboundGlobalProjectile>();
     //    public Item sourceItem => StarBoundProjectile.sourceItem;
@@ -363,11 +389,13 @@ namespace VirtualDream.Contents.StarBound.Weapons
             }
             set => weapon = value;
         }
-        StarboundWeaponBase weapon;
+
+        private StarboundWeaponBase weapon;
+
         public EntitySource_StarboundWeapon(Player plr, Item item, int ammoItemIdUsed, string context = null) : base(plr, item, ammoItemIdUsed, context)
         {
-
         }
+
         public EntitySource_StarboundWeapon(StarboundWeaponBase item, string context = null) : base(item.owner, item.Item, 0, context)
         {
             weapon = item;

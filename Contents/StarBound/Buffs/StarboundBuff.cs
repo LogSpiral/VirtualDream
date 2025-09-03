@@ -21,6 +21,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
             player.GetModPlayer<VirtualDreamPlayer>().poisionLifeCostPerSecond++;
             //player.GetModPlayer<IllusionBoundPlayer>().ToxicLev[0] = true;
         }
+
         public override void Update(NPC npc, ref int buffIndex)
         {
             if (npc.lifeRegen > 0)
@@ -33,6 +34,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
             base.Update(npc, ref buffIndex);
         }
     }
+
     public class ToxicⅡ : ModBuff
     {
         public override void SetStaticDefaults()
@@ -52,6 +54,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
 
             //player.GetModPlayer<IllusionBoundPlayer>().ToxicLev[1] = true;
         }
+
         public override void Update(NPC npc, ref int buffIndex)
         {
             if (npc.lifeRegen > 0)
@@ -64,6 +67,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
             base.Update(npc, ref buffIndex);
         }
     }
+
     public class ToxicⅢ : ModBuff
     {
         public override void SetStaticDefaults()
@@ -83,6 +87,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
 
             //player.GetModPlayer<IllusionBoundPlayer>().ToxicLev[2] = true;
         }
+
         public override void Update(NPC npc, ref int buffIndex)
         {
             if (npc.lifeRegen > 0)
@@ -95,6 +100,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
             base.Update(npc, ref buffIndex);
         }
     }
+
     public class Frozen : ModBuff
     {
         public override void SetStaticDefaults()
@@ -117,6 +123,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
                 d.noGravity = true;
             }
         }
+
         public override void Update(NPC npc, ref int buffIndex)
         {
             npc.velocity *= 0.95f;
@@ -127,6 +134,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
             }
         }
     }
+
     public class Electrified : ModBuff
     {
         public override void SetStaticDefaults()
@@ -159,6 +167,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
                 }
             }
         }
+
         public override void Update(NPC npc, ref int buffIndex)
         {
             npc.velocity *= 0.95f;
@@ -180,6 +189,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
             }
         }
     }
+
     public class BuffColorNPC : GlobalNPC
     {
         public override void DrawEffects(NPC npc, ref Color drawColor)

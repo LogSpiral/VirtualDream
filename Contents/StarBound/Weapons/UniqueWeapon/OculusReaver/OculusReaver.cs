@@ -5,7 +5,7 @@ using Terraria.ID;
 
 namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
 {
-    //public class IDToolTip : GlobalItem 
+    //public class IDToolTip : GlobalItem
     //{
     //    public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
     //    {
@@ -19,6 +19,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             // Tooltip.SetDefault("当你凝视着它的时候，它也许也凝视着你。\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("目珠掠夺者");
         }
+
         public Item item => Item;
 
         public override void SetDefaults()
@@ -32,18 +33,21 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             item.useTime = 30;
             item.useAnimation = 30;
             item.knockBack = 6;
-            item.useStyle = 1;
+            item.useStyle = ItemUseStyleID.Swing;
             item.autoReuse = true;
             item.shoot = ModContent.ProjectileType<OculusReaverProj>();
             item.shootSpeed = 1f;
             item.noUseGraphic = true;
             item.noMelee = true;
         }
+
         public override bool CanUseItem(Player player) => player.ownedProjectileCounts[item.shoot] < 1;
+
         public override bool AltFunctionUse(Player player)
         {
             return true;
         }
+
         public override void AddRecipes()
         {
             //Recipe recipe1 = CreateRecipe();
@@ -58,14 +62,17 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             //recipe1.AddRecipe();
         }
     }
+
     public class OculusReaverEX : OculusReaver
     {
         public override WeaponState State => WeaponState.False_EX;
+
         public override void SetStaticDefaults()
         {
             // Tooltip.SetDefault("当你凝视着它的时候，它也许也凝视着你。\n当你一脸嫌弃看向你的敌人的时候，它也会一脸嫌弃地看着你的猎物。(x\n此物品来自[c/cccccc:STARB][c/cccc00:O][c/cccccc:UND]");
             // DisplayName.SetDefault("目珠掠夺者EX");
         }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -74,6 +81,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             item.rare = MyRareID.Tier3;
         }
     }
+
     public class OculusReaverProj : VertexHammerProj, IStarboundWeaponProjectile
     {
         //TODO 添加血刺弹幕
@@ -86,15 +94,20 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             Vector2 vector23 = (vector22 - value7).SafeNormalize(-Vector2.UnitY) * 16f;
             Projectile.NewProjectile(starboundWeaponProjectile.weapon.GetSource_StarboundWeapon(), value7.X, value7.Y, vector23.X, vector23.Y, ProjectileID.SharpTears, projectile.damage / 12, projectile.knockBack, player.whoAmI, 0f, Main.rand.NextFloat() * 0.5f + 0.5f);
         }
+
         public override string HammerName => base.HammerName;
         public override float MaxTime => (controlState == 2 ? 2f : 1f) * this.UpgradeValue(12, 9);
         public override float Factor => base.Factor;
         public override Vector2 CollidingSize => base.CollidingSize * 2;
+
         //public override Vector2 projCenter => base.projCenter + new Vector2(Player.direction * 16, -16);
         public override Vector2 CollidingCenter => base.CollidingCenter;//new Vector2(projTex.Size().X / 3 - 16, 16)
+
         public override Vector2 DrawOrigin => base.DrawOrigin + new Vector2(-12, 12);
         public override Color color => base.color;
+
         public override Color VertexColor(float time) => default;
+
         public override float MaxTimeLeft => (controlState == 2 ? 0.75f : 1f) * this.UpgradeValue(8, 7);
         public override float Rotation => base.Rotation;
         public override bool UseRight => true;
@@ -102,7 +115,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
 
         public override void OnKill(int timeLeft)
         {
-
             //Lighting.add
 
             int max = (int)(30 * Factor);
@@ -120,10 +132,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             //}
             base.OnKill(timeLeft);
         }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
         }
+
         public override void OnRelease(bool charged, bool left)
         {
             if (Charged)
@@ -149,12 +163,13 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
                         Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), Player.Center, default, ModContent.ProjectileType<OculusReaverTear>(), Projectile.damage, Projectile.knockBack, Projectile.owner, 0, this.UpgradeValue(2, 3)).rotation = Projectile.rotation;// + Vector2.Normalize(Main.MouseWorld - Player.Center) * 60
                     }
                 }
-
             }
             //Main.NewText(new NPCs.Baron.Baron().CanTownNPCSpawn(10, 10));
             base.OnRelease(charged, left);
         }
+
         public override Rectangle? frame => projTex.Frame(2, 1, this.UpgradeValue(0, 1));
+
         public override bool PreDraw(ref Color lightColor)
         {
             base.PreDraw(ref lightColor);
@@ -175,6 +190,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
                     rotation += MathHelper.PiOver2;
 
                     break;
+
                 case SpriteEffects.FlipVertically:
                     origin.Y = projTex.Size().Y / FrameMax.Y - origin.Y;
                     break;
@@ -183,16 +199,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             return false;
         }
     }
+
     public class OculusReaverTear : ModProjectile, IStarboundWeaponProjectile
     {
         public override void SetStaticDefaults()
         {
             // DisplayName.SetDefault("裂空之眼");
         }
-        Projectile projectile => Projectile;
+
+        private Projectile projectile => Projectile;
+
         public override bool PreDraw(ref Color lightColor)
         {
-
             //var fac = projectile.ai[0].SymmetricalFactor(90, 10);
             //var render = IllusionBoundMod.Instance.render;
             //var gd = Main.graphics.GraphicsDevice;
@@ -233,6 +251,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             //sb.Draw(Main.screenTargetSwap, Vector2.Zero, Color.White);
             return false;
         }
+
         public override void SetDefaults()
         {
             projectile.width = 90;
@@ -244,16 +263,18 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
             projectile.ignoreWater = true;
             projectile.penetrate = -1;
             projectile.tileCollide = false;
-
         }
+
         public override bool ShouldUpdatePosition() => false;
-        int state => (int)projectile.ai[1];
+
+        private int state => (int)projectile.ai[1];
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.immune[projectile.owner] = 10;
             base.OnHitNPC(target, hit, damageDone);
-
         }
+
         public override void AI()
         {
             projectile.ai[0]++;
@@ -274,7 +295,6 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.OculusReaver
                         //p.Center = target.Center - rand.ToRotationVector2() * (state == 3 ? 192 : 128);
                         //p.localAI[0] = Main.rand.NextFloat(0, 1);
                         OculusReaverProj.ShootSharpTears(target.Center, Main.player[projectile.owner], projectile, this);
-
                     }
                     if (n > (state == 3 ? 8 : 5)) break;
                 }
