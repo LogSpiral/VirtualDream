@@ -182,7 +182,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                 if (right)
                 {
                     ShootRocket(Projectile.velocity * 16, 5);
-                    SoundEngine.PlaySound(SoundID.Item62);
+                    SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);
                 }
                 else if ((int)Projectile.ai[0] <= this.UpgradeValue(80, 64, 48) && Player.PickAmmo(((IStarboundWeaponProjectile)this).sourceItem, out int _, out float _, out int _, out float _, out int _))
                 {
@@ -331,7 +331,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     break;
             }
             if (tier > 0)
-                SoundEngine.PlaySound(SoundID.Item62);
+                SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);
         }
 
         private void ShootRocket(Vector2 vel, int ai0 = 0)
@@ -425,7 +425,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     p1.timeLeft = 2;
                     p1.penetrate = -1;
                     p1.Center = projectile.Center;
-                    SoundEngine.PlaySound(SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74, Projectile.Center);
                     break;
 
                 case 3:
@@ -434,7 +434,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     p1.timeLeft = 2;
                     p1.penetrate = -1;
                     p1.Center = projectile.Center;
-                    SoundEngine.PlaySound(SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74, Projectile.Center);
                     break;
 
                 case 4:
@@ -443,7 +443,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     p1.timeLeft = 2;
                     p1.Center = projectile.Center;
                     p1.penetrate = -1;
-                    SoundEngine.PlaySound(SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74, Projectile.Center);
 
                     break;
 
@@ -469,7 +469,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
                     p1.timeLeft = 2;
                     p1.penetrate = -1;
                     p1.Center = projectile.Center;
-                    SoundEngine.PlaySound(SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74, Projectile.Center);
 
                     break;
 

@@ -1,4 +1,5 @@
 ﻿using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Contents.Melee;
+using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Contents.Melee.Core;
 using LogSpiralLibrary.CodeLibrary.DataStructures.SequenceStructures.Contents.Melee.ExtendedMelee;
 using LogSpiralLibrary.CodeLibrary.Utilties;
 using Terraria.ID;

@@ -174,7 +174,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.VintageScopedRifl
             {
                 if (charged || left)
                 {
-                    SoundEngine.PlaySound(SoundID.Item62);
+                    SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);
                     var proj = Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * (32f + speed), left ? bulletType : ModContent.ProjectileType<PiercingBullet>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem) + damage, knockBack + 4f, Player.whoAmI);
                     if (left) proj.extraUpdates += 2;
                     Projectile.timeLeft = 20;

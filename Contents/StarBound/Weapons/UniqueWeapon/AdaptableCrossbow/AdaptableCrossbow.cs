@@ -260,6 +260,10 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         //}
         public override bool Charging => ((UseLeft && Player.controlUseItem) || (UseRight && Player.controlUseTile));
 
+        private static SoundStyle ReloadSoundEffect { get; } = new SoundStyle("VirtualDream/Assets/Sound/shotgun_reload_clip3");
+
+        private static SoundStyle CrossBowSoundEffect { get; } = new SoundStyle("VirtualDream/Assets/Sound/crossbow1");
+
         public override void OnCharging(bool left, bool right)
         {
             Projectile.ai[0]--;
@@ -270,14 +274,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                     Projectile.frameCounter++;
                     Projectile.frameCounter %= 7;
                     Projectile.ai[0] = this.UpgradeValue(15, 10);
-                    SoundEngine.PlaySound(new SoundStyle("VirtualDream/Assets/Sound/shotgun_reload_clip3"));
+                    SoundEngine.PlaySound(ReloadSoundEffect, Projectile.Center);
                 }
                 else if (left && Player.PickAmmo(((IStarboundWeaponProjectile)this).sourceItem, out int _, out float _, out int _, out float _, out int _))
                 {
                     Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * 32, ModContent.ProjectileType<CrossBowArrow>(), Projectile.damage, Projectile.knockBack, Projectile.owner, Projectile.frameCounter, this.UpgradeValue(0, 1));
                     Projectile.ai[0] = this.UpgradeValue(27, 21);
                     //SoundEngine.PlaySound(SoundID.Item17);
-                    SoundEngine.PlaySound(new SoundStyle("VirtualDream/Assets/Sound/crossbow1"));
+                    SoundEngine.PlaySound(CrossBowSoundEffect,Projectile.Center);
                 }
             }
         }
@@ -474,7 +478,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                             dust.velocity *= 0.5f;
                         }
                     }
-                    SoundEngine.PlaySound(SoundID.Item62);
+                    SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);
                     break;
 
                 case 2:

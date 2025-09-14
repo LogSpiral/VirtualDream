@@ -136,7 +136,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
             {
                 if (charged || left)
                 {
-                    SoundEngine.PlaySound(SoundID.Item62);
+                    SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);
                     Projectile.NewProjectileDirect(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * (32f + speed), ModContent.ProjectileType<TeslasWrathBullet>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem) + damage, knockBack + 4f, Player.whoAmI).extraUpdates *= left ? 1 : 2;
                     Projectile.timeLeft = 20;
                     controlState = 3;

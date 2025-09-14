@@ -176,12 +176,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
             Projectile.friendly = left && Factor > 0.5f;
             if (left && (int)Projectile.ai[0] % 20 == 0)
             {
-                SoundEngine.PlaySound(SoundID.Item15);
+                SoundEngine.PlaySound(SoundID.Item15, Projectile.Center);
             }
             if (right && (int)Projectile.ai[0] % this.UpgradeValue(40, 30, 20) == 0)
             {
                 Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), ShootCenter, Projectile.velocity * 32f, ModContent.ProjectileType<ErchiusCrystalProj>(), Player.GetWeaponDamage(Player.HeldItem), Projectile.knockBack, Player.whoAmI, Main.rand.Next(4) + this.UpgradeValue(3, 6, 11), Main.rand.Next(5));
-                SoundEngine.PlaySound(SoundID.Item84);
+                SoundEngine.PlaySound(SoundID.Item84, Projectile.Center);
             }
         }
 

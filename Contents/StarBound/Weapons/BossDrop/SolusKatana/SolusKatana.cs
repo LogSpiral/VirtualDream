@@ -289,7 +289,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 {
                     Projectile.damage = Player.GetWeaponDamage(Player.HeldItem);
                     currentSwoosh = NewSwoosh();
-                    SoundEngine.PlaySound(SoundID.Item71);
+                    SoundEngine.PlaySound(SoundID.Item71, Projectile.Center);
                     counter++;
                     timeCount = 0;
                 }
@@ -410,7 +410,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         }
 
                         currentSwoosh = NewSwoosh(Projectile.frame);
-                        SoundEngine.PlaySound(SoundID.Item71);
+                        SoundEngine.PlaySound(SoundID.Item71, Projectile.Center);
                         counter++;
                         timeCount = 0;
                         Projectile.ai[1]++;
@@ -543,7 +543,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     Vector2 finalVec = Vector2.Normalize(Main.MouseWorld - projCenter).RotatedBy(factor.Lerp(-MathHelper.Pi / 6, MathHelper.Pi / 6)) * 72f;
                     Projectile.NewProjectile(((IStarboundWeaponProjectile)this).weapon.GetSource_StarboundWeapon(), projCenter, finalVec, ModContent.ProjectileType<SolusEnergyShard>(), Player.GetWeaponDamage(((IStarboundWeaponProjectile)this).sourceItem), Projectile.knockBack, Projectile.owner);
                 }
-                SoundEngine.PlaySound(SoundID.Item62);
+                SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);
             }
         }
 
@@ -878,7 +878,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         Collision.HitTiles(projectile.position, projectile.velocity, projectile.width, projectile.height);
                     }
                     var num = projectile.ai[0];
-                    SoundEngine.PlaySound(SoundID.Item74);
+                    SoundEngine.PlaySound(SoundID.Item74, Projectile.Center);
 
                     var p1 = Projectile.NewProjectileDirect(projectile.GetSource_FromThis(), projectile.Center, default, projectile.type, projectile.damage, 5f, projectile.owner, 1);
                     p1.height = p1.width = 160;

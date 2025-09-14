@@ -724,7 +724,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             for (int i = -1; i < 2; i += 2)
                             {
                                 Projectile.NewProjectileDirect(npc.GetSource_FromAI(), cen, i * (n * npc.ai[0] / 240 * MathHelper.TwoPi).ToRotationVector2() * (8 + stage), ModContent.ProjectileType<LightPellet>(), 70, 0, Main.myPlayer).timeLeft = 180;
-                                SoundEngine.PlaySound(SoundID.Item68);
+                                SoundEngine.PlaySound(SoundID.Item68, cen);
                             }
                         }
                     }
@@ -745,7 +745,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             for (int i = -1; i < 2; i += 2)
                             {
                                 Projectile.NewProjectileDirect(npc.GetSource_FromAI(), cen, i * (n * npc.ai[0] / 240 * MathHelper.TwoPi).ToRotationVector2() * (8 + stage), ModContent.ProjectileType<LightPellet>(), 70, 0, Main.myPlayer).timeLeft = 180;
-                                SoundEngine.PlaySound(SoundID.Item68);
+                                SoundEngine.PlaySound(SoundID.Item68, cen);
                             }
                         }
                     }
@@ -778,7 +778,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                             }
 
                             Projectile.NewProjectile(npc.GetSource_FromAI(), cen, rot.ToRotationVector2() * (8 + stage), ModContent.ProjectileType<LightPellet>(), 50, 0, Main.myPlayer);
-                            SoundEngine.PlaySound(SoundID.Item68);
+                            SoundEngine.PlaySound(SoundID.Item68,cen);
                         }
                     }
                 }
