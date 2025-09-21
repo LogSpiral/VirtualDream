@@ -176,8 +176,10 @@ namespace VirtualDream.Contents.StarBound.Weapons
             if (!MaxLevel)
             {
                 bool canUpg = UpgradeAvailable;
-                var upgradeTip = new TooltipLine(Mod, "upgrade!", canUpg ? "已达成修复/升级条件" : $"还需造成{MathHelper.Clamp(UpgradeNeed.hurt - hurtCount, 0, float.MaxValue)}点伤害与{MathHelper.Clamp(UpgradeNeed.kill - killCount, 0, float.MaxValue)}击杀以达到修复/升级条件");
-                upgradeTip.OverrideColor = canUpg ? (Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f)) : Color.Gray;
+                var upgradeTip = new TooltipLine(Mod, "upgrade!", canUpg ? "已达成修复/升级条件" : $"还需造成{MathHelper.Clamp(UpgradeNeed.hurt - hurtCount, 0, float.MaxValue)}点伤害与{MathHelper.Clamp(UpgradeNeed.kill - killCount, 0, float.MaxValue)}击杀以达到修复/升级条件")
+                    {
+                        OverrideColor = canUpg ? (Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f)) : Color.Gray
+                    };
                 tooltips.Add(upgradeTip);
             }
         }

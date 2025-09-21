@@ -126,7 +126,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             for (int n = 0; n < length; n++)
             {
                 var factor = (length - n) / length;
-                Main.EntitySpriteDraw(tex, projectile.oldPos[n] - Main.screenPosition, rectangle, lightColor * factor, projectile.oldRot[n], origin, (float)Math.Sqrt(factor), 0, 0);
+                Main.EntitySpriteDraw(tex, projectile.oldPos[n] - Main.screenPosition, rectangle, lightColor * factor, projectile.oldRot[n], origin, (float)Math.Sqrt(factor), 0);
             }
             return false;
         }

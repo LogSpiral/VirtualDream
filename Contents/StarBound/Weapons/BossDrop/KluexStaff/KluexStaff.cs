@@ -110,7 +110,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
 
         public override void HoldItem(Player player)
         {
-            Dust dust = Dust.NewDustPerfect(Main.MouseWorld, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f);
+            Dust dust = Dust.NewDustPerfect(Main.MouseWorld, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White);
             dust.noGravity = true;
         }
     }
@@ -151,11 +151,11 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             //Y = (float)Math.Sin(Time);
             var vec = ((float)VirtualDreamMod.ModTime2 * MathHelper.Pi / 60).ToRotationVector2() * 32;
             /*Dust dust1 = */
-            Dust.NewDustPerfect(Main.MouseWorld + vec, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f).noGravity = true;
+            Dust.NewDustPerfect(Main.MouseWorld + vec, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White).noGravity = true;
             /*Dust dust2 = */
-            Dust.NewDustPerfect(Main.MouseWorld - vec, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f).noGravity = true;
+            Dust.NewDustPerfect(Main.MouseWorld - vec, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White).noGravity = true;
             /*Dust dust3 = */
-            Dust.NewDustPerfect(Main.MouseWorld, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f).noGravity = true;
+            Dust.NewDustPerfect(Main.MouseWorld, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White).noGravity = true;
             //dust1.noGravity = true;
             //dust2.noGravity = true;
             //dust3.noGravity = true;
@@ -226,7 +226,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             var vec = ((float)VirtualDreamMod.ModTime2 * 0.05f).ToRotationVector2() * new Vector2(5, 3) * 32;
             for (int n = 0; n < 4; n++)
             {
-                Dust.NewDustPerfect(Main.MouseWorld + vec, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f).noGravity = true;
+                Dust.NewDustPerfect(Main.MouseWorld + vec, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White).noGravity = true;
                 vec = new Vector2(-vec.Y, vec.X);
             }
             //Dust dust1 = Dust.NewDustPerfect(Main.MouseWorld + new Vector2(X, Y) * 32, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f);
@@ -234,7 +234,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             //Dust dust3 = Dust.NewDustPerfect(Main.MouseWorld + new Vector2(X, Y).RotatedBy(MathHelper.PiOver2) * 32, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f);
             //Dust dust4 = Dust.NewDustPerfect(Main.MouseWorld - new Vector2(X, Y).RotatedBy(MathHelper.PiOver2) * 32, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f);
             /*Dust dust5 = */
-            Dust.NewDustPerfect(Main.MouseWorld, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f).noGravity = true;
+            Dust.NewDustPerfect(Main.MouseWorld, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White).noGravity = true;
             //Dust dust6 = Dust.NewDustPerfect(player.Center + new Vector2(X, Y).RotatedBy(Time) * 64, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f);
             //Dust dust7 = Dust.NewDustPerfect(player.Center - new Vector2(X, Y).RotatedBy(Time) * 64, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f);
             //Dust dust8 = Dust.NewDustPerfect(player.Center + new Vector2(X, Y).RotatedBy(MathHelper.PiOver2 + Time) * 64, MyDustId.RedBubble, new Vector2(0, 0), 0, Color.White, 1f);
@@ -467,9 +467,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
         public override bool PreDraw(ref Color lightColor)
         {
             if (projectile.ai[1] == 0)//projectile.timeLeft > 10 ||
-                Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 8, 0, (int)VirtualDreamSystem.ModTime / 2 % 8), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(1, 0.125f), 2f, 0, 0);
+                Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 8, 0, (int)VirtualDreamSystem.ModTime / 2 % 8), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(1, 0.125f), 2f, 0);
             else
-                Main.EntitySpriteDraw(VirtualDreamMod.GetTexture(Texture.Replace("KluexPlasmaBall", "KluexBall"), false), projectile.Center - Main.screenPosition, new Rectangle(0, (10 - projectile.timeLeft) / 2 * 78, 78, 78), Color.White, 0, new Vector2(39), 1f, 0, 0);
+                Main.EntitySpriteDraw(VirtualDreamMod.GetTexture(Texture.Replace("KluexPlasmaBall", "KluexBall"), false), projectile.Center - Main.screenPosition, new Rectangle(0, (10 - projectile.timeLeft) / 2 * 78, 78, 78), Color.White, 0, new Vector2(39), 1f, 0);
 
             return false;
         }
@@ -510,9 +510,9 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             //if (projectile.timeLeft == 299) projectile.rotation = projectile.velocity.ToRotation();
             for (int k = 1; k < projectile.oldPos.Length; k++)
             {
-                Main.spriteBatch.Draw(projectileTexture, projectile.oldPos[k] - Main.screenPosition + new Vector2(8, 8), projectileTexture.Frame(1, 4, 0, ((int)VirtualDreamMod.ModTime / 2 + k) % 4, 0), new Color(255 - 28 * k, 0, 0, 0), projectile.rotation, new Vector2(14, 8), 2f - 0.2f * k, SpriteEffects.None, 0f);
+                Main.spriteBatch.Draw(projectileTexture, projectile.oldPos[k] - Main.screenPosition + new Vector2(8, 8), projectileTexture.Frame(1, 4, 0, ((int)VirtualDreamMod.ModTime / 2 + k) % 4), new Color(255 - 28 * k, 0, 0, 0), projectile.rotation, new Vector2(14, 8), 2f - 0.2f * k, SpriteEffects.None, 0f);
             }
-            Main.spriteBatch.Draw(projectileTexture, projectile.Center - Main.screenPosition, projectileTexture.Frame(1, 4, 0, (int)VirtualDreamMod.ModTime / 2 % 4, 0), Color.White, projectile.rotation, new Vector2(14, 8), 2f, SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(projectileTexture, projectile.Center - Main.screenPosition, projectileTexture.Frame(1, 4, 0, (int)VirtualDreamMod.ModTime / 2 % 4), Color.White, projectile.rotation, new Vector2(14, 8), 2f, SpriteEffects.None, 0f);
             return false;
         }
 
@@ -581,7 +581,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.KluexStaff
             if (projectile.timeLeft > 584) frame = (600 - projectile.timeLeft) / 4;
             if (projectile.timeLeft < 16) frame = (16 - projectile.timeLeft) / 4 + 15;
 
-            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(4, 5, frame % 4, frame / 4), Color.White * .5f, 0, new Vector2(52), ((projectile.ai[0] - 1) / 2f).Lerp(1, 2) * 2, 0, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(4, 5, frame % 4, frame / 4), Color.White * .5f, 0, new Vector2(52), ((projectile.ai[0] - 1) / 2f).Lerp(1, 2) * 2, 0);
             return false;
         }
 

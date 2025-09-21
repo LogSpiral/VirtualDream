@@ -198,7 +198,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
             {
                 //(int)projectile.ai[n] < 3
                 var projCen = ProjCenter(n);
-                spriteBatch.Draw(projTex, projCen - Main.screenPosition, projTex.Frame(2, 1, n, 0), owner.GetColor(), (int)projectile.ai[n] == 0 ? -MathHelper.PiOver4 * owner.direction : 0, projTex.Frame(2).Size() * .5f, 2f, owner.direction == 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
+                spriteBatch.Draw(projTex, projCen - Main.screenPosition, projTex.Frame(2, 1, n), owner.GetColor(), (int)projectile.ai[n] == 0 ? -MathHelper.PiOver4 * owner.direction : 0, projTex.Frame(2).Size() * .5f, 2f, owner.direction == 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
                 if ((int)projectile.ai[n] >= 3)
                     DrawSwoosh(spriteBatch, projCen, GetFactor(n), n);
             }
@@ -212,7 +212,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
         public virtual void DrawSwoosh(SpriteBatch spriteBatch, Vector2 projCen, float factor, int index)
         {
             //Main.NewText((int)(factor * 3f));
-            spriteBatch.Draw(SwooshTex.tex, projCen - Main.screenPosition + new Vector2(4f * owner.direction, 0), SwooshTex.tex.Frame(SwooshTex.frames, 1, (int)MathHelper.Clamp(factor * SwooshTex.frames, 0, SwooshTex.frames - 1), 0), owner.GetColor() * swooshAlpha, 0, SwooshTex.tex.Frame(SwooshTex.frames).Size() * .5f, swooshSize, (owner.direction == 1 ? 0 : SpriteEffects.FlipHorizontally) ^ (index == 0 ? 0 : SpriteEffects.FlipVertically), 0);//.75f * (float)(0.5f - 0.5f * Math.Cos(factor * factor))
+            spriteBatch.Draw(SwooshTex.tex, projCen - Main.screenPosition + new Vector2(4f * owner.direction, 0), SwooshTex.tex.Frame(SwooshTex.frames, 1, (int)MathHelper.Clamp(factor * SwooshTex.frames, 0, SwooshTex.frames - 1)), owner.GetColor() * swooshAlpha, 0, SwooshTex.tex.Frame(SwooshTex.frames).Size() * .5f, swooshSize, (owner.direction == 1 ? 0 : SpriteEffects.FlipHorizontally) ^ (index == 0 ? 0 : SpriteEffects.FlipVertically), 0);//.75f * (float)(0.5f - 0.5f * Math.Cos(factor * factor))
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -373,7 +373,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Gauntlets
 
         public override void DrawSwoosh(SpriteBatch spriteBatch, Vector2 projCen, float factor, int index)
         {
-            spriteBatch.Draw(SwooshTex.tex, projCen - Main.screenPosition + new Vector2(4f * owner.direction, 0), SwooshTex.tex.Frame(SwooshTex.frames, 1, (int)MathHelper.Clamp(factor * SwooshTex.frames, 0, SwooshTex.frames - 1), 0), owner.GetColor() * swooshAlpha, 0, SwooshTex.tex.Frame(SwooshTex.frames).Size() * .5f, swooshSize, owner.direction == 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.Draw(SwooshTex.tex, projCen - Main.screenPosition + new Vector2(4f * owner.direction, 0), SwooshTex.tex.Frame(SwooshTex.frames, 1, (int)MathHelper.Clamp(factor * SwooshTex.frames, 0, SwooshTex.frames - 1)), owner.GetColor() * swooshAlpha, 0, SwooshTex.tex.Frame(SwooshTex.frames).Size() * .5f, swooshSize, owner.direction == 1 ? 0 : SpriteEffects.FlipHorizontally, 0);
         }
     }
 

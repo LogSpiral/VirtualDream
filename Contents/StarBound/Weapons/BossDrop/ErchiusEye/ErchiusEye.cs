@@ -138,12 +138,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         public override void HoldItem(Player player)
         {
             var Time = VirtualDreamSystem.ModTime2 / 60f * MathHelper.Pi;
-            Dust dust = Dust.NewDustPerfect(player.Center + new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 256), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White, 1f);
-            Dust dust1 = Dust.NewDustPerfect(player.Center - new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 256), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White, 1f);
-            Dust dust2 = Dust.NewDustPerfect(player.Center + new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 64), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White, 1f);
-            Dust dust3 = Dust.NewDustPerfect(player.Center - new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 64), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White, 1f);
-            Dust dust4 = Dust.NewDustPerfect(player.Center + new Vector2((float)Math.Cos(Time) * 16, (float)Math.Sin(Time) * 64), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White, 1f);
-            Dust dust5 = Dust.NewDustPerfect(player.Center - new Vector2((float)Math.Cos(Time) * 16, (float)Math.Sin(Time) * 64), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White, 1f);
+            Dust dust = Dust.NewDustPerfect(player.Center + new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 256), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White);
+            Dust dust1 = Dust.NewDustPerfect(player.Center - new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 256), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White);
+            Dust dust2 = Dust.NewDustPerfect(player.Center + new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 64), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White);
+            Dust dust3 = Dust.NewDustPerfect(player.Center - new Vector2((float)Math.Cos(Time) * 256, (float)Math.Sin(Time) * 64), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White);
+            Dust dust4 = Dust.NewDustPerfect(player.Center + new Vector2((float)Math.Cos(Time) * 16, (float)Math.Sin(Time) * 64), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White);
+            Dust dust5 = Dust.NewDustPerfect(player.Center - new Vector2((float)Math.Cos(Time) * 16, (float)Math.Sin(Time) * 64), MyDustId.PinkBubble, new Vector2(0f, 0f), 0, Color.White);
             dust.noGravity = true;
             dust1.noGravity = true;
             dust2.noGravity = true;
@@ -203,7 +203,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
         {
             if (Factor < 0.5f || !Player.controlUseItem) return;
             var factor = 2 * (Factor - 0.5f);
-            Main.spriteBatch.DrawQuadraticLaser_PassNormal(ShootCenter, Vector2.Normalize(Projectile.velocity), Color.Purple, LogSpiralLibraryMod.AniTex[this.UpgradeValue(1, 1, 10)].Value, 1024 * factor, 256 * factor, 0.2f * factor, 4);
+            Main.spriteBatch.DrawQuadraticLaser_PassNormal(ShootCenter, Vector2.Normalize(Projectile.velocity), Color.Purple, LogSpiralLibraryMod.AniTex[this.UpgradeValue(1, 1, 10)].Value, 1024 * factor, 256 * factor, 0.2f * factor);
         }
 
         public override (int X, int Y) FrameMax => (10, 3);
@@ -250,7 +250,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(5, 1, (int)projectile.ai[1] % 5, 0), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(0.25f, 1), 4f, 0, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(5, 1, (int)projectile.ai[1] % 5), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(0.25f, 1), 4f, 0);
             if (!Main.gamePaused)
             {
                 for (int n = projectile.oldPos.Length - 1; n > 0; n--)
@@ -300,7 +300,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.ErchiusEye
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f, 4f, 0, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, null, Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f, 4f, 0);
             if (!Main.gamePaused)
             {
                 for (int n = projectile.oldPos.Length - 1; n > 0; n--)

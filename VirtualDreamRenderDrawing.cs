@@ -230,7 +230,7 @@ namespace VirtualDream
                                 var scaler = 50 * shardPlayer.GetAdjustedItemScale(shardPlayer.HeldItem) / (float)Math.Sqrt(swoosh.xScaler) * .5f;// (Main.GameViewMatrix != null ? Main.GameViewMatrix.TransformationMatrix : Matrix.Identity).M11 * .5f
                                 Vector2 newVec = -2 * (theta2.ToRotationVector2() * new Vector2(swoosh.xScaler, 1)).RotatedBy(swoosh.rotation) * scaler * (1 + (1 - swoosh.timeLeft / 30f));
                                 var realColor = Color.Lerp(Color.White, Color.Orange, f);
-                                realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / 30f * 255);
+                                realColor.A = (byte)((1 - f).HillFactor2() * swoosh.timeLeft / 30f * 255);
                                 bars.Add(new CustomVertexInfo(swoosh.center + newVec, realColor, new Vector3(1 - f, 1, 0.6f)));
                                 bars_2?.Add(new CustomVertexInfo(swoosh.center + newVec * 1.5f, realColor, new Vector3(1 - f, 1, 0.6f)));
 
@@ -293,7 +293,7 @@ namespace VirtualDream
                         var realColor = Color.Lerp(Color.White, Color.Orange, f);
                         //var _f = 6 * f / (3 * f + 1);//6 * f / (3 * f + 1) /(float)Math.Pow(f,instance.maxCount)
                         //_f = MathHelper.Clamp(_f, 0, 1);
-                        realColor.A = (byte)((1 - f).HillFactor2(1) * 255);
+                        realColor.A = (byte)((1 - f).HillFactor2() * 255);
                         //realColor.A = 51;
                         bars.Add(new CustomVertexInfo(projectile.oldPos[i] + projectile.oldRot[i].ToRotationVector2() * _scaler, realColor * multiValue, new Vector3(1 - f, 1, alphaLight)));
                         bars_2?.Add(bars[^1] with { Position = projectile.oldPos[i] + projectile.oldRot[i].ToRotationVector2() * _scaler * 1.5f });

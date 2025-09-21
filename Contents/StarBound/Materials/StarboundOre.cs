@@ -168,7 +168,7 @@ namespace VirtualDream.Contents.StarBound.Materials
                 SpawnOre(TileType<AegisaltOreTile>(), 2E-05, 0.3f, 0.9f);
                 for (int num11 = 0; num11 < (int)(Main.maxTilesX * Main.maxTilesY * 0.0002); num11++)
                 {
-                    WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX), WorldGen.genRand.Next(Main.maxTilesY - 140, Main.maxTilesY), WorldGen.genRand.Next(2, 7), WorldGen.genRand.Next(3, 7), TileType<SolariumOreTile>(), false, 0f, 0f, false, true);
+                    WorldGen.TileRunner(WorldGen.genRand.Next(0, Main.maxTilesX), WorldGen.genRand.Next(Main.maxTilesY - 140, Main.maxTilesY), WorldGen.genRand.Next(2, 7), WorldGen.genRand.Next(3, 7), TileType<SolariumOreTile>());
                 }
             }
         }

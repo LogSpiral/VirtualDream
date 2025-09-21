@@ -119,7 +119,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
             player.velocity *= 0.9f;
             for (int n = 0; n < 4; n++)
             {
-                Dust d = Dust.NewDustPerfect(player.Center + new Vector2(Main.rand.NextFloat(-64, 64), 0).RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)), MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White, 1f);
+                Dust d = Dust.NewDustPerfect(player.Center + new Vector2(Main.rand.NextFloat(-64, 64), 0).RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)), MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White);
                 d.noGravity = true;
             }
         }
@@ -129,7 +129,7 @@ namespace VirtualDream.Contents.StarBound.Buffs
             npc.velocity *= 0.95f;
             for (int n = 0; n < 4; n++)
             {
-                Dust d = Dust.NewDustPerfect(npc.Center + new Vector2(Main.rand.NextFloat(-64, 64), 0).RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)), MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White, 1f);
+                Dust d = Dust.NewDustPerfect(npc.Center + new Vector2(Main.rand.NextFloat(-64, 64), 0).RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)), MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White);
                 d.noGravity = true;
             }
         }

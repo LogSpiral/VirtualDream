@@ -92,7 +92,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
             var unit = projectile.rotation.ToRotationVector2();
             for (int n = 0; n < 4; n++)
             {
-                Dust dust = Dust.NewDustPerfect(projectile.Center + unit * 24, MyDustId.RedBlood, new Vector2(-unit.Y, unit.X), 100, Color.Red, 1f);
+                Dust dust = Dust.NewDustPerfect(projectile.Center + unit * 24, MyDustId.RedBlood, new Vector2(-unit.Y, unit.X), 100, Color.Red);
                 //dust.scale = 0.4f + Main.rand.NextFloat(-1, 1) * 0.1f;
                 //dust.fadeIn = 0.4f + Main.rand.NextFloat() * 0.3f;
                 //dust.fadeIn *= .5f;

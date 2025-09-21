@@ -70,7 +70,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.FlamingDemon
 
         public override void MeleeEffects(Player player, Rectangle hitbox)
         {
-            Dust.NewDust(hitbox.TopLeft(), hitbox.Width, hitbox.Height, MyDustId.Fire, 0, 0, 100, Color.White, 1.0f);
+            Dust.NewDust(hitbox.TopLeft(), hitbox.Width, hitbox.Height, MyDustId.Fire, 0, 0, 100, Color.White);
         }
 
         public override void AddRecipes()

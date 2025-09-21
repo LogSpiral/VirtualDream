@@ -3,7 +3,6 @@ using LogSpiralLibrary.CodeLibrary.DataStructures.Drawing.ComplexPanel;
 using LogSpiralLibrary.CodeLibrary.Utilties;
 using LogSpiralLibrary.CodeLibrary.Utilties.BaseClasses;
 using LogSpiralLibrary.CodeLibrary.Utilties.Extensions;
-using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,8 +26,10 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            var tip = new TooltipLine(Mod, "Charge", $"目前已经充能了{chargeCount} / 8");
-            tip.OverrideColor = Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f);
+            var tip = new TooltipLine(Mod, "Charge", $"目前已经充能了{chargeCount} / 8")
+            {
+                OverrideColor = Main.hslToRgb(0.75f, 0.75f + MathF.Sin((float)VirtualDreamSystem.ModTime / 120f * MathHelper.Pi) * .25f, .5f)
+            };
             tooltips.Add(tip);
         }
 
@@ -264,7 +265,7 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             float oppositeY = (vector.Y - Main.screenHeight / 2) / Main.UIScale;
             vector.X = (int)(vector.X / Main.UIScale) + (int)(oppositeX * (Main.GameZoomTarget - 1f));
             vector.Y = (int)(vector.Y / Main.UIScale) + (int)(oppositeY * (Main.GameZoomTarget - 1f));
-            return new(vector.X, vector.Y);
+            return new Vector2(vector.X, vector.Y);
         }
 
         public WindOfTimeStandData standData;
@@ -449,17 +450,19 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             #endregion MagicZone
 
-            ComplexPanelInfo panelInfo = new();
-            panelInfo.destination = Terraria.Utils.CenteredRectangle(Vector2.Lerp(rect.Top(), rect.Center(), factor), rect.Size() * new Vector2(1, factor));
-            panelInfo.StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value;
-            panelInfo.glowEffectColor = Color.Purple with { A = 0 };
-            panelInfo.glowShakingStrength = 2f;
-            panelInfo.glowHueOffsetRange = 0.2f;
+            ComplexPanelInfo panelInfo = new()
+            {
+                destination = Terraria.Utils.CenteredRectangle(Vector2.Lerp(rect.Top(), rect.Center(), factor), rect.Size() * new Vector2(1, factor)),
+                StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value,
+                glowEffectColor = Color.Purple with { A = 0 },
+                glowShakingStrength = 2f,
+                glowHueOffsetRange = 0.2f,
+                backgroundTexture = Main.Assets.Request<Texture2D>("Images/UI/HotbarRadial_1").Value,
+                backgroundFrame = new Rectangle(4, 4, 28, 28),
+                backgroundUnitSize = new Vector2(28, 28) * 2f,
+                backgroundColor = Color.Lerp(Color.Purple, Color.Pink, MathF.Sin(Main.GlobalTimeWrappedHourly) * .5f + .5f) * .5f
+            };
 
-            panelInfo.backgroundTexture = Main.Assets.Request<Texture2D>("Images/UI/HotbarRadial_1").Value;
-            panelInfo.backgroundFrame = new Rectangle(4, 4, 28, 28);
-            panelInfo.backgroundUnitSize = new Vector2(28, 28) * 2f;
-            panelInfo.backgroundColor = Color.Lerp(Color.Purple, Color.Pink, MathF.Sin(Main.GlobalTimeWrappedHourly) * .5f + .5f) * .5f;
             panelInfo.DrawComplexPanel(spriteBatch);
         }
 
@@ -636,9 +639,11 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
             var rect = GetDimensions().ToRectangle();
             var _factor = factor;
             _factor = MathHelper.Clamp(_factor, 0, 1);
-            ComplexPanelInfo panelInfo = new();
-            panelInfo.destination = Terraria.Utils.CenteredRectangle(Vector2.Lerp(rect.Top(), rect.Center(), _factor), rect.Size() * new Vector2(1, _factor));
-            panelInfo.StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value;
+            ComplexPanelInfo panelInfo = new()
+            {
+                destination = Terraria.Utils.CenteredRectangle(Vector2.Lerp(rect.Top(), rect.Center(), _factor), rect.Size() * new Vector2(1, _factor)),
+                StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value
+            };
             if (inv.type == ModContent.ItemType<WindOfTime>())
             {
                 panelInfo.glowEffectColor = Color.Purple with { A = 0 };
@@ -688,9 +693,11 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
                 }
             }
             _factor = factor.SymmetricalFactor(1, 1);
-            panelInfo = new ComplexPanelInfo();
-            panelInfo.StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value;
-            panelInfo.destination = Terraria.Utils.CenteredRectangle(Vector2.Lerp(rect.Top(), rect.Center(), _factor), rect.Size() * new Vector2(1, _factor));
+            panelInfo = new ComplexPanelInfo
+            {
+                StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value,
+                destination = Terraria.Utils.CenteredRectangle(Vector2.Lerp(rect.Top(), rect.Center(), _factor), rect.Size() * new Vector2(1, _factor))
+            };
             panelInfo.DrawComplexPanel(spriteBatch);
         }
     }
@@ -756,8 +763,10 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             #region 底板
 
-            ComplexPanelInfo panelInfo = new();
-            panelInfo.destination = GetDimensions().ToRectangle();
+            ComplexPanelInfo panelInfo = new()
+            {
+                destination = GetDimensions().ToRectangle()
+            };
             panelInfo.destination.Height = (int)(panelInfo.destination.Height * MathHelper.Clamp(factor, 0, 1));
             panelInfo.StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value;
             factor2 = MathHelper.Lerp(factor2, active ? 1 : 0, 0.2f);
@@ -846,9 +855,11 @@ namespace VirtualDream.Contents.StarBound.TimeBackTracking
 
             #region 底板二号
 
-            ComplexPanelInfo panelInfo2 = new();
-            panelInfo2.destination = GetDimensions().ToRectangle();
-            panelInfo2.StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value;
+            ComplexPanelInfo panelInfo2 = new()
+            {
+                destination = GetDimensions().ToRectangle(),
+                StyleTexture = ModContent.Request<Texture2D>("VirtualDream/Contents/StarBound/TimeBackTracking/Template_WindOfTime").Value
+            };
             panelInfo2.destination.Height = (int)(panelInfo2.destination.Height * factor.SymmetricalFactor(1, 1));
 
             panelInfo2.destination.X += 128;

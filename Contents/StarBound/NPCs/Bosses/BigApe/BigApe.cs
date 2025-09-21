@@ -1391,18 +1391,18 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             var attackType = (int)attackMode;
             if (attackType < 2)
             {
-                rectangle = sctex.Frame(24, 1, (int)Main.GameUpdateCount / 4 % 4, 0);
+                rectangle = sctex.Frame(24, 1, (int)Main.GameUpdateCount / 4 % 4);
             }
             else
             {
-                rectangle = sctex.Frame(24, 1, (int)Main.GameUpdateCount / 4 % 2 + 2 * attackType, 0);
+                rectangle = sctex.Frame(24, 1, (int)Main.GameUpdateCount / 4 % 2 + 2 * attackType);
                 //rectangle = sctex.Frame(24, 1, (int)Main.GameUpdateCount / 4 % 2 + 20, 0);
             }
             spriteBatch.Draw(sctex, targetPlayer.Center + v - Main.screenPosition - u, rectangle, Color.White, 0, new Vector2(32, 72), 3, 0, 0);
             v.X *= -1;
             spriteBatch.Draw(scftex, targetPlayer.Center + v - Main.screenPosition - u, null, Color.White, 0, new Vector2(32, 72), 3, SpriteEffects.FlipHorizontally, 0);
             spriteBatch.Draw(sctex, targetPlayer.Center + v - Main.screenPosition - u, rectangle, Color.White, 0, new Vector2(32, 72), 3, SpriteEffects.FlipHorizontally, 0);
-            spriteBatch.Draw(tex, npc.Center - Main.screenPosition, tex.Frame(15, 1, FrameCounter, 0), Color.White, 0, new Vector2(56, 56), 3, 0, 0);
+            spriteBatch.Draw(tex, npc.Center - Main.screenPosition, tex.Frame(15, 1, FrameCounter), Color.White, 0, new Vector2(56, 56), 3, 0, 0);
 
             if (attackMode == BigApeAttackMode.LaserDaggers || attackMode == BigApeAttackMode.LaserSpray || attackMode == BigApeAttackMode.BulletHell)
             {
@@ -1467,13 +1467,13 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 }
                 else
                 {
-                    var rectangle = sctex.Frame(24, 1, (int)Main.GameUpdateCount / 4 % 2 + 22, 0);
+                    var rectangle = sctex.Frame(24, 1, (int)Main.GameUpdateCount / 4 % 2 + 22);
                     spriteBatch.Draw(scftex, targetPlayer.Center + v - Main.screenPosition - u, null, Color.White, 0, new Vector2(48, 72), 3, 0, 0);
                     spriteBatch.Draw(sctex, targetPlayer.Center + v - Main.screenPosition - u, rectangle, Color.White, 0, new Vector2(48, 72), 3, 0, 0);
                     v.X *= -1;
                     spriteBatch.Draw(scftex, targetPlayer.Center + v - Main.screenPosition - u, null, Color.White, 0, new Vector2(48, 72), 3, 0, 0);
                     spriteBatch.Draw(sctex, targetPlayer.Center + v - Main.screenPosition - u, rectangle, Color.White, 0, new Vector2(48, 72), 3, 0, 0);
-                    spriteBatch.Draw(tex, npc.Center - Main.screenPosition, tex.Frame(22, 1, FrameCounter, 0), Color.White, 0, new Vector2(56, 56), 3, 0, 0);
+                    spriteBatch.Draw(tex, npc.Center - Main.screenPosition, tex.Frame(22, 1, FrameCounter), Color.White, 0, new Vector2(56, 56), 3, 0, 0);
                 }
             }
         }
@@ -2164,7 +2164,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
             DrawingMethods.DrawShaderTail(spriteBatch, projectile, LogSpiralLibraryMod.HeatMap[7].Value, LogSpiralLibraryMod.AniTex[2].Value, LogSpiralLibraryMod.BaseTex[12].Value, 20);
             if (projectile.timeLeft > 1)
             {
-                spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, projTex.Frame(2, 1, projectile.frame / 3 % 2, 0), Color.White, projectile.rotation, projTex.Size() / new Vector2(4, 2), 2, 0, 0);
+                spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, projTex.Frame(2, 1, projectile.frame / 3 % 2), Color.White, projectile.rotation, projTex.Size() / new Vector2(4, 2), 2, 0, 0);
             }
 
             if (projectile.frameCounter > 0)
@@ -2578,7 +2578,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 //IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 6, alpha: alpha);
                 for (int n = 0; n < 4; n++)
                 {
-                    spriteBatch.Draw(projTex, projectile.Center + new Vector2(4 - 4 * projectile.timeLeft / 60f, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 30f * MathHelper.Pi) - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2, 0), Color.White with { A = 0 } * alpha, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
+                    spriteBatch.Draw(projTex, projectile.Center + new Vector2(4 - 4 * projectile.timeLeft / 60f, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 30f * MathHelper.Pi) - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2), Color.White with { A = 0 } * alpha, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
                 }
 
                 //DrawItSelf(spriteBatch, new Vector2(4 - 4 * projectile.timeLeft / 60f, 0).RotatedBy(PiOver2 * n + projectile.timeLeft / 30f * Pi), alpha);
@@ -2595,10 +2595,10 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.BigApe
                 }
                 for (int n = 0; n < 4; n++)
                 {
-                    spriteBatch.Draw(projTex, projectile.Center + new Vector2(2, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 30f * MathHelper.Pi) - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2, 0), Color.White with { A = 0 } * .5f, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
+                    spriteBatch.Draw(projTex, projectile.Center + new Vector2(2, 0).RotatedBy(MathHelper.PiOver2 * n + projectile.timeLeft / 30f * MathHelper.Pi) - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2), Color.White with { A = 0 } * .5f, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
                 }
                 //IllusionBoundExtensionMethods.DrawShaderTail(spriteBatch, projectile, ShaderTailTexture.StarDust, ShaderTailStyle.Dust2, 6);
-                spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2, 0), Color.White with { A = 0 }, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
+                spriteBatch.Draw(projTex, projectile.Center - Main.screenPosition, projTex.Frame(2, 1, (int)Main.GameUpdateCount / 4 % 2), Color.White with { A = 0 }, projectile.rotation, new Vector2(4, 2), 2, 0, 0);
             }
             return false;
         }

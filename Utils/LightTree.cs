@@ -214,7 +214,7 @@ namespace VirtualDream.Utils
             for (float i = 0; i <= node.length; i += 4f)
             {
                 var dust = Dust.NewDustDirect(pos + unit * i, 0, 0,
-                    MyDustId.DemonTorch, 0, 0, 100, Color.White, 1);
+                    MyDustId.DemonTorch, 0, 0, 100, Color.White);
                 dust.noGravity = true;
                 dust.velocity *= 0;
                 dust.position = pos + unit * i;
@@ -390,7 +390,7 @@ namespace VirtualDream.Utils
             for (float i = 0; i <= node.length; i += 4f)
             {
                 var dust = Dust.NewDustDirect(pos + unit * i, 0, 0,
-                    MyDustId.DemonTorch, 0, 0, 100, Color.White, 1);
+                    MyDustId.DemonTorch, 0, 0, 100, Color.White);
                 dust.noGravity = true;
                 dust.velocity *= 0;
                 dust.position = pos + unit * i;

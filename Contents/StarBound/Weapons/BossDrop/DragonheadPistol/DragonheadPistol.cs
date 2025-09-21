@@ -98,7 +98,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             item.useStyle = ItemUseStyleID.Shoot;
             item.useAmmo = AmmoID.Bullet;
             item.DamageType = DamageClass.Ranged;
-            item.value = Item.sellPrice(0, 1, 0, 0);
+            item.value = Item.sellPrice(0, 1);
             item.width = 24;
             item.height = 24;
             item.crit = 6;
@@ -284,7 +284,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
             if (Player.name == "Sans" && Factor > 0.5f && Player.controlUseTile)
             {
                 var factor = 2 * (Factor - 0.5f);
-                Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(ShootCenter, Vector2.Normalize(Projectile.velocity), LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[1].Value, 1024 * factor, 256 * factor, 0.2f * factor, 4);
+                Main.spriteBatch.DrawQuadraticLaser_PassHeatMap(ShootCenter, Vector2.Normalize(Projectile.velocity), LogSpiralLibraryMod.HeatMap[15].Value, LogSpiralLibraryMod.AniTex[1].Value, 1024 * factor, 256 * factor, 0.2f * factor);
             }
         }
 
@@ -351,7 +351,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.DragonheadPistol
         {
             if (projectile.velocity != default && projectile.timeLeft == 179)
                 projectile.rotation = projectile.velocity.ToRotation();
-            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 4, 0, (int)VirtualDreamSystem.ModTime / 2 % 4), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(1, 0.25f), 1f, 0, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[projectile.type].Value, projectile.Center - Main.screenPosition, TextureAssets.Projectile[projectile.type].Value.Frame(1, 4, 0, (int)VirtualDreamSystem.ModTime / 2 % 4), Color.White, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f * new Vector2(1, 0.25f), 1f, 0);
             return false;
         }
 

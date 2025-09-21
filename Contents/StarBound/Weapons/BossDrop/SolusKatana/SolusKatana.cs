@@ -505,7 +505,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         //var _f = 6 * f / (3 * f + 1);
                         //_f = MathHelper.Clamp(_f, 0, 1);
                         var realColor = VertexColor(f);
-                        realColor.A = (byte)((1 - f).HillFactor2(1) * swoosh.timeLeft / swooshTimeLeft * 255);//((float)Math.Pow(swoosh.timeLeft / swooshTimeLeft,4)).Lerp(, f)
+                        realColor.A = (byte)((1 - f).HillFactor2() * swoosh.timeLeft / swooshTimeLeft * 255);//((float)Math.Pow(swoosh.timeLeft / swooshTimeLeft,4)).Lerp(, f)
                         //
                         bars.Add(new CustomVertexInfo(swoosh.center + newVec, realColor, new Vector3(1 - f, 1, alphaLight)));
                         realColor.A = 0;
@@ -674,7 +674,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                 if (projectile.frameCounter > 0)
                 {
                     var f = (projectile.timeLeft - 30) / 115f;
-                    var _f = f.HillFactor2(1);
+                    var _f = f.HillFactor2();
                     for (int n = 0; n < 4; n++)
                     {
                         spriteBatch.Draw(projectileTexture, projectile.Center - Main.screenPosition + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 16 * _f), null, new Color(1f, 1f, 1f, 0) * f, projectile.rotation, new Vector2(7.5f, 3.5f), scaleVec, 0, 0);
@@ -890,7 +890,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
 
                     if (projectile.ai[0] == 7)
                     {
-                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, default, ModContent.ProjectileType<SolusUltraLaser>(), 80, 8, Main.myPlayer, 0, 0);
+                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, default, ModContent.ProjectileType<SolusUltraLaser>(), 80, 8, Main.myPlayer);
                     }
                     //else
                     //    SoundEngine.PlaySound(Terraria.ID.SoundID.Item38);
@@ -898,7 +898,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                     if ((Main.LocalPlayer.Center - projectile.Center).Length() < 1200)
                         for (int n = 0; n < 3; n++)
                         {
-                            var swoosh = swooshes[n] = new();
+                            var swoosh = swooshes[n] = new SolusKatanaProj.LeftSwoosh();
                             swoosh.timeLeft = 30;
                             swoosh.xScaler = Main.rand.NextFloat(1, 3);
                             swoosh.rotation = Main.rand.NextFloat(0, MathHelper.TwoPi);
@@ -914,7 +914,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.SolusKatana
                         if (swoosh != null && swooshes[n].timeLeft > 0) swoosh.timeLeft--;
                     }
                     //TODO 这里原来是HillFactor
-                    VirtualDreamPlayer.screenShakeStrength += (projectile.timeLeft / 30f).HillFactor2(1);
+                    VirtualDreamPlayer.screenShakeStrength += (projectile.timeLeft / 30f).HillFactor2();
                 }
                 //Main.NewText(projectile.penetrate);
                 //if (projectile.timeLeft < 147)

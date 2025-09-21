@@ -82,7 +82,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.BossDrop.MiniknogLauncher
             item.useStyle = ItemUseStyleID.Shoot;
             item.useAmmo = AmmoID.Rocket;
             item.DamageType = DamageClass.Ranged;
-            item.value = Item.sellPrice(0, 1, 0, 0);
+            item.value = Item.sellPrice(0, 1);
             item.width = 44;
             item.height = 28;
             item.noUseGraphic = true;

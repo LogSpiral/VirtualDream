@@ -35,7 +35,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             item.autoReuse = true;
             item.useAmmo = AmmoID.Arrow;
             item.knockBack = 0.25f;
-            item.value = Item.sellPrice(0, 1, 0, 0);
+            item.value = Item.sellPrice(0, 1);
             item.crit = 6;
             item.noUseGraphic = true;
             item.shoot = ModContent.ProjectileType<AdaptableCrossbowProj>();
@@ -328,7 +328,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
         {
             var left = (int)Projectile.ai[1] == 1;
             var factor = 1 - Projectile.ai[0] / (left ? this.UpgradeValue(27, 21) : this.UpgradeValue(15, 10));
-            factor = factor.HillFactor2(1);
+            factor = factor.HillFactor2();
             //if (left)
             //{
             //}
@@ -377,25 +377,25 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
             {
                 case 1:
                     {
-                        Dust.NewDustPerfect(projectile.Center, MyDustId.Fire, new Vector2(0, 0), 0, Color.White, 1f).noGravity = true;
+                        Dust.NewDustPerfect(projectile.Center, MyDustId.Fire, new Vector2(0, 0), 0, Color.White).noGravity = true;
                         break;
                     }
                 case 2:
                     {
-                        Dust.NewDustPerfect(projectile.Center, MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White, 1f).noGravity = true;
+                        Dust.NewDustPerfect(projectile.Center, MyDustId.PurpleFx, new Vector2(0, 0), 0, Color.White).noGravity = true;
                         break;
                     }
                 case 3:
                     {
                         if (projectile.timeLeft % 2 == 0)
-                            ElectricTriangle.NewElectricTriangle(projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32), Main.rand.NextFloat(0, MathHelper.TwoPi), 16, default, 15, 30);
+                            ElectricTriangle.NewElectricTriangle(projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32), Main.rand.NextFloat(0, MathHelper.TwoPi));
                         break;
                     }
                 case 4:
                     {
                         if (projectile.frameCounter != 1 && Main.rand.NextBool(4))
                         {
-                            Dust.NewDustPerfect(projectile.Center, MyDustId.GreenMaterial, new Vector2(projectile.velocity.X * 0.1f, 4), 0, Color.White, 1f);
+                            Dust.NewDustPerfect(projectile.Center, MyDustId.GreenMaterial, new Vector2(projectile.velocity.X * 0.1f, 4), 0, Color.White);
                         }
                         break;
                     }
@@ -406,7 +406,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                         {
                             projectile.timeLeft = 60;
                             projectile.velocity = projectile.velocity + new Vector2(0, 0.2f);
-                            Dust.NewDustPerfect(projectile.Center, MyDustId.BlackMaterial, new Vector2(0, 0), 0, Color.White, 1f).noGravity = true;
+                            Dust.NewDustPerfect(projectile.Center, MyDustId.BlackMaterial, new Vector2(0, 0), 0, Color.White).noGravity = true;
                         }
                         else
                         {
@@ -500,7 +500,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                         SoundEngine.PlaySound(SoundID.NPCHit53, projectile.position);
                         for (int n = -3; n < 4; n++)
                         {
-                            ElectricTriangle.NewElectricTriangle(projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32), Main.rand.NextFloat(0, MathHelper.TwoPi), 16, default, 15, 30);
+                            ElectricTriangle.NewElectricTriangle(projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32), Main.rand.NextFloat(0, MathHelper.TwoPi));
                             Dust.NewDustPerfect(projectile.Center, MyDustId.BlackFlakes, Main.rand.NextVector2Unit() * 3 + projectile.velocity * .25f);
                         }
                         //for (int num431 = 4; num431 < 31; num431++)
@@ -544,14 +544,14 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.AdaptableCrossbow
                 //Main.EntitySpriteDraw(TextureAssets.Projectile[612].Value, projectile.Center - Main.screenPosition, new Rectangle(0, 208 - projectile.timeLeft / 2 * 52, 52, 52), Color.White * .5f * fac, projectile.rotation, new Vector2(26), new Vector2(1, 2) * 2, 0, 0);//new Rectangle(0, projectile.timeLeft / 2, 52, 52)
                 //if(!TextureAssets.Projectile[687].IsLoaded)
                 //Main.instance.LoadProjectile(687);
-                Main.EntitySpriteDraw(VirtualDreamMod.GetTexture(Texture.Replace("CrossBowArrow", "ExplosionEffect"), false), projectile.Center - Main.screenPosition, new Rectangle(0, 588 - projectile.timeLeft / 3 * 98, 98, 98), new Color(255, 255, 255, 0) * fac.HillFactor2(1), projectile.rotation, new Vector2(49), 2f * fac, 0, 0);//new Rectangle(0, projectile.timeLeft / 2, 52, 52)
+                Main.EntitySpriteDraw(VirtualDreamMod.GetTexture(Texture.Replace("CrossBowArrow", "ExplosionEffect"), false), projectile.Center - Main.screenPosition, new Rectangle(0, 588 - projectile.timeLeft / 3 * 98, 98, 98), new Color(255, 255, 255, 0) * fac.HillFactor2(), projectile.rotation, new Vector2(49), 2f * fac, 0);//new Rectangle(0, projectile.timeLeft / 2, 52, 52)
 
                 //Main.NewText("yeeeeee");
             }
             else
             {
                 Texture2D texture2D = (int)projectile.ai[1] == 1 ? TextureAssets.Projectile[projectile.type].Value : VirtualDreamMod.GetTexture(Texture + "_Origin", false);
-                Main.EntitySpriteDraw(texture2D, projectile.Center - Main.screenPosition, texture2D.Frame((int)projectile.ai[1] == 1 ? 1 : 2, 7, (int)projectile.ai[1] == 1 ? 0 : ((int)VirtualDreamMod.ModTime / 2 % 2), (int)projectile.ai[0]), (int)projectile.ai[0] == 2 || (int)projectile.ai[0] == 3 ? Color.White : lightColor, projectile.rotation, texture2D.Size() * .5f / new Vector2((int)projectile.ai[1] == 1 ? 1 : 2, 7), 1f, 0, 0);
+                Main.EntitySpriteDraw(texture2D, projectile.Center - Main.screenPosition, texture2D.Frame((int)projectile.ai[1] == 1 ? 1 : 2, 7, (int)projectile.ai[1] == 1 ? 0 : ((int)VirtualDreamMod.ModTime / 2 % 2), (int)projectile.ai[0]), (int)projectile.ai[0] == 2 || (int)projectile.ai[0] == 3 ? Color.White : lightColor, projectile.rotation, texture2D.Size() * .5f / new Vector2((int)projectile.ai[1] == 1 ? 1 : 2, 7), 1f, 0);
             }
             return false;
         }

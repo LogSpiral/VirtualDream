@@ -52,7 +52,7 @@ namespace VirtualDream.Contents.StarBound.OtherProjectiles
             var color = Color.White with { A = 0 } * fac;
             //Main.NewText((fac, color));
             for (int n = 0; n < 4; n++)
-                Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, projectile.Center - Main.screenPosition + (Main.rand.NextFloat() + n * MathHelper.PiOver2).ToRotationVector2() * Main.rand.NextFloat(0, 8), TextureAssets.Projectile[projectile.type].Value.Frame(1, 12, 0, projectile.frame), color * .33f, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f / new Vector2(1f, 12f), 2f, 0, 0);//with { A = 0 } * (60f - projectile.timeLeft).HillFactor2(1)
+                Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, projectile.Center - Main.screenPosition + (Main.rand.NextFloat() + n * MathHelper.PiOver2).ToRotationVector2() * Main.rand.NextFloat(0, 8), TextureAssets.Projectile[projectile.type].Value.Frame(1, 12, 0, projectile.frame), color * .33f, projectile.rotation, TextureAssets.Projectile[projectile.type].Value.Size() * .5f / new Vector2(1f, 12f), 2f, 0);//with { A = 0 } * (60f - projectile.timeLeft).HillFactor2(1)
             return false;
         }
 

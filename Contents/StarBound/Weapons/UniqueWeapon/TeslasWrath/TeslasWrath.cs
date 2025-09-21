@@ -230,7 +230,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
             SoundEngine.PlaySound(SoundID.NPCHit53, projectile.position);
             for (int n = -3; n < 4; n++)
             {
-                ElectricTriangle.NewElectricTriangle(projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32), Main.rand.NextFloat(0, MathHelper.TwoPi), 16, default, 15, 30);
+                ElectricTriangle.NewElectricTriangle(projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32), Main.rand.NextFloat(0, MathHelper.TwoPi));
                 Dust.NewDustPerfect(projectile.Center, MyDustId.BlackFlakes, Main.rand.NextVector2Unit() * 3 + projectile.velocity * .25f);
             }
         }
@@ -238,7 +238,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
         public override void AI()
         {
             if ((int)VirtualDreamMod.ModTime2 % 4 == 0)
-                ElectricTriangle.NewElectricTriangle(projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32), Main.rand.NextFloat(0, MathHelper.TwoPi), 16, default, 15, 30);
+                ElectricTriangle.NewElectricTriangle(projectile.Center + Main.rand.NextVector2Unit() * Main.rand.NextFloat(0, 32), Main.rand.NextFloat(0, MathHelper.TwoPi));
             if (projectile.velocity != Vector2.Zero)
             {
                 projectile.rotation = projectile.velocity.ToRotation();
@@ -250,7 +250,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.TeslasWrath
             for (int n = 0; n < 4; n++)
             {
                 bool flag = n == (int)VirtualDreamMod.ModTime % 4;
-                Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, projectile.Center - Main.screenPosition, new Rectangle(0, 16 * n, 64, 16), (flag ? Color.White : Color.Purple * .25f) with { A = 0 }, projectile.rotation, new Vector2(32, 8), (flag ? 1f : Main.rand.NextFloat(0.5f, 0.9f)) * new Vector2(3, 1), 0, 0);
+                Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, projectile.Center - Main.screenPosition, new Rectangle(0, 16 * n, 64, 16), (flag ? Color.White : Color.Purple * .25f) with { A = 0 }, projectile.rotation, new Vector2(32, 8), (flag ? 1f : Main.rand.NextFloat(0.5f, 0.9f)) * new Vector2(3, 1), 0);
             }
             return false;
         }

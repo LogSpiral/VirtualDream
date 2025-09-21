@@ -79,7 +79,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
                 var unit = projectile.rotation.ToRotationVector2();
                 for (int n = 0; n < 2; n++)
                 {
-                    Dust dust = Dust.NewDustPerfect(projectile.Center + unit * 24, MyDustId.CyanBubble, new Vector2(-unit.Y, unit.X) * Main.rand.NextFloat(0.85f, 1.15f) * 4, 100, Color.White, 1f);
+                    Dust dust = Dust.NewDustPerfect(projectile.Center + unit * 24, MyDustId.CyanBubble, new Vector2(-unit.Y, unit.X) * Main.rand.NextFloat(0.85f, 1.15f) * 4, 100, Color.White);
                     dust.scale = 0.4f + Main.rand.NextFloat(-1, 1) * 0.1f;
                     dust.fadeIn = 0.4f + Main.rand.NextFloat() * 0.3f;
                     dust.fadeIn *= .5f;
@@ -118,7 +118,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
                                 var length = (pos - lastPos).Length();
                                 for (int k = 0; k < length; k++)
                                 {
-                                    Dust dust = Dust.NewDustPerfect(Vector2.Lerp(pos, lastPos, k / (float)length), MyDustId.CyanBubble, default, 100, Color.White, 1f);
+                                    Dust dust = Dust.NewDustPerfect(Vector2.Lerp(pos, lastPos, k / (float)length), MyDustId.CyanBubble, default, 100, Color.White);
                                     dust.scale = 0.4f + Main.rand.NextFloat(-1, 1) * 0.1f;
                                     dust.fadeIn = 0.4f + Main.rand.NextFloat() * 0.3f;
                                     dust.fadeIn *= fac;

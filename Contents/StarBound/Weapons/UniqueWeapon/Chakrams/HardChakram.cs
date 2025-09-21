@@ -78,12 +78,12 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Chakrams
                 Projectile.Center = player.Center + new Vector2(128, 0).RotatedBy(-(float)VirtualDreamSystem.ModTime2 / 6);
 
                 player.statDefense += Projectile.ai[1] == 1 ? 12 : 8;
-                Dust dust1 = Dust.NewDustPerfect(player.Center + new Vector2(64, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4), dust, new Vector2(0, 0), 0, Color.White, 1f);
-                Dust dust2 = Dust.NewDustPerfect(player.Center + new Vector2(64, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4 + MathHelper.Pi), dust, new Vector2(0, 0), 0, Color.White, 1f);
+                Dust dust1 = Dust.NewDustPerfect(player.Center + new Vector2(64, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4), dust, new Vector2(0, 0), 0, Color.White);
+                Dust dust2 = Dust.NewDustPerfect(player.Center + new Vector2(64, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4 + MathHelper.Pi), dust, new Vector2(0, 0), 0, Color.White);
                 dust1.noGravity = true;
                 dust2.noGravity = true;
-                Dust dust3 = Dust.NewDustPerfect(Projectile.Center + new Vector2(32, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4), dust, new Vector2(0, 0), 0, Color.White, 1f);
-                Dust dust4 = Dust.NewDustPerfect(Projectile.Center + new Vector2(32, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4 + MathHelper.Pi), dust, new Vector2(0, 0), 0, Color.White, 1f);
+                Dust dust3 = Dust.NewDustPerfect(Projectile.Center + new Vector2(32, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4), dust, new Vector2(0, 0), 0, Color.White);
+                Dust dust4 = Dust.NewDustPerfect(Projectile.Center + new Vector2(32, 0).RotatedBy((float)VirtualDreamSystem.ModTime2 / 4 + MathHelper.Pi), dust, new Vector2(0, 0), 0, Color.White);
                 dust3.noGravity = true;
                 dust4.noGravity = true;
 

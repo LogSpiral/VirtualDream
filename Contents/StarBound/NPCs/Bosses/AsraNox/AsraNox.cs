@@ -42,23 +42,31 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
             Music = MusicID.Boss2;
             if (!Main.gameMenu)
             {
-                visualPlayer = new Player();
-                visualPlayer.armor[1] = new Item(ItemID.HallowedPlateMail);
-                visualPlayer.armor[2] = new Item(ItemID.NebulaLeggings);
-                visualPlayer.armor[3] = new Item(ItemID.HeroShield);
-                visualPlayer.armor[4] = new Item(ItemID.PrinceCape);
-                visualPlayer.armor[5] = new Item(ItemID.LeinforsWings);
-                visualPlayer.dye[1] = new Item(ItemID.ReflectiveSilverDye);
-                visualPlayer.dye[3] = new Item(ItemID.PurpleDye);
-                visualPlayer.dye[4] = new Item(ItemID.PurpleDye);
-                //visualPlayer.inventory[0] = new Item(ItemID.TerraBlade);
-                //visualPlayer.itemAnimationMax = 15;
-                //visualPlayer.itemAnimation = 5;
-                visualPlayer.skinColor = new Color(255, 125, 90, 255);
-                visualPlayer.eyeColor = new Color(38, 38, 38, 255);
-                visualPlayer.hairColor = new Color(38, 38, 38, 255);
-                visualPlayer.hair = 85;
-                visualPlayer.isFirstFractalAfterImage = true;
+                visualPlayer = new Player
+                {
+                    armor =
+                    {
+                        [1] = new Item(ItemID.HallowedPlateMail),
+                        [2] = new Item(ItemID.NebulaLeggings),
+                        [3] = new Item(ItemID.HeroShield),
+                        [4] = new Item(ItemID.PrinceCape),
+                        [5] = new Item(ItemID.LeinforsWings)
+                    },
+                    dye =
+                    {
+                        [1] = new Item(ItemID.ReflectiveSilverDye),
+                        [3] = new Item(ItemID.PurpleDye),
+                        [4] = new Item(ItemID.PurpleDye)
+                    },
+                    //visualPlayer.inventory[0] = new Item(ItemID.TerraBlade);
+                    //visualPlayer.itemAnimationMax = 15;
+                    //visualPlayer.itemAnimation = 5;
+                    skinColor = new Color(255, 125, 90, 255),
+                    eyeColor = new Color(38, 38, 38, 255),
+                    hairColor = new Color(38, 38, 38, 255),
+                    hair = 85,
+                    isFirstFractalAfterImage = true
+                };
                 //visualPlayer.ResetEffects();
                 visualPlayer.ResetVisibleAccessories();
                 visualPlayer.UpdateDyes();
@@ -174,7 +182,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 while (num85 < num84)
                 {
                     vector35 += vector36;
-                    vector36 = vector36.RotatedBy(num83, default);
+                    vector36 = vector36.RotatedBy(num83);
                     num85++;
                 }
                 Vector2 value6 = -vector35;
@@ -3888,7 +3896,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     var fireRot = (NPC.position - NPC.oldPos[0]) == default ? -MathHelper.PiOver2 : (NPC.position - NPC.oldPos[0]).ToRotation().AngleLerp(-MathHelper.PiOver2, 0.25f);
                     spriteBatch.Draw(tex, NPC.Center + new Vector2(6, 28f) - Main.screenPosition, tex.Frame(1, 4, 0, (int)VirtualDreamMod.ModTime / 4 % 4), Color.White with { A = 0 } * alpha, -MathHelper.Pi * 3 / 4 + fireRot, new Vector2(20, 64), new Vector2(0.25f), 0, 0);
                     spriteBatch.Draw(tex, NPC.Center + new Vector2(-6, 28f) - Main.screenPosition, tex.Frame(1, 4, 0, (int)VirtualDreamMod.ModTime / 4 % 4), Color.White with { A = 0 } * alpha, -MathHelper.Pi * 3 / 4 + fireRot, new Vector2(20, 64), new Vector2(0.25f), 0, 0);
-                    Main.PlayerRenderer.DrawPlayer(Main.Camera, visualPlayer, NPC.Center - new Vector2(10, 14), 0, default, 0, 1);
+                    Main.PlayerRenderer.DrawPlayer(Main.Camera, visualPlayer, NPC.Center - new Vector2(10, 14), 0, default);
                 }
                 else
                 {
@@ -4289,7 +4297,7 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                     {
                         if (Main.rand.NextBool(15))
                         {
-                            Dust dust = Dust.NewDustPerfect(projectile.Center, MyDustId.CyanBubble, null, 100, Color.Lerp(Main.hslToRgb(0.1f, 1f, 0.5f), Color.White, Main.rand.NextFloat() * 0.3f), 1f);
+                            Dust dust = Dust.NewDustPerfect(projectile.Center, MyDustId.CyanBubble, null, 100, Color.Lerp(Main.hslToRgb(0.1f, 1f, 0.5f), Color.White, Main.rand.NextFloat() * 0.3f));
                             dust.scale = 0.7f;
                             dust.noGravity = true;
                             dust.velocity *= 0.5f;
@@ -4554,8 +4562,8 @@ namespace VirtualDream.Contents.StarBound.NPCs.Bosses.AsraNox
                 int v = 600;
                 Main.spriteBatch.End();
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-                Terraria.DataStructures.DrawData data = new(tex, projectile.Center + u * 12 - Main.screenPosition, new Rectangle(0, 0, 2 * v, 2 * v), Color.Lerp(Color.Orange, Color.White, timer) with { A = 0 }, 0, new Vector2(v), (projectile.timeLeft < 210 ? MathHelper.Lerp(0, 4, timer * timer) : MathHelper.Lerp(2, 0, (float)Math.Sqrt(timer))) * new Vector2(1.5f, 1), 0, 0);
-                Terraria.Graphics.Shaders.GameShaders.Misc["ForceField"].UseColor(new Vector3(timer.HillFactor2(1)));//
+                Terraria.DataStructures.DrawData data = new(tex, projectile.Center + u * 12 - Main.screenPosition, new Rectangle(0, 0, 2 * v, 2 * v), Color.Lerp(Color.Orange, Color.White, timer) with { A = 0 }, 0, new Vector2(v), (projectile.timeLeft < 210 ? MathHelper.Lerp(0, 4, timer * timer) : MathHelper.Lerp(2, 0, (float)Math.Sqrt(timer))) * new Vector2(1.5f, 1), 0);
+                Terraria.Graphics.Shaders.GameShaders.Misc["ForceField"].UseColor(new Vector3(timer.HillFactor2()));//
                 Terraria.Graphics.Shaders.GameShaders.Misc["ForceField"].Apply(data);
                 data.Draw(Main.spriteBatch);
                 Main.spriteBatch.End();

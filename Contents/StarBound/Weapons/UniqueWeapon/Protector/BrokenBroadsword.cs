@@ -49,7 +49,7 @@ namespace VirtualDream.Contents.StarBound.Weapons.UniqueWeapon.Protector
 
             vertexStandard.scaler = 105;
             vertexStandard.timeLeft = 15;
-            vertexStandard.colorVec = new(0, 1, 0);
+            vertexStandard.colorVec = new Vector3(0, 1, 0);
             vertexStandard.alphaFactor = 2f;
             base.InitializeStandardInfo(standardInfo, vertexStandard);
         }
